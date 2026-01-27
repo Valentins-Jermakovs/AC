@@ -3,7 +3,6 @@
 # lai palaist šo programmu, instalē nepieciešamas atkarības virtuālajā vidē
 # un izpildi komandu [fastapi dev main.py]
 from fastapi import FastAPI
-from pydantic import BaseModel, Field, EmailStr
 from typing import Annotated
 from fastapi import Depends, Form
 from fastapi.exceptions import HTTPException
@@ -12,10 +11,7 @@ from sqlmodel import Session, select
 from .models.models import User, Role, UserRole, Token
 from .services.base_connection import engine
 from .services.init_base import init_db, init_roles
-
-# imports reģistrācijas shēmai
 from .schemas.registration_schema import RegistrationSchema
-
 # Programmas startēšana:
 # izveido tabulas
 # izveido lomas
@@ -36,12 +32,6 @@ def get_db():
     finally:
         session.close()
 
-# pydantic modelis validācijai
-class NewUser(BaseModel):
-    username: str = Field(min_length=5, max_length=50)  # ierobežojums 3-50 simboli
-    email: EmailStr                                     # automātiska e-pasta validācija
-    password: str = Field(min_length=8)                 # vismaz 6 simboli
-
 # lietotāju reģistrācija
 @app.post("/register")
 async def register(
@@ -51,7 +41,7 @@ async def register(
     db: Annotated[Session, Depends(get_db)]
 ):
     # veicam jaunā lietotāja validāciju
-    user_date = NewUser(username=username, email=email, password=password)
+    user_date = RegistrationSchema(username=username, email=email, password=password)
 
     # ja lietotājs eksistē, reģistrācijas neizdevās
     existing_user = db.exec(select(User).where(User.username == username)).first()

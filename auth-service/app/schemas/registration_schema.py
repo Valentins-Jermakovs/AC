@@ -1,8 +1,6 @@
-from pydantic import BaseModel
-
-# lietotāja registrācijas formas modelis
-# tiek saņemts no front-end
+from pydantic import BaseModel, Field, EmailStr
+# pydantic modelis validācijai
 class RegistrationSchema(BaseModel):
-    username: str
-    email: str
-    password: str
+    username: str = Field(min_length=5, max_length=50)  # ierobežojums 3-50 simboli
+    email: EmailStr                                     # automātiska e-pasta validācija
+    password: str = Field(min_length=8)                 # vismaz 6 simboli

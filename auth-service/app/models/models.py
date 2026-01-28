@@ -1,10 +1,7 @@
 from sqlmodel import Field, SQLModel
+from ..utils.datetime_utils import utcnow
 from datetime import datetime, timezone, timedelta
-
-# === datuma un laika iestatīšanas funkcija ===
-def utcnow() -> datetime:               # atgriežamā objekta anotācija (priekš SQLModel)
-    return datetime.now(timezone.utc)   # datums un laiks UTC
-# === === === === === === === === === === === ===
+from sqlalchemy import Column, DateTime
 
 # === MODEĻI ===
 
@@ -51,6 +48,6 @@ class Token(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)             
     user_id: int = Field(default=None, foreign_key="users.id")        
     refresh_token: str = Field(max_length=255, index=True)    
-    expires_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc) + timedelta(days=7))                     
+    expires_at: datetime = Field(default_factory=lambda: utcnow() + timedelta(days=7))                     
     created_at: datetime = Field(default_factory=utcnow)
 # === === === === === === === === === === === === === ===                      

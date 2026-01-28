@@ -6,6 +6,8 @@ from ..schemas.auth_schema import LoginSchema
 from ..schemas.token_with_refresh_schema import TokenWithRefreshSchema
 from ..services.password_service import verify_password
 from ..services.token_servicce import create_access_token, create_refresh_token, save_refresh_token
+from datetime import datetime, timedelta, timezone
+from ..utils.datetime_utils import utcnow
 
 # === lietotāju autentifikāciajs funkcija ===
 def login_user(db: Session, data: LoginSchema) -> TokenWithRefreshSchema:
@@ -25,23 +27,32 @@ def login_user(db: Session, data: LoginSchema) -> TokenWithRefreshSchema:
     access_token = create_access_token({"sub": str(user.id),})
 
     # === pārbaude uz refresh tokenu DB ===
-    # iegūstam lietotāja ID datu bāzē
-    user_id = db.exec(
-        select(User.id).where(User.username == data.username)
-    ).first()
     # atrodam refresh tokenu datu bāzē
-    refresh_token = db.exec(
-        select(Token.refresh_token).where(Token.user_id == user_id)
+    token = db.exec(
+        select(Token)
+        .where(Token.user_id == user.id)
+        .order_by(Token.created_at.desc())
     ).first()
+    # ja refsresh_tokens eksistē, veicam pārbaudi uz tā derīgumu
+    if token:
+        if token.expires_at.replace(tzinfo=timezone.utc) < utcnow():
+            # ja beidzies, dzēšam
+            db.delete(token)
+            db.commit()
+            token = None
+
     # ja refresh tokena nav, veidojam
-    if not refresh_token:
-        refresh_token = create_refresh_token()
-        # === saglabā refresh tokenu DB ===
-        save_refresh_token(refresh_token, user.id, db)
+    if not token:
+        refresh_token_value = create_refresh_token()
+        # saglabā refresh tokenu DB
+        save_refresh_token(refresh_token_value, user.id, db)
+    else:
+        refresh_token_value = token.refresh_token
+    # === === === === === === === === === === === ===
 
     # atgriež tokenu un refresh tokenu
     return TokenWithRefreshSchema(
         access_token=access_token,
         token_type="bearer",
-        refresh_token=refresh_token
+        refresh_token=refresh_token_value
     )

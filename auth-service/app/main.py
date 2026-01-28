@@ -6,8 +6,8 @@ from .routers import auth
 # === programmas sākuma darbības cikls ===
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    init_db()       # inicializē DB ar vajadzīgām tabulām no modeļiem
-    init_roles()    # inicializē lomas
+    await init_db()       # inicializē DB ar vajadzīgām tabulām no modeļiem
+    await init_roles()    # inicializē lomas
     yield
 # === === === === === === === === === ===
 

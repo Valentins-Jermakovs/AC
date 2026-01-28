@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Body
 from typing import Annotated
 from sqlmodel import Session
 
@@ -18,13 +18,21 @@ def get_db():                   # veido savienojumu ar DB
         session.close()
 
 # reģistrācijas mehānisms
-@router.post("/register")
+@router.post("/register", 
+             summary="Create a new user", 
+             description="Get JSON data and create a new user in the database"
+             )
 async def register(
-    data: RegistrationSchema,
+        data: Annotated[
+        RegistrationSchema,
+        Body(
+            example={"username": "testuser", "email": "test@inbox.lv", "password": "12345678"}
+        )
+    ],
     db: Annotated[Session, Depends(get_db)]
 ):
     # saņem lietotāju
-    user = register_user(data, db)
+    user =  await register_user(data, db)
     # atgriež klientam informāciju (tests - pēc tam aizvietot uz tokenu)
     return {
         "id": user.id,

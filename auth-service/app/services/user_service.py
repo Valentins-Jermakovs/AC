@@ -2,8 +2,12 @@ from sqlmodel import Session, select
 from fastapi import HTTPException
 from ..models.models import User, Role, UserRole
 from ..schemas.registration_schema import RegistrationSchema
+from typing import Annotated
 
-async def register_user(data: RegistrationSchema, db: Session):
+async def register_user(
+    data: Annotated[RegistrationSchema, "Jauna lietotāja reģistrācijas dati"],
+    db: Annotated[Session, "SQLModel sesija"]
+):
 
     # === validācija ===
     # pārbaudes uz esošu lietotāju

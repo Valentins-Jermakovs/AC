@@ -2,7 +2,7 @@ from sqlmodel import Field, SQLModel
 from datetime import datetime, timezone, timedelta
 
 # === datuma un laika iestatīšanas funkcija ===
-async def utcnow() -> datetime:         # atgriežamā objekta anotācija (priekš SQLModel)
+def utcnow() -> datetime:         # atgriežamā objekta anotācija (priekš SQLModel)
     return datetime.now(timezone.utc)   # datums un laiks UTC
 # === === === === === === === === === === === ===
 

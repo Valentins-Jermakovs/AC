@@ -2,7 +2,7 @@ from sqlmodel import Session, select
 from fastapi import HTTPException
 from ..models.models import User, Role, UserRole
 from ..schemas.registration_schema import RegistrationSchema
-from typing import Annotated
+from .password_service import get_password_hash
 
 # === lietotāju reģistrācijas funkcija ===
 async def register_user(
@@ -28,7 +28,7 @@ async def register_user(
     user = User(
         username=data.username,
         email=data.email,
-        password_hash=data.password
+        password_hash=get_password_hash(data.password)
     )
     # === === === === === === === === === ===
 

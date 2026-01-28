@@ -5,7 +5,7 @@ from ..schemas.registration_schema import RegistrationSchema
 from .password_service import get_password_hash
 
 # === lietotāju reģistrācijas funkcija ===
-async def register_user(
+def register_user(
     data: RegistrationSchema,
     db: Session
 ):

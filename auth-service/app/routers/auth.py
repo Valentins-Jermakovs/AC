@@ -3,11 +3,15 @@ from typing import Annotated
 from sqlmodel import Session
 
 from ..schemas.registration_schema import RegistrationSchema
+from ..schemas.auth_schema import LoginSchema
+from ..schemas.user_schema import UserSchema
+from ..schemas.token_with_refresh_schema import TokenWithRefreshSchema
 from ..services.user_service import register_user
+from ..services.login_service import login_user
 from ..services.base_connection import engine
 from sqlmodel import Session
 
-# definē ceļu /auth
+# === definē ceļu /auth ===
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
 def get_db():                   # veido savienojumu ar DB
@@ -17,10 +21,11 @@ def get_db():                   # veido savienojumu ar DB
     finally:                    # izslēdz savienojumu
         session.close()
 
-# reģistrācijas mehānisms
+# === reģistrācijas mehānisms ===
 @router.post("/register", 
              summary="Create a new user", 
-             description="Get JSON data and create a new user in the database"
+             description="Get JSON data and create a new user in the database",
+             response_model=UserSchema
              )
 async def register(
         data: Annotated[
@@ -32,10 +37,25 @@ async def register(
     db: Annotated[Session, Depends(get_db)]
 ):
     # saņem lietotāju
-    user =  await register_user(data, db)
+    user = register_user(data, db)
     # atgriež klientam informāciju (tests - pēc tam aizvietot uz tokenu)
-    return {
-        "id": user.id,
-        "username": user.username,
-        "email": user.email
-    }
+    return user
+# === === === === === === === === === === === === === === ===
+
+# === login mehānisms ===
+@router.post("/login", 
+             summary="Login a user", 
+             description="Get JSON data and login a user in the database",
+             response_model=TokenWithRefreshSchema
+             )
+async def login(
+        data: Annotated[
+        LoginSchema,
+        Body(
+            example={"username": "testuser", "password": "12345678"}
+        )
+    ],
+    db: Annotated[Session, Depends(get_db)]
+):
+    return login_user(db, data)
+# === === === === === === === === === === === === === === ===

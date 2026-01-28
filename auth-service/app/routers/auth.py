@@ -1,12 +1,33 @@
-# login, register, refresh
+from fastapi import APIRouter, Depends
 from typing import Annotated
-from fastapi import FastAPI, Form
-from pydantic import BaseModel
+from sqlmodel import Session
 
+from ..schemas.registration_schema import RegistrationSchema
+from ..services.user_service import register_user
+from ..services.base_connection import engine
+from sqlmodel import Session
 
-# reģistrācijas funkcionāls
-from ..schemas.registration_schema import RegistrationSchema # lietotāja registrācijas shēma
+# definē ceļu /auth
+router = APIRouter(prefix="/auth", tags=["Auth"])
 
-# @app.post("/register")
-# async def register(user: Annotated[RegistrationSchema, Form()]):
-#     return user
+def get_db():                   # veido savienojumu ar DB
+    session = Session(engine)   # izveido savienojumu
+    try:                        # izmanto savienojumu
+        yield session
+    finally:                    # izslēdz savienojumu
+        session.close()
+
+# reģistrācijas mehānisms
+@router.post("/register")
+async def register(
+    data: RegistrationSchema,
+    db: Annotated[Session, Depends(get_db)]
+):
+    # saņem lietotāju
+    user = register_user(data, db)
+    # atgriež klientam informāciju (tests - pēc tam aizvietot uz tokenu)
+    return {
+        "id": user.id,
+        "username": user.username,
+        "email": user.email
+    }

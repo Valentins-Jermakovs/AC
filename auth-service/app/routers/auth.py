@@ -25,7 +25,7 @@ def get_db():                   # veido savienojumu ar DB
 @router.post("/register", 
              summary="Create a new user", 
              description="Get JSON data and create a new user in the database",
-             response_model=UserSchema
+             response_model=TokenWithRefreshSchema
              )
 async def register(
         data: Annotated[
@@ -37,9 +37,9 @@ async def register(
     db: Annotated[Session, Depends(get_db)]
 ):
     # saņem lietotāju
-    user = register_user(data, db)
-    # atgriež klientam informāciju (tests - pēc tam aizvietot uz tokenu)
-    return user
+    register_user_with_token = register_user(data, db)
+    # atgriež klientam informāciju (tokeni)
+    return register_user_with_token
 # === === === === === === === === === === === === === === ===
 
 # === login mehānisms ===
@@ -57,5 +57,6 @@ async def login(
     ],
     db: Annotated[Session, Depends(get_db)]
 ):
+    # atgriež klientam informāciju (tokeni)
     return login_user(db, data)
 # === === === === === === === === === === === === === === ===

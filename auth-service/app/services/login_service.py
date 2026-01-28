@@ -2,7 +2,6 @@
 from sqlmodel import Session, select
 from fastapi import HTTPException
 from ..models.models import User
-from ..schemas.token_schema import TokenSchema
 from ..schemas.auth_schema import LoginSchema
 from ..schemas.token_with_refresh_schema import TokenWithRefreshSchema
 from ..services.password_service import verify_password

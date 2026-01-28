@@ -1,9 +1,7 @@
 # === Šis serviss atbild par tokenu ģenerāciju ===
 from datetime import datetime, timedelta
 import jwt
-from jwt.exceptions import InvalidTokenError
 from .password_service import *
-from pydantic import BaseModel
 from datetime import datetime, timedelta, timezone
 import secrets
 from sqlmodel import Session

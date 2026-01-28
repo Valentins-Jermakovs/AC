@@ -1,7 +1,7 @@
 # === Serviss lietotāju autentifikācijai ===
 from sqlmodel import Session, select
 from fastapi import HTTPException
-from ..models.models import User
+from ..models.models import User, Token
 from ..schemas.auth_schema import LoginSchema
 from ..schemas.token_with_refresh_schema import TokenWithRefreshSchema
 from ..services.password_service import verify_password
@@ -23,10 +23,21 @@ def login_user(db: Session, data: LoginSchema) -> TokenWithRefreshSchema:
 
     # === access tokena ģenerāciuja ===
     access_token = create_access_token({"sub": str(user.id),})
-    # === refresh tokena ģenerācija ===
-    refresh_token = create_refresh_token()
-    # === saglabā refresh tokenu DB ===
-    save_refresh_token(refresh_token, user.id, db)
+
+    # === pārbaude uz refresh tokenu DB ===
+    # iegūstam lietotāja ID datu bāzē
+    user_id = db.exec(
+        select(User.id).where(User.username == data.username)
+    ).first()
+    # atrodam refresh tokenu datu bāzē
+    refresh_token = db.exec(
+        select(Token.refresh_token).where(Token.user_id == user_id)
+    ).first()
+    # ja refresh tokena nav, veidojam
+    if not refresh_token:
+        refresh_token = create_refresh_token()
+        # === saglabā refresh tokenu DB ===
+        save_refresh_token(refresh_token, user.id, db)
 
     # atgriež tokenu un refresh tokenu
     return TokenWithRefreshSchema(

@@ -1,4 +1,5 @@
 from sqlmodel import Field, SQLModel
+from typing import Optional
 from ..utils.datetime_utils import utcnow
 from datetime import datetime, timezone, timedelta
 from sqlalchemy import Column, DateTime
@@ -7,15 +8,41 @@ from sqlalchemy import Column, DateTime
 
 # === Lietotāja modelis ===
 class User(SQLModel, table=True):
-    __tablename__ = 'users'                                         # tabulas nosaukums
+    __tablename__ = 'users'
 
-    id: int = Field(primary_key=True)                               # lietotāja ID
-    username: str = Field(max_length=50, index=True, unique=True)   # lietotāja vārds
-    password_hash: str = Field(max_length=255)                      # lietotāja parole
-    email: str = Field(max_length=100, index=True, unique=True)     # lietotāja e-pasts
-    created_at: datetime = Field(default_factory=utcnow)            # lietotāja izveide datums
-    active: bool = Field(default=True)                              # lietotāja statuss
-# === === === === === ===
+    id: int = Field(primary_key=True)
+
+    username: Optional[str] = Field(
+        default=None,
+        max_length=50,
+        index=True,
+        unique=True
+    )
+
+    password_hash: Optional[str] = Field(
+        default=None,
+        max_length=255
+    )
+
+    email: str = Field(
+        max_length=100,
+        index=True,
+        unique=True
+    )
+
+    google_id: Optional[str] = Field(
+        default=None,
+        index=True,
+        unique=True
+    )
+
+    auth_provider: str = Field(
+        default="local",
+        max_length=20
+    )
+
+    created_at: datetime = Field(default_factory=utcnow)
+    active: bool = Field(default=True)
 
 # === Lomu modelis ===
 class Role(SQLModel, table=True):

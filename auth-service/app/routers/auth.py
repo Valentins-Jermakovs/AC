@@ -6,7 +6,7 @@ from ..schemas.registration_schema import RegistrationSchema
 from ..schemas.auth_schema import LoginSchema
 from ..schemas.user_schema import UserSchema
 from ..schemas.token_with_refresh_schema import TokenWithRefreshSchema
-from ..services.user_service import register_user
+from ..services.registration_service import register_user
 from ..services.login_service import login_user
 from ..services.base_connection import engine
 from sqlmodel import Session
@@ -14,6 +14,7 @@ from sqlmodel import Session
 # === definē ceļu /auth ===
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
+# === veidojam savienojumu ar DB ===
 def get_db():                   # veido savienojumu ar DB
     session = Session(engine)   # izveido savienojumu
     try:                        # izmanto savienojumu

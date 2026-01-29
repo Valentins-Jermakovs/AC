@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request, Depends
+from fastapi import APIRouter, Request, Depends, HTTPException
 from authlib.integrations.starlette_client import OAuth
 from urllib.parse import urljoin
 from sqlmodel import Session, select
@@ -55,6 +55,10 @@ async def auth_callback(
     user = db.exec(
         select(User).where(User.google_id == google_id)
     ).first()
+
+    # ja lietotājs nav aktīvs
+    if user and not user.active:
+        raise HTTPException(status_code=401, detail="User is inactive")
 
     # ja nav, pēc email
     if not user:

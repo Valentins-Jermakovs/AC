@@ -6,14 +6,42 @@ from fastapi import HTTPException
 from ..models.models import User, Role, UserRole
 from ..schemas.user_schema import UserSchema
 
-
 # === izvada visus lietotājus no DB ===
 def get_all_users(db: Session) -> list[User]:
-    return db.exec(select(User)).all()
+    # atlasa visus lietotājus un to lomas (roles)
+    users = db.exec(
+        select(
+            User.id,
+            User.username,
+            User.email,
+            Role.name.label("role")
+        )
+        .join(UserRole, UserRole.user_id == User.id)
+        .join(Role, Role.id == UserRole.role_id)
+    ).all()
+    return [
+        UserSchema(
+            id=user.id,
+            username=user.username,
+            email=user.email,
+            role=user.role
+        )
+        for user in users
+    ]
 
 # === meklē lietotāju pēc ID ===
 def get_user_by_id(user_id: int, db: Session) -> User:
-    user = db.exec(select(User).where(User.id == user_id)).first()
+    user = db.exec(
+        select(
+            User.id,
+            User.username,
+            User.email,
+            Role.name.label("role")
+        )
+        .join(UserRole, UserRole.user_id == User.id)
+        .join(Role, Role.id == UserRole.role_id)
+        .where(User.id == user_id)
+    ).first()
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return user
@@ -26,7 +54,14 @@ def get_user_by_username_or_email(username_or_email: str, db: Session) -> User:
     username_or_email = username_or_email.lower()
 
     user = db.exec(
-        select(User)
+        select(
+            User.id,
+            User.username,
+            User.email,
+            Role.name.label("role")
+        )
+        .join(UserRole, UserRole.user_id == User.id)
+        .join(Role, Role.id == UserRole.role_id)
         .where(
             or_(
                 User.username == username_or_email,
@@ -46,7 +81,12 @@ def get_users_by_role(role: str, db: Session) -> list[User]:
     role = role.lower()
 
     users = db.exec(
-        select(User)
+        select(
+            User.id,
+            User.username,
+            User.email,
+            Role.name.label("role")
+        )
         .join(UserRole, UserRole.user_id == User.id)
         .join(Role, Role.id == UserRole.role_id)
         .where(Role.name == role)

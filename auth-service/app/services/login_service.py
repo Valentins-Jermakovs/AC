@@ -25,6 +25,9 @@ def login_user(db: Session, data: LoginSchema) -> TokenWithRefreshSchema:
     # paroles salīdzināšana
     if not verify_password(data.password, user.password_hash):
         raise HTTPException(status_code=401, detail="Invalid password")
+    # ja lietotājs ir nav aktvīs - 401 status kods
+    if not user.active:
+        raise HTTPException(status_code=401, detail="User is inactive")
 
     # === access tokena ģenerāciuja ===
     access_token = create_access_token({"sub": str(user.id),})

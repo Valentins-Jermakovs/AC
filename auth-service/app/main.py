@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from .services.init_base import init_db, init_roles
-from .routers import auth, users, roles, activity
+from .routers import auth, users, roles, activity, modifications
 
 # === programmas sākuma darbības cikls ===
 @asynccontextmanager
@@ -18,6 +18,7 @@ app = FastAPI(lifespan=lifespan)
 app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(roles.router)
+app.include_router(modifications.router)
 app.include_router(activity.router)
 # === === === === === === === ===
 

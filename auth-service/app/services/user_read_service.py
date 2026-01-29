@@ -21,6 +21,10 @@ def get_user_by_id(user_id: int, db: Session) -> User:
 
 # meklē lietotāju pēc username vai email
 def get_user_by_username_or_email(username_or_email: str, db: Session) -> User:
+
+    # username/email uz lowercase
+    username_or_email = username_or_email.lower()
+
     user = db.exec(
         select(User)
         .where(
@@ -37,6 +41,10 @@ def get_user_by_username_or_email(username_or_email: str, db: Session) -> User:
 
 # meklē lietotājus pēc role
 def get_users_by_role(role: str, db: Session) -> list[User]:
+
+    # role uz lowercase
+    role = role.lower()
+
     users = db.exec(
         select(User)
         .join(UserRole, UserRole.user_id == User.id)

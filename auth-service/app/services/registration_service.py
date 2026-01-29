@@ -12,6 +12,10 @@ def register_user(
     db: Session
 ) -> TokenWithRefreshSchema:
 
+    # username un email uz lowercase
+    data.username = data.username.lower()
+    data.email = data.email.lower()
+
     # === validācija ===
     # pārbaudes uz esošu lietotāju
     existing_user = db.exec(

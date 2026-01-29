@@ -12,6 +12,9 @@ from ..utils.datetime_utils import utcnow
 # === lietotāju autentifikāciajs funkcija ===
 def login_user(db: Session, data: LoginSchema) -> TokenWithRefreshSchema:
 
+    # username uz lowercase
+    data.username = data.username.lower()
+
     # === pārbaudes uz esošu lietotāju ===
     user = db.exec(
         select(User).where(User.username == data.username)

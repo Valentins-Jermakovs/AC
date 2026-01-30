@@ -1,34 +1,51 @@
-from sqlmodel import SQLModel, Session, select
-from .base_connection import engine
-from ..models.models import Role, UserRole, User, Token
+# ===== Importi =====
+from sqlmodel import (
+    SQLModel, 
+    Session, 
+    select, 
+    create_engine
+)
+import os
+from dotenv import load_dotenv
 
-# === DB inicializators, izveido visas tabulas, ja neeksistē ===
+from ..models.models import (
+    Role, 
+    UserRole, 
+    User, 
+    Token
+)
+
+# ===== Dotenv faila satura apstrāde =====
+load_dotenv()
+DATABASE_URL = os.getenv("DATABASE_URL")
+engine = create_engine(DATABASE_URL, echo=True)
+
+
+# ===== DB tabulu inicializācija =====
 async def init_db():
     SQLModel.metadata.create_all(engine)
-# === === === === === === === === === === === === === === === ==
 
-# === loma inicializators, izveido lomas, ja neeksistē ===
+
+# ===== Lomu inicializācija =====
 async def init_roles():
-    # izveido savienojumu
+
     with Session(engine) as session:
 
-        # lomu dictionary ar aprakstiem
+        # Lomas
         roles = {
             "user": "user can register and login, use system in read-only mode and write only own data",
             "admin": "administrator can register and login, use system in read-write mode and write all data"
         }
 
-        # pārbauda, vai lomas pašlaik ir izveidotas
+        # Pārbaude
         existing_roles = session.exec(select(Role)).all()
+
         if existing_roles:
             return
-        # izveido lomas, ja neeksistē
+
+        # Izveido lomas
         for role_name, role_description in roles.items():
             role = Role(name=role_name, description=role_description)
             session.add(role)
 
-
-        # izpilda komandu INSERT
         session.commit()
-# === === === === === === === === === === === === === === === === === === === ===
-        

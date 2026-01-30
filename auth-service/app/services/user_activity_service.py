@@ -1,28 +1,34 @@
-# Šis serviss atbilsts par lietotāju aktivitātes statusa maiņu
+# ===== Importi =====
+from sqlmodel import (
+    Session, 
+    select
+)
 
-from sqlmodel import Session, select
 from fastapi import HTTPException
+
 from ..models.models import User
+
 from ..schemas.user_active_schema import UserActiveSchema
 
-# === lietotāju aktivitātes statusa maiņas funkcija ===
+# ===== Lietotāju aktivitātes statusa maiņas funkcija =====
 def change_users_activity_status(
     user_ids: list[int],
     is_active: bool,
     db: Session
 ):
-    # iegūst visus lietotājus vienā pieprasījumā
+    # ===== Visu lietotāju atlase =====
     users = db.exec(
         select(User).where(User.id.in_(user_ids))).all()
-    # pārbaude, vai visi lietotāji eksistē
+
     if len(users) != len(user_ids):
         raise HTTPException(status_code=404, detail="User not found")
 
-    # maina aktivitātes statusu
+    # ===== Aktivitātes statusa maiņa =====
     for user in users:
         user.active = is_active
 
     db.commit()
+
     return [
         UserActiveSchema(
             id=user.id,

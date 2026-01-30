@@ -13,7 +13,7 @@ from ..services.base_connection import engine
 
 load_dotenv()
 # http://localhost:8000/auth/google/login
-router = APIRouter(prefix="/google", tags=["Google"])
+router = APIRouter(prefix="/auth/google", tags=["Google"])
 
 # === DB dependency ===
 def get_db():

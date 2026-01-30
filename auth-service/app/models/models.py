@@ -1,12 +1,12 @@
+# ===== Importi =====
 from sqlmodel import Field, SQLModel
 from typing import Optional
 from ..utils.datetime_utils import utcnow
-from datetime import datetime, timezone, timedelta
-from sqlalchemy import Column, DateTime
+from datetime import datetime, timedelta
 
-# === MODEĻI ===
+# ===== MODEĻI =====
 
-# === Lietotāja modelis ===
+# ===== Lietotājs =====
 class User(SQLModel, table=True):
     __tablename__ = 'users'
 
@@ -44,37 +44,55 @@ class User(SQLModel, table=True):
     created_at: datetime = Field(default_factory=utcnow)
     active: bool = Field(default=True)
 
-# === Lomu modelis ===
+
+# ===== Lomas =====
 class Role(SQLModel, table=True):
-    __tablename__ = 'roles'                                     # tabulas nosaukums
+    __tablename__ = 'roles'                                     
 
-    id: int = Field(primary_key=True)                           # lomas ID
-    name: str = Field(max_length=50, unique=True, index=True)   # lomas nosaukums
-    description: str = Field(max_length=100)                    # lomas apraksts
-# === === === === ===
+    id: int = Field(primary_key=True)
+    name: str = Field(
+        max_length=50, 
+        unique=True, 
+        index=True
+    )
 
-# === M2M savienojums starp lietotāju un lietotāju lomu ===
+    description: str = Field(max_length=100)
+
+
+# ===== M2M savienojums starp lietotāju un lietotāju lomu =====
 class UserRole(SQLModel, table=True):
-    __tablename__ = 'user_roles'                                          # lietotāju lomu tabula
+    __tablename__ = 'user_roles'
 
-    user_id: int = Field(foreign_key="users.id", primary_key=True)        # lietotāja id
-    role_id: int = Field(foreign_key="roles.id", primary_key=True)        # lomas id
-# === === === === === === === === === === === === === ===
+    user_id: int = Field(
+        foreign_key="users.id", 
+        primary_key=True
+    )
 
-# === Tokenu krātuve ====
+    role_id: int = Field(
+        foreign_key="roles.id", 
+        primary_key=True
+    )
+
+# ===== Tokenu krātuve =====
 class Token(SQLModel, table=True):
-    __tablename__ = 'tokens'          # tabulas nosaukums
+    __tablename__ = 'tokens'
 
-    # === Tabulas lauki ===
-    # ieraksta ID
-    # lietotāja ID
-    # atjauninājuma tokens
-    # tokena izbeigšanas datums
-    # tokena izveidošanas datums
+    id: int = Field(
+        default=None, 
+        primary_key=True
+    )           
 
-    id: int = Field(default=None, primary_key=True)             
-    user_id: int = Field(default=None, foreign_key="users.id")        
-    refresh_token: str = Field(max_length=255, index=True)    
-    expires_at: datetime = Field(default_factory=lambda: utcnow() + timedelta(days=7))                     
-    created_at: datetime = Field(default_factory=utcnow)
-# === === === === === === === === === === === === === ===                      
+    user_id: int = Field(
+        default=None, 
+        foreign_key="users.id"
+    )
+
+    refresh_token: str = Field(
+        max_length=255, 
+        index=True
+    )
+
+    expires_at: datetime = Field(
+        default_factory=lambda: utcnow() + timedelta(days=7)
+    )                     
+    created_at: datetime = Field(default_factory=utcnow)                    

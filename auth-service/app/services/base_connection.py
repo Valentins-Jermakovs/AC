@@ -2,7 +2,7 @@ from sqlmodel import create_engine
 import os
 from dotenv import load_dotenv
 
-
+# ===== IZDĒST (DEPRECATED) =====
 # === Šis fails atbilst par savienojuma izveidi ar DB ===
 
 load_dotenv() # nolasa .env faila saturu

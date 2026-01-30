@@ -21,7 +21,6 @@ def login_user(db: Session, data: LoginSchema) -> TokenWithRefreshSchema:
     data.username = data.username.lower()
 
     # ===== Lietotāja pārbaude =====
-
     user = db.exec(
         select(User).where(User.username == data.username)
     ).first()

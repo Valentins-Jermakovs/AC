@@ -11,7 +11,7 @@ from ..models.models import Token
 from .password_service import *
 
 
-# ===== dotenv faila satura apstrāde =====
+# ===== Dotenv faila satura apstrāde =====
 load_dotenv() 
 
 SECRET_KEY = os.getenv("SECRET_KEY")

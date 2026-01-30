@@ -6,3 +6,4 @@ class UserSchema(BaseModel):
     username: Optional[str] = None
     email: str
     role: str
+    active: bool

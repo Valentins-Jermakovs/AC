@@ -1,7 +1,8 @@
 # ===== Importi =====
 from fastapi import (
     APIRouter, 
-    Depends
+    Depends,
+    Query
 )
 from typing import Annotated
 from sqlmodel import Session
@@ -58,10 +59,10 @@ async def modify_email(
         response_model=UserSchema
     )
 async def modify_password(
-        user_id: int, 
-        old_password: str, 
+        user_id: int,
         new_password: str, 
-        db: Annotated[Session, Depends(get_db)]
+        db: Annotated[Session, Depends(get_db)],
+        old_password: str | None = Query(default=None)
     ):
     return change_user_password(
         user_id, 

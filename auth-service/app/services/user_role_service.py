@@ -48,6 +48,7 @@ def change_role_for_users(
             User.id,
             User.username,
             User.email,
+            User.active,
             Role.name.label("role")
         )
         .where(User.id.in_(user_ids))
@@ -61,6 +62,7 @@ def change_role_for_users(
             id=user.id,
             username=user.username,
             email=user.email,
+            active=user.active,
             role=user.role
         )
         for user in updated_users

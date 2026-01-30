@@ -47,23 +47,27 @@ async def fetch_user_by_id(
     return get_user_by_id(user_id, db)
 
 # ===== Lietotājs pēc vardu vai e-pasts =====
-@router.get("/search/{name_or_email}", response_model=UserSchema,
+@router.get("/search/{name_or_email}", response_model=PaginatedUsers,
              summary="Get user by username or email",
              description="Get user by username or email from the database"
              )
 async def fetch_user_by_username_or_email(
-        name_or_email: str, 
-        db: Annotated[Session, Depends(get_db)]
+        name_or_email: str,
+        db: Annotated[Session, Depends(get_db)],
+        page: int = 1,
+        limit: int = 10,
     ):
-    return get_user_by_username_or_email(name_or_email, db)
+    return get_user_by_username_or_email(name_or_email, db, page, limit)
 
 # ===== Lietotāju izvade pēc role =====
-@router.get("/role/{role}", response_model=list[UserSchema],
+@router.get("/role/{role}", response_model=PaginatedUsers,
              summary="Get users by role",
              description="Get users by role from the database"
              )
 async def fetch_users_by_role(
         role: str, 
-        db: Annotated[Session, Depends(get_db)]
+        db: Annotated[Session, Depends(get_db)],
+        page: int = 1,
+        limit: int = 10
     ):
-    return get_users_by_role(role, db)
+    return get_users_by_role(role, db, page, limit)

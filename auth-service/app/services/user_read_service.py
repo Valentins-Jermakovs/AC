@@ -17,7 +17,7 @@ def get_users_paginated(
     db: Session,
     page: int = 1,
     limit: int = 10
-):
+) -> PaginatedUsers:
 
     # ===== Paginācija =====
     offset = (page - 1) * limit
@@ -65,7 +65,7 @@ def get_users_paginated(
         page=page,
         limit=limit,
         total_users=total_users,
-        total_pages=total_users // limit
+        total_pages=(total_users + limit - 1) // limit
     )
     
 
@@ -100,12 +100,19 @@ def get_user_by_id(user_id: int, db: Session) -> UserSchema:
     )
 
 # ===== Lietotājs pēc username vai email =====
-def get_user_by_username_or_email(username_or_email: str, db: Session) -> UserSchema:
+def get_user_by_username_or_email(
+        username_or_email: str, 
+        db: Session,
+        page: int = 1,
+        limit: int = 10
+    ) -> PaginatedUsers:
 
-    # username/email uz lowercase
+    # ===== Paginācija =====
+    offset = (page - 1) * limit
+
     username_or_email = username_or_email.strip().lower()
 
-    user = db.exec(
+    users = db.exec(
         select(
             User.id,
             User.username,
@@ -117,25 +124,51 @@ def get_user_by_username_or_email(username_or_email: str, db: Session) -> UserSc
         .join(Role, Role.id == UserRole.role_id)
         .where(
             or_(
-                User.username == username_or_email,
-                User.email == username_or_email
+                User.username.ilike(f"%{username_or_email}%"),
+                User.email.ilike(f"%{username_or_email}%")
             )
         )
-    ).first()
+    ).all()
 
-    if user is None:
+    if users == []:
         raise HTTPException(status_code=404, detail="User not found")
     
-    return UserSchema(
-        id=user.id,
-        username=user.username,
-        email=user.email,
-        role=user.role,
-        active=user.active
+    # ===== Kopējs lietotāju skaits =====
+    total_users = len(users)
+
+    # ===== Paginācija pārbaude =====
+    if offset >= len(users):
+        raise HTTPException(status_code=404, detail="Page not found")
+    
+    # ===== User -> UserSchema =====
+    items = [
+        UserSchema(
+            id=user.id,
+            username=user.username,
+            email=user.email,
+            role=user.role,
+            active=user.active
+        )
+        for user in users[offset:offset + limit]
+    ]
+
+    # ===== Meta informācija =====
+    meta = PaginationMeta(
+        page=page,
+        limit=limit,
+        total_users=total_users,
+        total_pages=(total_users + limit - 1) // limit
     )
 
+    return PaginatedUsers(items=items, meta=meta)
+
 # ===== Visu lietotāju atlase pēc role =====
-def get_users_by_role(role: str, db: Session) -> list[UserSchema]:
+def get_users_by_role(
+        role: str, 
+        db: Session,
+        page: int = 1,
+        limit: int = 10
+    ) -> PaginatedUsers:
 
     role = role.strip().lower()
 
@@ -152,7 +185,19 @@ def get_users_by_role(role: str, db: Session) -> list[UserSchema]:
         .where(Role.name == role)
     ).all()
 
-    return [
+    if users == []:
+        raise HTTPException(status_code=404, detail="Role not found")
+    
+    # ===== Kopējs lietotāju skaits =====
+    total_users = len(users)
+
+    # ===== Paginācija pārbaude =====
+    offset = (page - 1) * limit
+    if offset >= len(users):
+        raise HTTPException(status_code=404, detail="Page not found")
+    
+    # ===== User -> UserSchema =====
+    items = [
         UserSchema(
             id=user.id,
             username=user.username,
@@ -160,5 +205,15 @@ def get_users_by_role(role: str, db: Session) -> list[UserSchema]:
             role=user.role,
             active=user.active
         )
-        for user in users
+        for user in users[offset:offset + limit]
     ]
+
+    # ===== Meta informācija =====
+    meta = PaginationMeta(
+        page=page,
+        limit=limit,
+        total_users=total_users,
+        total_pages=(total_users + limit - 1) // limit
+    )
+
+    return PaginatedUsers(items=items, meta=meta)

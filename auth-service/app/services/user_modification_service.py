@@ -48,7 +48,7 @@ def get_user_with_role (
 # ===== Lietotāja paroles maiņa =====
 def change_user_password(
         user_id: int, 
-        old_password: str, 
+        old_password: str | None, # google login nevajag paroli 
         new_password: str, 
         db: Session
     ):
@@ -67,15 +67,22 @@ def change_user_password(
     if not user.active:
         raise HTTPException(status_code=403, detail="User is inactive")
     
-    if not verify_password(old_password, user.password_hash):
-        raise HTTPException(status_code=403, detail="Invalid password")
+    # ===== Ja vecā parole ir None (Google autentifikācija) =====
+    if user.password_hash:
+        # Parole ir iestatīta
+        if not old_password or not verify_password(old_password, user.password_hash):
+            raise HTTPException(status_code=403, detail="Invalid password")
+        if old_password == new_password:
+            raise HTTPException(status_code=400, detail="New password cannot be the same as the old password")
+        
+    else:
+        # Nav aproles, ļaujam mainīt tikai ar @gmail.com
+        if not user.email.endswith("@gmail.com"):
+            raise HTTPException(status_code=403, detail="User is not registered with Google")
 
-    if old_password == new_password:
-        raise HTTPException(status_code=400, detail="New password must be different from the old one")
 
+    # ===== Paroles maiņa =====
     user.password_hash = get_password_hash(new_password)
-
-    # ===== Lietotātaja datu atjaunošana =====
     db.commit()
     db.refresh(user)
 

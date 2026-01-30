@@ -1,23 +1,18 @@
-# Šis fails atbild par lomu maiņu lietotājiem
-
+# ===== Importi =====
 from fastapi import APIRouter, Depends, Body
 from typing import Annotated
 from sqlmodel import Session
 
 from ..schemas.user_schema import UserSchema
+
 from ..services.base_connection import engine
 from ..services.user_role_service import change_role_for_users
 
-# === definē ceļu /roles ===
+from ..dependencies.data_base_connection import get_db
+
+# ===== Ceļa definēšana (/roles) =====
 router = APIRouter(prefix="/roles", tags=["Roles"])
 
-# === veidojam savienojumu ar DB ===
-def get_db():                   # veido savienojumu ar DB
-    session = Session(engine)   # izveido savienojumu
-    try:                        # izmanto savienojumu
-        yield session
-    finally:                    # izslēdz savienojumu
-        session.close()
 
 @router.put("/", response_model=list[UserSchema],
              summary="Change users roles",

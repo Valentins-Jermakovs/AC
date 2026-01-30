@@ -1,26 +1,22 @@
-# Šis fails atbilst par lietotāju aktivitātes statusa maiņu
-
-from fastapi import APIRouter, Depends, Body
+# ===== Importi =====
+from fastapi import (
+    APIRouter, 
+    Depends
+)
 from typing import Annotated
 from sqlmodel import Session
 
 from ..schemas.user_active_schema import UserActiveSchema
-from ..services.base_connection import engine
+
 from ..services.user_activity_service import change_users_activity_status
 
-# === definē ceļu /activity ===
+from ..dependencies.data_base_connection import get_db
+
+# ===== Ceļa definēšana (/activity) =====
 router = APIRouter(prefix="/activity", tags=["Activity"])
 
-# === veidojam savienojumu ar DB ===
-def get_db():                   # veido savienojumu ar DB
-    session = Session(engine)   # izveido savienojumu
-    try:                        # izmanto savienojumu
-        yield session
-    finally:                    # izslēdz savienojumu
-        session.close()
 
-
-# === lietotāju aktivitātes statusa maiņas funkcija ===
+# ===== Visu lietotāju aktivitātes statusa maiņa =====
 @router.put("/", response_model=list[UserActiveSchema],
              summary="Change users activity status",
              description="Set user activity status in the database"

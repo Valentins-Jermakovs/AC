@@ -5,12 +5,14 @@ from sqlmodel import Session, select
 from dotenv import load_dotenv
 import os
 
-from ..models.models import User, UserRole
-from ..services.token_servicce import create_access_token
+from ..models.models import User, UserRole, Token
+from datetime import datetime, timedelta, timezone
+from ..utils.datetime_utils import utcnow
+from ..services.token_servicce import create_access_token, create_refresh_token, save_refresh_token
 from ..services.base_connection import engine
 
 load_dotenv()
-
+# http://localhost:8000/auth/google/login
 router = APIRouter(prefix="/google", tags=["Google"])
 
 # === DB dependency ===
@@ -88,10 +90,32 @@ async def auth_callback(
         db.refresh(user)
 
 
-    # JWT
+    # JWT - 30 min
     access_token = create_access_token(
         {"sub": str(user.id)}
     )
+
+    # veicam pārbaudi uz refresh tokena eksistenci un tā derīgumu
+    token = db.exec(
+        select(Token)
+        .where(Token.user_id == user.id)
+        .order_by(Token.created_at.desc())
+    ).first()
+    # ja refsresh_tokens eksistē, veicam pārbaudi uz tā derīgumu
+    if token:
+        if token.expires_at.replace(tzinfo=timezone.utc) < utcnow():
+            # ja beidzies, dzēšam
+            db.delete(token)
+            db.commit()
+            token = None
+
+    # ja refresh tokena nav, veidojam
+    if not token:
+        refresh_token_value = create_refresh_token()
+        # saglabā refresh tokenu DB
+        save_refresh_token(refresh_token_value, user.id, db)
+    else:
+        refresh_token_value = token.refresh_token
 
     return {
         "access_token": access_token,

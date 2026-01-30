@@ -8,7 +8,7 @@ import os
 from ..models.models import User, UserRole, Token
 from datetime import datetime, timedelta, timezone
 from ..utils.datetime_utils import utcnow
-from ..services.token_servicce import create_access_token, create_refresh_token, save_refresh_token
+from ..services.token_service import create_access_token, create_refresh_token, save_refresh_token
 from ..services.base_connection import engine
 
 load_dotenv()

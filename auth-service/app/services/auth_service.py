@@ -8,7 +8,7 @@ from ..schemas.auth_schema import LoginSchema
 from ..schemas.token_with_refresh_schema import TokenWithRefreshSchema
 
 from ..services.password_service import verify_password
-from ..services.token_servicce import (
+from ..services.token_service import (
     create_access_token,
     create_refresh_token,
     save_refresh_token

@@ -8,7 +8,7 @@ from ..schemas.registration_schema import RegistrationSchema
 from ..schemas.token_with_refresh_schema import TokenWithRefreshSchema
 
 from .password_service import get_password_hash
-from .token_servicce import (
+from .token_service import (
     create_access_token,
     create_refresh_token,
     save_refresh_token

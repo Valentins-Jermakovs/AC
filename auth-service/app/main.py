@@ -16,7 +16,7 @@ from .routers import (
     roles,
     modifications,
     activity,
-    google_outh
+    google_auth
 )
 
 # ===== Programmas sākuma darbības cikls ===
@@ -40,7 +40,7 @@ app.include_router(users.router)
 app.include_router(roles.router)
 app.include_router(modifications.router)
 app.include_router(activity.router)
-app.include_router(google_outh.router)
+app.include_router(google_auth.router)
 
 
 # ===== Testa funkcionāls (vēlāk izdzēst) =====

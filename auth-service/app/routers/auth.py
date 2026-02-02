@@ -8,10 +8,10 @@ from sqlmodel import Session
 from ..schemas.registration_schema import RegistrationSchema
 from ..schemas.auth_schema import LoginSchema
 from ..schemas.token_with_refresh_schema import TokenWithRefreshSchema
-from ..schemas.refresh_schema import RefreshSchema
 
 from ..services.registration_service import register_user
 from ..services.auth_service import login_user
+from ..services.logout_service import logout
 
 from ..services.refresh_service import (
     get_user_id_from_access_token,
@@ -99,3 +99,18 @@ async def refresh(
     ):
     refresh_token = data.credentials # string no header
     return refresh_access_token(db, refresh_token)
+
+# ===== Izlogošanas mehānisms =====
+logout_scheme = HTTPBearer(auto_error=True)
+@router.post("/logout", 
+             summary="Logout a user", 
+             description="Get JSON data and logout a user in the database"
+             )
+async def logout_user(
+        data: Annotated[
+        HTTPAuthorizationCredentials, Depends(logout_scheme)
+    ],
+    db: Annotated[Session, Depends(get_db)]
+):
+    refresh_token = data.credentials
+    return logout(db, refresh_token)

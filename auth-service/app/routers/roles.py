@@ -1,7 +1,7 @@
 # Imports
 from fastapi import APIRouter, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from fastapi import Depends, Header, HTTPException, status
+from fastapi import Depends, Header
 
 from sqlmodel import Session
 from typing import Annotated

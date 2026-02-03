@@ -3,6 +3,8 @@ from fastapi import HTTPException
 from sqlalchemy import update
 from ..models.models import User, Role, UserRole
 from ..schemas.user_schema import UserSchema
+from ..dependencies.data_base_connection import get_db
+
 
 # ===== Lietotāju lomu maiņas funkcija =====
 def change_role_for_users(

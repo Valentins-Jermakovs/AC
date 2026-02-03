@@ -13,7 +13,7 @@ from .token_service import (
 
 
 """
-===== User Registration Service =========================================================
+===== User Registration Service =====
 
 Function: register_user
 -----------------------

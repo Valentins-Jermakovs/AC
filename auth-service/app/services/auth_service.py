@@ -13,7 +13,7 @@ from ..services.token_service import (
 
 
 """
-===== Auth Service =========================================================================
+===== Auth Service =====
 
 This module provides functionality for user authentication in the application.
 

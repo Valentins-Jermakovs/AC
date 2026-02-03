@@ -20,10 +20,10 @@ from ..services.user_read_service import (
 from ..models.models import User
 
 from ..dependencies.data_base_connection import get_db
-from ..dependencies.admin_required import admin_required
+
 
 # ===== Ceļa definēšana (/users) =====
-router = APIRouter(prefix="/users", tags=["Users"], dependencies=[Depends(admin_required)])
+router = APIRouter(prefix="/users", tags=["Users"])
 
 # ===== Visu lietotāju izvade =====
 @router.get("/",

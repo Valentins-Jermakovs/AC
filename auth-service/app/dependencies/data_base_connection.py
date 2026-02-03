@@ -1,14 +1,36 @@
-# ===== Importi =====
+# Imports
 from sqlmodel import Session, create_engine
 import os
 from dotenv import load_dotenv
 
-# ===== dotenv faila satura apstrāde =====
+
+"""
+===== Database Dependency ========================================================
+
+Function: get_db
+----------------
+Provides a SQLModel Session for FastAPI endpoints using dependency injection.
+
+Usage:
+- Can be used in endpoints with `Depends(get_db)` to access the database session.
+- Ensures the session is properly closed after the request is finished.
+
+Process:
+1. Creates a new SQLModel Session bound to the configured database engine.
+2. Yields the session to the caller (FastAPI endpoint).
+3. Ensures the session is closed in the `finally` block after the endpoint completes.
+
+Environment:
+- DATABASE_URL should be set in a .env file for database connection.
+"""
+
+
+# dotenv file contents read
 load_dotenv()
 DATABASE_URL = os.getenv("DATABASE_URL")
 engine = create_engine(DATABASE_URL, echo=True)
 
-# ===== DB savienojuma izveide =====
+# Database connection
 def get_db():                   
     session = Session(engine)   
     try:                        
@@ -16,6 +38,6 @@ def get_db():
     finally:                    
         session.close()
 
-# Ja FastAPI serveris darbosies kā Docker konteineris, 
-# tad localhost vietā nor norādi DB servera konteineru nosauku,
-# piemēram auth_postgres
+# If FastAPI server will work in Docker container, 
+# in localhost set an DB container name,
+# for example auth_postgres

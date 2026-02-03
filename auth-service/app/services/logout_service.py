@@ -5,7 +5,7 @@ from ..models.models import Token
 
 
 """
-===== Logout Service =============================================================
+===== Logout Service =====
 Function: logout
 ----------------
 Logs out a user by invalidating their refresh token.

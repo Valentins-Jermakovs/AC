@@ -7,7 +7,6 @@ from fastapi.security import (
 )
 from typing import Annotated
 from sqlmodel import Session
-from sqlmodel import Session
 from ..schemas.registration_schema import RegistrationSchema
 from ..schemas.auth_schema import LoginSchema
 from ..schemas.token_with_refresh_schema import TokenWithRefreshSchema

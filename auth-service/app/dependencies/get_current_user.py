@@ -30,7 +30,7 @@ def get_current_user(token: str = Depends(oauth2_scheme),
                 detail="Could not validate credentials",
             )
 
-        # meklē lietotāja lomu
+        # meklē lietotāju
         user = db.exec(
             select(User).where(User.id == int(user_id))
         ).first()
@@ -57,10 +57,3 @@ def get_current_user(token: str = Depends(oauth2_scheme),
         )
     
 
-def get_user_role(user_id: int, db: Session):
-    
-    return db.exec(
-        select(Role)
-        .join(UserRole, UserRole.role_id == Role.id)
-        .where(UserRole.user_id == user_id)
-    ).first()

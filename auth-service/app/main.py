@@ -41,9 +41,3 @@ app.include_router(roles.router)
 app.include_router(modifications.router)
 app.include_router(activity.router)
 app.include_router(google_auth.router)
-
-
-# ===== Testa funkcionāls (vēlāk izdzēst) =====
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}

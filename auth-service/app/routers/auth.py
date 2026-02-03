@@ -1,38 +1,90 @@
-# ===== Importi =====
+# Imports
 from fastapi import APIRouter, Depends, Body
-from fastapi.security import OAuth2PasswordBearer, HTTPBearer, HTTPAuthorizationCredentials
-from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.security import (
+    HTTPBearer, 
+    HTTPAuthorizationCredentials, 
+    OAuth2PasswordRequestForm
+)
 from typing import Annotated
 from sqlmodel import Session
 from sqlmodel import Session
-
 from ..schemas.registration_schema import RegistrationSchema
 from ..schemas.auth_schema import LoginSchema
 from ..schemas.token_with_refresh_schema import TokenWithRefreshSchema
-
 from ..services.registration_service import register_user
 from ..services.auth_service import login_user
 from ..services.logout_service import logout
-
-from ..services.refresh_service import (
-    get_user_id_from_access_token,
-    refresh_access_token
-)
-
 from ..dependencies.data_base_connection import get_db
 
-# ===== Ceļa definēšana (/auth) =====
-router = APIRouter(prefix="/auth", tags=["Auth"])
 
-# ===== Reģistrācijas mehānisms =====
-@router.post("/register", 
-             summary="Create a new user", 
-             description="Get JSON data and create a new user in the database",
-             response_model=TokenWithRefreshSchema
-             )
-async def register(
-        data: Annotated[
-        RegistrationSchema,
+"""
+===== Auth Router ====================================================================================
+
+This module defines the authentication-related endpoints for the application under the "/auth" prefix.
+
+Endpoints:
+
+1. POST /auth/login
+   - Purpose: Authenticate a user with username and password.
+   - Input: OAuth2PasswordRequestForm containing 'username' and 'password'.
+   - Output: TokenWithRefreshSchema containing access_token, token_type, and refresh_token.
+   - Notes: Uses login_user service to verify credentials and generate tokens.
+
+2. POST /auth/register
+   - Purpose: Register a new user and generate authentication tokens.
+   - Input: JSON body with 'username', 'email', and 'password' fields.
+   - Output: TokenWithRefreshSchema containing access_token, token_type, and refresh_token.
+   - Notes: Uses register_user service to create the user, assign the "user" role, and generate tokens.
+
+3. POST /auth/logout
+   - Purpose: Logout a user by invalidating their refresh token.
+   - Input: HTTP Authorization header with Bearer <refresh_token>.
+   - Output: JSON message confirming successful logout.
+   - Notes: Uses logout service to remove the refresh token from the database.
+
+Dependencies:
+- db: SQLModel Session injected via Depends(get_db)
+- logout_scheme: HTTPBearer for extracting refresh token from headers
+
+In front-end after logout:
+- Delete refresh token from localStorage
+- Delete access token from localStorage
+"""
+
+
+# router - path prefix
+router = APIRouter(
+    prefix="/auth", 
+    tags=["Auth"]
+)
+
+
+# Authentication
+@router.post(   # router path and response
+    "/login",
+    response_model=TokenWithRefreshSchema,
+    summary="Authenticate a user",
+    description="OAuth2 compatible login"
+)
+async def user_authentication(  # business logic
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
+    db: Annotated[Session, Depends(get_db)]
+):
+    data = LoginSchema( # get form data
+        username=form_data.username,
+        password=form_data.password
+    )
+    return await login_user(db, data)
+
+# Registration
+@router.post(   # router path and response
+    "/register",
+    summary="Create a new user", 
+    description="Get JSON data and create a new user in the database",
+    response_model=TokenWithRefreshSchema
+)
+async def user_registration(
+    data: Annotated[RegistrationSchema,
         Body(
             example={
                 "username": "testuser", 
@@ -44,71 +96,19 @@ async def register(
     db: Annotated[Session, Depends(get_db)]
 ):
 
-    register_user_with_token = register_user(data, db)
-
+    register_user_with_token = await register_user(data, db)
     return register_user_with_token
 
-
-# ===== Logošanas mehānisms =====
-@router.post(
-    "/login",
-    response_model=TokenWithRefreshSchema,
-    summary="Login a user",
-    description="OAuth2 compatible login"
+# Logout
+logout_scheme = HTTPBearer()    # take refresh token from header
+@router.post(   # router path and response
+    "/logout",
+    summary="Logout a user", 
+    description="Get JSON data and logout a user in the database"
 )
-async def login(
-    form_data: OAuth2PasswordRequestForm = Depends(),
-    db: Session = Depends(get_db)
-):
-    data = LoginSchema(
-        username=form_data.username,
-        password=form_data.password
-    )
-    return login_user(db, data)
-
-# ===== Access token pārbaude =====
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
-
-@router.get("/check",
-             summary="Check access token",
-             description="Check access token"
-             )
-async def check(
-        access_token: str = Depends(oauth2_scheme),
-    ):
-    user_id = get_user_id_from_access_token(access_token)
-    return {
-        "user_id": user_id, 
-        "message": "Access token is valid"
-    }
-
-# ===== Refresh token pārbaude =====
-# prasa header Authorization: Bearer <token>
-refresh_scheme = HTTPBearer(auto_error=True)
-@router.post("/refresh", response_model=TokenWithRefreshSchema,
-             summary="Refresh access token",
-             description="Refresh access token"
-             )
-async def refresh(
-        data: Annotated[
-            HTTPAuthorizationCredentials, Depends(refresh_scheme)
-        ],
-        db: Annotated[Session, Depends(get_db)]
-    ):
-    refresh_token = data.credentials # string no header
-    return refresh_access_token(db, refresh_token)
-
-# ===== Izlogošanas mehānisms =====
-logout_scheme = HTTPBearer(auto_error=True)
-@router.post("/logout", 
-             summary="Logout a user", 
-             description="Get JSON data and logout a user in the database"
-             )
-async def logout_user(
-        data: Annotated[
-        HTTPAuthorizationCredentials, Depends(logout_scheme)
-    ],
+async def logout_user(  # business logic
+    data: Annotated[HTTPAuthorizationCredentials, Depends(logout_scheme)],
     db: Annotated[Session, Depends(get_db)]
 ):
     refresh_token = data.credentials
-    return logout(db, refresh_token)
+    return await logout(db, refresh_token)

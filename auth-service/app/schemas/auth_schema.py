@@ -1,7 +1,7 @@
+# Imports
 from pydantic import BaseModel
 
-# === pydantic modelis lietotāju autorizācijai ===
+# pydantic model for user authentication
 class LoginSchema(BaseModel):
     username: str
     password: str
-# === === === === === === ===

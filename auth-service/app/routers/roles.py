@@ -9,9 +9,10 @@ from ..services.base_connection import engine
 from ..services.user_role_service import change_role_for_users
 
 from ..dependencies.data_base_connection import get_db
+from ..dependencies.admin_required import admin_required
 
 # ===== Ceļa definēšana (/roles) =====
-router = APIRouter(prefix="/roles", tags=["Roles"])
+router = APIRouter(prefix="/roles", tags=["Roles"], dependencies=[Depends(admin_required)])
 
 
 @router.put("/", response_model=list[UserSchema],

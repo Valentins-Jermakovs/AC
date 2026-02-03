@@ -17,10 +17,13 @@ from ..services.user_read_service import (
     get_users_by_role
 )
 
+from ..models.models import User
+
 from ..dependencies.data_base_connection import get_db
+from ..dependencies.admin_required import admin_required
 
 # ===== Ceļa definēšana (/users) =====
-router = APIRouter(prefix="/users", tags=["Users"])
+router = APIRouter(prefix="/users", tags=["Users"], dependencies=[Depends(admin_required)])
 
 # ===== Visu lietotāju izvade =====
 @router.get("/",
@@ -29,9 +32,9 @@ router = APIRouter(prefix="/users", tags=["Users"])
              description="Get all users from the database"
              )
 async def fetch_all_users_paginated(
-        db: Annotated[Session, Depends(get_db)],
         page: int = 1,
-        limit: int = 10
+        limit: int = 10,
+        db: Session = Depends(get_db),
     ):
     return get_users_paginated(db, page, limit)
 
@@ -42,7 +45,7 @@ async def fetch_all_users_paginated(
              )
 async def fetch_user_by_id(
         user_id: int, 
-        db: Annotated[Session, Depends(get_db)]
+        db: Session = Depends(get_db),
     ):
     return get_user_by_id(user_id, db)
 
@@ -53,9 +56,9 @@ async def fetch_user_by_id(
              )
 async def fetch_user_by_username_or_email(
         name_or_email: str,
-        db: Annotated[Session, Depends(get_db)],
         page: int = 1,
         limit: int = 10,
+        db: Session = Depends(get_db),
     ):
     return get_user_by_username_or_email(name_or_email, db, page, limit)
 
@@ -65,9 +68,9 @@ async def fetch_user_by_username_or_email(
              description="Get users by role from the database"
              )
 async def fetch_users_by_role(
-        role: str, 
-        db: Annotated[Session, Depends(get_db)],
+        role: str,
         page: int = 1,
-        limit: int = 10
+        limit: int = 10,
+        db: Session = Depends(get_db),
     ):
     return get_users_by_role(role, db, page, limit)

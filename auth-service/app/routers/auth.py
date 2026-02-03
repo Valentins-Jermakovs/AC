@@ -1,6 +1,7 @@
 # ===== Importi =====
 from fastapi import APIRouter, Depends, Body
 from fastapi.security import OAuth2PasswordBearer, HTTPBearer, HTTPAuthorizationCredentials
+from fastapi.security import OAuth2PasswordRequestForm
 from typing import Annotated
 from sqlmodel import Session
 from sqlmodel import Session
@@ -49,23 +50,20 @@ async def register(
 
 
 # ===== Logošanas mehānisms =====
-@router.post("/login", 
-             summary="Login a user", 
-             description="Get JSON data and login a user in the database",
-             response_model=TokenWithRefreshSchema
-             )
+@router.post(
+    "/login",
+    response_model=TokenWithRefreshSchema,
+    summary="Login a user",
+    description="OAuth2 compatible login"
+)
 async def login(
-        data: Annotated[
-        LoginSchema,
-        Body(
-            example={
-                "username": "testuser", 
-                "password": "12345678"
-            }
-        )
-    ],
-    db: Annotated[Session, Depends(get_db)]
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    db: Session = Depends(get_db)
 ):
+    data = LoginSchema(
+        username=form_data.username,
+        password=form_data.password
+    )
     return login_user(db, data)
 
 # ===== Access token pārbaude =====

@@ -63,4 +63,4 @@ def get_user_role(user_id: int, db: Session):
         select(Role)
         .join(UserRole, UserRole.role_id == Role.id)
         .where(UserRole.user_id == user_id)
-    ).all()
+    ).first()

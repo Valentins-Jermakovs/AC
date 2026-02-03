@@ -11,9 +11,10 @@ from ..schemas.user_active_schema import UserActiveSchema
 from ..services.user_activity_service import change_users_activity_status
 
 from ..dependencies.data_base_connection import get_db
+from ..dependencies.admin_required import admin_required
 
 # ===== Ceļa definēšana (/activity) =====
-router = APIRouter(prefix="/activity", tags=["Activity"])
+router = APIRouter(prefix="/activity", tags=["Activity"], dependencies=[Depends(admin_required)])
 
 
 # ===== Visu lietotāju aktivitātes statusa maiņa =====

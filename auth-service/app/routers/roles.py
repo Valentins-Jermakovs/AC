@@ -1,8 +1,6 @@
 # Imports
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Header
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from fastapi import Depends, Header
-
 from sqlmodel import Session
 from typing import Annotated
 from ..schemas.change_role_response_schema import ChangeRoleResponseSchema
@@ -52,7 +50,7 @@ async def change_user_role( # business logic
     user_ids: list[int],
     role_name: str,
     db: Annotated[Session, Depends(get_db)],
-    # Access token no Authorization: Bearer <token>
+    # Access token from Authorization: Bearer <token>
     credentials: HTTPAuthorizationCredentials = Depends(security),
     refresh_token: str = Header(..., alias="X-Refresh-Token"),
 

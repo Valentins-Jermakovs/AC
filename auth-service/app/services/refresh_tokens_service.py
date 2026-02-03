@@ -16,7 +16,7 @@ from ..dependencies.data_base_connection import get_db
 
 
 """
-===== Refresh Service / Token Dependency =================================================================
+===== Refresh Service / Token Dependency =====
 
 This module provides functionality for validating access tokens and refreshing them using refresh tokens.
 

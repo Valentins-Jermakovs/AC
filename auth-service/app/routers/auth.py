@@ -34,15 +34,25 @@ Endpoints:
    - Output: TokenWithRefreshSchema containing access_token, token_type, and refresh_token.
    - Notes: Uses login_user service to verify credentials and generate tokens.
 
+2. POST /auth/google
+   - Purpose: Initiate Google OAuth2 authentication.
+   - Input: None.
+   - Output: Google OAuth2 authorization URL.
+   - Notes: Uses get_google_auth service to generate the authorization URL.
 
-
-2. POST /auth/register
+3. POST /auth/google/callback
+   - Purpose: Handle Google OAuth2 callback.
+   - Input: HTTP Authorization header with Bearer <access_token>.
+   - Output: TokenRefreshSchema containing access_token, token_type, and refresh_token.
+   - Notes: Uses google_auth_callback service to handle the callback and generate tokens.
+   
+4. POST /auth/register
    - Purpose: Register a new user and generate authentication tokens.
    - Input: JSON body with 'username', 'email', and 'password' fields.
    - Output: TokenWithRefreshSchema containing access_token, token_type, and refresh_token.
    - Notes: Uses register_user service to create the user, assign the "user" role, and generate tokens.
 
-3. POST /auth/logout
+5. POST /auth/logout
    - Purpose: Logout a user by invalidating their refresh token.
    - Input: HTTP Authorization header with Bearer <refresh_token>.
    - Output: JSON message confirming successful logout.

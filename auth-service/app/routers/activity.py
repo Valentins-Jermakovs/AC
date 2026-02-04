@@ -2,7 +2,8 @@
 from fastapi import (
     APIRouter, 
     Depends,
-    Header
+    Header,
+    Response
 )
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from typing import Annotated
@@ -33,6 +34,7 @@ security = HTTPBearer()
 async def change_user_activity_status(
     user_ids: list[int],
     is_active: bool,
+    response: Response,
     db: Annotated[Session, Depends(get_db)],
     # Access token from Authorization: Bearer <token>
     credentials: HTTPAuthorizationCredentials = Depends(security),
@@ -48,17 +50,15 @@ async def change_user_activity_status(
     if user_id is None:
         # Refresh access token and get user id
         new_access_token = refresh_access_token(refresh_token, db)  # get new access token
-        access_token = new_access_token.access_token                # update access token
-        refresh_token = new_access_token.refresh_token              # update refresh token
-        user_id = get_user_id_from_access_token(access_token)       # get user id
+        
+        response.headers["X-Refresh-Token"] = new_access_token.refresh_token
+        response.headers["X-Access-Token"] = new_access_token.access_token
+
+        user_id = get_user_id_from_access_token(new_access_token.access_token)  # get user id
 
     # Check admin role
     admin_required(user_id, db)
 
     users = await change_users_activity_status(user_ids, is_active, db)
 
-    return {
-        "users": users,
-        "access_token": new_access_token.access_token if new_access_token else None,
-        "refresh_token": new_access_token.refresh_token if new_access_token else None
-    }
+    return users

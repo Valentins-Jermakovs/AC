@@ -7,5 +7,4 @@ class UserSchema(BaseModel):
     email: str
     role: str
     active: bool
-    access_token: str | None = None
-    refresh_token: str | None = None
+

@@ -1,5 +1,5 @@
 # Imports
-from fastapi import APIRouter, Depends, Header
+from fastapi import APIRouter, Depends, Header, Response
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlmodel import Session
 from typing import Annotated
@@ -40,44 +40,36 @@ router = APIRouter(
 
 security = HTTPBearer()
 
-@router.put( # router path
-    "/", 
+@router.put(
+    "/",
     response_model=ChangeRoleResponseSchema,
-    summary="Change users roles",
-    description="Set user role in the database",
 )
-async def change_user_role( # business logic
+async def change_user_role(
     user_ids: list[int],
     role_name: str,
+    response: Response,
     db: Annotated[Session, Depends(get_db)],
-    # Access token from Authorization: Bearer <token>
     credentials: HTTPAuthorizationCredentials = Depends(security),
     refresh_token: str = Header(..., alias="X-Refresh-Token"),
-
 ):
-    new_access_token = None
     access_token = credentials.credentials
-
-    # Access token check
+    new_tokens = None
     user_id = get_user_id_from_access_token(access_token)
-    
-    # If access token is expired, refresh
+
+    # Ja token beidzies → atjauno
     if user_id is None:
-        # Refresh access token and get user id
-        new_access_token = refresh_access_token(refresh_token, db)  # get new access token
-        access_token = new_access_token.access_token                # update access token
-        refresh_token = new_access_token.refresh_token              # update refresh token
-        user_id = get_user_id_from_access_token(access_token)       # get user id
+        new_tokens = refresh_access_token(refresh_token, db)
+        user_id = get_user_id_from_access_token(new_tokens.access_token)
 
-    # Check admin role
-    admin_required(user_id, db)
+    try:
+        # Admin pārbaude
+        admin_required(user_id, db)
+        # Lomu maiņa
+        users = change_role_for_users(user_ids, role_name, db)
+        return {"users": users}
 
-    # Change user role
-    users = change_role_for_users(user_ids, role_name, db)
-
-    return {
-        "users": users,
-        # If access token is expired, refresh and return it to the client
-        "access_token": new_access_token.access_token if new_access_token else None,
-        "refresh_token": new_access_token.refresh_token if new_access_token else None
-    }
+    finally:
+        # Tokeni vienmēr tiek ielikti headeros, pat ja kļūda notiek
+        if new_tokens:
+            response.headers["X-Access-Token"] = new_tokens.access_token
+            response.headers["X-Refresh-Token"] = new_tokens.refresh_token

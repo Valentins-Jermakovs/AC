@@ -2,8 +2,8 @@
 from fastapi import (
     APIRouter, 
     Depends,
-    Query,
-    Header
+    Header,
+    Response
 )
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from typing import Annotated
@@ -40,6 +40,7 @@ security = HTTPBearer()
 )
 async def modify_username(
     data: ChangeUsernameSchema,
+    response: Response,
     db: Annotated[Session, Depends(get_db)],
     # Access token from Authorization: Bearer <token>
     credentials: HTTPAuthorizationCredentials = Depends(security),
@@ -56,21 +57,15 @@ async def modify_username(
     if user_id is None:
         # Refresh access token and get user id
         new_access_token = refresh_access_token(refresh_token, db)  # get new access token
-        access_token = new_access_token.access_token                # update access token
-        refresh_token = new_access_token.refresh_token              # update refresh token
-        user_id = get_user_id_from_access_token(access_token)       # get user id
+        
+        response.headers["X-Refresh-Token"] = new_access_token.refresh_token
+        response.headers["X-Access-Token"] = new_access_token.access_token
+
+        user_id = get_user_id_from_access_token(new_access_token.access_token)  # get user id
 
     user = await change_user_username(user_id, data.new_username, db)
 
-    return {
-        "id": user.id,
-        "username": user.username,
-        "email": user.email,
-        "role": user.role,
-        "active": user.active,
-        "access_token": new_access_token.access_token if new_access_token else None,
-        "refresh_token": new_access_token.refresh_token if new_access_token else None
-    }
+    return user
 
 
 # Change email
@@ -82,6 +77,7 @@ async def modify_username(
     )
 async def modify_email(
     data: ChangeEmailSchema,
+    response: Response,
     db: Annotated[Session, Depends(get_db)],
     # Access token from Authorization: Bearer <token>
     credentials: HTTPAuthorizationCredentials = Depends(security),
@@ -98,21 +94,15 @@ async def modify_email(
     if user_id is None:
         # Refresh access token and get user id
         new_access_token = refresh_access_token(refresh_token, db)  # get new access token
-        access_token = new_access_token.access_token                # update access token
-        refresh_token = new_access_token.refresh_token              # update refresh token
-        user_id = get_user_id_from_access_token(access_token)       # get user id
+        
+        response.headers["X-Refresh-Token"] = new_access_token.refresh_token
+        response.headers["X-Access-Token"] = new_access_token.access_token
+
+        user_id = get_user_id_from_access_token(new_access_token.access_token)  # get user id
 
     user = await change_user_email(user_id, data.new_email, db)
 
-    return {
-        "id": user.id,
-        "username": user.username,
-        "email": user.email,
-        "role": user.role,
-        "active": user.active,
-        "access_token": new_access_token.access_token if new_access_token else None,
-        "refresh_token": new_access_token.refresh_token if new_access_token else None
-    }
+    return user
 
 
 # Change password
@@ -124,6 +114,7 @@ async def modify_email(
     )
 async def modify_password(
     data: ChangePasswordSchema,
+    response: Response,
     db: Annotated[Session, Depends(get_db)],
     # Access token from Authorization: Bearer <token>
     credentials: HTTPAuthorizationCredentials = Depends(security),
@@ -140,9 +131,11 @@ async def modify_password(
     if user_id is None:
         # Refresh access token and get user id
         new_access_token = refresh_access_token(refresh_token, db)  # get new access token
-        access_token = new_access_token.access_token                # update access token
-        refresh_token = new_access_token.refresh_token              # update refresh token
-        user_id = get_user_id_from_access_token(access_token)       # get user id
+        
+        response.headers["X-Refresh-Token"] = new_access_token.refresh_token
+        response.headers["X-Access-Token"] = new_access_token.access_token
+
+        user_id = get_user_id_from_access_token(new_access_token.access_token)  # get user id
 
     user = await change_user_password(
         user_id=user_id, 
@@ -151,12 +144,4 @@ async def modify_password(
         db=db
     )
 
-    return {
-        "id": user.id,
-        "username": user.username,
-        "email": user.email,
-        "role": user.role,
-        "active": user.active,
-        "access_token": new_access_token.access_token if new_access_token else None,
-        "refresh_token": new_access_token.refresh_token if new_access_token else None
-    }
+    return user

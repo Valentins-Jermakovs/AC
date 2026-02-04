@@ -6,7 +6,6 @@ from fastapi.security import (
     OAuth2PasswordRequestForm
 )
 from authlib.integrations.starlette_client import OAuth
-from sqlmodel import Session
 from dotenv import load_dotenv
 import os
 from typing import Annotated
@@ -34,13 +33,13 @@ Endpoints:
    - Output: TokenWithRefreshSchema containing access_token, token_type, and refresh_token.
    - Notes: Uses login_user service to verify credentials and generate tokens.
 
-2. POST /auth/google
+2. GET /auth/google
    - Purpose: Initiate Google OAuth2 authentication.
    - Input: None.
    - Output: Google OAuth2 authorization URL.
    - Notes: Uses get_google_auth service to generate the authorization URL.
 
-3. POST /auth/google/callback
+3. GET /auth/google/callback
    - Purpose: Handle Google OAuth2 callback.
    - Input: HTTP Authorization header with Bearer <access_token>.
    - Output: TokenRefreshSchema containing access_token, token_type, and refresh_token.
@@ -71,7 +70,7 @@ In front-end after logout:
 # router - path prefix
 router = APIRouter(
     prefix="/auth", 
-    tags=["Auth"]
+    tags=["Auth service"]
 )
 
 

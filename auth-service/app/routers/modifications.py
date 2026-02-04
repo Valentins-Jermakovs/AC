@@ -9,6 +9,9 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from typing import Annotated
 from sqlmodel import Session
 from ..schemas.user_schema import UserSchema
+from ..schemas.change_password_schema import ChangePasswordSchema
+from ..schemas.change_email_schema import ChangeEmailSchema
+from ..schemas.change_username_schema import ChangeUsernameSchema
 from ..services.user_modification_service import (
     change_user_username, 
     change_user_email, 
@@ -36,7 +39,7 @@ security = HTTPBearer()
     description="Set user username in the database"
 )
 async def modify_username(
-    new_username: str,
+    data: ChangeUsernameSchema,
     db: Annotated[Session, Depends(get_db)],
     # Access token from Authorization: Bearer <token>
     credentials: HTTPAuthorizationCredentials = Depends(security),
@@ -57,7 +60,7 @@ async def modify_username(
         refresh_token = new_access_token.refresh_token              # update refresh token
         user_id = get_user_id_from_access_token(access_token)       # get user id
 
-    user = await change_user_username(user_id, new_username, db)
+    user = await change_user_username(user_id, data.new_username, db)
 
     return {
         "id": user.id,
@@ -78,7 +81,7 @@ async def modify_username(
         description="Set user email in the database"
     )
 async def modify_email(
-    new_email: str,
+    data: ChangeEmailSchema,
     db: Annotated[Session, Depends(get_db)],
     # Access token from Authorization: Bearer <token>
     credentials: HTTPAuthorizationCredentials = Depends(security),
@@ -99,7 +102,7 @@ async def modify_email(
         refresh_token = new_access_token.refresh_token              # update refresh token
         user_id = get_user_id_from_access_token(access_token)       # get user id
 
-    user = await change_user_email(user_id, new_email, db)
+    user = await change_user_email(user_id, data.new_email, db)
 
     return {
         "id": user.id,
@@ -120,9 +123,8 @@ async def modify_email(
         description="Set user password in the database"
     )
 async def modify_password(
-    new_password: str, 
+    data: ChangePasswordSchema,
     db: Annotated[Session, Depends(get_db)],
-    old_password: str | None = Query(default=None),
     # Access token from Authorization: Bearer <token>
     credentials: HTTPAuthorizationCredentials = Depends(security),
     refresh_token: str = Header(..., alias="X-Refresh-Token"),
@@ -142,7 +144,12 @@ async def modify_password(
         refresh_token = new_access_token.refresh_token              # update refresh token
         user_id = get_user_id_from_access_token(access_token)       # get user id
 
-    user = await change_user_password(user_id, old_password, new_password,  db)
+    user = await change_user_password(
+        user_id=user_id, 
+        old_password=data.old_password, 
+        new_password=data.new_password, 
+        db=db
+    )
 
     return {
         "id": user.id,

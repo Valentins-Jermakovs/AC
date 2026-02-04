@@ -28,7 +28,7 @@ Output:
 '''
 
 # Initialize default system roles
-async def init_roles(engine):
+def init_roles(engine):
     with Session(engine) as session:
 
         roles = {

@@ -20,7 +20,7 @@ from ..utils.current_date import get_current_date
 class User(SQLModel, table=True):
     __tablename__ = 'users'
 
-    id: int = Field(primary_key=True)
+    id: Optional[int] = Field(default=None, primary_key=True)
     username: Optional[str] = Field(default=None, max_length=50, index=True, unique=True)
     password_hash: Optional[str] = Field(default=None, max_length=255)
     email: str = Field(max_length=100, index=True, unique=True)

@@ -11,7 +11,7 @@ from ..models.models import User
 from ..schemas.user_active_schema import UserActiveSchema
 
 # ===== Lietotāju aktivitātes statusa maiņas funkcija =====
-def change_users_activity_status(
+async def change_users_activity_status(
     user_ids: list[int],
     is_active: bool,
     db: Session

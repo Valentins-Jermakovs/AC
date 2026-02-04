@@ -70,13 +70,13 @@ async def fetch_all_users_paginated(    # business logic
 
 # User by ID
 @router.get(    # router path
-    "/{find_user_id}", 
+    "/{find_user_by_id}", 
     response_model=PaginatedUsers,
     summary="Get user by ID",
     description="Get user by ID from the database"
 )
 async def fetch_user_by_id(  # business logic
-    find_user_id: int, 
+    find_user_by_id: int, 
     db: Annotated[Session, Depends(get_db)],
     # Access token from Authorization: Bearer <token>
     credentials: HTTPAuthorizationCredentials = Depends(security),
@@ -99,7 +99,7 @@ async def fetch_user_by_id(  # business logic
     # Check admin role
     admin_required(user_id, db)
 
-    user = await get_user_by_id(find_user_id, db)
+    user = await get_user_by_id(find_user_by_id, db)
 
     return {
         "items": [user],
@@ -110,18 +110,45 @@ async def fetch_user_by_id(  # business logic
 
 # User by username or email
 @router.get(    # router path
-    "/search/{name_or_email}", 
+    "/search/{name_or_email}",
     response_model=PaginatedUsers,
     summary="Get user by username or email",
-    description="Get user by username or email from the database"
+    description="Get user by username or email from the database",
 )
 async def fetch_user_by_username_or_email(  # business logic
     name_or_email: str,
     db: Annotated[Session, Depends(get_db)],
     page: int = 1,
     limit: int = 10,
+    # Access token from Authorization: Bearer <token>
+    credentials: HTTPAuthorizationCredentials = Depends(security),
+    refresh_token: str = Header(..., alias="X-Refresh-Token"),
 ):
-    return get_user_by_username_or_email(name_or_email, db, page, limit)
+    new_access_token = None
+    access_token = credentials.credentials
+
+    # Access token check
+    user_id = get_user_id_from_access_token(access_token)
+    
+    # If access token is expired, refresh
+    if user_id is None:
+        # Refresh access token and get user id
+        new_access_token = refresh_access_token(refresh_token, db)  # get new access token
+        access_token = new_access_token.access_token                # update access token
+        refresh_token = new_access_token.refresh_token              # update refresh token
+        user_id = get_user_id_from_access_token(access_token)       # get user id
+
+    # Check admin role
+    admin_required(user_id, db)
+
+    users = await get_user_by_username_or_email(name_or_email, db, page, limit)
+
+    return {
+        "items": users.items,
+        "meta": users.meta,
+        "access_token": new_access_token.access_token if new_access_token else None,
+        "refresh_token": new_access_token.refresh_token if new_access_token else None
+    }
 
 # Users by role
 @router.get(    # router path
@@ -135,5 +162,32 @@ async def fetch_users_by_role(  # business logic
     db: Annotated[Session, Depends(get_db)],
     page: int = 1,
     limit: int = 10,
+    # Access token from Authorization: Bearer <token>
+    credentials: HTTPAuthorizationCredentials = Depends(security),
+    refresh_token: str = Header(..., alias="X-Refresh-Token"),
 ):
-    return get_users_by_role(role, db, page, limit)
+    new_access_token = None
+    access_token = credentials.credentials
+
+    # Access token check
+    user_id = get_user_id_from_access_token(access_token)
+    
+    # If access token is expired, refresh
+    if user_id is None:
+        # Refresh access token and get user id
+        new_access_token = refresh_access_token(refresh_token, db)  # get new access token
+        access_token = new_access_token.access_token                # update access token
+        refresh_token = new_access_token.refresh_token              # update refresh token
+        user_id = get_user_id_from_access_token(access_token)       # get user id
+
+    # Check admin role
+    admin_required(user_id, db) 
+
+    users = await get_users_by_role(role, db, page, limit)
+
+    return {
+        "items": users.items,
+        "meta": users.meta,
+        "access_token": new_access_token.access_token if new_access_token else None,
+        "refresh_token": new_access_token.refresh_token if new_access_token else None
+    }

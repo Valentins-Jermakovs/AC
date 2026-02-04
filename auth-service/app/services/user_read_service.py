@@ -216,7 +216,7 @@ async def get_user_by_username_or_email(
     return PaginatedUsers(items=items, meta=meta)
 
 # Users by role
-def get_users_by_role(
+async def get_users_by_role(
     role: str, 
     db: Session,
     page: int = 1,

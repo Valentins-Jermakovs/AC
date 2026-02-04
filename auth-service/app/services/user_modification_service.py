@@ -19,7 +19,7 @@ from ..services.password_service import (
 from ..schemas.user_schema import UserSchema
 
 # ===== Lietotāja atlases funkcija =====
-def get_user_with_role (
+async def get_user_with_role (
     user_id: int, 
     db: Session
 ):
@@ -46,7 +46,7 @@ def get_user_with_role (
 
 
 # ===== Lietotāja paroles maiņa =====
-def change_user_password(
+async def change_user_password(
         user_id: int, 
         old_password: str | None, # google login nevajag paroli 
         new_password: str, 
@@ -87,10 +87,10 @@ def change_user_password(
     db.refresh(user)
 
 
-    return get_user_with_role(user_id, db)
+    return await get_user_with_role(user_id, db)
 
 # ===== Lietotāja vārda maiņa =====
-def change_user_username(
+async def change_user_username(
         user_id: int, 
         new_username: str, 
         db: Session
@@ -121,10 +121,10 @@ def change_user_username(
     db.refresh(user)
 
 
-    return get_user_with_role(user_id, db)
+    return await get_user_with_role(user_id, db)
 
 # ===== Lietotāja epasta maiņa =====
-def change_user_email(
+async def change_user_email(
         user_id: int, 
         new_email: str, 
         db: Session
@@ -154,4 +154,4 @@ def change_user_email(
     db.refresh(user)
 
 
-    return get_user_with_role(user_id, db)
+    return await get_user_with_role(user_id, db)

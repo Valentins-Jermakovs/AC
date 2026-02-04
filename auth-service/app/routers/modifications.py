@@ -1,72 +1,155 @@
-# ===== Importi =====
+# Imports
 from fastapi import (
     APIRouter, 
     Depends,
-    Query
+    Query,
+    Header
 )
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from typing import Annotated
 from sqlmodel import Session
-
 from ..schemas.user_schema import UserSchema
-
 from ..services.user_modification_service import (
     change_user_username, 
     change_user_email, 
     change_user_password
 )
-
+from ..services.refresh_tokens_service import (
+    refresh_access_token, 
+    get_user_id_from_access_token
+)
 from ..dependencies.data_base_connection import get_db
 
-# ===== Ceļa definēšana (/modifications) =====
-router = APIRouter(prefix="/modifications", tags=["Modifications"])
+# Router
+router = APIRouter(
+    prefix="/modifications", 
+    tags=["Modifications"]
+)
 
+security = HTTPBearer()
 
-# ===== Lietotāja vārda maiņa =====
+# Change username
 @router.put(
-        "/username/{user_id}", 
-        response_model=UserSchema
-        )
+    "/username/", 
+    response_model=UserSchema,
+    summary="Change user username",
+    description="Set user username in the database"
+)
 async def modify_username(
-        user_id: int, 
-        new_username: str, 
-        db: Annotated[Session, Depends(get_db)]
-    ):
-    return change_user_username(
-        user_id, 
-        new_username, 
-        db
-    )
+    new_username: str,
+    db: Annotated[Session, Depends(get_db)],
+    # Access token from Authorization: Bearer <token>
+    credentials: HTTPAuthorizationCredentials = Depends(security),
+    refresh_token: str = Header(..., alias="X-Refresh-Token"),
+):
+    
+    new_access_token = None
+    access_token = credentials.credentials
 
-# ===== Lietotāja epasta maiņa =====
+    # Access token check
+    user_id = get_user_id_from_access_token(access_token)
+    
+    # If access token is expired, refresh
+    if user_id is None:
+        # Refresh access token and get user id
+        new_access_token = refresh_access_token(refresh_token, db)  # get new access token
+        access_token = new_access_token.access_token                # update access token
+        refresh_token = new_access_token.refresh_token              # update refresh token
+        user_id = get_user_id_from_access_token(access_token)       # get user id
+
+    user = await change_user_username(user_id, new_username, db)
+
+    return {
+        "id": user.id,
+        "username": user.username,
+        "email": user.email,
+        "role": user.role,
+        "active": user.active,
+        "access_token": new_access_token.access_token if new_access_token else None,
+        "refresh_token": new_access_token.refresh_token if new_access_token else None
+    }
+
+
+# Change email
 @router.put(
-        "/email/{user_id}", 
-        response_model=UserSchema
+        "/email/", 
+        response_model=UserSchema,
+        summary="Change user email",
+        description="Set user email in the database"
     )
 async def modify_email(
-        user_id: int, 
-        new_email: str, 
-        db: Annotated[Session, Depends(get_db)]
-    ):
-    return change_user_email(
-        user_id, 
-        new_email, 
-        db
-    )
+    new_email: str,
+    db: Annotated[Session, Depends(get_db)],
+    # Access token from Authorization: Bearer <token>
+    credentials: HTTPAuthorizationCredentials = Depends(security),
+    refresh_token: str = Header(..., alias="X-Refresh-Token"),
+):
 
-# ===== Lietotāja paroles maiņa =====
+    new_access_token = None
+    access_token = credentials.credentials
+
+    # Access token check
+    user_id = get_user_id_from_access_token(access_token)
+    
+    # If access token is expired, refresh
+    if user_id is None:
+        # Refresh access token and get user id
+        new_access_token = refresh_access_token(refresh_token, db)  # get new access token
+        access_token = new_access_token.access_token                # update access token
+        refresh_token = new_access_token.refresh_token              # update refresh token
+        user_id = get_user_id_from_access_token(access_token)       # get user id
+
+    user = await change_user_email(user_id, new_email, db)
+
+    return {
+        "id": user.id,
+        "username": user.username,
+        "email": user.email,
+        "role": user.role,
+        "active": user.active,
+        "access_token": new_access_token.access_token if new_access_token else None,
+        "refresh_token": new_access_token.refresh_token if new_access_token else None
+    }
+
+
+# Change password
 @router.put(
-        "/password/{user_id}", 
-        response_model=UserSchema
+        "/password/", 
+        response_model=UserSchema,
+        summary="Change user password",
+        description="Set user password in the database"
     )
 async def modify_password(
-        user_id: int,
-        new_password: str, 
-        db: Annotated[Session, Depends(get_db)],
-        old_password: str | None = Query(default=None)
-    ):
-    return change_user_password(
-        user_id, 
-        old_password, 
-        new_password, 
-        db
-    )
+    new_password: str, 
+    db: Annotated[Session, Depends(get_db)],
+    old_password: str | None = Query(default=None),
+    # Access token from Authorization: Bearer <token>
+    credentials: HTTPAuthorizationCredentials = Depends(security),
+    refresh_token: str = Header(..., alias="X-Refresh-Token"),
+):
+
+    new_access_token = None
+    access_token = credentials.credentials
+
+    # Access token check
+    user_id = get_user_id_from_access_token(access_token)
+    
+    # If access token is expired, refresh
+    if user_id is None:
+        # Refresh access token and get user id
+        new_access_token = refresh_access_token(refresh_token, db)  # get new access token
+        access_token = new_access_token.access_token                # update access token
+        refresh_token = new_access_token.refresh_token              # update refresh token
+        user_id = get_user_id_from_access_token(access_token)       # get user id
+
+    user = await change_user_password(user_id, old_password, new_password,  db)
+
+    return {
+        "id": user.id,
+        "username": user.username,
+        "email": user.email,
+        "role": user.role,
+        "active": user.active,
+        "access_token": new_access_token.access_token if new_access_token else None,
+        "refresh_token": new_access_token.refresh_token if new_access_token else None
+    }

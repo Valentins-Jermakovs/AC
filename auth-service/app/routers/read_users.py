@@ -13,11 +13,15 @@ from ..services.read_users.read_user_by_role_service import get_users_by_role
 
 from ..dependencies.data_base_connection import get_db
 
+from ..utils.check_admin_role import check_admin_role
+
 # Router
 router = APIRouter(
     prefix="/users", 
     tags=["Users read service"]
 )
+
+security = HTTPBearer()
 
 # All users
 @router.get(    # router path
@@ -27,10 +31,16 @@ router = APIRouter(
     description="Get all users from the database",
 )
 async def fetch_all_users_paginated(    # business logic
-    db: Annotated[Session, Depends(get_db)],   
+    db: Annotated[Session, Depends(get_db)],
+    credentials: HTTPAuthorizationCredentials = Depends(security),
     page: int = 1,
     limit: int = 10,
 ):
+    access_token = credentials.credentials
+
+    # Check admin role
+    user_id = await check_admin_role(access_token, db)
+
     paginated_users = await get_users_paginated(db, page, limit)
 
     return {
@@ -48,7 +58,11 @@ async def fetch_all_users_paginated(    # business logic
 async def fetch_user_by_id(  # business logic
     find_user_by_id: int, 
     db: Annotated[Session, Depends(get_db)],
+    credentials: HTTPAuthorizationCredentials = Depends(security),
 ):
+    access_token = credentials.credentials
+    # Check admin role
+    user_id = await check_admin_role(access_token, db)
 
     user = await get_user_by_id(find_user_by_id, db)
 
@@ -68,10 +82,15 @@ async def fetch_user_by_id(  # business logic
 async def fetch_user_by_username_or_email(  # business logic
     name_or_email: str,
     db: Annotated[Session, Depends(get_db)],
+
     page: int = 1,
     limit: int = 10,
     # Access token from Authorization: Bearer <token>
+    credentials: HTTPAuthorizationCredentials = Depends(security),
 ):
+    access_token = credentials.credentials
+    # Check admin role
+    user_id = await check_admin_role(access_token, db)
 
     users = await get_user_by_username_or_email(name_or_email, db, page, limit)
 
@@ -92,7 +111,11 @@ async def fetch_users_by_role(  # business logic
     db: Annotated[Session, Depends(get_db)],
     page: int = 1,
     limit: int = 10,
+    credentials: HTTPAuthorizationCredentials = Depends(security),
 ):
+    access_token = credentials.credentials
+    # Check admin role
+    user_id = await check_admin_role(access_token, db)
 
     users = await get_users_by_role(role, db, page, limit)
 

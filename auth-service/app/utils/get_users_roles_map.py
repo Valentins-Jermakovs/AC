@@ -10,6 +10,12 @@ def get_users_roles_map(
     # ja vienkāršs int, pārvērst sarakstā
     if isinstance(user_ids, int):
         user_ids = [user_ids]
+    elif not isinstance(user_ids, list):
+        # drošības pārbaude
+        user_ids = list(user_ids)
+
+    if not user_ids:
+        return {}
 
     rows = db.exec(
         select(User.id, Role.name)

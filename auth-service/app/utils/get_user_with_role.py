@@ -1,34 +1,22 @@
-# Imports
-from ..models import User, Role, UserRole
-from sqlmodel import Session, select
-from ..schemas.users.user_schema import UserSchema
+from sqlmodel import Session
 from fastapi import HTTPException
+from ..models import User
+from ..schemas.users.user_schema import UserSchema
+from .get_users_roles_map import get_users_roles_map
 
-# User with role by ID
-async def get_user_with_role (
-    user_id: int, 
-    db: Session
-):
-    user = db.exec(
-        select(
-            User.id,
-            User.username,
-            User.email,
-            User.active,
-            Role.name.label("role")
-        )
-        .join(UserRole, UserRole.user_id == User.id)
-        .join(Role, Role.id == UserRole.role_id)
-        .where(User.id == user_id)
-    ).first()
-
-    if user is None:
+async def get_user_with_role(user_id: int, db: Session) -> UserSchema:
+    user = db.get(User, user_id)
+    if not user:
         raise HTTPException(status_code=404, detail="User not found")
+
+    # Iegūstam lomas šim lietotājam
+    roles_map = get_users_roles_map(user_id, db)  # var nodot vienu int
+    user_roles = roles_map.get(user.id, [])
 
     return UserSchema(
         id=user.id,
         username=user.username,
         email=user.email,
-        role=user.role,
-        active=user.active
+        active=user.active,
+        roles=user_roles  # obligāti jābūt šeit
     )

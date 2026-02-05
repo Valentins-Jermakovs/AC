@@ -12,7 +12,8 @@ from .routers import (
     refresh,
     read_users,
     modify_user,
-    activity
+    activity,
+    roles
 )
 
 @asynccontextmanager
@@ -31,3 +32,4 @@ app.include_router(refresh.router)
 app.include_router(read_users.router)
 app.include_router(modify_user.router)
 app.include_router(activity.router)
+app.include_router(roles.router)

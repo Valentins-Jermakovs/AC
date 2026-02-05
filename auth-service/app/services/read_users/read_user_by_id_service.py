@@ -7,6 +7,7 @@ from ...models import (
     UserRole
 )
 from ...schemas.users.user_schema import UserSchema
+from ...utils.get_users_roles_map import get_users_roles_map
 
 '''
 get_user_by_id(user_id: int, db: Session) -> UserSchema:
@@ -22,26 +23,22 @@ async def get_user_by_id(
     db: Session
 ) -> UserSchema:
 
+    # Atlasām lietotāju
     user = db.exec(
-        select(
-            User.id,
-            User.username,
-            User.email,
-            User.active,
-            Role.name.label("role")
-        )
-        .join(UserRole, UserRole.user_id == User.id)
-        .join(Role, Role.id == UserRole.role_id)
-        .where(User.id == user_id)
+        select(User).where(User.id == user_id)
     ).first()
 
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
     
+    # Iegūstam visas lomas kā list
+    roles_map = get_users_roles_map(user_id, db)
+    user_roles = roles_map.get(user.id, [])
+
     return UserSchema(
         id=user.id,
         username=user.username,
         email=user.email,
-        role=user.role,
-        active=user.active
+        active=user.active,
+        roles=user_roles  # ← pareizi Pydantic schemai
     )

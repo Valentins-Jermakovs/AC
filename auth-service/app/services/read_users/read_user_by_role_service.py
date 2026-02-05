@@ -9,6 +9,7 @@ from ...models import (
 )
 from ...schemas.users.user_schema import UserSchema
 from ...schemas.users.pagination_schema import PaginatedUsers, PaginationMeta
+from ...utils.get_users_roles_map import get_users_roles_map
 
 '''
 get_users_by_role(role: str, db: Session, page: int = 1, limit: int = 10) -> PaginatedUsers:
@@ -20,7 +21,7 @@ get_users_by_role(role: str, db: Session, page: int = 1, limit: int = 10) -> Pag
 
 # Users by role
 async def get_users_by_role(
-    role: str, 
+    role: str,
     db: Session,
     page: int = 1,
     limit: int = 10
@@ -28,37 +29,35 @@ async def get_users_by_role(
 
     role = role.strip().lower()
 
+    # Get users
     users = db.exec(
-        select(
-            User.id,
-            User.username,
-            User.email,
-            User.active,
-            Role.name.label("role")
-        )
+        select(User)
         .join(UserRole, UserRole.user_id == User.id)
         .join(Role, Role.id == UserRole.role_id)
         .where(Role.name == role)
     ).all()
 
-    if users == []:
+    if not users:
         raise HTTPException(status_code=404, detail="Role not found")
-    
-    total_users = len(users)
 
-    # Check if page exists
+    total_users = len(users)
     offset = (page - 1) * limit
-    if offset >= len(users):
+
+    if offset >= total_users:
         raise HTTPException(status_code=404, detail="Page not found")
-    
-    # User -> UserSchema
+
+    # Get users roles
+    user_ids = [user.id for user in users]
+    roles_map = get_users_roles_map(user_ids, db)
+
+    # Convert UserSchema
     items = [
         UserSchema(
             id=user.id,
             username=user.username,
             email=user.email,
-            role=user.role,
-            active=user.active
+            active=user.active,
+            roles=roles_map.get(user.id, [])
         )
         for user in users[offset:offset + limit]
     ]

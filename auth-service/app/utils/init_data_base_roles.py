@@ -33,7 +33,11 @@ def init_roles(engine):
 
         roles = {
             "user": "user can register and login, use system in read-only mode and write only own data",
-            "admin": "administrator can register and login, use system in read-write mode and write all data"
+            "admin": "administrator can register and login, use system in read-write mode and write all data",
+            "developer": "developer can register and login, use system in read-write mode and write all data",
+            "manager": "manager can register and login, use system in read-write mode and write all data",
+            "support": "support can register and login, use system in read-write mode and write all data",
+            "content_manager": "content manager can register and login, use system in read-write mode and write all data"
         }
 
         existing_roles = session.exec(select(Role)).all()

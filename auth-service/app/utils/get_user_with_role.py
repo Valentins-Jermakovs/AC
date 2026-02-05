@@ -1,27 +1,14 @@
 # Imports
+from ..models import User, Role, UserRole
 from sqlmodel import Session, select
+from ..schemas.users.user_schema import UserSchema
 from fastapi import HTTPException
-from ...models import (
-    User, 
-    Role, 
-    UserRole
-)
-from ...schemas.users.user_schema import UserSchema
 
-'''
-get_user_by_id(user_id: int, db: Session) -> UserSchema:
-   - Purpose: Retrieve a single user by ID.
-   - Input: user ID, database session.
-   - Output: UserSchema object with user info and role.
-   - Errors: 404 if user not found.
-'''
-
-# User by ID
-async def get_user_by_id(
+# User with role by ID
+async def get_user_with_role (
     user_id: int, 
     db: Session
-) -> UserSchema:
-
+):
     user = db.exec(
         select(
             User.id,
@@ -37,7 +24,7 @@ async def get_user_by_id(
 
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    
+
     return UserSchema(
         id=user.id,
         username=user.username,

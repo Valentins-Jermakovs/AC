@@ -9,7 +9,10 @@ from .utils.init_data_base import init_db
 
 from .routers import (
     auth,
-    refresh
+    refresh,
+    read_users,
+    modify_user,
+    activity
 )
 
 @asynccontextmanager
@@ -25,3 +28,6 @@ app.add_middleware(SessionMiddleware, secret_key=os.getenv("SECRET_KEY"))
 
 app.include_router(auth.router)
 app.include_router(refresh.router)
+app.include_router(read_users.router)
+app.include_router(modify_user.router)
+app.include_router(activity.router)

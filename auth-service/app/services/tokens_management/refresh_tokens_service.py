@@ -21,7 +21,7 @@ This module provides functionality for validating access tokens and refreshing t
 
 Functions:
 
-1. get_user_id_from_access_token(token: str) -> int
+1. check_access_token(access_token: str) -> int
    - Purpose: Decodes a JWT access token to extract the user ID.
    - Input: JWT access token as a string.
    - Output: User ID (int) from the token payload.
@@ -60,6 +60,7 @@ async def check_access_token(access_token: str) -> int:
     try:
         payload = jwt.decode(access_token, SECRET_KEY, algorithms=[ALGORITHM])
         user_id = payload.get("sub")
+        return user_id
         
 
     # Error handling

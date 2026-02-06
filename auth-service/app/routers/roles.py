@@ -1,6 +1,5 @@
 from ..services.role_management.add_role_for_user import add_role_for_users
 from ..services.role_management.remove_role_from_user import remove_role_from_users
-from ..services.role_management.get_user_roles import get_user_roles
 from sqlmodel import Session
 from fastapi import APIRouter, Depends
 from ..dependencies.data_base_connection import get_db
@@ -13,19 +12,6 @@ router = APIRouter(
     prefix="/roles", 
     tags=["Roles management service"], 
 )
-
-# Get user roles
-@router.get("/{user_id}")
-async def read_user_roles(
-    user_id: int, 
-    db: Annotated[Session, Depends(get_db)],
-    credentials: Annotated[HTTPAuthorizationCredentials, Depends(HTTPBearer())]
-):
-    access_token = credentials.credentials
-    # Check admin role
-    user_id = await check_admin_role(access_token, db)
-
-    return await get_user_roles(user_id, db)
 
 # Add role for users
 @router.post("/add")

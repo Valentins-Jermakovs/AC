@@ -1,8 +1,23 @@
-# Imports
-from pydantic import BaseModel
+# =========================
+# Token refresh schema
+# =========================
 
-# pydantic model for token refresh
+# Imports
+from pydantic import BaseModel  # Pydantic base model for validation
+
+
+# =========================
+# Token response
+# =========================
 class TokenRefreshSchema(BaseModel):
+    """
+    Schema for returning access and refresh tokens.
+
+    Attributes:
+    - access_token (str): JWT access token
+    - token_type (str): Token type (e.g., "Bearer")
+    - refresh_token (str): Refresh token for generating new access tokens
+    """
     access_token: str
     token_type: str
     refresh_token: str

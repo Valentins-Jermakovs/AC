@@ -1,43 +1,43 @@
+# =========================
+# Database dependency
+# =========================
+
 # Imports
 from sqlmodel import Session, create_engine
 import os
 from dotenv import load_dotenv
 
 
-"""
-Database Dependency
-
-Function: get_db
-----------------
-Provides a SQLModel Session for FastAPI endpoints using dependency injection.
-
-Usage:
-- Can be used in endpoints with `Depends(get_db)` to access the database session.
-- Ensures the session is properly closed after the request is finished.
-
-Process:
-1. Creates a new SQLModel Session bound to the configured database engine.
-2. Yields the session to the caller (FastAPI endpoint).
-3. Ensures the session is closed in the `finally` block after the endpoint completes.
-
-Environment:
-- DATABASE_URL should be set in a .env file for database connection.
-"""
+# =========================
+# Load environment variables
+# =========================
+load_dotenv()   # Read .env file
+DATABASE_URL = os.getenv("DATABASE_URL")    # Get database URL
+engine = create_engine(DATABASE_URL, echo=True) # Create database engine with logging enabled
 
 
-# dotenv file contents read
-load_dotenv()
-DATABASE_URL = os.getenv("DATABASE_URL")
-engine = create_engine(DATABASE_URL, echo=True)
+# =========================
+# Database session dependency
+# =========================
+def get_db():
+    """
+    Provide a SQLModel Session for FastAPI endpoints.
 
-# Database connection
-def get_db():                   
-    session = Session(engine)   
+    Usage:
+    - Use `Depends(get_db)` in endpoints to access DB session.
+    - Session is automatically closed after request.
+
+    Steps:
+    1. Create a new session bound to the database engine.
+    2. Yield the session to the endpoint.
+    3. Ensure session is closed in the finally block.
+
+    Notes:
+    - DATABASE_URL must be set in the .env file.
+    - For Docker setup, use the DB container name in DATABASE_URL (e.g., auth_postgres).
+    """
+    session = Session(engine)   # Create new session
     try:                        
-        yield session
+        yield session           # Provide session to endpoint
     finally:                    
-        session.close()
-
-# If FastAPI server will work in Docker container, 
-# in localhost set an DB container name,
-# for example auth_postgres
+        session.close()         # Close session

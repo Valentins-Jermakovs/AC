@@ -1,40 +1,62 @@
+# =========================
+# Users activity management service
+# =========================
+
 # Imports
-from fastapi import (
-    APIRouter, 
-    Depends,
-    Header,
-    Response
-)
+from fastapi import APIRouter, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from typing import Annotated
 from sqlmodel import Session
-from ..schemas.users.user_activity_schema import UserActivitySchema
-
+# Services
 from ..services.activity_management.change_users_activity_service import change_users_activity_status
+# Dependencies
 from ..dependencies.data_base_connection import get_db
+# Utils
 from ..utils.check_admin_role import check_admin_role
 
-# Router
+
+# =========================
+# Router setup
+# =========================
 router = APIRouter(
-    prefix="/activity", 
-    tags=["Users activity management service"]
+    prefix="/activity", # All endpoints in this router start with /activity
+    tags=["Users activity management service"]  # Tag for documentation grouping
 )
 
+
+# =========================
 # Change users activity status
+# =========================
 @router.put(
     "/",
-    summary="Change users activity status",
-    description="Set user activity status in the database"
+    summary="Change users activity status", # Short description for docs
+    description="Set user activity status in the database"  # Longer description
 )
 async def change_user_activity_status(
-    user_ids: list[int],
-    is_active: bool,
-    db: Annotated[Session, Depends(get_db)],
-    credentials: HTTPAuthorizationCredentials = Depends(HTTPBearer()),
+    user_ids: list[int],    # List of user IDs to update
+    is_active: bool,        # New activity status to set
+    db: Annotated[Session, Depends(get_db)],    # DB session injected automatically
+    credentials: HTTPAuthorizationCredentials = Depends(HTTPBearer())
+    # Require HTTP Bearer token for authentication
 ):
+    """
+    Updates the activity status of users.
+
+    Steps:
+    1. Extract access token from credentials
+    2. Verify that user is admin
+    3. Update activity status for given user IDs
+    4. Return updated users
+    """
+
+    # Extract token from HTTP credentials
     access_token = credentials.credentials
-    # Check admin role
+
+    # Verify admin role, raise error if user is not admin
     user_id = await check_admin_role(access_token, db)
+
+    # Update activity status for users in DB
     users = await change_users_activity_status(user_ids, is_active, db)
 
+    # Return updated user info
     return users

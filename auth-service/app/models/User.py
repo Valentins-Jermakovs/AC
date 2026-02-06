@@ -1,30 +1,38 @@
+# =========================
+# User model
+# =========================
+
 # Imports
-from sqlmodel import Field, SQLModel
+from sqlmodel import Field, SQLModel  # SQLModel base and fields
 from typing import Optional
 from datetime import datetime
-from ..utils.current_date import get_current_date
+from ..utils.current_date import get_current_date  # Utility to get current datetime
 
-# User model
-# This class represents a user in the database
-#
-# Attributes:
-# - id (int): The unique identifier for the user.
-# - username (str): The username of the user.
-# - password_hash (str): The hashed password of the user.
-# - email (str): The email address of the user.
-# - google_id (str): The Google ID of the user.
-# - auth_provider (str): The authentication provider of the user.
-# - created_at (datetime): The date and time the user was created.
-# - active (bool): Whether the user is active or not (banned or not).
 
+# =========================
+# User table in database
+# =========================
 class User(SQLModel, table=True):
+    """
+    Represents a user in the database.
+
+    Attributes:
+    - id (int): Primary key, unique identifier of the user
+    - username (str): Username, unique and indexed
+    - password_hash (str): Hashed password for authentication
+    - email (str): Email address, unique and indexed
+    - google_id (str): Google ID if authenticated via Google
+    - auth_provider (str): Authentication provider ("local" or "google")
+    - created_at (datetime): Timestamp of user creation
+    - active (bool): User status (active=True, banned/disabled=False)
+    """
     __tablename__ = 'users'
 
-    id: Optional[int] = Field(default=None, primary_key=True)
-    username: Optional[str] = Field(default=None, max_length=50, index=True, unique=True)
-    password_hash: Optional[str] = Field(default=None, max_length=255)
-    email: str = Field(max_length=100, index=True, unique=True)
-    google_id: Optional[str] = Field(default=None, index=True, unique=True)
-    auth_provider: str = Field(default="local", max_length=20)
-    created_at: datetime = Field(default_factory=get_current_date)
-    active: bool = Field(default=True)
+    id: Optional[int] = Field(default=None, primary_key=True)  # Primary key
+    username: Optional[str] = Field(default=None, max_length=50, index=True, unique=True)  # Username
+    password_hash: Optional[str] = Field(default=None, max_length=255)  # Hashed password
+    email: str = Field(max_length=100, index=True, unique=True)  # Email
+    google_id: Optional[str] = Field(default=None, index=True, unique=True)  # Google OAuth ID
+    auth_provider: str = Field(default="local", max_length=20)  # Auth provider
+    created_at: datetime = Field(default_factory=get_current_date)  # Creation timestamp
+    active: bool = Field(default=True)  # Active status

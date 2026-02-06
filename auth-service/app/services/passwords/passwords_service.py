@@ -1,40 +1,43 @@
-# Imports
+# =========================
+# Password Service
+# =========================
+
 from pwdlib import PasswordHash
 
-
 """
-Password Service
+This module handles password hashing and verification using the Argon2 algorithm.
 
-This module provides password hashing and verification functionality using the Argon2 algorithm.
-
-Functions:
-
-1. get_password_hash(password: str) -> str
-   - Purpose: Hashes a plain text password.
-   - Input: Plain text password.
-   - Output: Hashed password string.
-   - Notes: Uses Argon2 algorithm for secure hashing.
-
-2. verify_password(plain_password: str, hashed_password: str) -> bool
-   - Purpose: Verifies if a plain text password matches a hashed password.
-   - Input: 
-       - plain_password: The password provided by the user.
-       - hashed_password: The stored hashed password from the database.
-   - Output: True if the passwords match, False otherwise.
-   - Notes: Uses Argon2 verification to ensure security.
-
-   Remarks:
-   - This service has built in salting and hashing to make password storage more secure.
+It is used by authentication and user management services to securely store and validate passwords.
 """
 
 
-# Password hashing algorithm (Argon2)
+# Initialize recommended Argon2 password hasher
 password_hash = PasswordHash.recommended()
 
-# Password hashing function
-def get_password_hash(password):
+
+# =========================
+# Hash a password
+# =========================
+def get_password_hash(password: str) -> str:
+    """
+    Hashes a plain text password using Argon2.
+
+    :param password: Plain text password to hash
+    :return: Hashed password string
+    :notes: Uses secure salting and Argon2 hashing
+    """
     return password_hash.hash(password)
 
-# Password verification
-def verify_password(plain_password, hashed_password):
+# =========================
+# Verify a password
+# =========================
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    """
+    Verifies a plain password against a stored hash.
+
+    :param plain_password: Password provided by user
+    :param hashed_password: Hashed password stored in database
+    :return: True if passwords match, False otherwise
+    :notes: Uses Argon2 verification for security
+    """
     return password_hash.verify(plain_password, hashed_password)

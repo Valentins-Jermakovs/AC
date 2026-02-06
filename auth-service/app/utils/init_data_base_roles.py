@@ -1,54 +1,71 @@
-# Imports
-from sqlmodel import (
-    Session, 
-    select, 
-)
-from ..models import (
-    Role
-)
+# =========================
+# Default roles initialization
+# =========================
 
+# SQLModel imports
+from sqlmodel import Session, select
 
-'''
-Initialize default system roles.
+# Database model
+from ..models import Role
+
+"""
+Initializes default system roles.
 
 Behavior:
-- Checks whether roles already exist in the database
+- Checks if any roles already exist in the database
 - If roles exist, initialization is skipped
-- If no roles exist, creates predefined roles required by the system
+- If no roles exist, creates predefined system roles
+
+This function should be called once during application startup.
 
 Default roles:
-- user  : Read-only access, can manage own data
-- admin : Full access, can manage all system data
+- user             : Basic user, can manage only own data
+- admin            : Full system access
+- developer        : Full system access (technical role)
+- manager          : Full system access (business role)
+- support          : Full system access (support operations)
+- content_manager  : Full system access (content management)
 
 Input:
-- None
+- engine : SQLModel / SQLAlchemy engine instance
 
 Output:
 - None
-'''
+"""
 
-# Initialize default system roles
+# =========================
+# Initialize roles
+# =========================
 def init_roles(engine):
+    # Open database session
     with Session(engine) as session:
 
+        # Predefined system roles (name -> description)
         roles = {
-            "user": "user can register and login, use system in read-only mode and write only own data",
-            "admin": "administrator can register and login, use system in read-write mode and write all data",
-            "developer": "developer can register and login, use system in read-write mode and write all data",
-            "manager": "manager can register and login, use system in read-write mode and write all data",
-            "support": "support can register and login, use system in read-write mode and write all data",
-            "content_manager": "content manager can register and login, use system in read-write mode and write all data"
+            "user": "User can register, login and manage only own data",
+            "admin": "Administrator with full system access",
+            "developer": "Developer with full system access",
+            "manager": "Manager with full system access",
+            "support": "Support staff with full system access",
+            "content_manager": "Content manager with full system access",
         }
 
-        existing_roles = session.exec(select(Role)).all()
+        # Check if roles already exist
+        existing_roles = session.exec(
+            select(Role)
+        ).all()
 
-        # Skip initialization if roles exist
+        # If roles exist, do not create duplicates
         if existing_roles:
             return
 
         # Create default roles
         for role_name, role_description in roles.items():
-            role = Role(name=role_name, description=role_description)
+            role = Role(
+                name=role_name, 
+                description=role_description
+            )
             session.add(role)
 
+        # Save changes to database
         session.commit()

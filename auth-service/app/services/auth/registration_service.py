@@ -1,53 +1,56 @@
-# Imports
+# =========================
+# User registration service
+# =========================
+
 from sqlmodel import Session, select
 from fastapi import HTTPException
+# Database models
 from ...models import User, Role, UserRole
+# Schemas
 from ...schemas.auth.registration_schema import RegistrationSchema
 from ...schemas.tokens.token_refresh_schema import TokenRefreshSchema
+# Password hashing utility
 from ..passwords.passwords_service import get_password_hash
+# Token management utilities
 from ..tokens_management.create_tokens_service import (
     create_access_token,
     create_refresh_token,
     save_refresh_token
 )
 
-"""
-User Registration Service
 
-Function: register_user
------------------------
-Registers a new user in the system and generates authentication tokens.
 
-Parameters:
-- data (RegistrationSchema): User registration data including username, email, and password.
-- db (Session): SQLModel database session for querying and modifying user and role data.
-
-Process:
-1. Converts username and email to lowercase for consistency.
-2. Checks if the username or email already exists. Raises HTTP 400 if either exists.
-3. Creates a new user with a hashed password and saves it to the database.
-4. Assigns the user to the default "user" role if it exists.
-5. Generates an access token and a refresh token for the new user.
-6. Saves the refresh token in the database.
-7. Returns a TokenWithRefreshSchema object containing:
-   - access_token: JWT token for authenticating requests
-   - token_type: always "bearer"
-   - refresh_token: token used to obtain new access tokens
-
-Raises:
-- HTTPException with status code 400 if the username or email already exists.
-"""
-
-# User registration function
+# =========================
+# Register new user
+# =========================
 async def register_user(
     data: RegistrationSchema,
     db: Session
 ) -> TokenRefreshSchema:
+    """
+    Registers a new user and generates authentication tokens.
 
+    Steps:
+    1. Normalize username and email to lowercase
+    2. Check if username or email already exists
+       - Raises 400 if either exists
+    3. Create new user with hashed password
+    4. Assign default "user" role if it exists
+    5. Generate access and refresh tokens
+    6. Save refresh token in database
+    7. Return tokens in TokenRefreshSchema
+
+    :param data: RegistrationSchema containing username, email, and password
+    :param db: SQLModel database session
+    :return: TokenRefreshSchema containing access_token, token_type, refresh_token
+    :raises HTTPException: 400 if username or email already exists
+    """
+
+    # Normalize inputs
     data.username = data.username.lower()
     data.email = data.email.lower()
 
-    # Check if user already exists
+    # Check if username or email already exists
     existing_user = db.exec(select(User).where(User.username == data.username)).first()
     existing_email = db.exec(select(User).where(User.email == data.email)).first()
 
@@ -57,7 +60,7 @@ async def register_user(
     if existing_email:
         raise HTTPException(status_code=400, detail="Email already exists")
 
-    # New user registration
+    # Create new user with hashed password
     user = User(
         username=data.username,
         email=data.email,
@@ -68,7 +71,7 @@ async def register_user(
     db.commit()         
     db.refresh(user)    
 
-    # Add user to "user" role
+    # Assign default "user" role if exists
     user_role = db.exec(
         select(Role).where(Role.name == "user")
     ).first()
@@ -77,18 +80,12 @@ async def register_user(
         db.add(UserRole(user_id=user.id, role_id=user_role.id))
         db.commit()
 
-    # Create tokens
-    access_token = create_access_token({
-        "sub": str(user.id)
-    })
+    # Generate access and refresh tokens
+    access_token = create_access_token({"sub": str(user.id)})
     refresh_token = create_refresh_token()
-    save_refresh_token(
-        refresh_token, 
-        user.id, 
-        db
-    )
+    save_refresh_token(refresh_token, user.id, db)
 
-    # Return tokens
+    # Return tokens to client
     return TokenRefreshSchema(
         access_token=access_token,
         token_type="bearer",

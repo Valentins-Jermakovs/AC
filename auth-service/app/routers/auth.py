@@ -3,6 +3,8 @@
 # =========================
 
 # Imports
+from urllib.parse import urljoin
+
 from fastapi import APIRouter, Depends, Body, Request
 from fastapi.security import (
     HTTPBearer, 
@@ -84,12 +86,19 @@ oauth.register(
 # =========================
 # Google login endpoint
 # =========================
+# @router.get("/google/login", response_model=None)
+# async def get_google_login(request: Request):
+#     """
+#     Redirect user to Google OAuth login page.
+#     """
+#     return await get_google_auth(oauth, request)
+
 @router.get("/google/login", response_model=None)
 async def get_google_login(request: Request):
-    """
-    Redirect user to Google OAuth login page.
-    """
-    return await get_google_auth(oauth, request)
+    redirect_uri = os.getenv("GOOGLE_REDIRECT_URI")
+    return await oauth.google.authorize_redirect(request, redirect_uri)
+
+
 
 # =========================
 # Google callback endpoint

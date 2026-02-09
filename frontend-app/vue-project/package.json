@@ -12,10 +12,10 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
     "axios": "^1.13.5",
-    "i18n": "^0.15.3",
     "pinia": "^3.0.4",
     "tailwindcss": "^4.1.18",
     "vue": "^3.5.27",
+    "vue-i18n": "^11.2.8",
     "vue-router": "^5.0.1"
   },
   "devDependencies": {

@@ -8,6 +8,7 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 # Middleware for server-side sessions (cookies, session storage)
 from starlette.middleware.sessions import SessionMiddleware
+
 # Standard libraries
 import os
 # Loads environment variables from .env file

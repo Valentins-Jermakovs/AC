@@ -1,2 +1,87 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  prefersdark: false;
+  color-scheme: "light";
+  --color-base-100: oklch(98% 0 0);
+  --color-base-200: oklch(96% 0.001 286.375);
+  --color-base-300: oklch(92% 0.004 286.32);
+  --color-base-content: oklch(21% 0.006 285.885);
+  --color-primary: oklch(58% 0.233 277.117);
+  --color-primary-content: oklch(96% 0.018 272.314);
+  --color-secondary: oklch(62% 0.214 259.815);
+  --color-secondary-content: oklch(97% 0.014 343.198);
+  --color-accent: oklch(76% 0.233 130.85);
+  --color-accent-content: oklch(98% 0.031 120.757);
+  --color-neutral: oklch(27% 0.006 286.033);
+  --color-neutral-content: oklch(98% 0 0);
+  --color-info: oklch(54% 0.245 262.881);
+  --color-info-content: oklch(97% 0.014 254.604);
+  --color-success: oklch(62% 0.194 149.214);
+  --color-success-content: oklch(98% 0.018 155.826);
+  --color-warning: oklch(66% 0.179 58.318);
+  --color-warning-content: oklch(98% 0.016 73.684);
+  --color-error: oklch(57% 0.245 27.325);
+  --color-error-content: oklch(97% 0.014 343.198);
+  --radius-selector: 0rem;
+  --radius-field: 0rem;
+  --radius-box: 0.25rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+@plugin "daisyui/theme" {
+  name: "dark";
+  default: false;
+  prefersdark: true;
+  color-scheme: "dark";
+
+  /* Base colors — apgriezti */
+  --color-base-100: oklch(18% 0.006 286.033);
+  --color-base-200: oklch(22% 0.006 286.033);
+  --color-base-300: oklch(27% 0.006 286.033);
+  --color-base-content: oklch(98% 0 0);
+
+  /* Brand colors — tie paši, lai saglabā identitāti */
+  --color-primary: oklch(58% 0.233 277.117);
+  --color-primary-content: oklch(96% 0.018 272.314);
+
+  --color-secondary: oklch(62% 0.214 259.815);
+  --color-secondary-content: oklch(97% 0.014 343.198);
+
+  --color-accent: oklch(76% 0.233 130.85);
+  --color-accent-content: oklch(18% 0.031 120.757);
+
+  /* Neutral */
+  --color-neutral: oklch(92% 0.004 286.32);
+  --color-neutral-content: oklch(21% 0.006 285.885);
+
+  /* States */
+  --color-info: oklch(54% 0.245 262.881);
+  --color-info-content: oklch(97% 0.014 254.604);
+
+  --color-success: oklch(62% 0.194 149.214);
+  --color-success-content: oklch(98% 0.018 155.826);
+
+  --color-warning: oklch(66% 0.179 58.318);
+  --color-warning-content: oklch(18% 0.016 73.684);
+
+  --color-error: oklch(57% 0.245 27.325);
+  --color-error-content: oklch(97% 0.014 343.198);
+
+  /* Shape & layout — identiski */
+  --radius-selector: 0rem;
+  --radius-field: 0rem;
+  --radius-box: 0.25rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}

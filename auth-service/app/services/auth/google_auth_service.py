@@ -18,24 +18,6 @@ from ...models import UserRole, Token, User
 # Response schema
 from ...schemas.tokens.token_refresh_schema import TokenRefreshSchema
 
-
-# =========================
-# Get Google OAuth redirect
-# =========================
-async def get_google_auth(oauth: OAuth, request: Request):
-    """
-    Starts Google OAuth authentication by redirecting user to Google login page.
-
-    :param oauth: Authlib OAuth instance
-    :param request: FastAPI request
-    :return: Redirect response to Google login
-    """
-
-    # Build callback URL
-    redirect_uri = urljoin(str(request.base_url), "auth/google/callback")
-    # Redirect user to Google OAuth page
-    return await oauth.google.authorize_redirect(request, redirect_uri)
-
 # =========================
 # Handle Google OAuth callback
 # =========================

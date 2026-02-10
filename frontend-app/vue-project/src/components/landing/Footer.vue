@@ -5,7 +5,7 @@
     </p>
     <div class="flex flex-col justify-center gap-4">
       <div class="flex items-center justify-center gap-4 text-2xl">
-        <a href="#" aria-label="GitHub">
+        <a href="https://github.com/Valentins-Jermakovs/AC" aria-label="GitHub">
           <font-awesome-icon icon="fa-brands fa-github" />
         </a>
         <a href="#" aria-label="Twitter">

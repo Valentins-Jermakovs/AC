@@ -1,6 +1,6 @@
 <template>
     <section
-        class="h-screen flex flex-col justify-center items-center bg-[url('@/assets/images/julia-taubitz-9kP8VW_8h-o-unsplash.jpg')] bg-cover bg-center">
+        class="h-screen flex flex-col justify-center items-center  bg-[url('@/assets/images/julia-taubitz-9kP8VW_8h-o-unsplash.jpg')] bg-cover bg-center">
         <div class="flex flex-col gap-4 items-center justify-center w-full">
             <div class="p-5 lg:bg-base-200 lg:w-1/3 h-52 rounded-box lg:border-base-300">
                 <h1 class="text-4xl lg:text-5xl font-bold mb-4 text-center text-black lg:text-base-content">
@@ -11,7 +11,7 @@
                 </p>
             </div>
             <div class="flex gap-4">
-                <RouterLink to="/">
+                <RouterLink to="/login">
                     <button class="btn btn-primary btn-lg">
                         {{ $t('common.login') }}
                     </button>

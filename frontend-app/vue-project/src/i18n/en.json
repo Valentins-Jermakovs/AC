@@ -24,8 +24,23 @@
       "terms": "Terms of Use"
     }
   },
+  "auth": {
+    "login": {
+      "title": "Authentication"
+    },
+    "register": {
+      "title": "Registration"
+    }
+  },
   "common": {
     "login": "Log In",
-    "register": "Sign Up"
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "username": "Username",
+    "name": "Name",
+    "switch_to_register": "Don't have an account?",
+    "switch_to_login": "Already have an account?"
   }
 }

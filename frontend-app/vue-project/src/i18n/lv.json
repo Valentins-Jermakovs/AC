@@ -24,8 +24,23 @@
             "terms": "Lietošanai nosacījumi"
         }
     },
+    "auth":{
+        "login": {
+            "title": "Autentifikācija"
+        },
+        "register": {
+            "title": "Reģistrācija"
+        }
+    },
     "common": {
         "login": "Pieslēgties",
-        "register": "Reģistrēties"
+        "register": "Reģistrēties",
+        "email": "E-pasts",
+        "password": "Parole",
+        "confirm_password": "Apstipriniet paroli",
+        "username": "Lietotājvārds",
+        "name": "Vārds",
+        "switch_to_register": "Nav profila?",
+        "switch_to_login": "Jau ir profils?"
     }
 }

@@ -3,114 +3,105 @@ import axios from 'axios'
 
 export const useAuthStore = defineStore('auth', {
 
-  state: () => ({
-    accessToken: null,
-    refreshToken: null,
-    isAuthenticated: false
-  }),
+    state: () => ({
+        accessToken: null,
+        refreshToken: null,
+        isAuthenticated: false
+    }),
 
-  actions: {
-    async login(username, password) {
-      try {
-        const formData = new URLSearchParams()
-        formData.append('username', username)
-        formData.append('password', password)
+    actions: {
+        async login(username, password) {
+            try {
+                const formData = new URLSearchParams()
+                formData.append('username', username)
+                formData.append('password', password)
 
-        const response = await axios.post('/auth/login', formData, {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          },
-          withCredentials: true
-        })
+                const response = await axios.post('/auth/login', formData, {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    withCredentials: true
+                })
 
-        const { access_token, refresh_token } = response.data
+                const { access_token, refresh_token } = response.data
 
-        this.accessToken = access_token
-        this.refreshToken = refresh_token
-        this.isAuthenticated = true
+                this.accessToken = access_token
+                this.refreshToken = refresh_token
+                this.isAuthenticated = true
 
-        // Save tokens to local storage
-        localStorage.setItem('accessToken', access_token)
-        localStorage.setItem('refreshToken', refresh_token)
+                // Save tokens to local storage
+                localStorage.setItem('accessToken', access_token)
+                localStorage.setItem('refreshToken', refresh_token)
 
-        // Axios default header
-        axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}`
+                // Axios default header
+                axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}`
 
-        return true
+                return true
 
-      } catch (error) {
-        console.error('Login error:', error)
-        throw error
-      }
-    },
-
-    async register(username, email, password) {
-        try {
-            const payload = {
-                username,
-                email,
-                password
+            } catch (error) {
+                console.error('Login error:', error)
+                throw error
             }
+        },
 
-            const response = await axios.post('/auth/register', payload, {
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                withCredentials: true
-            });
+        async register(username, email, password) {
+            try {
+                const payload = { username, email, password }
 
-            const { access_token, refresh_token } = response.data;
+                const response = await axios.post('/auth/register', payload, {
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
+                })
 
-            this.accessToken = access_token;
-            this.refreshToken = refresh_token;
-            this.isAuthenticated = true;
+                const { access_token, refresh_token } = response.data
 
-            // Save tokens to local storage
-            localStorage.setItem('accessToken', access_token);
-            localStorage.setItem('refreshToken', refresh_token);
+                this.accessToken = access_token
+                this.refreshToken = refresh_token
+                this.isAuthenticated = true
 
-            // Axios default header
-            axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
+                localStorage.setItem('accessToken', access_token)
+                localStorage.setItem('refreshToken', refresh_token)
 
-            return true;
-        }    
-        catch (error) {
-            console.error('Registration error:', error);
-            throw error;
-        }
-    },
+                axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}`
 
-    async logout() {
-      try {
-        if (this.refreshToken) {
-          await axios.post('/auth/logout', null, {
-            headers: {
-              Authorization: `Bearer ${this.refreshToken}`
+                return true
+            } catch (error) {
+                console.error('Registration error:', error)
+                throw error
             }
-          })
+        },
+
+        async logout() {
+            try {
+                if (this.refreshToken) {
+                    await axios.post('/auth/logout', null, {
+                        headers: {
+                            Authorization: `Bearer ${this.refreshToken}`
+                        }
+                    })
+                }
+
+            } catch (e) {
+                console.warn('Logout failed:', e)
+            } finally {
+                this.accessToken = null
+                this.refreshToken = null
+                this.isAuthenticated = false
+                localStorage.removeItem('accessToken')
+                localStorage.removeItem('refreshToken')
+                delete axios.defaults.headers.common['Authorization']
+            }
+        },
+
+        loadFromStorage() {
+            const access = localStorage.getItem('accessToken')
+            const refresh = localStorage.getItem('refreshToken')
+            if (access && refresh) {
+                this.accessToken = access
+                this.refreshToken = refresh
+                this.isAuthenticated = true
+                axios.defaults.headers.common['Authorization'] = `Bearer ${access}`
+            }
         }
-
-      } catch (e) {
-        console.warn('Logout failed:', e)
-      } finally {
-        this.accessToken = null
-        this.refreshToken = null
-        this.isAuthenticated = false
-        localStorage.removeItem('accessToken')
-        localStorage.removeItem('refreshToken')
-        delete axios.defaults.headers.common['Authorization']
-      }
-    },
-
-    loadFromStorage() {
-      const access = localStorage.getItem('accessToken')
-      const refresh = localStorage.getItem('refreshToken')
-      if (access && refresh) {
-        this.accessToken = access
-        this.refreshToken = refresh
-        this.isAuthenticated = true
-        axios.defaults.headers.common['Authorization'] = `Bearer ${access}`
-      }
     }
-  }
 })

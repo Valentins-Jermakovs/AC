@@ -25,6 +25,10 @@ from ..services.auth.google_auth_service import google_auth_callback
 # Dependencies
 from ..dependencies.data_base_connection import get_db
 
+from fastapi.responses import RedirectResponse
+from urllib.parse import urlencode
+import os
+
 
 # =========================
 # Router setup
@@ -92,20 +96,27 @@ async def get_google_login(request: Request):
 # =========================
 # Google callback endpoint
 # =========================
-@router.get("/google/callback", response_model=TokenRefreshSchema)
+@router.get("/google/callback")
 async def google_auth_handler(
     request: Request,
     db: Session = Depends(get_db),
 ):
-    """
-    Handles Google OAuth callback and generates tokens.
+    tokens = await google_auth_callback(oauth, db, request)
 
-    Steps:
-    1. Receive callback from Google
-    2. Authenticate user or create new one
-    3. Generate access and refresh tokens
-    """
-    return await google_auth_callback(oauth, db, request)
+    frontend_url = os.getenv(
+        "FRONTEND_URL",
+        "http://localhost:5173/login"
+    )
+
+    query = urlencode({
+        "access_token": tokens.access_token,
+        "refresh_token": tokens.refresh_token,
+    })
+
+    return RedirectResponse(
+        url=f"{frontend_url}?{query}",
+        status_code=303
+    )
 
 # =========================
 # User registration endpoint

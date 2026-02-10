@@ -16,7 +16,7 @@
                         {{ $t('common.login') }}
                     </button>
                 </RouterLink>
-                <RouterLink to="/">
+                <RouterLink to="/register">
                     <button class="btn btn-neutral btn-lg">
                         {{ $t('common.register') }}
                     </button>

@@ -47,12 +47,6 @@ async def google_auth_callback(
     email = user_info["email"]
     google_id = user_info["sub"]
 
-    print(f"Google ID: {google_id}")
-    print(f"Email: {email}")
-    print(f"Token: {token}")
-    print(f"User info: {user_info}")
-    print(f"access token: {request}")
-
     # Try to find user by Google ID
     user = db.exec(select(User).where(User.google_id == google_id)).first()
     if user and not user.active:

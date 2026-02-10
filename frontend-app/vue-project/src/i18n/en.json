@@ -1,3 +1,31 @@
 {
-    "appTitle": "Analytics Center"
+  "appTitle": "Analytics Center",
+  "landingPage": {
+    "hero_title": "Analytics Center",
+    "hero_subtitle": "A personal productivity and analytics platform",
+    "about_title": "About Analytics Center",
+    "about_content": "Analytics Center is a personal productivity platform designed to help you monitor and improve your daily activities. It was created as an academic project to explore data analysis, task management, and productivity optimization.",
+    "features": {
+      "title": "Key Features",
+      "tasks": "Task Management",
+      "tasks_description": "Organize and manage your tasks.",
+      "events": "Event Planning",
+      "events_description": "Plan and manage events.",
+      "analytics": "Analytics Dashboard",
+      "analytics_description": "Visualize and analyze your data."
+    },
+    "CTA": {
+      "title": "Get Started Today!",
+      "description": "Join the Analytics Center community to boost your productivity and gain valuable insights from your data."
+    },
+    "footer": {
+      "copyright": "© 2026 Analytics Center. All rights reserved.",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Use"
+    }
+  },
+  "common": {
+    "login": "Log In",
+    "register": "Sign Up"
+  }
 }

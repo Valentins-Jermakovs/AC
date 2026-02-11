@@ -24,7 +24,7 @@ import lv from '@/i18n/lv.json'
 import ru from '@/i18n/ru.json'
 
 const i18n = createI18n({
-  legacy: false,          // IMPORTANT for Vue 3
+  legacy: false, // IMPORTANT for Vue 3
   locale: 'lv',
   fallbackLocale: 'en',
   messages: {

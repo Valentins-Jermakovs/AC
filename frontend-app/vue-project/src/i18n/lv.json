@@ -1,85 +1,101 @@
 {
-    "appTitle": "Analītikas centrs",
-    "landingPage": {
-        "hero_title": "Analītikas centrs",
-        "hero_subtitle": "Personīgās produktivitātes un analītikas platforma",
-        "about_title": "Par Analītikas Centru",
-        "about_content": "Analītikas centrs ir personīgā produktivitātes platforma, kas izstrādāta, lai palīdzētu jums uzraudzīt un uzlabot ikdienas aktivitātes. Izveidota kā akadēmisks projekts, lai izpētītu datu analīzi, uzdevumu pārvaldību un produktivitātes optimizāciju.",
-        "features": {
-            "title": "Galvenās funkcijas",
-            "tasks": "Uzdevumu pārvaldība",
-            "tasks_description": "Organizē un pārvaldi uzdevumus.",
-            "events": "Notikumu plānošana",
-            "events_description": "Plāno un pārvaldi notikumus.",
-            "analytics": "Analītikas panelis",
-            "analytics_description": "Vizualizē un analizē datus."
-        },
-        "CTA": {
-            "title": "Sāciet darbu šodien!",
-            "description": "Pievienojaties Analītikas Centra kopienai, lai palielināt produktivitāti un iegūt informāciju par datiem."
-        },
-        "footer": {
-            "copyright": "© 2026 Analītikas centrs. Visas tiesības aizsargātas.",
-            "privacy": "Privātuma politika",
-            "terms": "Lietošanai nosacījumi"
-        }
+  "appTitle": "Analītikas centrs",
+  "landingPage": {
+    "hero_title": "Analītikas centrs",
+    "hero_subtitle": "Personīgās produktivitātes un analītikas platforma",
+    "about_title": "Par Analītikas Centru",
+    "about_content": "Analītikas centrs ir personīgā produktivitātes platforma, kas izstrādāta, lai palīdzētu jums uzraudzīt un uzlabot ikdienas aktivitātes. Izveidota kā akadēmisks projekts, lai izpētītu datu analīzi, uzdevumu pārvaldību un produktivitātes optimizāciju.",
+    "features": {
+      "title": "Galvenās funkcijas",
+      "tasks": "Uzdevumu pārvaldība",
+      "tasks_description": "Organizē un pārvaldi uzdevumus.",
+      "events": "Notikumu plānošana",
+      "events_description": "Plāno un pārvaldi notikumus.",
+      "analytics": "Analītikas panelis",
+      "analytics_description": "Vizualizē un analizē datus."
     },
-    "auth": {
-        "login": {
-            "title": "Autentifikācija"
-        },
-        "register": {
-            "title": "Reģistrācija"
-        }
+    "CTA": {
+      "title": "Sāciet darbu šodien!",
+      "description": "Pievienojaties Analītikas Centra kopienai, lai palielināt produktivitāti un iegūt informāciju par datiem."
     },
-    "common": {
-        "login": "Pieslēgties",
-        "register": "Reģistrēties",
-        "email": "E-pasts",
-        "password": "Parole",
-        "confirm_password": "Apstipriniet paroli",
-        "username": "Lietotājvārds",
-        "name": "Vārds",
-        "switch_to_register": "Nav profila?",
-        "switch_to_login": "Jau ir profils?",
-        "login_with_google": "Pieslēgties ar Google",
-        "register_with_google": "Reģistrācija ar Google",
-        "cancel": "Atcelt",
-        "confirm": "Apstiprināt",
-        "support": "Palīdzība"
-    },
-    "eyeRest": {
-        "title": "Atpūtiniet acis",
-        "content": "Paskaties prom no ekrāna uz 20 sekundēm.",
-        "later": "Vēlāk",
-        "close": "Labi"
-    },
-    "topbar": {
-        "title": "Analītikas centrs"
-    },
-    "modals": {
-        "logout": {
-            "title": "Pātraukt sesiju?",
-            "content": "Vai tiešām vēlaties pātraukt sesiju?"
-        },
-        "languages": {
-            "title": "Valodas",
-            "latvian": "Latviešu",
-            "english": "Angļu",
-            "russian": "Krievu"
-        },
-        "email": {
-            "title": "Vēstule projekta komandai",
-            "form_username": "Lietotājvārds",
-            "username_placeholder": "Ievadiet lietotājvārdu",
-            "form_email": "E-pasts",
-            "email_placeholder": "Ievadiet e-pastu",
-            "form_phone": "Telefona numurs",
-            "phone_placeholder": "Ievadiet telefona numuru",
-            "form_title": "Tēma",
-            "title_placeholder": "Ievadiet vēstules tēmu",
-            "form_content": "Ziņa",
-            "content_placeholder": "Ievadiet ziņu"
-        }
+    "footer": {
+      "copyright": "© 2026 Analītikas centrs. Visas tiesības aizsargātas.",
+      "privacy": "Privātuma politika",
+      "terms": "Lietošanai nosacījumi"
     }
+  },
+  "auth": {
+    "login": {
+      "title": "Autentifikācija"
+    },
+    "register": {
+      "title": "Reģistrācija"
+    }
+  },
+  "common": {
+    "login": "Pieslēgties",
+    "register": "Reģistrēties",
+    "email": "E-pasts",
+    "password": "Parole",
+    "confirm_password": "Apstipriniet paroli",
+    "username": "Lietotājvārds",
+    "name": "Vārds",
+    "switch_to_register": "Nav profila?",
+    "switch_to_login": "Jau ir profils?",
+    "login_with_google": "Pieslēgties ar Google",
+    "register_with_google": "Reģistrācija ar Google",
+    "cancel": "Atcelt",
+    "confirm": "Apstiprināt",
+    "support": "Palīdzība",
+    "back": "Atgriezties"
+  },
+  "eyeRest": {
+    "title": "Atpūtiniet acis",
+    "content": "Paskaties prom no ekrāna uz 20 sekundēm.",
+    "later": "Vēlāk",
+    "close": "Labi"
+  },
+  "topbar": {
+    "title": "Analītikas centrs"
+  },
+  "modals": {
+    "logout": {
+      "title": "Pātraukt sesiju?",
+      "content": "Vai tiešām vēlaties pātraukt sesiju?"
+    },
+    "languages": {
+      "title": "Valodas",
+      "latvian": "Latviešu",
+      "english": "Angļu",
+      "russian": "Krievu"
+    },
+    "email": {
+      "title": "Vēstule projekta komandai",
+      "form_username": "Lietotājvārds",
+      "username_placeholder": "Ievadiet lietotājvārdu",
+      "form_email": "E-pasts",
+      "email_placeholder": "Ievadiet e-pastu",
+      "form_phone": "Telefona numurs",
+      "phone_placeholder": "Ievadiet telefona numuru",
+      "form_title": "Tēma",
+      "title_placeholder": "Ievadiet vēstules tēmu",
+      "form_content": "Ziņa",
+      "content_placeholder": "Ievadiet ziņu",
+      "received": "Vēstule saņemta",
+      "received_content": "Mēs Jums atbildēsim tuvākajā laika."
+    }
+  },
+  "sidebar": {
+    "cabinet": "Kabinets",
+    "calendar": "Kalendārs",
+    "news": "Ziņas",
+    "analytics": "Datu analītika",
+    "work": "Projekti, uzdevumi...",
+    "notifications": "Atgādinājumi",
+    "pomodoro": "Pomodoro"
+  },
+  "logout": {
+    "title": "Sesija pārtraukta",
+    "confirm": "Uz sākumu"
+  }
 }

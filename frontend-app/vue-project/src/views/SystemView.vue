@@ -1,15 +1,15 @@
 <template>
-    <SystemLayout></SystemLayout>
+  <SystemLayout></SystemLayout>
 </template>
 
 <script>
-import SystemLayout from '@/layouts/SystemLayout.vue';
+import SystemLayout from '@/layouts/SystemLayout.vue'
 
 export default {
-    name: 'SystemView',
-    components: {
-        SystemLayout
-    }
+  name: 'SystemView',
+  components: {
+    SystemLayout,
+  },
 }
 </script>
 

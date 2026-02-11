@@ -122,14 +122,14 @@ export default {
   data() {
     return {
       message: '',
-      maxLength: 2000
+      maxLength: 2000,
     }
   },
   computed: {
     remainingChars() {
       return this.maxLength - this.message.length
-    }
-  }
+    },
+  },
 }
 </script>
 

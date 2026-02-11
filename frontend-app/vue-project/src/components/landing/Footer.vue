@@ -16,20 +16,23 @@
         </a>
       </div>
       <div class="flex flex-col md:flex-row items-center justify-center gap-4">
-        <a href="/documents/policy.pdf" 
-        target="_blank" 
-        rel="noopener noreferrer"
-        class="hover:underline">
+        <a
+          href="/documents/policy.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hover:underline"
+        >
           {{ $t('landingPage.footer.privacy') }}
         </a>
-        <a href="/documents/license.pdf" 
-        target="_blank" 
-        rel="noopener noreferrer"
-        class="hover:underline">
+        <a
+          href="/documents/license.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hover:underline"
+        >
           {{ $t('landingPage.footer.terms') }}
         </a>
       </div>
-      
     </div>
   </footer>
 </template>

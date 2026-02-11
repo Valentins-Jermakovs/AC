@@ -14,13 +14,13 @@ export default {
   name: 'App',
 
   components: {
-    EyeRestReminder
+    EyeRestReminder,
   },
 
   setup() {
     // Ja tev ir hook dokumenta nosaukumam
     useDocumentTitle()
-  }
+  },
 }
 </script>
 

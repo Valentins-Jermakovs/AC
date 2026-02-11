@@ -29,7 +29,7 @@ export default {
     const languages = [
       { code: 'ru', label: 'RU' },
       { code: 'lv', label: 'LV' },
-      { code: 'en', label: 'EN' }
+      { code: 'en', label: 'EN' },
     ]
 
     const changeLocale = (code) => {
@@ -39,9 +39,9 @@ export default {
     return {
       locale,
       languages,
-      changeLocale
+      changeLocale,
     }
-  }
+  },
 }
 </script>
 

@@ -3,7 +3,7 @@
   <transition name="fade">
     <div v-if="show" class="fixed bottom-5 right-5 z-50">
       <div
-        class="p-5 alert bg-base-100 rounded-box w-80 flex flex-col gap-2 border border-base-300"
+        class="p-5 shadow alert bg-base-100 rounded-box w-80 flex flex-col gap-2 border border-base-300"
       >
         <h3 class="font-semibold text-lg flex items-center gap-2">{{ $t('eyeRest.title') }}</h3>
 
@@ -31,7 +31,7 @@ export default {
   data() {
     return {
       show: false,
-      timer: null
+      timer: null,
     }
   },
 
@@ -51,7 +51,7 @@ export default {
     later() {
       this.show = false
       this.remind(5 * 60 * 1000) // 5 min
-    }
+    },
   },
 
   mounted() {
@@ -60,7 +60,7 @@ export default {
 
   beforeUnmount() {
     if (this.timer) clearTimeout(this.timer)
-  }
+  },
 }
 </script>
 

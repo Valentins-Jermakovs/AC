@@ -1,10 +1,10 @@
 <template>
-<BaseDialog
-  :modelValue="localModel"
-  :title="$t('modals.email.title')"
-  :cancel-text="$t('common.cancel')"
-  @confirm="submitEmailForm"
->
+  <BaseDialog
+    :modelValue="localModel"
+    :title="$t('modals.email.title')"
+    :cancel-text="$t('common.cancel')"
+    @confirm="submitEmailForm"
+  >
     <!-- Forma bez pogas -->
     <form
       ref="emailForm"
@@ -21,9 +21,14 @@
         <label for="name" class="label">
           <span class="label-text">{{ $t('modals.email.form_username') }}</span>
         </label>
-        <input id="name" name="name" type="text" required
+        <input
+          id="name"
+          name="name"
+          type="text"
+          required
           :placeholder="$t('modals.email.username_placeholder')"
-          class="input input-bordered w-full" />
+          class="input input-bordered w-full"
+        />
       </div>
 
       <!-- Email + Phone -->
@@ -32,18 +37,31 @@
           <label for="email" class="label">
             <span class="label-text">{{ $t('modals.email.form_email') }}</span>
           </label>
-          <input id="email" name="email" type="email" required maxlength="254"
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            maxlength="254"
             :placeholder="$t('modals.email.email_placeholder')"
-            class="input input-bordered w-full" />
+            class="input input-bordered w-full"
+          />
         </div>
 
         <div class="form-control flex flex-col gap-1">
           <label for="phone" class="label">
             <span class="label-text">{{ $t('modals.email.form_phone') }}</span>
           </label>
-          <input id="phone" name="phone" type="tel" required minlength="10" maxlength="15"
+          <input
+            id="phone"
+            name="phone"
+            type="tel"
+            required
+            minlength="10"
+            maxlength="15"
             :placeholder="$t('modals.email.phone_placeholder')"
-            class="input input-bordered w-full" />
+            class="input input-bordered w-full"
+          />
         </div>
       </div>
 
@@ -52,9 +70,15 @@
         <label for="subject" class="label">
           <span class="label-text">{{ $t('modals.email.form_title') }}</span>
         </label>
-        <input id="subject" name="subject" type="text" maxlength="78" required
+        <input
+          id="subject"
+          name="subject"
+          type="text"
+          maxlength="78"
+          required
           :placeholder="$t('modals.email.title_placeholder')"
-          class="input input-bordered w-full" />
+          class="input input-bordered w-full"
+        />
       </div>
 
       <!-- Counter ABOVE textarea -->
@@ -67,9 +91,15 @@
         <label for="message" class="label">
           <span class="label-text">{{ $t('modals.email.form_content') }}</span>
         </label>
-        <textarea id="message" name="message" v-model="message" :maxlength="maxLength" required
+        <textarea
+          id="message"
+          name="message"
+          v-model="message"
+          :maxlength="maxLength"
+          required
           :placeholder="$t('modals.email.content_placeholder')"
-          class="textarea textarea-bordered w-full resize-none h-56"></textarea>
+          class="textarea textarea-bordered w-full resize-none h-56"
+        ></textarea>
       </div>
     </form>
 
@@ -94,13 +124,13 @@ export default {
   props: {
     modelValue: {
       type: Boolean,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
       message: '',
-      maxLength: 2000
+      maxLength: 2000,
     }
   },
   computed: {
@@ -113,8 +143,8 @@ export default {
       },
       set(value) {
         this.$emit('update:modelValue', value)
-      }
-    }
+      },
+    },
   },
   methods: {
     submitEmailForm() {
@@ -125,10 +155,9 @@ export default {
       } else {
         form.reportValidity()
       }
-    }
-  }
+    },
+  },
 }
-
 </script>
 
 <style scoped></style>

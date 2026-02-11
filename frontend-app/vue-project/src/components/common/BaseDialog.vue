@@ -31,20 +31,20 @@ export default {
   props: {
     modelValue: {
       type: Boolean,
-      required: true
+      required: true,
     },
     title: {
       type: String,
-      default: ''
+      default: '',
     },
     confirmText: {
       type: String,
-      default: ''
+      default: '',
     },
     cancelText: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   emits: ['update:modelValue', 'confirm', 'cancel'],
   methods: {
@@ -54,8 +54,8 @@ export default {
     },
     confirm() {
       this.$emit('confirm')
-    }
-  }
+    },
+  },
 }
 </script>
 

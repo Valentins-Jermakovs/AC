@@ -1,21 +1,29 @@
 <template>
-    <div class="h-full grid grid-cols-12 grid-rows-12">
-        <div class="col-span-12 row-span-1">
-            <TopBar></TopBar>
-        </div>
-    </div>    
+  <div class="flex flex-col h-full">
+    <div class="w-full">
+      <TopBar></TopBar>
+    </div>
+    <div class="flex-1 flex h-0">
+      <Sidebar></Sidebar>
+      <!-- Scrollable child pages -->
+      <div class="flex-1 bg-base-100 overflow-auto">
+        <RouterView />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import TopBar from '@/components/system/topbar/TopBar.vue';
+import Sidebar from '@/components/system/sidebar/Sidebar.vue'
+import TopBar from '@/components/system/topbar/TopBar.vue'
 
 export default {
-    name: 'SystemLayout',
-    components: {
-        TopBar
-    }
+  name: 'SystemLayout',
+  components: {
+    TopBar,
+    Sidebar,
+  },
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

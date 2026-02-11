@@ -20,8 +20,12 @@
       <label class="label">
         <span class="label-text">{{ $t('common.password') }}</span>
       </label>
-      <input v-model="password" type="password" :placeholder="$t('common.password')"
-        class="input input-bordered w-full" />
+      <input
+        v-model="password"
+        type="password"
+        :placeholder="$t('common.password')"
+        class="input input-bordered w-full"
+      />
     </div>
   </form>
   <div class="flex mt-6">
@@ -50,7 +54,7 @@ export default {
       username: '',
       password: '',
       error: '',
-      authStore: null
+      authStore: null,
     }
   },
 
@@ -62,7 +66,7 @@ export default {
 
     if (access && refresh) {
       this.authStore.setAuthData(access, refresh)
-      this.$router.replace('/')
+      this.$router.replace('/system')
     }
   },
 
@@ -77,7 +81,7 @@ export default {
 
       try {
         await this.authStore.login(this.username, this.password)
-        this.$router.push('/')
+        this.$router.push('/system')
       } catch (err) {
         console.error(err)
         if (err.response?.data?.detail) {
@@ -92,11 +96,10 @@ export default {
 
     loginGoogle() {
       window.location.href = api.defaults.baseURL + API_ENDPOINTS.GOOGLE_LOGIN
-    }
-  }
+    },
+  },
 }
 </script>
-
 
 <style scoped>
 .error-slide-enter-active,

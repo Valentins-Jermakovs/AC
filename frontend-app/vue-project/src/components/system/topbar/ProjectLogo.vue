@@ -1,7 +1,5 @@
 <template>
-  <h1 class="hidden md:flex text-xl sm:text-2xl font-bold">
-    {{ $t('topbar.title') }} [0.1]
-  </h1>
+  <h1 class="hidden md:flex text-xl sm:text-2xl font-bold">{{ $t('topbar.title') }} [0.1]</h1>
 </template>
 
 <script setup></script>

@@ -46,7 +46,8 @@
     "register_with_google": "Sign up with Google",
     "cancel": "Cancel",
     "confirm": "Confirm",
-    "support": "Support"
+    "support": "Support",
+    "back": "Back"
   },
   "eyeRest": {
     "title": "Rest Your Eyes",
@@ -79,7 +80,22 @@
       "form_title": "Subject",
       "title_placeholder": "Enter message subject",
       "form_content": "Message",
-      "content_placeholder": "Enter message"
+      "content_placeholder": "Enter message",
+      "received": "Message sent",
+      "received_content": "We will answer you as soon as possible."
     }
+  },
+  "sidebar": {
+    "cabinet": "Cabinet",
+    "calendar": "Calendar",
+    "news": "News",
+    "analytics": "Data Analytics",
+    "work": "Projects, Tasks...",
+    "notifications": "Reminders",
+    "pomodoro": "Pomodoro"
+  },
+  "logout": {
+    "title": "Session ended",
+    "confirm": "Home"
   }
 }

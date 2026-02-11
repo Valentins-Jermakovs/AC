@@ -46,7 +46,8 @@
     "register_with_google": "Регистрация через Google",
     "cancel": "Отменить",
     "confirm": "Подтвердить",
-    "support": "Поддержка"
+    "support": "Поддержка",
+    "back": "Назад"
   },
   "eyeRest": {
     "title": "Глазам необходим отдых",
@@ -79,7 +80,22 @@
       "form_title": "Тема",
       "title_placeholder": "Введите тему сообщения",
       "form_content": "Сообщение",
-      "content_placeholder": "Введите сообщение"
+      "content_placeholder": "Введите сообщение",
+      "received": "Сообщение отправлено",
+      "received_content": "Мы ответим вам как можно скорее."
     }
+  },
+  "sidebar": {
+    "cabinet": "Кабинет",
+    "calendar": "Календарь",
+    "news": "Новости",
+    "analytics": "Аналитика данных",
+    "work": "Проекты, задачи...",
+    "notifications": "Напоминания",
+    "pomodoro": "Помодоро"
+  },
+  "logout": {
+    "title": "Сессия завершена",
+    "confirm": "На главную"
   }
 }

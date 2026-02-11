@@ -1,134 +1,145 @@
 <template>
-    <!-- register form -->
-    <h1 class="text-red-500">
-        {{ error }}
-    </h1>
-    <div class="divider"></div>
-    <form action="" class="flex flex-col gap-5">
-        <div class="form-control flex flex-col gap-2">
-            <label class="label">
-                <span class="label-text">{{ $t('common.email') }}</span>
-            </label>
-            <input v-model="email" type="email" placeholder="test@example.com"
-                class="required input input-bordered w-full" />
+    <div class="transition-all duration-500">
+        <!-- register form -->
+        <!-- Animated error -->
+        <Transition name="error-slide">
+            <div v-if="error" class="overflow-hidden">
+                <h1 class="text-red-500 mb-2">
+                    {{ error }}
+                </h1>
+            </div>
+        </Transition>
+        <div class="divider"></div>
+        <form action="" class="flex flex-col gap-5">
+            <div class="form-control flex flex-col gap-2">
+                <label class="label">
+                    <span class="label-text">{{ $t('common.email') }}</span>
+                </label>
+                <input v-model="email" type="email" placeholder="test@example.com"
+                    class="required input input-bordered w-full" />
+            </div>
+            <div class="form-control flex flex-col gap-2">
+                <label class="label">
+                    <span class="label-text">{{ $t('common.username') }}</span>
+                </label>
+                <input v-model="username" type="text" placeholder="testuser" class="input input-bordered w-full" />
+            </div>
+            <div class="form-control flex flex-col gap-2">
+                <label class="label">
+                    <span class="label-text">{{ $t('common.password') }}</span>
+                </label>
+                <input v-model="password" type="password" :placeholder="$t('common.password')"
+                    class="input input-bordered w-full" />
+            </div>
+            <div class="form-control flex flex-col gap-2">
+                <label class="label">
+                    <span class="label-text">{{ $t('common.confirm_password') }}</span>
+                </label>
+                <input v-model="confirmPassword" type="password" :placeholder="$t('common.password')"
+                    class="input input-bordered w-full" />
+            </div>
+        </form>
+        <div class="flex mt-6">
+            <button class="btn btn-primary flex-1" @click="register">{{ $t('common.register') }}</button>
         </div>
-        <div class="form-control flex flex-col gap-2">
-            <label class="label">
-                <span class="label-text">{{ $t('common.username') }}</span>
-            </label>
-            <input v-model="username" type="text" placeholder="testuser" class="input input-bordered w-full" />
+        <!-- google auth button -->
+        <div class="flex mt-6">
+            <button class="btn btn-neutral flex-1" @click="loginGoogle">
+                <font-awesome-icon icon="fa-brands fa-google" />
+                {{ $t('common.register_with_google') }}
+            </button>
         </div>
-        <div class="form-control flex flex-col gap-2">
-            <label class="label">
-                <span class="label-text">{{ $t('common.password') }}</span>
-            </label>
-            <input v-model="password" type="password" :placeholder="$t('common.password')"
-                class="input input-bordered w-full" />
-        </div>
-        <div class="form-control flex flex-col gap-2">
-            <label class="label">
-                <span class="label-text">{{ $t('common.confirm_password') }}</span>
-            </label>
-            <input v-model="confirmPassword" type="password" :placeholder="$t('common.password')"
-                class="input input-bordered w-full" />
-        </div>
-    </form>
-    <div class="flex mt-6">
-        <button class="btn btn-primary flex-1" @click="register">{{ $t('common.register') }}</button>
+        <div class="divider"></div>
     </div>
-    <!-- google auth button -->
-    <div class="flex mt-6">
-        <button class="btn btn-neutral flex-1" @click="loginGoogle">
-            <font-awesome-icon icon="fa-brands fa-google" />
-        </button>
-    </div>
-    <div class="divider"></div>
 </template>
 
 <script>
-import { useAuthStore } from '@/stores/auth';
-import { ref } from 'vue';
-
-import { onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import axios from 'axios'
+import { useAuthStore } from '@/stores/auth'
+import { API_ENDPOINTS } from '@/config/api'
+import { api } from '@/services/axios'
 
 export default {
-    setup() {
-        const username = ref('');
-        const password = ref('');
-        const confirmPassword = ref('');
-        const email = ref('');
-        const authStore = useAuthStore();
-        const router = useRouter();
-        const error = ref('');
-        const route = useRoute();
+    data() {
+        return {
+            username: '',
+            password: '',
+            confirmPassword: '',
+            email: '',
+            error: '',
+            authStore: null
+        }
+    },
 
-        onMounted(() => {
-            const access = route.query.access_token
-            const refresh = route.query.refresh_token
+    mounted() {
+        this.authStore = useAuthStore()
 
-            if (access && refresh) {
-                authStore.accessToken = access
-                authStore.refreshToken = refresh
-                authStore.isAuthenticated = true
+        const access = this.$route.query.access_token
+        const refresh = this.$route.query.refresh_token
 
-                localStorage.setItem('accessToken', access)
-                localStorage.setItem('refreshToken', refresh)
+        if (access && refresh) {
+            this.authStore.setAuthData(access, refresh)
+            this.$router.replace('/')
+        }
+    },
 
-                axios.defaults.headers.common.Authorization = `Bearer ${access}`
+    methods: {
+        async register() {
+            this.error = ''
 
-                // noņem tokenus no URL
-                router.replace('/')
-
+            if (!this.username || !this.password || !this.confirmPassword || !this.email) {
+                this.error = 'All fields are required'
+                return
             }
-        })
 
-        async function register() {
-            error.value = '' // reset
-
-            if (!username.value || !password.value || !confirmPassword.value || !email.value) {
-                error.value = 'All fields are required';
-                return;
-            }
-            if (password.value !== confirmPassword.value) {
-                error.value = 'Passwords do not match';
-                return;
+            if (this.password !== this.confirmPassword) {
+                this.error = 'Passwords do not match'
+                return
             }
 
             try {
-                await authStore.register(username.value, email.value, password.value);
-                router.push('/');
+                await this.authStore.register(
+                    this.username,
+                    this.email,
+                    this.password
+                )
+                this.$router.push('/')
             } catch (err) {
                 console.error(err)
-
                 if (err.response?.data?.detail) {
-                    error.value = err.response.data.detail
-                }
-                else if (typeof err === 'string') {
-                    error.value = err
-                }
-                else {
-                    error.value = 'Registration failed'
+                    this.error = err.response.data.detail
+                } else if (typeof err === 'string') {
+                    this.error = err
+                } else {
+                    this.error = 'Registration failed'
                 }
             }
-        }
+        },
 
-        return {
-            username,
-            password,
-            email,
-            confirmPassword,
-            error,
-            register,
-        }
-    },
-    methods: {
         loginGoogle() {
-            window.location.href = 'http://localhost:8080/auth/google/login'
+            window.location.href = api.defaults.baseURL + API_ENDPOINTS.GOOGLE_LOGIN
         }
     }
 }
 </script>
 
-<style scoped></style>
+
+<style scoped>
+.error-slide-enter-active,
+.error-slide-leave-active {
+    transition: all 0.4s ease;
+}
+
+.error-slide-enter-from,
+.error-slide-leave-to {
+    opacity: 0;
+    transform: translateY(-10px);
+    max-height: 0;
+}
+
+.error-slide-enter-to,
+.error-slide-leave-from {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 100px;
+}
+</style>

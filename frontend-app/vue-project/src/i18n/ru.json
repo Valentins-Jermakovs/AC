@@ -41,6 +41,8 @@
     "username": "Имя пользователя",
     "name": "Имя",
     "switch_to_register": "Нет аккаунта?",
-    "switch_to_login": "Уже есть аккаунт?"
+    "switch_to_login": "Уже есть аккаунт?",
+    "login_with_google": "Вход через Google",
+    "register_with_google": "Регистрация через Google"
   }
 }

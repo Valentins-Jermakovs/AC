@@ -41,6 +41,8 @@
     "username": "Username",
     "name": "Name",
     "switch_to_register": "Don't have an account?",
-    "switch_to_login": "Already have an account?"
+    "switch_to_login": "Already have an account?",
+    "login_with_google": "Sign in with Google",
+    "register_with_google": "Sign up with Google"
   }
 }

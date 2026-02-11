@@ -41,6 +41,8 @@
         "username": "Lietotājvārds",
         "name": "Vārds",
         "switch_to_register": "Nav profila?",
-        "switch_to_login": "Jau ir profils?"
+        "switch_to_login": "Jau ir profils?",
+        "login_with_google": "Pieslēgties ar Google",
+        "register_with_google": "Reģistrācija ar Google"
     }
 }

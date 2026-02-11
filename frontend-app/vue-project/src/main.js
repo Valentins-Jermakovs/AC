@@ -2,11 +2,6 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { createI18n } from 'vue-i18n'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import axios from 'axios'
-
-axios.defaults.baseURL = 'http://localhost:8080' // Nginx URL
-axios.defaults.withCredentials = true // ja backend izmanto cookies
-
 
 import App from './App.vue'
 import router from './router'

@@ -43,6 +43,43 @@
     "switch_to_register": "Don't have an account?",
     "switch_to_login": "Already have an account?",
     "login_with_google": "Sign in with Google",
-    "register_with_google": "Sign up with Google"
+    "register_with_google": "Sign up with Google",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "support": "Support"
+  },
+  "eyeRest": {
+    "title": "Rest Your Eyes",
+    "content": "Look away from the screen for 20 seconds.",
+    "later": "Later",
+    "close": "OK"
+  },
+  "topbar": {
+    "title": "Analytics Center"
+  },
+  "modals": {
+    "logout": {
+      "title": "Log out?",
+      "content": "Are you sure you want to log out?"
+    },
+    "languages": {
+      "title": "Languages",
+      "latvian": "Latvian",
+      "english": "English",
+      "russian": "Russian"
+    },
+    "email": {
+      "title": "Message to project team",
+      "form_username": "Username",
+      "username_placeholder": "Enter username",
+      "form_email": "Email",
+      "email_placeholder": "Enter email",
+      "form_phone": "Phone number",
+      "phone_placeholder": "Enter phone number",
+      "form_title": "Subject",
+      "title_placeholder": "Enter message subject",
+      "form_content": "Message",
+      "content_placeholder": "Enter message"
+    }
   }
 }

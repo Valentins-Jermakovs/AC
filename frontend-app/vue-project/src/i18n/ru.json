@@ -43,6 +43,43 @@
     "switch_to_register": "Нет аккаунта?",
     "switch_to_login": "Уже есть аккаунт?",
     "login_with_google": "Вход через Google",
-    "register_with_google": "Регистрация через Google"
+    "register_with_google": "Регистрация через Google",
+    "cancel": "Отменить",
+    "confirm": "Подтвердить",
+    "support": "Поддержка"
+  },
+  "eyeRest": {
+    "title": "Глазам необходим отдых",
+    "content": "Посмотрите в сторону от монитора на 20 секунд.",
+    "later": "Позже",
+    "close": "Хорошо"
+  },
+  "topbar": {
+    "title": "Центр аналитики"
+  },
+  "modals": {
+    "logout": {
+      "title": "Выйти?",
+      "content": "Вы уверены, что хотите выйти?"
+    },
+    "languages": {
+      "title": "Языки",
+      "latvian": "Латышский",
+      "english": "Английский",
+      "russian": "Русский"
+    },
+    "email": {
+      "title": "Сообщение команде проекта",
+      "form_username": "Имя пользователя",
+      "username_placeholder": "Введите имя пользователя",
+      "form_email": "Электронная почта",
+      "email_placeholder": "Введите электронную почту",
+      "form_phone": "Номер телефона",
+      "phone_placeholder": "Введите номер телефона",
+      "form_title": "Тема",
+      "title_placeholder": "Введите тему сообщения",
+      "form_content": "Сообщение",
+      "content_placeholder": "Введите сообщение"
+    }
   }
 }

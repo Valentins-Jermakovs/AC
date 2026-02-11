@@ -24,7 +24,7 @@
             "terms": "Lietošanai nosacījumi"
         }
     },
-    "auth":{
+    "auth": {
         "login": {
             "title": "Autentifikācija"
         },
@@ -43,6 +43,43 @@
         "switch_to_register": "Nav profila?",
         "switch_to_login": "Jau ir profils?",
         "login_with_google": "Pieslēgties ar Google",
-        "register_with_google": "Reģistrācija ar Google"
+        "register_with_google": "Reģistrācija ar Google",
+        "cancel": "Atcelt",
+        "confirm": "Apstiprināt",
+        "support": "Palīdzība"
+    },
+    "eyeRest": {
+        "title": "Atpūtiniet acis",
+        "content": "Paskaties prom no ekrāna uz 20 sekundēm.",
+        "later": "Vēlāk",
+        "close": "Labi"
+    },
+    "topbar": {
+        "title": "Analītikas centrs"
+    },
+    "modals": {
+        "logout": {
+            "title": "Pātraukt sesiju?",
+            "content": "Vai tiešām vēlaties pātraukt sesiju?"
+        },
+        "languages": {
+            "title": "Valodas",
+            "latvian": "Latviešu",
+            "english": "Angļu",
+            "russian": "Krievu"
+        },
+        "email": {
+            "title": "Vēstule projekta komandai",
+            "form_username": "Lietotājvārds",
+            "username_placeholder": "Ievadiet lietotājvārdu",
+            "form_email": "E-pasts",
+            "email_placeholder": "Ievadiet e-pastu",
+            "form_phone": "Telefona numurs",
+            "phone_placeholder": "Ievadiet telefona numuru",
+            "form_title": "Tēma",
+            "title_placeholder": "Ievadiet vēstules tēmu",
+            "form_content": "Ziņa",
+            "content_placeholder": "Ievadiet ziņu"
+        }
     }
 }

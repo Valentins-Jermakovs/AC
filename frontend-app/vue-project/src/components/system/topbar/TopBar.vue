@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex w-full h-full bg-base-200 items-center justify-between p-2 border border-base-300"
+    class="flex w-full h-full bg-base-200 items-center justify-between py-2 pr-2 pl-1 border border-base-300"
   >
     <!-- LEFT: burger + logo -->
     <div class="flex items-center gap-4 pl-1">

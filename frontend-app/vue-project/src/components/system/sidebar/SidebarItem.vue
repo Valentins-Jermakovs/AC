@@ -1,10 +1,10 @@
 <template>
   <router-link
     :to="{ name: toName }"
-    class="btn-square btn border-0 font-bold md:tooltip md:tooltip-right flex items-center justify-center transform transition-all duration-500"
+    class="w-full btn h-12 font-bold md:w-12 md:h-12 md:tooltip md:tooltip-right flex items-center justify-center transform transition-all duration-500"
     :data-tip="t(titleKey)"
     :class="[
-      isActive ? 'btn-primary text-primary-content' : 'btn-neutral hover:bg-secondary',
+      isActive ? 'btn-primary' : 'btn-neutral',
       isSideBarOpen ? 'opacity-100 left-0' : 'opacity-0 pointer-events-none -left-15',
     ]"
     @click="handleClick"

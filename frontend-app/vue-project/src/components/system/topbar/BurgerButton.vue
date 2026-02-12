@@ -1,9 +1,9 @@
 <template>
   <!-- burger -->
   <button
-    class="btn-square border-0 btn-neutral btn"
+    class="w-12 h-12 border-0 btn"
     @click="toggleSideBar"
-    :class="isSideBarOpen ? ' hover:btn-primary' : 'btn-primary'"
+    :class="isSideBarOpen ? 'btn-neutral' : 'btn-primary'"
   >
     <font-awesome-icon icon="bars" />
   </button>

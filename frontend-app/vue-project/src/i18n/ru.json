@@ -97,5 +97,12 @@
   "logout": {
     "title": "Сессия завершена",
     "confirm": "На главную"
+  },
+  "cabinet": {
+    "title": "Кабинет",
+    "nav_bar": {
+      "dashboard": "Обзор",
+      "profile": "Профиль"
+    }
   }
 }

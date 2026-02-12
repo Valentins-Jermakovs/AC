@@ -97,5 +97,12 @@
   "logout": {
     "title": "Sesija pārtraukta",
     "confirm": "Uz sākumu"
+  },
+  "cabinet": {
+    "title": "Kabinets",
+    "nav_bar": {
+      "dashboard": "Pārskats",
+      "profile": "Profils"
+    }
   }
 }

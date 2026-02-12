@@ -35,18 +35,18 @@
     >
       <div class="w-full flex-col flex">
         <button
-          class="btn btn-neutral hover:btn-primary btn-sm w-full mb-2"
+          class="btn btn-neutral hover:scale-105 btn-md w-full transition-all duration-500 mb-2"
           @click="changeLocale('en')"
         >
           {{ $t('modals.languages.english') }}
         </button>
         <button
-          class="btn btn-neutral hover:btn-primary btn-sm w-full mb-2"
+          class="btn btn-neutral hover:scale-105 btn-md w-full transition-all duration-500 mb-2"
           @click="changeLocale('lv')"
         >
           {{ $t('modals.languages.latvian') }}
         </button>
-        <button class="btn btn-neutral hover:btn-primary btn-sm w-full" @click="changeLocale('ru')">
+        <button class="btn btn-neutral hover:scale-105 btn-md w-full transition-all duration-500" @click="changeLocale('ru')">
           {{ $t('modals.languages.russian') }}
         </button>
       </div>
@@ -59,16 +59,14 @@
       :cancel-text="$t('common.cancel')"
     >
       <div class="flex flex-col gap-2 w-full">
-        <div
+        <button
           v-for="(doc, index) in documents"
           :key="index"
-          class="flex-1 flex flex-col bg-base-200 border border-base-300 p-5 hover:scale-105 transform transition-transform duration-500"
+          @click="openDocument(doc.link)"
+          class="flex-1 flex flex-col btn btn-neutral p-5 hover:scale-105 transform transition-transform duration-500"
         >
-          <a :href="doc.link" target="_blank" class="hover:underline">
-            <font-awesome-icon icon="fa-regular fa-circle-question" />
-            {{ doc.title }}
-          </a>
-        </div>
+          {{ doc.title }}
+      </button>
       </div>
     </BaseDialog>
 
@@ -129,9 +127,9 @@ export default {
 
       // Documents for support
       documents: [
-        { link: '/documents/user_manual.pdf', title: 'User Manual' },
-        { link: '/documents/license.pdf', title: 'License' },
-        { link: '/documents/policy.pdf', title: 'Privacy Policy' },
+        { link: 'http://localhost:5173/documents/user_manual.pdf', title: 'User Manual' },
+        { link: 'http://localhost:5173/documents/license.pdf', title: 'License' },
+        { link: 'http://localhost:5173/documents/policy.pdf', title: 'Privacy Policy' },
       ],
 
       // Timer ID
@@ -150,6 +148,9 @@ export default {
       else if (modalName === 'language') this.languageModal = true
       else if (modalName === 'support') this.supportModal = true
       else if (modalName === 'logout') this.logoutModal = true
+    },
+    openDocument(link) {
+      window.open(link, '_blank')
     },
     async handleLogout() {
       try {

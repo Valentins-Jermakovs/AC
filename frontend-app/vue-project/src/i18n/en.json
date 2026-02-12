@@ -97,5 +97,12 @@
   "logout": {
     "title": "Session ended",
     "confirm": "Home"
+  },
+  "cabinet": {
+    "title": "Cabinet",
+    "nav_bar": {
+      "dashboard": "Dashboard",
+      "profile": "Profile"
+    }
   }
 }

@@ -87,6 +87,7 @@
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { useUserStore } from '@/stores/user'
 
 import BurgerButton from './BurgerButton.vue'
 import Logo from './ProjectLogo.vue'
@@ -155,6 +156,12 @@ export default {
     async handleLogout() {
       try {
         await this.authStore.logout()
+
+        const userStore = useUserStore()
+        const authStore = useAuthStore()
+
+        userStore.$reset()
+        authStore.$reset()
       } finally {
         this.logoutModal = false
         this.router.push({ name: 'logout' })

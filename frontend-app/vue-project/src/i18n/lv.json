@@ -47,7 +47,12 @@
     "cancel": "Atcelt",
     "confirm": "Apstiprināt",
     "support": "Palīdzība",
-    "back": "Atgriezties"
+    "back": "Atgriezties",
+    "new_username": "Jaunais lietotājvārds",
+    "new_email": "Jauns e-pasts",
+    "new_password": "Jaunā parole",
+    "old_password": "Vecā parole",
+    "if_google": "Ja esi izmantojis Google kontu, veco paroli ievadīt nevajag."
   },
   "eyeRest": {
     "title": "Atpūtiniet acis",
@@ -83,6 +88,11 @@
       "content_placeholder": "Ievadiet ziņu",
       "received": "Vēstule saņemta",
       "received_content": "Mēs Jums atbildēsim tuvākajā laika."
+    },
+    "modify_user": {
+      "new_username_title": "Mainīt lietotājvārdu?",
+      "new_email_title": "Mainīt e-pastu?",
+      "new_password_title": "Mainīt paroli?"
     }
   },
   "sidebar": {

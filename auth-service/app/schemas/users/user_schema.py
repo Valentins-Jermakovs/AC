@@ -3,8 +3,9 @@
 # =========================
 
 # Imports
-from pydantic import BaseModel  # Pydantic base model for validation
+from pydantic import BaseModel, field_serializer  # Pydantic base model for validation
 from typing import Optional, List
+from datetime import datetime
 
 
 # =========================
@@ -25,5 +26,9 @@ class UserSchema(BaseModel):
     username: Optional[str] = None
     email: str
     roles: List[str]
-    created_at: str
+    created_at: datetime
     active: bool
+
+    @field_serializer("created_at")
+    def serialize_created_at(self, value: datetime):
+        return value.strftime("%Y-%m-%d")

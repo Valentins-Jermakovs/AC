@@ -11,6 +11,7 @@ export const API_ENDPOINTS = {
 
   // Users
   GET_USERS: '/users/',
+  GET_ME: '/users/me',
   GET_USER_BY_ID: (id) => `/users/${id}`,
   GET_USER_BY_USERNAME_OR_EMAIL: (value) => `/users/search/${value}`,
   GET_USER_BY_ROLE: (role) => `/users/role/${role}`,

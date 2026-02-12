@@ -7,6 +7,7 @@
       v-for="(action, index) in actions"
       :key="index"
       class="btn btn-neutral w-full justify-start"
+      @click="$emit('action-click', action.key)"
     >
       {{ action.title }}
     </button>
@@ -18,6 +19,7 @@ export default {
   props: {
     actions: {
       type: Array,
+      required: true,
     },
   },
 }

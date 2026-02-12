@@ -8,9 +8,11 @@
     <p>
       <strong>{{ $t('cabinet.profile.roles') }}:</strong>
     </p>
-    <p>
-      {{ user.role }}
-    </p>
+    <ul class="list-disc list-inside">
+      <li v-for ="(role, index) in user.roles" :key="index">
+        {{ role }}
+      </li>
+    </ul>
   </div>
 </template>
 

@@ -68,7 +68,7 @@ export const useAuthStore = defineStore('auth', {
 
     async refreshAccessToken() {
       try {
-        const response = await api.post(API_ENDPOINTS.REFRESH, null, {
+        const response = await api.post(API_ENDPOINTS.TOKEN_REFRESH, null, {
           headers: {
             Authorization: `Bearer ${this.refreshToken}`,
           },
@@ -77,6 +77,8 @@ export const useAuthStore = defineStore('auth', {
         const { access_token, refresh_token } = response.data
 
         this.setAuthData(access_token, refresh_token ?? this.refreshToken)
+
+        return access_token
       } catch (e) {
         console.warn('Refresh token failed:', e)
         this.clearAuthData()

@@ -34,7 +34,7 @@
   },
   "common": {
     "login": "Войти",
-    "register": "Зарегистрироваться",
+    "register": "Регистрация",
     "email": "Электронная почта",
     "password": "Пароль",
     "confirm_password": "Подтвердите пароль",
@@ -42,12 +42,17 @@
     "name": "Имя",
     "switch_to_register": "Нет аккаунта?",
     "switch_to_login": "Уже есть аккаунт?",
-    "login_with_google": "Вход через Google",
+    "login_with_google": "Войти через Google",
     "register_with_google": "Регистрация через Google",
-    "cancel": "Отменить",
+    "cancel": "Отмена",
     "confirm": "Подтвердить",
     "support": "Поддержка",
-    "back": "Назад"
+    "back": "Назад",
+    "new_username": "Новый имя пользователя",
+    "new_email": "Новый email",
+    "new_password": "Новый пароль",
+    "old_password": "Старый пароль",
+    "if_google": "Если вы использовали аккаунт Google, вводить старый пароль не нужно."
   },
   "eyeRest": {
     "title": "Глазам необходим отдых",
@@ -83,6 +88,11 @@
       "content_placeholder": "Введите сообщение",
       "received": "Сообщение отправлено",
       "received_content": "Мы ответим вам как можно скорее."
+    },
+    "modify_user": {
+      "new_username_title": "Изменить имя пользователя?",
+      "new_email_title": "Изменить электронную почту?",
+      "new_password_title": "Изменить пароль?"
     }
   },
   "sidebar": {

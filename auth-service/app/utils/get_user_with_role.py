@@ -53,5 +53,6 @@ async def get_user_with_role(user_id: int, db: Session) -> UserSchema:
         username=user.username,
         email=user.email,
         active=user.active,
-        roles=user_roles  # roles must always be included in response
+        roles=user_roles,  # roles must always be included in response
+        created_at=user.created_at
     )

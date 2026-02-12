@@ -89,7 +89,8 @@ async def add_role_for_users(
             username=user.username,
             email=user.email,
             active=user.active,
-            roles=roles_map.get(user.id, [])
+            roles=roles_map.get(user.id, []),
+            created_at=user.created_at
         )
         for user in users
     ]

@@ -33,21 +33,26 @@
     }
   },
   "common": {
-    "login": "Log In",
+    "login": "Login",
     "register": "Register",
     "email": "Email",
     "password": "Password",
     "confirm_password": "Confirm Password",
     "username": "Username",
     "name": "Name",
-    "switch_to_register": "Don't have an account?",
+    "switch_to_register": "No account?",
     "switch_to_login": "Already have an account?",
-    "login_with_google": "Sign in with Google",
-    "register_with_google": "Sign up with Google",
+    "login_with_google": "Login with Google",
+    "register_with_google": "Register with Google",
     "cancel": "Cancel",
     "confirm": "Confirm",
     "support": "Support",
-    "back": "Back"
+    "back": "Back",
+    "new_username": "New Username",
+    "new_email": "New Email",
+    "new_password": "New Password",
+    "old_password": "Old Password",
+    "if_google": "If you used a Google account, you don’t need to enter the old password."
   },
   "eyeRest": {
     "title": "Rest Your Eyes",
@@ -83,6 +88,11 @@
       "content_placeholder": "Enter message",
       "received": "Message sent",
       "received_content": "We will answer you as soon as possible."
+    },
+    "modify_user": {
+      "new_username_title": "Change username?",
+      "new_email_title": "Change email?",
+      "new_password_title": "Change password?"
     }
   },
   "sidebar": {

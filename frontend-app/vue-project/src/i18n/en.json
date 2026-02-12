@@ -103,6 +103,23 @@
     "nav_bar": {
       "dashboard": "Dashboard",
       "profile": "Profile"
+    },
+    "profile": {
+      "created_at": "Joined",
+      "contact_info": "Contact Information",
+      "email": "Email",
+      "roles": "User Roles",
+      "kpi": {
+        "tasks": "Tasks",
+        "month_tasks": "Monthly Tasks",
+        "week_activity": "Weekly Activity"
+      },
+      "actions": {
+        "title": "User Modification",
+        "edit_username": "Change Username",
+        "edit_email": "Change Email",
+        "change_password": "Change Password"
+      }
     }
   }
 }

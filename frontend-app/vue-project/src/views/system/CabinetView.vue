@@ -1,23 +1,27 @@
 <template>
   <PageHeader :title="title" :imageUrl="image"></PageHeader>
-  <NavigationPanel :buttons="navButtons"></NavigationPanel>
+  <NavigationPanel :buttons="navButtons" v-model="activePage"></NavigationPanel>
+  <ProfilePage v-if="activePage === 'profile'"></ProfilePage>
 </template>
 
 <script>
 import PageHeader from '@/components/ui/PageHeader.vue';
 import headerImage from '@/assets/images/milad-fakurian-G5fdwRVoi4Q-unsplash.jpg'
 import NavigationPanel from '@/components/ui/NavigationPanel.vue';
+import ProfilePage from '@/components/system/cabinet/ProfilePage.vue';
 
 export default {
   name: 'CabinetView',
   components: { 
     PageHeader,
-    NavigationPanel
+    NavigationPanel,
+    ProfilePage
   },
 
   data() {
     return {
       image: headerImage,
+      activePage: 'dashboard',
     }
   },
 

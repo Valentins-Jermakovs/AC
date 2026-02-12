@@ -103,6 +103,25 @@
     "nav_bar": {
       "dashboard": "Pārskats",
       "profile": "Profils"
+    },
+    "profile": {
+      "created_at": "Pievienojies",
+      "contact_info": "Kontaktinformācija",
+      "email": "E-pasts",
+      "roles": "Lietotāja lomas",
+
+      "kpi": {
+        "tasks": "Uzdevumi",
+        "month_tasks": "Mēneša uzdevumi",
+        "week_activity": "Nedēļas aktivitāte"
+      },
+
+      "actions": {
+        "title": "Lietotāja modifikācija",
+        "edit_username": "Mainīt lietotājvārdu",
+        "edit_email": "Mainīt e-pastu",
+        "change_password": "Mainīt paroli"
+      }
     }
   }
 }

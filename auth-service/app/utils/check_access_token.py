@@ -27,7 +27,7 @@ ALGORITHM = os.getenv("ALGORITHM")
 # =========================
 # Access token validation
 # =========================
-async def check_access_token(access_token: str) -> int:
+async def check_access_token(access_token: str) -> str:
     """
     Validates JWT access token and extracts user ID.
 
@@ -54,13 +54,13 @@ async def check_access_token(access_token: str) -> int:
     # Token is valid but expired
     except ExpiredSignatureError:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
+            status_code=401,
             detail="Token has expired",
         )
     
     # Token is invalid (wrong signature, wrong format, etc.)
     except JWTError:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
+            status_code=401,
             detail="Could not validate credentials",
         )

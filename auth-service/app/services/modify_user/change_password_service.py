@@ -57,19 +57,20 @@ async def change_user_password(
     if not user.active:
         raise HTTPException(status_code=403, detail="User is inactive")
     
-    # If old password is None, user is registered with Google
+    # Local login
     if user.password_hash:
 
         if not old_password or not verify_password(old_password, user.password_hash):
-            raise HTTPException(status_code=403, detail="Invalid password")
+            raise HTTPException(
+                status_code=403, 
+                detail="Invalid password"
+            )
         
-        if old_password == new_password:
-            raise HTTPException(status_code=400, detail="New password cannot be the same as the old password")
-    
-    # Google login: no old password required
-    else:
-        if not user.email.endswith("@gmail.com"):
-            raise HTTPException(status_code=403, detail="User is not registered with Google")
+        if verify_password(new_password, user.password_hash):
+            raise HTTPException(
+                status_code=400, 
+                detail="New password cannot be the same as the old password"
+            )
 
     # Update password
     user.password_hash = get_password_hash(new_password)

@@ -14,7 +14,8 @@ from ...utils.get_users_roles_map import get_users_roles_map
 async def add_role_for_users(
     user_ids: list[int],
     role_id: int,
-    db: Session
+    db: Session,
+    user_id: str
 ) -> List[UserSchema]:
     """
     Adds a role to multiple users.
@@ -44,6 +45,13 @@ async def add_role_for_users(
 
     if len(users) != len(set(user_ids)):
         raise HTTPException(404, "User not found")
+
+    # check if current user try to modify his own role
+    if int(user_id) in user_ids:
+        raise HTTPException(
+            status_code=403, 
+            detail="You cannot modify your own role/roles"
+        )
 
     # Fetch role
     role = db.exec(

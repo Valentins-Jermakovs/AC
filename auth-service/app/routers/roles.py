@@ -47,7 +47,7 @@ async def add_role_for_user(
     access_token = credentials.credentials
     user_id = await check_admin_role(access_token, db)
 
-    return await add_role_for_users(user_ids, role_id, db)
+    return await add_role_for_users(user_ids, role_id, db, user_id)
 
 
 # =========================
@@ -72,4 +72,4 @@ async def remove_role_from_user(
     access_token = credentials.credentials
     user_id = await check_admin_role(access_token, db)
     
-    return await remove_role_from_users(user_ids, role_id, db)
+    return await remove_role_from_users(user_ids, role_id, db, user_id)

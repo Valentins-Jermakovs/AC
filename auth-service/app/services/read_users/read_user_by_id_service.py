@@ -43,11 +43,19 @@ async def get_user_by_id(
     roles_map = get_users_roles_map(user_id, db)
     user_roles = roles_map.get(user.id, [])
 
+    # If user username is None, set it to empty string
+    if user.username is None:
+        user.username = ""
+
+    # created_at to year, month, day
+    user.created_at = user.created_at.strftime("%Y-%m-%d")
+
     # Return user schema with roles
     return UserSchema(
         id=user.id,
         username=user.username,
         email=user.email,
         active=user.active,
-        roles=user_roles
+        roles=user_roles,
+        created_at=user.created_at
     )

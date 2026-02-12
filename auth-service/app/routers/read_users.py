@@ -9,6 +9,7 @@ from typing import Annotated
 from sqlmodel import Session
 # Schemas
 from ..schemas.users.pagination_schema import PaginatedUsers
+from ..schemas.users.user_schema import UserSchema
 # Services
 from ..services.read_users.read_all_users_service import get_users_paginated
 from ..services.read_users.read_user_by_id_service import get_user_by_id
@@ -18,6 +19,7 @@ from ..services.read_users.read_user_by_role_service import get_users_by_role
 from ..dependencies.data_base_connection import get_db
 # Utils
 from ..utils.check_admin_role import check_admin_role
+from ..utils.check_access_token import check_access_token
 
 
 # =========================
@@ -65,6 +67,35 @@ async def fetch_all_users_paginated(
         "meta": paginated_users.meta,
     }
 
+# =========================
+# Get info about current user
+# =========================
+@router.get(
+    "/me",
+    response_model=UserSchema,
+    summary="Get info about current user",
+    description="Get info about current user from the database",
+)
+async def fetch_current_user(
+    db: Annotated[Session, Depends(get_db)],
+    credentials: HTTPAuthorizationCredentials = Depends(security),
+):
+    """
+    Retrieve info about current user.
+
+    Steps:
+    1. Extract access token
+    2. Extract user ID
+    3. Fetch user info from DB
+    4. Return as single-item list
+    """
+    access_token = credentials.credentials
+    user_id = await check_access_token(access_token)
+
+    user = await get_user_by_id(user_id, db)
+
+    return user
+
 
 
 # =========================
@@ -72,7 +103,7 @@ async def fetch_all_users_paginated(
 # =========================
 @router.get(
     "/{find_user_by_id}", 
-    response_model=PaginatedUsers,
+    response_model=UserSchema,
     summary="Get user by ID",
     description="Get user by ID from the database"
 )
@@ -95,10 +126,7 @@ async def fetch_user_by_id(
 
     user = await get_user_by_id(find_user_by_id, db)
 
-    return {
-        "items": [user],
-        "meta": None,
-    }
+    return user
 
 
 # =========================

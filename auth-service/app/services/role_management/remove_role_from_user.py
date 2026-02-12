@@ -14,7 +14,8 @@ from ...utils.get_users_roles_map import get_users_roles_map
 async def remove_role_from_users(
     user_ids: list[int],
     role_id: int,
-    db: Session
+    db: Session,
+    user_id: str
 ) -> List[UserSchema]:
     """
     Removes a role from multiple users.
@@ -42,7 +43,17 @@ async def remove_role_from_users(
     ).all()
 
     if len(users) != len(set(user_ids)):
-        raise HTTPException(404, "User not found")
+        raise HTTPException(
+            status_code=404, 
+            detail="User not found"
+        )
+
+    # check if current user try to modify his own role
+    if int(user_id) in user_ids:
+        raise HTTPException(
+            status_code=403, 
+            detail="You cannot modify your own role/roles"
+        )
 
     # Fetch role
     role = db.exec(
@@ -50,7 +61,10 @@ async def remove_role_from_users(
     ).first()
 
     if not role:
-        raise HTTPException(404, "Role not found")
+        raise HTTPException(
+            status_code=404, 
+            detail="Role not found"
+        )
 
     # Remove role from users
     for user in users:

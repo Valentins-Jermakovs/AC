@@ -25,4 +25,5 @@ class UserSchema(BaseModel):
     username: Optional[str] = None
     email: str
     roles: List[str]
+    created_at: str
     active: bool

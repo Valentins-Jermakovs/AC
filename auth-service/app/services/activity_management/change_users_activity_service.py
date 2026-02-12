@@ -18,7 +18,8 @@ from ...schemas.users.user_activity_schema import UserActivitySchema
 async def change_users_activity_status(
     user_ids: list[int],
     is_active: bool,
-    db: Session
+    db: Session,
+    user_id: str
 ):
     """
     Changes activity status for multiple users.
@@ -46,6 +47,13 @@ async def change_users_activity_status(
         raise HTTPException(
             status_code=404, 
             detail="User not found"
+        )
+
+    # If user is trying to change their own activity status, return 403
+    if int(user_id) in [user.id for user in users]:
+        raise HTTPException(
+            status_code=403, 
+            detail="You cannot change your own activity status"
         )
 
     # Update activity status for each user

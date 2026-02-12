@@ -14,7 +14,7 @@ from ..models import Role, UserRole
 # =========================
 # Admin access check
 # =========================
-async def check_admin_role(access_token: str, db: Session) -> int:
+async def check_admin_role(access_token: str, db: Session) -> str:
     """
     Checks whether the user has admin privileges.
 

@@ -2,10 +2,14 @@
   <div class="bg-base-200 border border-base-300 rounded-box p-5 flex flex-col gap-2">
     <h3 class="text-lg font-semibold">{{ $t('cabinet.profile.contact_info') }}</h3>
     <p>
-      <strong>{{ $t('cabinet.profile.email') }}:</strong> {{ user.email }}
+      <strong>{{ $t('cabinet.profile.email') }}:</strong>
+    </p>
+    <p> {{ user.email }}</p>
+    <p>
+      <strong>{{ $t('cabinet.profile.roles') }}:</strong>
     </p>
     <p>
-      <strong>{{ $t('cabinet.profile.roles') }}:</strong> {{ user.role }}
+      {{ user.role }}
     </p>
   </div>
 </template>

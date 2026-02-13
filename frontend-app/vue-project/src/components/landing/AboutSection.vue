@@ -8,7 +8,7 @@
 
         <!-- Image -->
         <img
-          src="@/assets/images/milad-fakurian-saOPkvma85M-unsplash.jpg"
+          src="@/assets/images/mahdi-naserinejad-cwu7f11VFSc-unsplash.jpg"
           alt="About"
           class="rounded-box transition-opacity duration-1000 w-full h-full object-cover"
           :class="{ 'opacity-0': !loaded, 'opacity-100': loaded }"

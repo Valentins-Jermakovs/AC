@@ -6,7 +6,7 @@
     </div>
     <!-- Image section -->
     <div
-      class="hidden md:block flex-1 bg-[url('@/assets/images/cader_-JiV-8Zf8FfU-unsplash.jpg')] bg-cover bg-center"
+      class="hidden md:block flex-1 bg-[url('@/assets/images/mahdi-naserinejad-cwu7f11VFSc-unsplash.jpg')] bg-cover bg-center"
     ></div>
   </div>
 </template>

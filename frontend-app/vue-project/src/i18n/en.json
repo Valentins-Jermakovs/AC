@@ -12,7 +12,13 @@
       "events": "Event Planning",
       "events_description": "Plan and manage events.",
       "analytics": "Analytics Dashboard",
-      "analytics_description": "Visualize and analyze your data."
+      "analytics_description": "Visualize and analyze your data.",
+      "finances": "Financial Planning",
+      "finances_description": "Organize and manage your budget.",
+      "google": "Google Authentication",
+      "google_description": "Log in safely and quickly with your Google account.",
+      "environment": "Environmental Analysis",
+      "environment_description": "Analyze the environment, data trends, and surroundings."
     },
     "CTA": {
       "title": "Get Started Today!",

@@ -12,7 +12,13 @@
       "events": "Notikumu plānošana",
       "events_description": "Plāno un pārvaldi notikumus.",
       "analytics": "Analītikas panelis",
-      "analytics_description": "Vizualizē un analizē datus."
+      "analytics_description": "Vizualizē un analizē datus.",
+      "finances": "Finanšu plānošana",
+      "finances_description": "Organizē un pārvaldi savu budžetu.",
+      "google": "Google autentifikācija",
+      "google_description": "Pieslēdzies droši un ātri ar savu Google kontu.",
+      "environment": "Vides analīze",
+      "environment_description": "Analizē vidi, datu tendences un apkārtējo vidi."
     },
     "CTA": {
       "title": "Sāciet darbu šodien!",

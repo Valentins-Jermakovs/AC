@@ -35,19 +35,19 @@
     >
       <div class="w-full flex-col flex">
         <button
-          class="btn btn-neutral hover:scale-105 btn-md w-full transition-all duration-500 mb-2"
+          class="btn btn-neutral hover:btn-secondary btn-md w-full transition-all duration-500 mb-2"
           @click="changeLocale('en')"
         >
           {{ $t('modals.languages.english') }}
         </button>
         <button
-          class="btn btn-neutral hover:scale-105 btn-md w-full transition-all duration-500 mb-2"
+          class="btn btn-neutral hover:btn-secondary btn-md w-full transition-all duration-500 mb-2"
           @click="changeLocale('lv')"
         >
           {{ $t('modals.languages.latvian') }}
         </button>
         <button
-          class="btn btn-neutral hover:scale-105 btn-md w-full transition-all duration-500"
+          class="btn btn-neutral hover:btn-secondary btn-md w-full transition-all duration-500"
           @click="changeLocale('ru')"
         >
           {{ $t('modals.languages.russian') }}
@@ -66,7 +66,7 @@
           v-for="(doc, index) in documents"
           :key="index"
           @click="openDocument(doc.link)"
-          class="flex-1 flex flex-col btn btn-neutral p-5 hover:scale-105 transform transition-transform duration-500"
+          class="flex-1 flex flex-col btn btn-neutral p-5 hover:btn-secondary transition-all duration-500"
         >
           {{ doc.title }}
         </button>

@@ -6,7 +6,7 @@
     <button
       v-for="(action, index) in actions"
       :key="index"
-      class="btn btn-neutral w-full justify-start"
+      class="btn btn-neutral w-full justify-start hover:btn-secondary transition-all duration-300"
       @click="$emit('action-click', action.key)"
     >
       {{ action.title }}

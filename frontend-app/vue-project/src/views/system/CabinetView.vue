@@ -2,6 +2,7 @@
   <PageHeader :title="title" :imageUrl="image"></PageHeader>
   <NavigationPanel :buttons="navButtons" v-model="activePage"></NavigationPanel>
   <ProfilePage v-if="activePage === 'profile'"></ProfilePage>
+  <LoadingScreen v-if="!userStore.user"></LoadingScreen>
 </template>
 
 <script>
@@ -10,12 +11,16 @@ import headerImage from '@/assets/images/milad-fakurian-G5fdwRVoi4Q-unsplash.jpg
 import NavigationPanel from '@/components/ui/NavigationPanel.vue'
 import ProfilePage from '@/components/system/cabinet/ProfilePage.vue'
 
+import { useUserStore } from '@/stores/user'
+import LoadingScreen from '@/components/common/LoadingScreen.vue'
+
 export default {
   name: 'CabinetView',
   components: {
     PageHeader,
     NavigationPanel,
     ProfilePage,
+    LoadingScreen,
   },
 
   data() {
@@ -26,6 +31,9 @@ export default {
   },
 
   computed: {
+    userStore() {
+      return useUserStore()
+    },
     title() {
       return this.$t('cabinet.title')
     },
@@ -37,6 +45,12 @@ export default {
 
       return navButtons
     },
+  },
+
+  mounted() {
+    if (!this.userStore.user) {
+      this.userStore.fetchMe()
+    }
   },
 }
 </script>

@@ -133,5 +133,8 @@
         "change_password": "Mainīt paroli"
       }
     }
+  },
+  "errors": {
+    "404": "Šī vieta eksistē tikai tavos sapņos… vai arī mēs to vienkārši pazaudējām. (404)"
   }
 }

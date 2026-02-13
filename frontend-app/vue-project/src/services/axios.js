@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { useAuthStore } from '@/stores/auth'
+import { useUserStore } from '@/stores/user'
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -26,10 +27,22 @@ api.interceptors.response.use(
     const originalRequest = error.config
     const authStore = useAuthStore()
 
+    if (!error.response) {
+      return Promise.reject(error)
+    }
+
+    const status = error.response.status
+
+    const isAuthRoute =
+      originalRequest.url.includes('/token/refresh') ||
+      originalRequest.url.includes('/auth/login') ||
+      originalRequest.url.includes('/auth/logout')
+
     if (
-      error.response?.status === 401 &&
+      status === 401 &&
       !originalRequest._retry &&
-      authStore.refreshToken
+      authStore.refreshToken &&
+      !isAuthRoute
     ) {
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
@@ -55,8 +68,13 @@ api.interceptors.response.use(
         return api(originalRequest)
       } catch (err) {
         processQueue(err, null)
-        authStore.clearAuthData()
-        window.location.href = '/login'
+
+        authStore.fullReset()
+
+        isRefreshing = false
+
+        window.location.replace('/login')
+
         return Promise.reject(err)
       } finally {
         isRefreshing = false

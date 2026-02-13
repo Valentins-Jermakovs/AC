@@ -6,6 +6,7 @@ from fastapi import HTTPException
 from sqlmodel import Session, select
 from ...models import User
 from ...utils.get_user_with_role import get_user_with_role
+import re
 
 
 # =========================
@@ -42,6 +43,13 @@ async def change_user_email(
 
     # Normalize new email
     new_email = new_email.strip().lower()
+
+    # Validate email 
+    regex = r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,7}"
+
+    if not re.match(regex, new_email):
+        raise HTTPException(status_code=400, detail="Invalid email format")
+
 
     # Validation: user existence
     if not user:

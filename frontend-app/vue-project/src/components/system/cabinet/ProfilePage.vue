@@ -12,35 +12,59 @@
       <UserModificationCard :actions="actions" @action-click="handleActionClick"></UserModificationCard>
     </div>
 
-    <div v-else>Loading user...</div>
+    <LoadingScreen v-else></LoadingScreen>
 
     <!-- Modals -->
     <BaseDialog v-model="openUsernameModal" :title="$t('modals.modify_user.new_username_title')"
       :confirm-text="$t('common.confirm')" :cancel-text="$t('common.cancel')" @confirm="submitUsernameChange">
-      <div class="form-control flex flex-col gap-2 w-full">
-        <label class="label">
-          <span class="label-text">{{ $t('common.username') }}</span>
-        </label>
-        <input v-model="newUsername" type="text" :placeholder="$t('common.new_username')"
-          class="input input-bordered w-full" />
+      <div class="flex flex-col w-full gap-5">
+        <Transition name="error-slide">
+          <div v-if="error" class="overflow-hidden">
+            <h1 class="text-red-500 mb-2">
+              {{ error }}
+            </h1>
+          </div>
+        </Transition>
+        <div class="form-control flex flex-col gap-2 w-full">
+          <label class="label">
+            <span class="label-text">{{ $t('common.username') }}</span>
+          </label>
+          <input v-model="newUsername" type="text" :placeholder="$t('common.new_username')"
+            class="input input-bordered w-full" />
+        </div>
       </div>
     </BaseDialog>
 
     <BaseDialog v-model="openEmailModal" :title="$t('modals.modify_user.new_email_title')"
       :confirm-text="$t('common.confirm')" :cancel-text="$t('common.cancel')" @confirm="submitEmailChange">
-      <div class="form-control flex flex-col gap-2 w-full">
-        <label class="label">
-          <span class="label-text">{{ $t('common.email') }}</span>
-        </label>
-        <input v-model="newEmail" type="email" :placeholder="$t('common.new_email')"
-          class="input input-bordered w-full" />
+      <div class="flex flex-col w-full gap-5">
+        <Transition name="error-slide">
+          <div v-if="error" class="overflow-hidden">
+            <h1 class="text-red-500 mb-2">
+              {{ error }}
+            </h1>
+          </div>
+        </Transition>
+        <div class="form-control flex flex-col gap-2 w-full">
+          <label class="label">
+            <span class="label-text">{{ $t('common.email') }}</span>
+          </label>
+          <input v-model="newEmail" type="email" :placeholder="$t('common.new_email')"
+            class="input input-bordered w-full" />
+        </div>
       </div>
     </BaseDialog>
 
     <BaseDialog v-model="openPasswordModal" :title="$t('modals.modify_user.new_password_title')"
-      :confirm-text="$t('common.confirm')" :cancel-text="$t('common.cancel')"
-      @confirm="submitPasswordChange">
+      :confirm-text="$t('common.confirm')" :cancel-text="$t('common.cancel')" @confirm="submitPasswordChange">
       <div class="flex flex-col w-full gap-5">
+        <Transition name="error-slide">
+          <div v-if="error" class="overflow-hidden">
+            <h1 class="text-red-500 mb-2">
+              {{ error }}
+            </h1>
+          </div>
+        </Transition>
         <p class="opacity-50">* {{ $t('common.if_google') }}</p>
         <div class="form-control flex flex-col gap-2 w-full">
           <label class="label">
@@ -68,6 +92,7 @@ import UserProgressCard from './UserProgressCard.vue'
 import UserModificationCard from './UserModificationCard.vue'
 import BaseDialog from '@/components/common/BaseDialog.vue'
 import { useUserStore } from '@/stores/user'
+import LoadingScreen from '@/components/common/LoadingScreen.vue'
 
 export default {
   name: 'UserProfileView',
@@ -90,11 +115,12 @@ export default {
     UserProgressCard,
     UserModificationCard,
     BaseDialog,
+    LoadingScreen,
   },
 
   computed: {
     user() {
-      return useUserStore().user
+      return this.userStore.user
     },
 
     progressItems() {
@@ -103,6 +129,13 @@ export default {
         { title: this.$t('cabinet.profile.kpi.month_tasks'), value: 3, max: 5, percent: 60, colorClass: 'text-primary', progressClass: 'progress-primary' },
         { title: this.$t('cabinet.profile.kpi.week_activity'), value: 5, max: 7, percent: 71, colorClass: 'text-warning', progressClass: 'progress-warning' },
       ]
+    },
+
+    userStore() {
+      return useUserStore()
+    },
+    error() {
+      return this.userStore.error
     },
 
     actions() {
@@ -115,28 +148,46 @@ export default {
   },
 
   methods: {
+    closeModal(modalName) {
+      switch (modalName) {
+        case 'username':
+          this.openUsernameModal = false
+          this.userStore.error = ''
+          break
+        case 'email':
+          this.openEmailModal = false
+          this.userStore.error = ''
+          break
+        case 'password':
+          this.openPasswordModal = false
+          this.userStore.error = ''
+          break
+        default:
+          break
+      }
+    },
     handleActionClick(key) {
       switch (key) {
         case 'username':
           this.openUsernameModal = true
+          this.userStore.clearError()
           break
         case 'email':
           this.openEmailModal = true
+          this.userStore.clearError()
           break
         case 'password':
           this.openPasswordModal = true
+          this.userStore.clearError()
           break
       }
     },
     async submitUsernameChange() {
 
-      const userStore = useUserStore()
-
       if (!this.newUsername || this.newUsername === '') return
 
-
       try {
-        await userStore.changeUsername(this.newUsername)
+        await this.userStore.changeUsername(this.newUsername)
         this.openUsernameModal = false
         this.newUsername = ''
       } catch (err) {
@@ -145,12 +196,10 @@ export default {
     },
     async submitEmailChange() {
 
-      const userStore = useUserStore()
-
       if (!this.newEmail || this.newEmail === '') return
 
       try {
-        await userStore.changeEmail(this.newEmail)
+        await this.userStore.changeEmail(this.newEmail)
         this.openEmailModal = false
         this.newEmail = ''
       } catch (err) {
@@ -159,10 +208,8 @@ export default {
     },
     async submitPasswordChange() {
 
-      const userStore = useUserStore()
-
       try {
-        await userStore.changePassword(this.new_password, this.old_password)
+        await this.userStore.changePassword(this.new_password, this.old_password)
         this.openPasswordModal = false
         this.old_password = ''
         this.new_password = ''
@@ -173,12 +220,30 @@ export default {
   },
 
   mounted() {
-    const userStore = useUserStore()
-    if (!userStore.user) {
-      userStore.fetchMe()
+    if (!this.userStore.user) {
+      this.userStore.fetchMe()
     }
   },
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.error-slide-enter-active,
+.error-slide-leave-active {
+  transition: all 0.4s ease;
+}
+
+.error-slide-enter-from,
+.error-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+  max-height: 0;
+}
+
+.error-slide-enter-to,
+.error-slide-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+  max-height: 100px;
+}
+</style>

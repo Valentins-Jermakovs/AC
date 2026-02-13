@@ -6,6 +6,7 @@ import RegisterView from '@/views/auth/RegisterView.vue'
 import LogoutView from '@/views/LogoutView.vue'
 
 import EmailRedirectView from '@/views/EmailRedirectView.vue'
+import NotFoundView from '@/views/errors/NotFoundView.vue'
 
 import SystemView from '@/views/SystemView.vue'
 import CabinetView from '@/views/system/CabinetView.vue'
@@ -38,6 +39,11 @@ const router = createRouter({
       path: '/logout',
       name: 'logout',
       component: LogoutView,
+    },
+    {
+      path: '/:catchAll(.*)',
+      name: 'not-found',
+      component: NotFoundView,
     },
     {
       path: '/system',

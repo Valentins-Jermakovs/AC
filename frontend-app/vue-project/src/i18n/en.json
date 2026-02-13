@@ -131,5 +131,8 @@
         "change_password": "Change Password"
       }
     }
+  },
+  "errors": {
+    "404": "This place exists only in your imagination... or maybe we will forget about it. (404)"
   }
 }

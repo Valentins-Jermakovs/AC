@@ -53,15 +53,15 @@ async def login_user(db: Session, data: LoginSchema) -> TokenRefreshSchema:
     ).first()
 
     if not user:
-        raise HTTPException(status_code=401, detail="User not found")
+        raise HTTPException(status_code=401, detail="Invalid data")
 
     # Verify password hash
     if not verify_password(data.password, user.password_hash):
-        raise HTTPException(status_code=401, detail="Invalid password")
+        raise HTTPException(status_code=401, detail="Invalid data")
 
     # Check if user is active
     if not user.active:
-        raise HTTPException(status_code=401, detail="User is inactive")
+        raise HTTPException(status_code=401, detail="Invalid data")
 
 
     # Delete old refresh tokens for this user

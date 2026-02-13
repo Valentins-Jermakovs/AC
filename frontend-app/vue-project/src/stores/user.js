@@ -63,6 +63,7 @@ export const useUserStore = defineStore("user", {
             } catch (err) {
                 console.error('Failed to change username:', err);
                 this.error = err.response?.data?.detail || err.message || err;
+                throw err;
             } finally {
                 this.loading = false;
             }
@@ -91,6 +92,7 @@ export const useUserStore = defineStore("user", {
             } catch (err) {
                 console.error('Failed to change email:', err);
                 this.error = err.response?.data?.detail || err.message || err;
+                throw err;
             } finally {
                 this.loading = false;
             }
@@ -120,6 +122,7 @@ export const useUserStore = defineStore("user", {
             catch (err) {
                 console.error('Failed to change password:', err);
                 this.error = err.response?.data?.detail || err.message || err;
+                throw err;
             }
             finally {
                 this.loading = false;
@@ -129,6 +132,9 @@ export const useUserStore = defineStore("user", {
             this.user = null
             this.error = null
             this.loading = false
+        },
+        clearError() {
+            this.error = null
         }
     },
 });

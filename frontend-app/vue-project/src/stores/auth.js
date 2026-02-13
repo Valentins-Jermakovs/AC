@@ -1,16 +1,15 @@
 import { defineStore } from 'pinia'
 import { api } from '@/services/axios'
 import { API_ENDPOINTS } from '@/config/api'
+import { useUserStore } from '@/stores/user'
 
 export const useAuthStore = defineStore('auth', {
-  // state - the data of the store
   state: () => ({
     accessToken: null,
     refreshToken: null,
     isAuthenticated: false,
   }),
 
-  // actions - the methods of the store
   actions: {
     async login(username, password) {
       try {
@@ -19,9 +18,7 @@ export const useAuthStore = defineStore('auth', {
         formData.append('password', password)
 
         const response = await api.post(API_ENDPOINTS.LOGIN, formData, {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         })
 
         const { access_token, refresh_token } = response.data
@@ -37,7 +34,11 @@ export const useAuthStore = defineStore('auth', {
 
     async register(username, email, password) {
       try {
-        const response = await api.post(API_ENDPOINTS.REGISTER, { username, email, password })
+        const response = await api.post(API_ENDPOINTS.REGISTER, {
+          username,
+          email,
+          password,
+        })
 
         const { access_token, refresh_token } = response.data
 
@@ -62,27 +63,22 @@ export const useAuthStore = defineStore('auth', {
       } catch (e) {
         console.warn('Logout failed:', e)
       } finally {
-        this.clearAuthData()
+        this.fullReset()
       }
     },
 
     async refreshAccessToken() {
-      try {
-        const response = await api.post(API_ENDPOINTS.TOKEN_REFRESH, null, {
-          headers: {
-            Authorization: `Bearer ${this.refreshToken}`,
-          },
-        })
+      const response = await api.post(API_ENDPOINTS.TOKEN_REFRESH, null, {
+        headers: {
+          Authorization: `Bearer ${this.refreshToken}`,
+        },
+      })
 
-        const { access_token, refresh_token } = response.data
+      const { access_token, refresh_token } = response.data
 
-        this.setAuthData(access_token, refresh_token ?? this.refreshToken)
+      this.setAuthData(access_token, refresh_token ?? this.refreshToken)
 
-        return access_token
-      } catch (e) {
-        console.warn('Refresh token failed:', e)
-        this.clearAuthData()
-      }
+      return access_token
     },
 
     loadFromStorage() {
@@ -93,8 +89,6 @@ export const useAuthStore = defineStore('auth', {
         this.setAuthData(access, refresh)
       }
     },
-
-    // helpers
 
     setAuthData(access, refresh) {
       this.accessToken = access
@@ -116,6 +110,13 @@ export const useAuthStore = defineStore('auth', {
       localStorage.removeItem('refreshToken')
 
       delete api.defaults.headers.common['Authorization']
+    },
+
+    fullReset() {
+      this.clearAuthData()
+
+      const userStore = useUserStore()
+      userStore.clearUser()
     },
   },
 })

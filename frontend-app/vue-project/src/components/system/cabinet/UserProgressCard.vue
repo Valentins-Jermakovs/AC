@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-base-200 border border-base-300 p-5">
+  <div class="bg-base-200 border border-base-300 p-5 rounded-box">
     <div class="flex justify-between items-center gap-2">
       <h3 class="text-lg font-semibold">{{ title }}</h3>
       <span :class="['text-xl font-bold', colorClass]">{{ percent }}%</span>

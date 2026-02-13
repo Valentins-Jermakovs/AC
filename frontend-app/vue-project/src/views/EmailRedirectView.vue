@@ -17,10 +17,7 @@
         alt="Page not found"
       />
     </div>
-    <button
-      class="btn btn-primary text-lg lg:text-xl px-6 py-3"
-      @click="goBack"
-    >
+    <button class="btn btn-primary text-lg lg:text-xl px-6 py-3" @click="goBack">
       {{ t('common.back') }}
     </button>
   </div>

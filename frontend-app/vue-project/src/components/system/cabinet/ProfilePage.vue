@@ -6,17 +6,29 @@
       <UserInfoCard :user="user"></UserInfoCard>
 
       <div class="flex flex-col gap-5">
-        <UserProgressCard v-for="(item, index) in progressItems" :key="index" v-bind="item"></UserProgressCard>
+        <UserProgressCard
+          v-for="(item, index) in progressItems"
+          :key="index"
+          v-bind="item"
+        ></UserProgressCard>
       </div>
 
-      <UserModificationCard :actions="actions" @action-click="handleActionClick"></UserModificationCard>
+      <UserModificationCard
+        :actions="actions"
+        @action-click="handleActionClick"
+      ></UserModificationCard>
     </div>
 
     <LoadingScreen v-else></LoadingScreen>
 
     <!-- Modals -->
-    <BaseDialog v-model="openUsernameModal" :title="$t('modals.modify_user.new_username_title')"
-      :confirm-text="$t('common.confirm')" :cancel-text="$t('common.cancel')" @confirm="submitUsernameChange">
+    <BaseDialog
+      v-model="openUsernameModal"
+      :title="$t('modals.modify_user.new_username_title')"
+      :confirm-text="$t('common.confirm')"
+      :cancel-text="$t('common.cancel')"
+      @confirm="submitUsernameChange"
+    >
       <div class="flex flex-col w-full gap-5">
         <Transition name="error-slide">
           <div v-if="error" class="overflow-hidden">
@@ -29,14 +41,23 @@
           <label class="label">
             <span class="label-text">{{ $t('common.username') }}</span>
           </label>
-          <input v-model="newUsername" type="text" :placeholder="$t('common.new_username')"
-            class="input input-bordered w-full" />
+          <input
+            v-model="newUsername"
+            type="text"
+            :placeholder="$t('common.new_username')"
+            class="input input-bordered w-full"
+          />
         </div>
       </div>
     </BaseDialog>
 
-    <BaseDialog v-model="openEmailModal" :title="$t('modals.modify_user.new_email_title')"
-      :confirm-text="$t('common.confirm')" :cancel-text="$t('common.cancel')" @confirm="submitEmailChange">
+    <BaseDialog
+      v-model="openEmailModal"
+      :title="$t('modals.modify_user.new_email_title')"
+      :confirm-text="$t('common.confirm')"
+      :cancel-text="$t('common.cancel')"
+      @confirm="submitEmailChange"
+    >
       <div class="flex flex-col w-full gap-5">
         <Transition name="error-slide">
           <div v-if="error" class="overflow-hidden">
@@ -49,14 +70,23 @@
           <label class="label">
             <span class="label-text">{{ $t('common.email') }}</span>
           </label>
-          <input v-model="newEmail" type="email" :placeholder="$t('common.new_email')"
-            class="input input-bordered w-full" />
+          <input
+            v-model="newEmail"
+            type="email"
+            :placeholder="$t('common.new_email')"
+            class="input input-bordered w-full"
+          />
         </div>
       </div>
     </BaseDialog>
 
-    <BaseDialog v-model="openPasswordModal" :title="$t('modals.modify_user.new_password_title')"
-      :confirm-text="$t('common.confirm')" :cancel-text="$t('common.cancel')" @confirm="submitPasswordChange">
+    <BaseDialog
+      v-model="openPasswordModal"
+      :title="$t('modals.modify_user.new_password_title')"
+      :confirm-text="$t('common.confirm')"
+      :cancel-text="$t('common.cancel')"
+      @confirm="submitPasswordChange"
+    >
       <div class="flex flex-col w-full gap-5">
         <Transition name="error-slide">
           <div v-if="error" class="overflow-hidden">
@@ -70,15 +100,23 @@
           <label class="label">
             <span class="label-text">{{ $t('common.old_password') }}</span>
           </label>
-          <input v-model="old_password" type="password" :placeholder="$t('common.password')"
-            class="input input-bordered w-full" />
+          <input
+            v-model="old_password"
+            type="password"
+            :placeholder="$t('common.password')"
+            class="input input-bordered w-full"
+          />
         </div>
         <div class="form-control flex flex-col gap-2 w-full">
           <label class="label">
             <span class="label-text">{{ $t('common.new_password') }}</span>
           </label>
-          <input v-model="new_password" type="password" :placeholder="$t('common.password')"
-            class="input input-bordered w-full" />
+          <input
+            v-model="new_password"
+            type="password"
+            :placeholder="$t('common.password')"
+            class="input input-bordered w-full"
+          />
         </div>
       </div>
     </BaseDialog>
@@ -125,9 +163,30 @@ export default {
 
     progressItems() {
       return [
-        { title: this.$t('cabinet.profile.kpi.tasks'), value: 78, max: 100, percent: 78, colorClass: 'text-success', progressClass: 'progress-success' },
-        { title: this.$t('cabinet.profile.kpi.month_tasks'), value: 3, max: 5, percent: 60, colorClass: 'text-primary', progressClass: 'progress-primary' },
-        { title: this.$t('cabinet.profile.kpi.week_activity'), value: 5, max: 7, percent: 71, colorClass: 'text-warning', progressClass: 'progress-warning' },
+        {
+          title: this.$t('cabinet.profile.kpi.tasks'),
+          value: 78,
+          max: 100,
+          percent: 78,
+          colorClass: 'text-success',
+          progressClass: 'progress-success',
+        },
+        {
+          title: this.$t('cabinet.profile.kpi.month_tasks'),
+          value: 3,
+          max: 5,
+          percent: 60,
+          colorClass: 'text-primary',
+          progressClass: 'progress-primary',
+        },
+        {
+          title: this.$t('cabinet.profile.kpi.week_activity'),
+          value: 5,
+          max: 7,
+          percent: 71,
+          colorClass: 'text-warning',
+          progressClass: 'progress-warning',
+        },
       ]
     },
 
@@ -183,7 +242,6 @@ export default {
       }
     },
     async submitUsernameChange() {
-
       if (!this.newUsername || this.newUsername === '') return
 
       try {
@@ -195,7 +253,6 @@ export default {
       }
     },
     async submitEmailChange() {
-
       if (!this.newEmail || this.newEmail === '') return
 
       try {
@@ -207,7 +264,6 @@ export default {
       }
     },
     async submitPasswordChange() {
-
       try {
         await this.userStore.changePassword(this.new_password, this.old_password)
         this.openPasswordModal = false

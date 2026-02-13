@@ -5,17 +5,17 @@
 </template>
 
 <script>
-import PageHeader from '@/components/ui/PageHeader.vue';
+import PageHeader from '@/components/ui/PageHeader.vue'
 import headerImage from '@/assets/images/milad-fakurian-G5fdwRVoi4Q-unsplash.jpg'
-import NavigationPanel from '@/components/ui/NavigationPanel.vue';
-import ProfilePage from '@/components/system/cabinet/ProfilePage.vue';
+import NavigationPanel from '@/components/ui/NavigationPanel.vue'
+import ProfilePage from '@/components/system/cabinet/ProfilePage.vue'
 
 export default {
   name: 'CabinetView',
-  components: { 
+  components: {
     PageHeader,
     NavigationPanel,
-    ProfilePage
+    ProfilePage,
   },
 
   data() {
@@ -27,7 +27,7 @@ export default {
 
   computed: {
     title() {
-      return this.$t('cabinet.title');
+      return this.$t('cabinet.title')
     },
     navButtons() {
       let navButtons = [
@@ -36,9 +36,9 @@ export default {
       ]
 
       return navButtons
-    }
-  }
-};
+    },
+  },
+}
 </script>
 
 <style scoped></style>

@@ -46,7 +46,10 @@
         >
           {{ $t('modals.languages.latvian') }}
         </button>
-        <button class="btn btn-neutral hover:scale-105 btn-md w-full transition-all duration-500" @click="changeLocale('ru')">
+        <button
+          class="btn btn-neutral hover:scale-105 btn-md w-full transition-all duration-500"
+          @click="changeLocale('ru')"
+        >
           {{ $t('modals.languages.russian') }}
         </button>
       </div>
@@ -66,7 +69,7 @@
           class="flex-1 flex flex-col btn btn-neutral p-5 hover:scale-105 transform transition-transform duration-500"
         >
           {{ doc.title }}
-      </button>
+        </button>
       </div>
     </BaseDialog>
 

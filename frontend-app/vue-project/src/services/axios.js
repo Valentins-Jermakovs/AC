@@ -11,7 +11,7 @@ let isRefreshing = false
 let failedQueue = []
 
 const processQueue = (error, token = null) => {
-  failedQueue.forEach(prom => {
+  failedQueue.forEach((prom) => {
     if (error) {
       prom.reject(error)
     } else {
@@ -22,8 +22,8 @@ const processQueue = (error, token = null) => {
 }
 
 api.interceptors.response.use(
-  response => response,
-  async error => {
+  (response) => response,
+  async (error) => {
     const originalRequest = error.config
     const authStore = useAuthStore()
 
@@ -38,21 +38,16 @@ api.interceptors.response.use(
       originalRequest.url.includes('/auth/login') ||
       originalRequest.url.includes('/auth/logout')
 
-    if (
-      status === 401 &&
-      !originalRequest._retry &&
-      authStore.refreshToken &&
-      !isAuthRoute
-    ) {
+    if (status === 401 && !originalRequest._retry && authStore.refreshToken && !isAuthRoute) {
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject })
         })
-          .then(token => {
+          .then((token) => {
             originalRequest.headers['Authorization'] = `Bearer ${token}`
             return api(originalRequest)
           })
-          .catch(err => Promise.reject(err))
+          .catch((err) => Promise.reject(err))
       }
 
       originalRequest._retry = true
@@ -82,5 +77,5 @@ api.interceptors.response.use(
     }
 
     return Promise.reject(error)
-  }
+  },
 )

@@ -140,15 +140,11 @@ router.beforeEach((to, from, next) => {
     return next({ name: 'cabinet' })
   }
 
-  if (
-    to.name === 'email-redirect' &&
-    !from.path.startsWith('/system')
-  ) {
+  if (to.name === 'email-redirect' && !from.path.startsWith('/system')) {
     return next({ name: 'landing' })
   }
 
   next()
 })
-
 
 export default router

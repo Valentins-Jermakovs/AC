@@ -4,12 +4,12 @@
     <p>
       <strong>{{ $t('cabinet.profile.email') }}:</strong>
     </p>
-    <p> {{ user.email }}</p>
+    <p>{{ user.email }}</p>
     <p>
       <strong>{{ $t('cabinet.profile.roles') }}:</strong>
     </p>
     <ul class="list-disc list-inside">
-      <li v-for ="(role, index) in user.roles" :key="index">
+      <li v-for="(role, index) in user.roles" :key="index">
         {{ role }}
       </li>
     </ul>
@@ -25,6 +25,5 @@ export default {
   },
 }
 </script>
-
 
 <style scoped></style>

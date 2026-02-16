@@ -67,6 +67,9 @@
                 </div>
 
             </div>
+            <div class="w-full bg-base-100 p-5 border border-base-300">
+                <h1 class="text-error text-center">{{ emptyError }}</h1>
+            </div>
             <!-- Admin panel table Desktop -->
             <!-- Desktop table -->
             <div class="hidden lg:block w-full overflow-x-auto p-4">
@@ -102,7 +105,7 @@
                             <td class="truncate max-w-50" :title="user.email">{{ user.email }}</td>
                             <td>
                                 <div class="flex gap-2 overflow-x-auto max-w-45">
-                                    <span v-for="role in user.roles" :key="role" class="badge badge-warning">{{ role
+                                    <span v-for="role in user.roles" :key="role" class="badge badge-info">{{ role
                                         }}</span>
                                 </div>
                             </td>
@@ -181,7 +184,7 @@
                             <div class="col-span-2">
                                 <div class="opacity-60 mb-1">Lomas</div>
                                 <div class="flex flex-wrap gap-2">
-                                    <span v-for="role in user.roles" :key="role" class="badge badge-warning">
+                                    <span v-for="role in user.roles" :key="role" class="badge badge-info">
                                         {{ role }}
                                     </span>
                                 </div>
@@ -378,6 +381,8 @@ export default {
 
             selectedUserIds: [],
             selectAll: false,
+
+            emptyError: ''
         }
     },
 
@@ -399,11 +404,26 @@ export default {
                 store.fetchUsers();
                 store.clearSearch();
             } else if (store.searchMode === 'id') {
+                if (query === '') {
+                    this.emptyError = 'Tukšs ievades lauks!';
+                    return;
+                }
                 store.getUserById(query);
+                this.emptyError = '';
             } else if (store.searchMode === 'username') {
+                if (query === '') {
+                    this.emptyError = 'Tukšs ievades lauks!';
+                    return;
+                }
                 store.getUserByNameEmail(query);
+                this.emptyError = '';
             } else if (store.searchMode === 'role') {
+                if (query === '') {
+                    this.emptyError = 'Tukšs ievades lauks!';
+                    return;
+                }
                 store.getUserByRole(query);
+                this.emptyError = '';
             }
         },
         toggleSelectAll() {

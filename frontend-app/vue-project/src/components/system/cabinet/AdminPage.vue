@@ -89,7 +89,7 @@
                     </thead>
 
                     <tbody v-if="!adminStore.loading">
-                        <tr v-for="user in adminStore.users" :key="user.id"
+                        <tr v-if="adminStore.users.length > 0" v-for="user in adminStore.users" :key="user.id"
                             :class="{ 'bg-base-300': selectedUserIds.includes(user.id) }">
                             <td class="whitespace-nowrap">
                                 <label>
@@ -113,6 +113,23 @@
                                 </span>
                             </td>
                         </tr>
+                        <tr v-else>
+                            <td colspan="7">
+                                <div class="p-4">
+                                    <div class="alert alert-error flex">
+                                        <div class="flex flex-col p-2 text-2xl  w-full gap-2">
+                                            <div class="flex gap-5 items-center justify-center">
+                                                <font-awesome-icon icon="fa-solid fa-info-circle" />
+                                                <span>Nav datu</span>
+                                            </div>
+                                            <div class="flex items-center justify-center">
+                                                <p>Veiciet datu pieprasījumu vai pamēģiniet vēlāk!</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
                     </tbody>
                     <tbody v-else>
                         <tr>
@@ -128,7 +145,7 @@
             <div class="lg:hidden p-4 space-y-4">
 
                 <div v-if="!adminStore.loading">
-                    <div v-for="user in adminStore.users" :key="user.id"
+                    <div v-for="user in adminStore.users" :key="user.id" v-if="adminStore.users.length > 0"
                         class="bg-base-200 border border-base-300 p-4 shadow-sm"
                         :class="{ 'bg-base-300': selectedUserIds.includes(user.id) }">
                         <!-- Top row -->
@@ -175,6 +192,22 @@
                                 <div>{{ user.created_at }}</div>
                             </div>
 
+                        </div>
+                    </div>
+
+                    <div v-else>
+                        <div class="p-4">
+                            <div class="alert alert-error flex">
+                                <div class="flex flex-col p-2 text-2xl  w-full gap-2">
+                                    <div class="flex gap-5 items-center justify-center">
+                                        <font-awesome-icon icon="fa-solid fa-info-circle" />
+                                        <span>Nav datu</span>
+                                    </div>
+                                    <div class="flex items-center justify-center">
+                                        <p>Veiciet datu pieprasījumu vai pamēģiniet vēlāk!</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -294,7 +327,8 @@
         </BaseDialog>
         <!-- Change activity modal -->
         <BaseDialog v-model="changeActivityModal" :title="'Mainīt aktivitātes statusu'"
-            :cancel-text="$t('common.cancel')" :confirm-text="$t('common.confirm')" @confirm="changeActivity" @cancel="cancelChangeActivity">
+            :cancel-text="$t('common.cancel')" :confirm-text="$t('common.confirm')" @confirm="changeActivity"
+            @cancel="cancelChangeActivity">
             <div class="flex flex-col w-full gap-5">
                 <Transition name="error-slide">
                     <div v-if="error" class="overflow-hidden">

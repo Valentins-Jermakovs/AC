@@ -169,6 +169,117 @@ export const useAdminStore = defineStore('admin', {
             }
         },
 
+        async addRoleToSelectedUsers(roleId, selectedUserIds) {
+
+            const authStore = useAuthStore()
+            const userStore = useUserStore()
+
+            if (!userStore.isAdmin) {
+                this.error = 'You are not an admin'
+                return
+            }
+
+            this.loading = true
+            this.error = null
+
+            try {
+                const response = await api.post(
+                    `${API_ENDPOINTS.ADD_ROLES_TO_USER}?role_id=${roleId}`,
+                    selectedUserIds,
+                    {
+                        headers: { Authorization: `Bearer ${authStore.accessToken}` },
+                    }
+                );
+
+                console.log('Role added:', response.data);
+                return response.data;
+
+            }
+            catch (err) {
+                console.error('Failed to add role:', err);
+                this.error = err.response?.data?.detail || err.message || err;
+                throw err;
+            }
+            finally {
+                this.loading = false;
+            }
+
+        },
+
+        async removeRoleFromSelectedUsers(roleId, selectedUserIds) {
+            const authStore = useAuthStore()
+            const userStore = useUserStore()
+
+            if (!userStore.isAdmin) {
+                this.error = 'You are not an admin'
+                return
+            }
+
+            this.loading = true
+            this.error = null
+
+            try {
+                const response = await api.post(
+                    `${API_ENDPOINTS.REMOVE_ROLES_FROM_USER}?role_id=${roleId}`,
+                    selectedUserIds,
+                    {
+                        headers: { Authorization: `Bearer ${authStore.accessToken}` },
+                    }
+                );
+
+                console.log('Role removed:', response.data);
+                return response.data;
+
+            }
+            catch (err) {
+                console.error('Failed to remove role:', err);
+                this.error = err.response?.data?.detail || err.message || err;
+                throw err;
+            }
+            finally {
+                this.loading = false;
+            }
+
+        },
+
+        async updateUserActivity(userIds, status) {
+            const authStore = useAuthStore()
+            const userStore = useUserStore()
+
+            if (!userStore.isAdmin) {
+                this.error = 'You are not an admin'
+                return
+            }
+
+            this.loading = true
+            this.error = null
+
+            try {
+                const isActive = status === 'active'
+
+                const response = await api.put(
+                    `${API_ENDPOINTS.CHANGE_USER_ACTIVITY}?is_active=${isActive}`,
+                    userIds,
+                    {
+                        headers: { Authorization: `Bearer ${authStore.accessToken}` },
+                    }
+                );
+
+                console.log('User activity updated:', response.data);
+                return response.data;
+
+            }
+            catch (err) {
+                console.error('Failed to update user activity:', err);
+                this.error = err.response?.data?.detail || err.message || err;
+                throw err;
+            }
+            finally {
+                this.loading = false;
+            }
+
+        },
+
 
         async setPage(page) {
             this.meta.page = page
@@ -177,16 +288,8 @@ export const useAdminStore = defineStore('admin', {
 
         async setLimit(limit) {
             this.meta.limit = limit;
-            this.meta.page = 1; // lai sāktu no pirmās lapas pēc limit maiņas
-
-            // Pārbauda, kurš meklēšanas režīms ir aktīvs
-            if (this.searchMode === 'username') {
-                await this.getUserByNameEmail(this.searchQuery, 1, limit);
-            } else if (this.searchMode === 'role') {
-                await this.getUserByRole(this.searchQuery, 1, limit);
-            } else {
-                await this.fetchUsers(1, limit);
-            }
+            this.meta.page = 1;
+            
         },
 
         async nextPage() {

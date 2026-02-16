@@ -32,7 +32,7 @@
                         <input type="text" v-model="adminStore.searchQuery" placeholder="Meklējamie dati"
                             class="input input-bordered w-full"
                             :disabled="adminStore.searchMode === '' || adminStore.searchMode === 'all'" />
-                        <button class="btn btn-primary" :class="adminStore.searchMode === '' ? 'btn-disabled' : ''"
+                        <button class="btn btn-primary"
                             @click="searchButton">Veikt pieprasījumu</button>
                     </div>
                     <!-- Search filter - dropdown list -->
@@ -439,6 +439,7 @@ export default {
                 this.addRoleModal = false;
                 this.adminStore.error = '';
                 this.selectedAddRole = 2;
+                this.searchButton();
             } catch (error) {
                 console.error(error);
             }
@@ -454,6 +455,7 @@ export default {
                 this.removeRoleModal = false;
                 this.adminStore.error = '';
                 this.selectedRemoveRole = 2;
+                this.searchButton();
             }
             catch (error) {
                 console.error(error);
@@ -467,9 +469,11 @@ export default {
         async changeActivity() {
             try {
                 await this.adminStore.updateUserActivity(this.selectedUserIds, this.selectedActivityStatus);
+                this.changeActivityModal = false;
                 this.adminStore.error = '';
                 this.selectedActivityStatus = 'active';
                 this.selectedRemoveRole = 2;
+                this.searchButton();
             }
             catch (error) {
                 console.error(error);

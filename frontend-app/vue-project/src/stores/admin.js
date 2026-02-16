@@ -50,6 +50,7 @@ export const useAdminStore = defineStore('admin', {
 
             } catch (err) {
                 this.error = err.response?.data?.detail || err.message
+                throw err
             } finally {
                 this.loading = false
             }
@@ -87,7 +88,7 @@ export const useAdminStore = defineStore('admin', {
 
             } catch (err) {
                 this.error = err.response?.data?.detail || err.message
-                return null
+                throw err
             } finally {
                 this.loading = false
             }
@@ -164,6 +165,7 @@ export const useAdminStore = defineStore('admin', {
                     total_users: 0,
                     total_pages: 0,
                 }
+                throw err
             } finally {
                 this.loading = false
             }

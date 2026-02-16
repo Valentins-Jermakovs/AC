@@ -103,7 +103,7 @@
                             <td>
                                 <div class="flex gap-2 overflow-x-auto max-w-45">
                                     <span v-for="role in user.roles" :key="role" class="badge badge-warning">{{ role
-                                    }}</span>
+                                        }}</span>
                                 </div>
                             </td>
                             <td class="whitespace-nowrap">{{ user.created_at }}</td>
@@ -221,8 +221,8 @@
 
                 <!-- Pagination buttons -->
                 <div class="flex flex-col sm:flex-row sm:gap-3 gap-2 w-full sm:w-auto">
-                    <button class="btn btn-neutral hover:btn-primary flex-1 p-2"
-                        :disabled="adminStore.meta.page === 1" @click="adminStore.prevPage()">
+                    <button class="btn btn-neutral hover:btn-primary flex-1 p-2" :disabled="adminStore.meta.page === 1"
+                        @click="adminStore.prevPage()">
                         <font-awesome-icon icon="fa-solid fa-arrow-left" />
                     </button>
                     <button class="btn btn-neutral hover:btn-primary flex-1 p-2"
@@ -240,55 +240,79 @@
 
         <!-- Add role modal -->
         <BaseDialog v-model="addRoleModal" :title="'Pievienot lomu'" :cancel-text="$t('common.cancel')"
-            :confirm-text="$t('common.confirm')" @confirm="addRole">
-            <div class="flex flex-col gap-2 w-full">
-                <label class="label">
-                    <span class="label-text">Lomas</span>
-                </label>
-                <!-- dropdown list -->
-                <select v-model="selectedAddRole" class="select select-bordered w-full">
-                    <option disabled value="">Izvēlies lomu</option>
-                    <option value=1>Admin</option>
-                    <option value=2>User</option>
-                    <option value=3>Developer</option>
-                    <option value=4>Manager</option>
-                    <option value=5>Support</option>
-                    <option value=6>Content Manager</option>
-                </select>
+            :confirm-text="$t('common.confirm')" @confirm="addRole" @cancel="cancelAddRole">
+            <div class="flex flex-col w-full gap-5">
+                <Transition name="error-slide">
+                    <div v-if="error" class="overflow-hidden">
+                        <h1 class="text-red-500 mb-2">
+                            {{ error }}
+                        </h1>
+                    </div>
+                </Transition>
+                <div class="flex flex-col gap-2 w-full">
+                    <label class="label">
+                        <span class="label-text">Lomas</span>
+                    </label>
+                    <!-- dropdown list -->
+                    <select v-model="selectedAddRole" class="select select-bordered w-full">
+                        <option value=1>Admin</option>
+                        <option value=2>User</option>
+                        <option value=3>Developer</option>
+                        <option value=4>Manager</option>
+                        <option value=5>Support</option>
+                        <option value=6>Content Manager</option>
+                    </select>
+                </div>
             </div>
         </BaseDialog>
         <!-- Remove role modal -->
         <BaseDialog v-model="removeRoleModal" :title="'Dzēst lomu'" :cancel-text="$t('common.cancel')"
-            :confirm-text="$t('common.confirm')" @confirm="removeRole">
-            <div class="flex flex-col gap-2 w-full">
-                <label class="label">
-                    <span class="label-text">Lomas</span>
-                </label>
-                <!-- dropdown list -->
-                <select v-model="selectedRemoveRole" class="select select-bordered w-full">
-                    <option disabled value="">Izvēlies lomu</option>
-                    <option value=1>Admin</option>
-                    <option value=2>User</option>
-                    <option value=3>Developer</option>
-                    <option value=4>Manager</option>
-                    <option value=5>Support</option>
-                    <option value=6>Content Manager</option>
-                </select>
+            :confirm-text="$t('common.confirm')" @confirm="removeRole" @cancel="cancelRemoveRole">
+            <div class="flex flex-col w-full gap-5">
+                <Transition name="error-slide">
+                    <div v-if="error" class="overflow-hidden">
+                        <h1 class="text-red-500 mb-2">
+                            {{ error }}
+                        </h1>
+                    </div>
+                </Transition>
+                <div class="flex flex-col gap-2 w-full">
+                    <label class="label">
+                        <span class="label-text">Lomas</span>
+                    </label>
+                    <!-- dropdown list -->
+                    <select v-model="selectedRemoveRole" class="select select-bordered w-full">
+                        <option value=1>Admin</option>
+                        <option value=2>User</option>
+                        <option value=3>Developer</option>
+                        <option value=4>Manager</option>
+                        <option value=5>Support</option>
+                        <option value=6>Content Manager</option>
+                    </select>
+                </div>
             </div>
         </BaseDialog>
         <!-- Change activity modal -->
         <BaseDialog v-model="changeActivityModal" :title="'Mainīt aktivitātes statusu'"
-            :cancel-text="$t('common.cancel')" :confirm-text="$t('common.confirm')" @confirm="changeActivity">
-            <div class="flex flex-col gap-2 w-full">
-                <label class="label">
-                    <span class="label-text">Aktivitātes statuss</span>
-                </label>
-                <!-- dropdown list -->
-                <select v-model="selectedActivityStatus" class="select select-bordered w-full">
-                    <option disabled value="">Izvēlies statusu</option>
-                    <option value="active">Aktīvs</option>
-                    <option value="blocked">Bloķēts</option>
-                </select>
+            :cancel-text="$t('common.cancel')" :confirm-text="$t('common.confirm')" @confirm="changeActivity" @cancel="cancelChangeActivity">
+            <div class="flex flex-col w-full gap-5">
+                <Transition name="error-slide">
+                    <div v-if="error" class="overflow-hidden">
+                        <h1 class="text-red-500 mb-2">
+                            {{ error }}
+                        </h1>
+                    </div>
+                </Transition>
+                <div class="flex flex-col gap-2 w-full">
+                    <label class="label">
+                        <span class="label-text">Aktivitātes statuss</span>
+                    </label>
+                    <!-- dropdown list -->
+                    <select v-model="selectedActivityStatus" class="select select-bordered w-full">
+                        <option value="active">Aktīvs</option>
+                        <option value="blocked">Bloķēts</option>
+                    </select>
+                </div>
             </div>
         </BaseDialog>
     </div>
@@ -313,9 +337,9 @@ export default {
             removeRoleModal: false,
             changeActivityModal: false,
 
-            selectedAddRole: '',
-            selectedRemoveRole: '',
-            selectedActivityStatus: '',
+            selectedAddRole: 2,
+            selectedRemoveRole: 2,
+            selectedActivityStatus: 'active',
             selectedPageSize: 10,
 
             selectedUserIds: [],
@@ -326,6 +350,9 @@ export default {
     computed: {
         adminStore() {
             return useAdminStore()
+        },
+        error() {
+            return this.adminStore.error
         }
     },
 
@@ -352,16 +379,51 @@ export default {
                 this.selectedUserIds = [];
             }
         },
-        addRole() {
-            this.adminStore.addRoleToSelectedUsers(this.selectedAddRole, this.selectedUserIds);
+        async addRole() {
+            try {
+                await this.adminStore.addRoleToSelectedUsers(this.selectedAddRole, this.selectedUserIds);
+                this.addRoleModal = false;
+                this.adminStore.error = '';
+                this.selectedAddRole = 2;
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        cancelAddRole() {
+            this.addRoleModal = false;
+            this.adminStore.error = '';
             this.addRoleModal = false;
         },
-        removeRole() {
-            this.adminStore.removeRoleFromSelectedUsers(this.selectedRemoveRole, this.selectedUserIds);
+        async removeRole() {
+            try {
+                await this.adminStore.removeRoleFromSelectedUsers(this.selectedRemoveRole, this.selectedUserIds);
+                this.removeRoleModal = false;
+                this.adminStore.error = '';
+                this.selectedRemoveRole = 2;
+            }
+            catch (error) {
+                console.error(error);
+            }
+        },
+        cancelRemoveRole() {
+            this.adminStore.error = '';
+            this.selectedRemoveRole = 2;
             this.removeRoleModal = false;
         },
-        changeActivity() {
-            this.adminStore.updateUserActivity(this.selectedUserIds, this.selectedActivityStatus);
+        async changeActivity() {
+            try {
+                await this.adminStore.updateUserActivity(this.selectedUserIds, this.selectedActivityStatus);
+                this.adminStore.error = '';
+                this.selectedActivityStatus = 'active';
+                this.selectedRemoveRole = 2;
+            }
+            catch (error) {
+                console.error(error);
+            }
+        },
+        cancelChangeActivity() {
+            this.adminStore.error = '';
+            this.selectedActivityStatus = 'active';
             this.changeActivityModal = false;
         }
     },

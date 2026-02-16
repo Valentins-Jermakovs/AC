@@ -1,6 +1,7 @@
 <template>
   <PageHeader :title="title" :imageUrl="image"></PageHeader>
   <NavigationPanel :buttons="navButtons" v-model="activePage"></NavigationPanel>
+  <AdminPage v-if="activePage === 'admin' && userStore.isAdmin"></AdminPage>
   <ProfilePage v-if="activePage === 'profile'"></ProfilePage>
   <LoadingScreen v-if="!userStore.user"></LoadingScreen>
 </template>
@@ -13,6 +14,7 @@ import ProfilePage from '@/components/system/cabinet/ProfilePage.vue'
 
 import { useUserStore } from '@/stores/user'
 import LoadingScreen from '@/components/common/LoadingScreen.vue'
+import AdminPage from '@/components/system/cabinet/AdminPage.vue'
 
 export default {
   name: 'CabinetView',
@@ -21,6 +23,7 @@ export default {
     NavigationPanel,
     ProfilePage,
     LoadingScreen,
+    AdminPage
   },
 
   data() {
@@ -42,6 +45,13 @@ export default {
         { key: 'dashboard', title: this.$t('cabinet.nav_bar.dashboard') },
         { key: 'profile', title: this.$t('cabinet.nav_bar.profile') },
       ]
+
+      if (this.userStore.isAdmin) {
+        navButtons.push({ 
+          key: 'admin', 
+          title: 'Admin Panel' 
+        })
+      }
 
       return navButtons
     },

@@ -37,7 +37,7 @@
                     <!-- Search filter - dropdown list -->
                     <div class="flex p-4 items-center">
                         <select v-model="adminStore.searchMode" class="select select-bordered w-full lg:w-64"
-                        @change="clearEmptyError">
+                            @change="clearEmptyError">
                             <option value="all">Visi lietotāji</option>
                             <option value="id">Pēc ID</option>
                             <option value="username">Pēc lietotājvārda/e-pasta</option>
@@ -107,7 +107,7 @@
                             <td>
                                 <div class="flex gap-2 overflow-x-auto max-w-45">
                                     <span v-for="role in user.roles" :key="role" class="badge badge-info">{{ role
-                                        }}</span>
+                                    }}</span>
                                 </div>
                             </td>
                             <td class="whitespace-nowrap">{{ user.created_at }}</td>
@@ -233,8 +233,7 @@
                     <!-- Limit -->
                     <div class="flex flex-col sm:flex-row sm:items-center gap-2">
                         <label class="text-sm opacity-70">Rādīt ierakstus:</label>
-                        <select v-model.number="adminStore.meta.limit"
-                            @change="adminStore.setLimit(adminStore.meta.limit)"
+                        <select v-model.number="adminStore.meta.limit" @change="setNewLimit"
                             class="select select-bordered mt-1 sm:mt-0" :disabled="adminStore.searchMode === 'id'">
                             <option :value="5">5</option>
                             <option :value="10">10</option>
@@ -397,6 +396,10 @@ export default {
     },
 
     methods: {
+        async setNewLimit() {
+            await this.adminStore.setLimit(this.adminStore.meta.limit);
+            await this.adminStore.refresh();
+        },
         clearEmptyError() {
             this.emptyError = ''
         },
@@ -421,7 +424,7 @@ export default {
                     return
                 }
 
-                
+
                 await store.getUserById(numericId);
                 this.emptyError = '';
             } else if (store.searchMode === 'username') {

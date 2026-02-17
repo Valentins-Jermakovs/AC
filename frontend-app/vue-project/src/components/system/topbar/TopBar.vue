@@ -91,6 +91,7 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useUserStore } from '@/stores/user'
+import { useAdminStore } from '@/stores/admin'
 
 import BurgerButton from './BurgerButton.vue'
 import Logo from './ProjectLogo.vue'
@@ -162,9 +163,11 @@ export default {
 
         const userStore = useUserStore()
         const authStore = useAuthStore()
+        const adminStore = useAdminStore()
 
         userStore.$reset()
         authStore.$reset()
+        adminStore.$reset()
       } finally {
         this.logoutModal = false
         this.router.push({ name: 'logout' })

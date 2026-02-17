@@ -32,13 +32,12 @@
                         <input type="text" v-model="adminStore.searchQuery" placeholder="Meklējamie dati"
                             class="input input-bordered w-full"
                             :disabled="adminStore.searchMode === '' || adminStore.searchMode === 'all'" />
-                        <button class="btn btn-primary"
-                            @click="searchButton">Veikt pieprasījumu</button>
+                        <button class="btn btn-primary" @click="searchButton">Veikt pieprasījumu</button>
                     </div>
                     <!-- Search filter - dropdown list -->
                     <div class="flex p-4 items-center">
-                        <select v-model="adminStore.searchMode" class="select select-bordered w-full lg:w-64">
-                            <option disabled value="">Meklēšanas režīms</option>
+                        <select v-model="adminStore.searchMode" class="select select-bordered w-full lg:w-64"
+                        @change="clearEmptyError">
                             <option value="all">Visi lietotāji</option>
                             <option value="id">Pēc ID</option>
                             <option value="username">Pēc lietotājvārda/e-pasta</option>
@@ -67,9 +66,11 @@
                 </div>
 
             </div>
-            <div class="w-full bg-base-100 p-5 border border-base-300">
-                <h1 class="text-error text-center">{{ emptyError }}</h1>
-            </div>
+            <Transition name="error-slide">
+                <div v-if="emptyError" class="w-full bg-base-100 p-5 border border-base-300">
+                    <h1 class="text-error text-center">{{ emptyError }}</h1>
+                </div>
+            </Transition>
             <!-- Admin panel table Desktop -->
             <!-- Desktop table -->
             <div class="hidden lg:block w-full overflow-x-auto p-4">
@@ -396,7 +397,10 @@ export default {
     },
 
     methods: {
-        searchButton() {
+        clearEmptyError() {
+            this.emptyError = ''
+        },
+        async searchButton() {
             const store = this.adminStore;
             const query = store.searchQuery.toLowerCase();
 
@@ -404,18 +408,28 @@ export default {
                 store.fetchUsers();
                 store.clearSearch();
             } else if (store.searchMode === 'id') {
+
                 if (query === '') {
                     this.emptyError = 'Tukšs ievades lauks!';
                     return;
                 }
-                store.getUserById(query);
+
+                const numericId = Number(query);
+
+                if (!Number.isInteger(numericId)) {
+                    this.emptyError = 'Invalid ID format'
+                    return
+                }
+
+                
+                await store.getUserById(numericId);
                 this.emptyError = '';
             } else if (store.searchMode === 'username') {
                 if (query === '') {
                     this.emptyError = 'Tukšs ievades lauks!';
                     return;
                 }
-                store.getUserByNameEmail(query);
+                await store.getUserByNameEmail(query);
                 this.emptyError = '';
             } else if (store.searchMode === 'role') {
                 if (query === '') {
@@ -439,7 +453,7 @@ export default {
                 this.addRoleModal = false;
                 this.adminStore.error = '';
                 this.selectedAddRole = 2;
-                this.searchButton();
+                await this.adminStore.refresh();
             } catch (error) {
                 console.error(error);
             }
@@ -455,7 +469,7 @@ export default {
                 this.removeRoleModal = false;
                 this.adminStore.error = '';
                 this.selectedRemoveRole = 2;
-                this.searchButton();
+                await this.adminStore.refresh();
             }
             catch (error) {
                 console.error(error);
@@ -473,7 +487,7 @@ export default {
                 this.adminStore.error = '';
                 this.selectedActivityStatus = 'active';
                 this.selectedRemoveRole = 2;
-                this.searchButton();
+                await this.adminStore.refresh();
             }
             catch (error) {
                 console.error(error);
@@ -502,4 +516,23 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.error-slide-enter-active,
+.error-slide-leave-active {
+    transition: all 0.4s ease;
+}
+
+.error-slide-enter-from,
+.error-slide-leave-to {
+    opacity: 0;
+    transform: translateY(-10px);
+    max-height: 0;
+}
+
+.error-slide-enter-to,
+.error-slide-leave-from {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 100px;
+}
+</style>

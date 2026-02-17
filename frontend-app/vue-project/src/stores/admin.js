@@ -17,6 +17,8 @@ export const useAdminStore = defineStore('admin', {
         error: null,
         searchMode: 'all',
         searchQuery: '',
+
+        lastRequest: null,
     }),
 
     getters: {
@@ -47,6 +49,10 @@ export const useAdminStore = defineStore('admin', {
 
                 this.users = response.data.items
                 this.meta = response.data.meta
+
+                this.lastRequest = {
+                    type: 'all'
+                }
 
             } catch (err) {
                 this.error = err.response?.data?.detail || err.message
@@ -79,16 +85,14 @@ export const useAdminStore = defineStore('admin', {
 
                 this.users = [response.data]
 
-                if (!response.data) {
-                    this.error = 'User not found'
-                    return null
+                this.lastRequest = {
+                    type: 'id',
+                    payload: id
                 }
 
-                return response.data
-
             } catch (err) {
+                this.users = []
                 this.error = err.response?.data?.detail || err.message
-                throw err
             } finally {
                 this.loading = false
             }
@@ -118,6 +122,11 @@ export const useAdminStore = defineStore('admin', {
 
                 this.users = response.data.items
                 this.meta = response.data.meta
+
+                this.lastRequest = {
+                    type: 'username',
+                    payload: searchString
+                }
             } catch (err) {
                 this.error = err.response?.data?.detail || err.message
                 this.users = []
@@ -144,6 +153,11 @@ export const useAdminStore = defineStore('admin', {
             this.loading = true
             this.error = null
 
+            this.lastRequest = {
+                type: 'role',
+                payload: searchString
+            }
+
             try {
                 // endpoint ar path param + query param
                 const response = await api.get(
@@ -165,14 +179,12 @@ export const useAdminStore = defineStore('admin', {
                     total_users: 0,
                     total_pages: 0,
                 }
-                throw err
             } finally {
                 this.loading = false
             }
         },
 
         async addRoleToSelectedUsers(roleId, selectedUserIds) {
-
             const authStore = useAuthStore()
             const userStore = useUserStore()
 
@@ -186,26 +198,26 @@ export const useAdminStore = defineStore('admin', {
 
             try {
                 const response = await api.post(
-                    `${API_ENDPOINTS.ADD_ROLES_TO_USER}?role_id=${roleId}`,
+                    API_ENDPOINTS.ADD_ROLES_TO_USER,
                     selectedUserIds,
                     {
-                        headers: { Authorization: `Bearer ${authStore.accessToken}` },
+                        params: { role_id: roleId },
+                        headers: {
+                            Authorization: `Bearer ${authStore.accessToken}`,
+                        },
                     }
-                );
+                )
 
-                console.log('Role added:', response.data);
-                return response.data;
+                console.log('Role added:', response.data)
+                return response.data
 
+            } catch (err) {
+                console.error('Failed to add role:', err)
+                this.error = err.response?.data?.detail || err.message || err
+                throw err
+            } finally {
+                this.loading = false
             }
-            catch (err) {
-                console.error('Failed to add role:', err);
-                this.error = err.response?.data?.detail || err.message || err;
-                throw err;
-            }
-            finally {
-                this.loading = false;
-            }
-
         },
 
         async removeRoleFromSelectedUsers(roleId, selectedUserIds) {
@@ -291,7 +303,7 @@ export const useAdminStore = defineStore('admin', {
         async setLimit(limit) {
             this.meta.limit = limit;
             this.meta.page = 1;
-            
+
         },
 
         async nextPage() {
@@ -305,6 +317,36 @@ export const useAdminStore = defineStore('admin', {
             if (this.meta.page > 1) {
                 this.meta.page--
                 await this.fetchUsers(this.meta.page, this.meta.limit)
+            }
+        },
+
+        async refresh() {
+            if (!this.lastRequest) {
+                await this.fetchUsers()
+                return
+            }
+
+            const { type, payload } = this.lastRequest
+
+            switch (type) {
+                case 'all':
+                    await this.fetchUsers()
+                    break
+
+                case 'id':
+                    await this.getUserById(payload)
+                    break
+
+                case 'username':
+                    await this.getUserByNameEmail(payload)
+                    break
+
+                case 'role':
+                    await this.getUserByRole(payload)
+                    break
+
+                default:
+                    await this.fetchUsers()
             }
         },
 

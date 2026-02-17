@@ -8,7 +8,7 @@
 
 <script>
 import PageHeader from '@/components/ui/PageHeader.vue'
-import headerImage from '@/assets/images/milad-fakurian-G5fdwRVoi4Q-unsplash.jpg'
+import headerImage from '@/assets/images/mike-hindle-a8Slhd4Kvxw-unsplash.jpg'
 import NavigationPanel from '@/components/ui/NavigationPanel.vue'
 import ProfilePage from '@/components/system/cabinet/ProfilePage.vue'
 

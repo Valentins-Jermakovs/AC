@@ -49,7 +49,7 @@ export default {
       if (this.userStore.isAdmin) {
         navButtons.push({ 
           key: 'admin', 
-          title: 'Admin Panel' 
+          title: this.$t('cabinet.nav_bar.admin') 
         })
       }
 

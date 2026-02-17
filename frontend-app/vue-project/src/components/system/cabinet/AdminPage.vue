@@ -3,19 +3,18 @@
     <div class="flex flex-col lg:flex-row p-5 gap-5">
 
         <div class="w-full lg:w-1/2 bg-base-300 min-h-50 p-6 lg:p-10 flex flex-col justify-around">
-            <h1 class="text-2xl lg:text-3xl">Administratora panelis</h1>
+            <h1 class="text-2xl lg:text-3xl">{{ $t('cabinet.admin.cards.card_one.title') }}</h1>
             <p class="text-base lg:text-lg">
-                Šajā sadaļā administrators var pārvaldīt lietotājus un to lomas,
-                aktivitātes statusus utt.
+                {{ $t('cabinet.admin.cards.card_one.content') }}
             </p>
         </div>
 
         <div class="w-full lg:w-1/2 bg-base-200 min-h-50 p-6 lg:p-10 flex flex-col justify-center gap-3">
-            <h2 class="text-lg lg:text-xl">Pieejamie režīmi:</h2>
+            <h2 class="text-lg lg:text-xl">{{ $t('cabinet.admin.cards.card_two.title') }}</h2>
             <ul class="list-disc pl-5 text-sm lg:text-base">
-                <li>lietotāju atlase/meklēšana</li>
-                <li>lietotāju lomu modificēšana</li>
-                <li>aktivitātes statusa maiņa</li>
+                <li>{{ $t('cabinet.admin.cards.card_two.content[0]') }}</li>
+                <li>{{ $t('cabinet.admin.cards.card_two.content[1]') }}</li>
+                <li>{{ $t('cabinet.admin.cards.card_two.content[2]') }}</li>
             </ul>
         </div>
 
@@ -29,19 +28,19 @@
                 <div class="flex flex-col lg:flex-row flex-1 ">
                     <!-- Search bar -->
                     <div class="flex flex-col sm:flex-row flex-1 p-4 gap-3 items-stretch sm:items-center">
-                        <input type="text" v-model="adminStore.searchQuery" placeholder="Meklējamie dati"
+                        <input type="text" v-model="adminStore.searchQuery" :placeholder="$t('common.search')"
                             class="input input-bordered w-full"
                             :disabled="adminStore.searchMode === '' || adminStore.searchMode === 'all'" />
-                        <button class="btn btn-primary" @click="searchButton">Veikt pieprasījumu</button>
+                        <button class="btn btn-primary" @click="searchButton">{{ $t('common.make_query') }}</button>
                     </div>
                     <!-- Search filter - dropdown list -->
                     <div class="flex p-4 items-center">
                         <select v-model="adminStore.searchMode" class="select select-bordered w-full lg:w-64"
                             @change="clearEmptyError">
-                            <option value="all">Visi lietotāji</option>
-                            <option value="id">Pēc ID</option>
-                            <option value="username">Pēc lietotājvārda/e-pasta</option>
-                            <option value="role">Pēc lomas</option>
+                            <option value="all">{{ $t('cabinet.admin.admin_top.filters[0]') }}</option>
+                            <option value="id">{{ $t('cabinet.admin.admin_top.filters[1]') }}</option>
+                            <option value="username">{{ $t('cabinet.admin.admin_top.filters[2]') }}</option>
+                            <option value="role">{{ $t('cabinet.admin.admin_top.filters[3]') }}</option>
                         </select>
                     </div>
                 </div>
@@ -50,17 +49,17 @@
 
                     <button class="btn btn-neutral hover:btn-primary w-full sm:w-auto" @click="addRoleModal = true"
                         :class="selectedUserIds.length === 0 ? 'btn-disabled' : ''">
-                        Pievienot lomu
+                        {{ $t('common.add_role') }}
                     </button>
 
                     <button class="btn btn-neutral hover:btn-primary w-full sm:w-auto" @click="removeRoleModal = true"
                         :class="selectedUserIds.length === 0 ? 'btn-disabled' : ''">
-                        Dzēst lomu
+                        {{ $t('common.remove_role') }}
                     </button>
 
                     <button class="btn btn-neutral hover:btn-primary w-full sm:w-auto"
                         @click="changeActivityModal = true" :class="selectedUserIds.length === 0 ? 'btn-disabled' : ''">
-                        Bloķēt/atbloķēt
+                        {{ $t('common.change_activity') }}
                     </button>
 
                 </div>
@@ -84,11 +83,11 @@
                                 </label>
                             </th>
                             <th class="whitespace-nowrap">ID</th>
-                            <th class="whitespace-nowrap">Lietotājs</th>
-                            <th class="whitespace-nowrap max-w-50">E-pasts</th>
-                            <th class="whitespace-nowrap max-w-45">Lomas</th>
-                            <th class="whitespace-nowrap">Reģistrēts</th>
-                            <th class="whitespace-nowrap">Statuss</th>
+                            <th class="whitespace-nowrap">{{ $t('cabinet.admin.table_top.username') }}</th>
+                            <th class="whitespace-nowrap max-w-50">{{ $t('cabinet.admin.table_top.email') }}</th>
+                            <th class="whitespace-nowrap max-w-45">{{ $t('cabinet.admin.table_top.roles') }}</th>
+                            <th class="whitespace-nowrap">{{ $t('cabinet.admin.table_top.created_at') }}</th>
+                            <th class="whitespace-nowrap">{{ $t('cabinet.admin.table_top.status') }}</th>
                         </tr>
                     </thead>
 
@@ -113,7 +112,7 @@
                             <td class="whitespace-nowrap">{{ user.created_at }}</td>
                             <td class="whitespace-nowrap">
                                 <span :class="user.active ? 'text-success' : 'text-error'">
-                                    {{ user.active ? 'Aktīvs' : 'Bloķēts' }}
+                                    {{ user.active ? $t('cabinet.admin.table_body.status_active') : $t('cabinet.admin.table_body.status_inactive') }}
                                 </span>
                             </td>
                         </tr>
@@ -124,10 +123,10 @@
                                         <div class="flex flex-col p-2 text-2xl  w-full gap-2">
                                             <div class="flex gap-5 items-center justify-center">
                                                 <font-awesome-icon icon="fa-solid fa-info-circle" />
-                                                <span>Nav datu</span>
+                                                <span>{{ $t('common.no_data') }}</span>
                                             </div>
                                             <div class="flex items-center justify-center">
-                                                <p>Veiciet datu pieprasījumu vai pamēģiniet vēlāk!</p>
+                                                <p>{{ $t('common.try_later') }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -176,14 +175,14 @@
                             </div>
 
                             <div>
-                                <div class="opacity-60">Statuss</div>
+                                <div class="opacity-60">{{ $t('cabinet.admin.table_top.status') }}</div>
                                 <div :class="user.active ? 'text-success' : 'text-error'">
                                     {{ user.active ? 'Aktīvs' : 'Bloķēts' }}
                                 </div>
                             </div>
 
                             <div class="col-span-2">
-                                <div class="opacity-60 mb-1">Lomas</div>
+                                <div class="opacity-60 mb-1">{{ $t('cabinet.admin.table_top.roles') }}</div>
                                 <div class="flex flex-wrap gap-2">
                                     <span v-for="role in user.roles" :key="role" class="badge badge-info">
                                         {{ role }}
@@ -192,7 +191,7 @@
                             </div>
 
                             <div class="col-span-2">
-                                <div class="opacity-60">Reģistrēts</div>
+                                <div class="opacity-60">{{ $t('cabinet.admin.table_top.created_at') }}</div>
                                 <div>{{ user.created_at }}</div>
                             </div>
 
@@ -205,10 +204,10 @@
                                 <div class="flex flex-col p-2 text-2xl  w-full gap-2">
                                     <div class="flex gap-5 items-center justify-center">
                                         <font-awesome-icon icon="fa-solid fa-info-circle" />
-                                        <span>Nav datu</span>
+                                        <span>{{ $t('common.no_data') }}</span>
                                     </div>
                                     <div class="flex items-center justify-center">
-                                        <p>Veiciet datu pieprasījumu vai pamēģiniet vēlāk!</p>
+                                        <p>{{ $t('common.try_later') }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -232,7 +231,7 @@
 
                     <!-- Limit -->
                     <div class="flex flex-col sm:flex-row sm:items-center gap-2">
-                        <label class="text-sm opacity-70">Rādīt ierakstus:</label>
+                        <label class="text-sm opacity-70">{{ $t('cabinet.admin.table_footer.limit') }}</label>
                         <select v-model.number="adminStore.meta.limit" @change="setNewLimit"
                             class="select select-bordered mt-1 sm:mt-0" :disabled="adminStore.searchMode === 'id'">
                             <option :value="5">5</option>
@@ -244,12 +243,12 @@
 
                     <!-- Total matches -->
                     <div class="text-sm opacity-80 whitespace-nowrap">
-                        Sakritību skaits: <span class="font-semibold">{{ adminStore.meta.total_users }}</span>
+                        {{ $t('cabinet.admin.table_footer.total') }} <span class="font-semibold">{{ adminStore.meta.total_users }}</span>
                     </div>
 
                     <!-- Page info -->
                     <div class="text-sm opacity-80 whitespace-nowrap">
-                        Lapa <span class="font-semibold">{{ adminStore.meta.page }}</span> /
+                        {{ $t('cabinet.admin.table_footer.page') }} <span class="font-semibold">{{ adminStore.meta.page }}</span> /
                         <span class="font-semibold">{{ adminStore.meta.total_pages }}</span>
                     </div>
 
@@ -275,7 +274,7 @@
         <!-- 3 modals -->
 
         <!-- Add role modal -->
-        <BaseDialog v-model="addRoleModal" :title="'Pievienot lomu'" :cancel-text="$t('common.cancel')"
+        <BaseDialog v-model="addRoleModal" :title="$t('modals.add_role.title')" :cancel-text="$t('common.cancel')"
             :confirm-text="$t('common.confirm')" @confirm="addRole" @cancel="cancelAddRole">
             <div class="flex flex-col w-full gap-5">
                 <Transition name="error-slide">
@@ -287,7 +286,7 @@
                 </Transition>
                 <div class="flex flex-col gap-2 w-full">
                     <label class="label">
-                        <span class="label-text">Lomas</span>
+                        <span class="label-text">{{ $t('modals.add_role.label') }}</span>
                     </label>
                     <!-- dropdown list -->
                     <select v-model="selectedAddRole" class="select select-bordered w-full">
@@ -302,7 +301,7 @@
             </div>
         </BaseDialog>
         <!-- Remove role modal -->
-        <BaseDialog v-model="removeRoleModal" :title="'Dzēst lomu'" :cancel-text="$t('common.cancel')"
+        <BaseDialog v-model="removeRoleModal" :title="$t('modals.add_role.title')" :cancel-text="$t('common.cancel')"
             :confirm-text="$t('common.confirm')" @confirm="removeRole" @cancel="cancelRemoveRole">
             <div class="flex flex-col w-full gap-5">
                 <Transition name="error-slide">
@@ -314,7 +313,7 @@
                 </Transition>
                 <div class="flex flex-col gap-2 w-full">
                     <label class="label">
-                        <span class="label-text">Lomas</span>
+                        <span class="label-text">{{ $t('modals.remove_role.label') }}</span>
                     </label>
                     <!-- dropdown list -->
                     <select v-model="selectedRemoveRole" class="select select-bordered w-full">
@@ -329,7 +328,7 @@
             </div>
         </BaseDialog>
         <!-- Change activity modal -->
-        <BaseDialog v-model="changeActivityModal" :title="'Mainīt aktivitātes statusu'"
+        <BaseDialog v-model="changeActivityModal" :title="$t('modals.change_activity.title')"
             :cancel-text="$t('common.cancel')" :confirm-text="$t('common.confirm')" @confirm="changeActivity"
             @cancel="cancelChangeActivity">
             <div class="flex flex-col w-full gap-5">
@@ -342,12 +341,12 @@
                 </Transition>
                 <div class="flex flex-col gap-2 w-full">
                     <label class="label">
-                        <span class="label-text">Aktivitātes statuss</span>
+                        <span class="label-text">{{ $t('modals.change_activity.label') }}</span>
                     </label>
                     <!-- dropdown list -->
                     <select v-model="selectedActivityStatus" class="select select-bordered w-full">
-                        <option value="active">Aktīvs</option>
-                        <option value="blocked">Bloķēts</option>
+                        <option value="active">{{ $t('modals.change_activity.active') }}</option>
+                        <option value="blocked">{{ $t('modals.change_activity.blocked') }}</option>
                     </select>
                 </div>
             </div>
@@ -359,6 +358,7 @@
 import BaseDialog from '@/components/common/BaseDialog.vue';
 import LoadingScreen from '@/components/common/LoadingScreen.vue';
 import { useAdminStore } from '@/stores/admin';
+
 
 export default {
     name: 'AdminPage',

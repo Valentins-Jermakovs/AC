@@ -58,7 +58,14 @@
     "new_email": "Jauns e-pasts",
     "new_password": "Jaunā parole",
     "old_password": "Vecā parole",
-    "if_google": "Ja esi izmantojis Google kontu, veco paroli ievadīt nevajag."
+    "if_google": "Ja esi izmantojis Google kontu, veco paroli ievadīt nevajag.",
+    "search": "Meklējamie dati...",
+    "make_query": "Veikt pieprasījumu",
+    "add_role": "Pievienot lomu",
+    "remove_role": "Dzēst lomu",
+    "change_activity": "Bloķēt/atbloķēt",
+    "no_data": "Nav datu",
+    "try_later": "Veiciet datu pieprasījumu vai pamēģiniet vēlāk!"
   },
   "eyeRest": {
     "title": "Atpūtiniet acis",
@@ -99,6 +106,20 @@
       "new_username_title": "Mainīt lietotājvārdu?",
       "new_email_title": "Mainīt e-pastu?",
       "new_password_title": "Mainīt paroli?"
+    },
+    "add_role": {
+      "title": "Pievienot lomu",
+      "label": "Lomas"
+    },
+    "remove_role": {
+      "title": "Dzēst lomu",
+      "label": "Lomas"
+    },
+    "change_activity": {
+      "title": "Mainīt aktivitātes statusu",
+      "label": "Aktivitātes statuss",
+      "active": "Aktīvs",
+      "blocked": "Bloķēts"
     }
   },
   "sidebar": {
@@ -118,25 +139,65 @@
     "title": "Kabinets",
     "nav_bar": {
       "dashboard": "Pārskats",
-      "profile": "Profils"
+      "profile": "Profils",
+      "admin": "Lietotāju pārvaldība"
     },
     "profile": {
       "created_at": "Pievienojies",
       "contact_info": "Kontaktinformācija",
       "email": "E-pasts",
       "roles": "Lietotāja lomas",
-
       "kpi": {
         "tasks": "Uzdevumi",
         "month_tasks": "Mēneša uzdevumi",
         "week_activity": "Nedēļas aktivitāte"
       },
-
       "actions": {
         "title": "Lietotāja modifikācija",
         "edit_username": "Mainīt lietotājvārdu",
         "edit_email": "Mainīt e-pastu",
         "change_password": "Mainīt paroli"
+      }
+    },
+    "admin": {
+      "cards": {
+        "card_one": {
+          "title": "Administratora panelis",
+          "content": "Šajā sadaļā administrators var pārvaldīt lietotājus un to lomas, aktivitātes statusus utt."
+        },
+        "card_two": {
+          "title": "Pieejamie režīmi:",
+          "content": [
+            "lietotāju atlase/meklēšana",
+            "lietotāju lomu modificēšana",
+            "aktivitātes statusa maiņa"
+          ]
+        }
+      },
+      "admin_top": {
+        "search": "Meklējamie dati...",
+        "filters": [
+          "Visi lietotāji",
+          "Pēc ID",
+          "Pēc lietotājvārda/e-pasta",
+          "Pēc lomas"
+        ]
+      },
+      "table_top": {
+        "username": "Lietotājvārds",
+        "email": "E-pasts",
+        "roles": "Lomas",
+        "created_at": "Reģistrēts",
+        "status": "Statuss"
+      },
+      "table_body": {
+        "status_active": "Aktīvs",
+        "status_inactive": "Bloķēts"
+      },
+      "table_footer": {
+        "limit": "Rādīt ierakstus:",
+        "total": "Sakritību skaits:",
+        "page": "Lapa"
       }
     }
   },

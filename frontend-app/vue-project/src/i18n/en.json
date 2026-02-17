@@ -58,7 +58,14 @@
     "new_email": "New Email",
     "new_password": "New Password",
     "old_password": "Old Password",
-    "if_google": "If you used a Google account, you don’t need to enter the old password."
+    "if_google": "If you used a Google account, you don’t need to enter the old password.",
+    "search": "Search data...",
+    "make_query": "Execute query",
+    "add_role": "Add role",
+    "remove_role": "Remove role",
+    "change_activity": "Block/Unblock",
+    "no_data": "No data",
+    "try_later": "Perform a data request or try again later!"
   },
   "eyeRest": {
     "title": "Rest Your Eyes",
@@ -99,6 +106,20 @@
       "new_username_title": "Change username?",
       "new_email_title": "Change email?",
       "new_password_title": "Change password?"
+    },
+    "add_role": {
+      "title": "Add role",
+      "label": "Roles"
+    },
+    "remove_role": {
+      "title": "Remove role",
+      "label": "Roles"
+    },
+    "change_activity": {
+      "title": "Change activity status",
+      "label": "Activity status",
+      "active": "Active",
+      "blocked": "Blocked"
     }
   },
   "sidebar": {
@@ -118,7 +139,8 @@
     "title": "Cabinet",
     "nav_bar": {
       "dashboard": "Dashboard",
-      "profile": "Profile"
+      "profile": "Profile",
+      "admin": "Admin Panel"
     },
     "profile": {
       "created_at": "Joined",
@@ -135,6 +157,47 @@
         "edit_username": "Change Username",
         "edit_email": "Change Email",
         "change_password": "Change Password"
+      }
+    },
+    "admin": {
+      "cards": {
+        "card_one": {
+          "title": "Admin Panel",
+          "content": "In this section, the administrator can manage users, their roles, activity statuses, etc."
+        },
+        "card_two": {
+          "title": "Available modes:",
+          "content": [
+            "select/search users",
+            "modify user roles",
+            "change activity status"
+          ]
+        }
+      },
+      "admin_top": {
+        "search": "Search data...",
+        "filters": [
+          "All users",
+          "By ID",
+          "By username/email",
+          "By role"
+        ]
+      },
+      "table_top": {
+        "username": "Username",
+        "email": "Email",
+        "roles": "Roles",
+        "created_at": "Registered",
+        "status": "Status"
+      },
+      "table_body": {
+        "status_active": "Active",
+        "status_inactive": "Blocked"
+      },
+      "table_footer": {
+        "limit": "Show entries:",
+        "total": "Total matches:",
+        "page": "Page"
       }
     }
   },

@@ -23,7 +23,7 @@ export default {
     NavigationPanel,
     ProfilePage,
     LoadingScreen,
-    AdminPage
+    AdminPage,
   },
 
   data() {
@@ -47,9 +47,9 @@ export default {
       ]
 
       if (this.userStore.isAdmin) {
-        navButtons.push({ 
-          key: 'admin', 
-          title: this.$t('cabinet.nav_bar.admin') 
+        navButtons.push({
+          key: 'admin',
+          title: this.$t('cabinet.nav_bar.admin'),
         })
       }
 

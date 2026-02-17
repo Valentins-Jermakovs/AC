@@ -1,6 +1,6 @@
 <template>
   <section class="py-16 bg-base-100">
-    <div class="container mx-auto text-center ">
+    <div class="container mx-auto text-center">
       <h2 class="text-3xl font-bold mb-12">
         {{ $t('landingPage.features.title') }}
       </h2>

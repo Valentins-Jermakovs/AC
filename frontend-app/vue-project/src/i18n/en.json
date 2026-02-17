@@ -167,21 +167,12 @@
         },
         "card_two": {
           "title": "Available modes:",
-          "content": [
-            "select/search users",
-            "modify user roles",
-            "change activity status"
-          ]
+          "content": ["select/search users", "modify user roles", "change activity status"]
         }
       },
       "admin_top": {
         "search": "Search data...",
-        "filters": [
-          "All users",
-          "By ID",
-          "By username/email",
-          "By role"
-        ]
+        "filters": ["All users", "By ID", "By username/email", "By role"]
       },
       "table_top": {
         "username": "Username",

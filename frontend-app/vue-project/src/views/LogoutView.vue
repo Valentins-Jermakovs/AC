@@ -1,6 +1,5 @@
 <template>
   <div class="w-full min-h-screen flex flex-col justify-center items-center p-5 lg:p-10">
-    
     <!-- Titles -->
     <div class="flex flex-col gap-3 items-center text-center animate-fadeIn">
       <h1 class="text-5xl lg:text-7xl font-extrabold text-primary drop-shadow-lg">
@@ -34,8 +33,14 @@ export default {}
 <style scoped>
 /* Fade-in animation for the title section */
 @keyframes fadeIn {
-  0% { opacity: 0; transform: translateY(-20px); }
-  100% { opacity: 1; transform: translateY(0); }
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .animate-fadeIn {
   animation: fadeIn 0.8s ease-out forwards;
@@ -43,8 +48,13 @@ export default {}
 
 /* Optional: bounce effect for the illustration */
 @keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-15px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
 }
 .animate-bounce {
   animation: bounce 2s infinite;

@@ -176,12 +176,7 @@
       },
       "admin_top": {
         "search": "Meklējamie dati...",
-        "filters": [
-          "Visi lietotāji",
-          "Pēc ID",
-          "Pēc lietotājvārda/e-pasta",
-          "Pēc lomas"
-        ]
+        "filters": ["Visi lietotāji", "Pēc ID", "Pēc lietotājvārda/e-pasta", "Pēc lomas"]
       },
       "table_top": {
         "username": "Lietotājvārds",

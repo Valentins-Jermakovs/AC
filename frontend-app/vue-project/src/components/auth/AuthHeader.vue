@@ -1,10 +1,12 @@
 <template>
-  <!-- Login and registration header -->
-  <!-- if login -->
+  <!-- Show page header depending on the current route -->
+
+  <!-- If the user is on the login page -->
   <div v-if="isLogin" class="mb-4 mt-5">
     <h1 class="text-2xl">{{ $t('auth.login.title') }}</h1>
   </div>
-  <!-- if registration -->
+
+  <!-- If the user is on the registration page -->
   <div v-if="isRegister" class="mb-4 mt-5">
     <h1 class="text-2xl">{{ $t('auth.register.title') }}</h1>
   </div>
@@ -12,19 +14,26 @@
 
 <script>
 import { useRoute } from 'vue-router'
-import { computed } from 'vue'
 
 export default {
-  setup() {
-    const route = useRoute()
+  name: 'AuthHeader',
 
-    const isLogin = computed(() => route.name === 'login')
-    const isRegister = computed(() => route.name === 'register')
-
+  data() {
     return {
-      isLogin,
-      isRegister,
+      route: useRoute(), // store current route
     }
+  },
+
+  computed: {
+    // Check if current route is login page
+    isLogin() {
+      return this.route.name === 'login'
+    },
+
+    // Check if current route is register page
+    isRegister() {
+      return this.route.name === 'register'
+    },
   },
 }
 </script>

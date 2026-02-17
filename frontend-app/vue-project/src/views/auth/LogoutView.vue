@@ -1,9 +1,10 @@
 <template>
   <div class="w-full min-h-screen flex flex-col justify-center items-center p-5 lg:p-10">
-    <!-- Titles -->
+
+    <!-- Titles section -->
     <div class="flex flex-col gap-3 items-center text-center animate-fadeIn">
       <h1 class="text-5xl lg:text-7xl font-extrabold text-primary drop-shadow-lg">
-        {{ $t('logout.title') }}
+        {{ $t('logout.title') }} <!-- Translated logout title -->
       </h1>
     </div>
 
@@ -18,16 +19,22 @@
 
     <!-- Back/Home Button -->
     <button
-      class="btn btn-primary text-lg lg:text-xl px-6 py-3 shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
+      class="btn btn-primary text-lg lg:text-xl px-6 py-3 
+      shadow-lg transition-transform duration-300 
+      hover:scale-105 hover:shadow-2xl"
       @click="$router.push('/')"
     >
-      {{ $t('logout.confirm') }}
+      {{ $t('logout.confirm') }} <!-- Translated confirm button text -->
     </button>
+
   </div>
 </template>
 
 <script>
-export default {}
+// No reactive state or methods needed for logout view
+export default {
+  name: 'LogoutView', // Component name
+}
 </script>
 
 <style scoped>
@@ -46,10 +53,9 @@ export default {}
   animation: fadeIn 0.8s ease-out forwards;
 }
 
-/* Optional: bounce effect for the illustration */
+/* Bounce animation for the illustration */
 @keyframes bounce {
-  0%,
-  100% {
+  0%, 100% {
     transform: translateY(0);
   }
   50% {

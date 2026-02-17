@@ -2,12 +2,13 @@
   <!-- Language Selector button -->
   <!-- Fixed position in the bottom-right corner -->
   <div class="fab">
-    <!-- a focusable div with tabindex is necessary to work on all browsers. role="button" is necessary for accessibility -->
+    <!-- Main FAB button -->
+    <!-- tabindex="0" makes it focusable, role="button" is for accessibility -->
     <div tabindex="0" role="button" class="btn btn-lg btn-circle btn-primary">
       <font-awesome-icon icon="globe" />
     </div>
 
-    <!-- buttons that show up when FAB is open -->
+    <!-- Buttons that appear when FAB is open -->
     <button
       v-for="language in languages"
       :key="language.code"
@@ -20,29 +21,31 @@
 </template>
 
 <script>
-import { useI18n } from 'vue-i18n'
-
 export default {
-  setup() {
-    const { locale } = useI18n({ useScope: 'global' })
+  name: 'LanguageSelector', // Component name
 
-    const languages = [
-      { code: 'ru', label: 'RU' },
-      { code: 'lv', label: 'LV' },
-      { code: 'en', label: 'EN' },
-    ]
-
-    const changeLocale = (code) => {
-      locale.value = code
-    }
-
+  data() {
     return {
-      locale,
-      languages,
-      changeLocale,
+      // List of available languages
+      languages: [
+        { code: 'ru', label: 'RU' },
+        { code: 'lv', label: 'LV' },
+        { code: 'en', label: 'EN' },
+      ],
     }
+  },
+
+  methods: {
+    // Function to change the current locale
+    changeLocale(code) {
+      // Access the global i18n instance via this.$i18n
+      this.$i18n.locale = code
+    },
   },
 }
 </script>
 
-<style scoped></style>
+
+<style scoped>
+/* Styling is handled via Tailwind CSS, no extra CSS needed */
+</style>

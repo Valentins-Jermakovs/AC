@@ -6,120 +6,32 @@
       <UserInfoCard :user="user"></UserInfoCard>
 
       <div class="flex flex-col gap-5">
-        <UserProgressCard
-          v-for="(item, index) in progressItems"
-          :key="index"
-          v-bind="item"
-        ></UserProgressCard>
+        <UserProgressCard v-for="(item, index) in progressItems" :key="index" v-bind="item"></UserProgressCard>
       </div>
 
-      <UserModificationCard
-        :actions="actions"
-        @action-click="handleActionClick"
-      ></UserModificationCard>
+      <UserModificationCard :actions="actions" @action-click="handleActionClick"></UserModificationCard>
     </div>
 
     <LoadingScreen v-else></LoadingScreen>
 
     <!-- Modals -->
-    <BaseDialog
-      v-model="openUsernameModal"
-      :title="$t('modals.modify_user.new_username_title')"
-      :confirm-text="$t('common.confirm')"
-      :cancel-text="$t('common.cancel')"
-      @confirm="submitUsernameChange"
-    >
-      <div class="flex flex-col w-full gap-5">
-        <Transition name="error-slide">
-          <div v-if="error" class="overflow-hidden">
-            <h1 class="text-red-500 mb-2">
-              {{ error }}
-            </h1>
-          </div>
-        </Transition>
-        <div class="form-control flex flex-col gap-2 w-full">
-          <label class="label">
-            <span class="label-text">{{ $t('common.username') }}</span>
-          </label>
-          <input
-            v-model="newUsername"
-            type="text"
-            :placeholder="$t('common.new_username')"
-            class="input input-bordered w-full"
-          />
-        </div>
-      </div>
-    </BaseDialog>
+    <UsernameModal 
+    v-model="openUsernameModal" 
+    :error="error" 
+    @submit="submitUsernameChange" 
+    />
 
-    <BaseDialog
-      v-model="openEmailModal"
-      :title="$t('modals.modify_user.new_email_title')"
-      :confirm-text="$t('common.confirm')"
-      :cancel-text="$t('common.cancel')"
-      @confirm="submitEmailChange"
-    >
-      <div class="flex flex-col w-full gap-5">
-        <Transition name="error-slide">
-          <div v-if="error" class="overflow-hidden">
-            <h1 class="text-red-500 mb-2">
-              {{ error }}
-            </h1>
-          </div>
-        </Transition>
-        <div class="form-control flex flex-col gap-2 w-full">
-          <label class="label">
-            <span class="label-text">{{ $t('common.email') }}</span>
-          </label>
-          <input
-            v-model="newEmail"
-            type="email"
-            :placeholder="$t('common.new_email')"
-            class="input input-bordered w-full"
-          />
-        </div>
-      </div>
-    </BaseDialog>
+    <EmailChangeModal 
+    v-model="openEmailModal" 
+    :error="error" 
+    @submit="submitEmailChange" 
+    />
 
-    <BaseDialog
-      v-model="openPasswordModal"
-      :title="$t('modals.modify_user.new_password_title')"
-      :confirm-text="$t('common.confirm')"
-      :cancel-text="$t('common.cancel')"
-      @confirm="submitPasswordChange"
-    >
-      <div class="flex flex-col w-full gap-5">
-        <Transition name="error-slide">
-          <div v-if="error" class="overflow-hidden">
-            <h1 class="text-red-500 mb-2">
-              {{ error }}
-            </h1>
-          </div>
-        </Transition>
-        <p class="opacity-50">* {{ $t('common.if_google') }}</p>
-        <div class="form-control flex flex-col gap-2 w-full">
-          <label class="label">
-            <span class="label-text">{{ $t('common.old_password') }}</span>
-          </label>
-          <input
-            v-model="old_password"
-            type="password"
-            :placeholder="$t('common.password')"
-            class="input input-bordered w-full"
-          />
-        </div>
-        <div class="form-control flex flex-col gap-2 w-full">
-          <label class="label">
-            <span class="label-text">{{ $t('common.new_password') }}</span>
-          </label>
-          <input
-            v-model="new_password"
-            type="password"
-            :placeholder="$t('common.password')"
-            class="input input-bordered w-full"
-          />
-        </div>
-      </div>
-    </BaseDialog>
+    <PasswordChangeModal 
+    v-model="openPasswordModal" 
+    :error="error" 
+    @submit="submitPasswordChange" 
+    />
   </div>
 </template>
 
@@ -132,6 +44,10 @@ import BaseDialog from '@/components/common/BaseDialog.vue'
 import { useUserStore } from '@/stores/user'
 import LoadingScreen from '@/components/common/LoadingScreen.vue'
 
+import UsernameModal from './modals/UsernameModal.vue'
+import EmailChangeModal from './modals/EmailChangeModal.vue'
+import PasswordChangeModal from './modals/PasswordChangeModal.vue'
+
 export default {
   name: 'UserProfileView',
 
@@ -140,10 +56,6 @@ export default {
       openUsernameModal: false,
       openEmailModal: false,
       openPasswordModal: false,
-      newUsername: '',
-      newEmail: '',
-      old_password: '',
-      new_password: '',
     }
   },
 
@@ -154,6 +66,10 @@ export default {
     UserModificationCard,
     BaseDialog,
     LoadingScreen,
+
+    UsernameModal,
+    EmailChangeModal,
+    PasswordChangeModal,
   },
 
   computed: {
@@ -241,34 +157,32 @@ export default {
           break
       }
     },
-    async submitUsernameChange() {
-      if (!this.newUsername || this.newUsername === '') return
+    async submitUsernameChange(username) {
+      if (!username) return
 
       try {
-        await this.userStore.changeUsername(this.newUsername)
+        await this.userStore.changeUsername(username)
         this.openUsernameModal = false
-        this.newUsername = ''
       } catch (err) {
         console.error('Failed to change username:', err)
       }
     },
-    async submitEmailChange() {
-      if (!this.newEmail || this.newEmail === '') return
+    async submitEmailChange(email) {
+      if (!email) return
 
       try {
-        await this.userStore.changeEmail(this.newEmail)
+        await this.userStore.changeEmail(email)
         this.openEmailModal = false
-        this.newEmail = ''
       } catch (err) {
         console.error('Failed to change email:', err)
       }
     },
-    async submitPasswordChange() {
+    async submitPasswordChange({ oldPassword, newPassword }) {
+      if (!oldPassword || !newPassword) return
+
       try {
-        await this.userStore.changePassword(this.new_password, this.old_password)
+        await this.userStore.changePassword(newPassword, oldPassword)
         this.openPasswordModal = false
-        this.old_password = ''
-        this.new_password = ''
       } catch (err) {
         console.error('Failed to change password:', err)
       }

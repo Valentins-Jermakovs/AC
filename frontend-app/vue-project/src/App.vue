@@ -1,8 +1,8 @@
 <template>
-  <!-- Globālais Eye Rest Reminder -->
+  <!-- Global Eye Rest Reminder -->
   <EyeRestReminder />
 
-  <!-- Šeit tiek renderētas visas lapas -->
+  <!-- Render child routes -->
   <router-view></router-view>
 </template>
 
@@ -11,17 +11,20 @@ import EyeRestReminder from './components/common/EyeRestReminder.vue'
 import { useDocumentTitle } from './utils/useDocumentTitle'
 
 export default {
-  name: 'App',
+  name: 'App', // Component name
 
   components: {
-    EyeRestReminder,
+    EyeRestReminder, // Register EyeRestReminder component
   },
 
-  setup() {
-    // Ja tev ir hook dokumenta nosaukumam
+  // Lifecycle hook: called when component is created
+  created() {
+    // Call the utility to set the document title
     useDocumentTitle()
   },
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+/* No additional CSS needed; all styling handled elsewhere */
+</style>

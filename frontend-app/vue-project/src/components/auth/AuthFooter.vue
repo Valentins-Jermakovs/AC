@@ -1,6 +1,7 @@
 <template>
-  <!-- Navigation links to registration and login -->
-  <!-- if login: link to register -->
+  <!-- Show navigation link depending on current page -->
+  
+  <!-- If the user is on login page, show link to register -->
   <div v-if="isLogin">
     <h3>
       {{ $t('common.switch_to_register') }}
@@ -9,7 +10,8 @@
       </router-link>
     </h3>
   </div>
-  <!-- if register: link to login -->
+
+  <!-- If the user is on register page, show link to login -->
   <div v-if="isRegister">
     <h3>
       {{ $t('common.switch_to_login') }}
@@ -22,21 +24,29 @@
 
 <script>
 import { useRoute } from 'vue-router'
-import { computed } from 'vue'
 
 export default {
-  setup() {
-    const route = useRoute()
+  name: 'AuthHeader',
 
-    const isLogin = computed(() => route.name === 'login')
-    const isRegister = computed(() => route.name === 'register')
-
+  data() {
     return {
-      isLogin,
-      isRegister,
+      route: useRoute(), // store current route
     }
+  },
+
+  computed: {
+    // Check if the current route is login
+    isLogin() {
+      return this.route.name === 'login'
+    },
+
+    // Check if the current route is register
+    isRegister() {
+      return this.route.name === 'register'
+    },
   },
 }
 </script>
+
 
 <style scoped></style>

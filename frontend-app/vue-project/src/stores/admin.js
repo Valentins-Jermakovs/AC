@@ -1,35 +1,66 @@
+// Import Pinia store helper
 import { defineStore } from 'pinia'
+
+// Axios instance for API requests
 import { api } from '@/services/axios'
+
+// API endpoint constants
 import { API_ENDPOINTS } from '@/config/api'
+
+// Auth and User stores (used for token and role checking)
 import { useAuthStore } from './auth'
 import { useUserStore } from './user'
 
+// Create Admin store
 export const useAdminStore = defineStore('admin', {
+
+  // ==========================
+  // STATE
+  // ==========================
   state: () => ({
-    users: [],
+    users: [], // List of users returned from backend
+
+    // Pagination metadata
     meta: {
       page: 1,
       limit: 10,
       total_users: 0,
       total_pages: 0,
     },
-    loading: false,
-    error: null,
+
+    loading: false, // Indicates request is in progress
+    error: null,    // Stores error message
+
+    // Search configuration
     searchMode: 'all',
     searchQuery: '',
 
+    // Stores information about last request (used for refresh)
     lastRequest: null,
   }),
 
+  // ==========================
+  // GETTERS
+  // ==========================
   getters: {
+
+    // Returns true if users array is not empty
     hasUsers: (state) => state.users.length > 0,
   },
 
+  // ==========================
+  // ACTIONS
+  // ==========================
   actions: {
+
+    // --------------------------
+    // Fetch all users (paginated)
+    // --------------------------
     async fetchUsers(page = this.meta.page, limit = this.meta.limit) {
       const authStore = useAuthStore()
       const userStore = useUserStore()
 
+      // Only admins can access this
       if (!userStore.isAdmin) {
         this.error = 'You are not an admin'
         return
@@ -46,12 +77,13 @@ export const useAdminStore = defineStore('admin', {
           },
         })
 
+        // Save users and pagination data
         this.users = response.data.items
         this.meta = response.data.meta
 
-        this.lastRequest = {
-          type: 'all',
-        }
+        // Remember request type
+        this.lastRequest = { type: 'all' }
+
       } catch (err) {
         this.error = err.response?.data?.detail || err.message
         throw err
@@ -60,6 +92,9 @@ export const useAdminStore = defineStore('admin', {
       }
     },
 
+    // --------------------------
+    // Get single user by ID
+    // --------------------------
     async getUserById(id) {
       const authStore = useAuthStore()
       const userStore = useUserStore()
@@ -77,12 +112,21 @@ export const useAdminStore = defineStore('admin', {
           headers: { Authorization: `Bearer ${authStore.accessToken}` },
         })
 
+        // Store result as single-item array
         this.users = [response.data]
+
+        // Save pagination data
+        this.meta = {
+          page: 1,
+          total_users: 1,
+          total_pages: 1,
+        }
 
         this.lastRequest = {
           type: 'id',
           payload: id,
         }
+
       } catch (err) {
         this.users = []
         this.error = err.response?.data?.detail || err.message
@@ -91,6 +135,9 @@ export const useAdminStore = defineStore('admin', {
       }
     },
 
+    // --------------------------
+    // Search user by username or email
+    // --------------------------
     async getUserByNameEmail(searchString, page = this.meta.page, limit = this.meta.limit) {
       const authStore = useAuthStore()
       const userStore = useUserStore()
@@ -104,7 +151,6 @@ export const useAdminStore = defineStore('admin', {
       this.error = null
 
       try {
-        // endpoint ar path param + query param
         const response = await api.get(
           API_ENDPOINTS.GET_USER_BY_USERNAME_OR_EMAIL(encodeURIComponent(searchString)),
           {
@@ -120,9 +166,12 @@ export const useAdminStore = defineStore('admin', {
           type: 'username',
           payload: searchString,
         }
+
       } catch (err) {
         this.error = err.response?.data?.detail || err.message
         this.users = []
+
+        // Reset pagination
         this.meta = {
           page: 1,
           limit: 10,
@@ -134,6 +183,9 @@ export const useAdminStore = defineStore('admin', {
       }
     },
 
+    // --------------------------
+    // Search users by role
+    // --------------------------
     async getUserByRole(searchString, page = this.meta.page, limit = this.meta.limit) {
       const authStore = useAuthStore()
       const userStore = useUserStore()
@@ -146,13 +198,13 @@ export const useAdminStore = defineStore('admin', {
       this.loading = true
       this.error = null
 
+      // Save request before execution
       this.lastRequest = {
         type: 'role',
         payload: searchString,
       }
 
       try {
-        // endpoint ar path param + query param
         const response = await api.get(
           API_ENDPOINTS.GET_USER_BY_ROLE(encodeURIComponent(searchString)),
           {
@@ -163,9 +215,11 @@ export const useAdminStore = defineStore('admin', {
 
         this.users = response.data.items
         this.meta = response.data.meta
+
       } catch (err) {
         this.error = err.response?.data?.detail || err.message
         this.users = []
+
         this.meta = {
           page: 1,
           limit: 10,
@@ -177,6 +231,9 @@ export const useAdminStore = defineStore('admin', {
       }
     },
 
+    // --------------------------
+    // Add role to selected users
+    // --------------------------
     async addRoleToSelectedUsers(roleId, selectedUserIds) {
       const authStore = useAuthStore()
       const userStore = useUserStore()
@@ -197,10 +254,8 @@ export const useAdminStore = defineStore('admin', {
           },
         })
 
-        console.log('Role added:', response.data)
         return response.data
       } catch (err) {
-        console.error('Failed to add role:', err)
         this.error = err.response?.data?.detail || err.message || err
         throw err
       } finally {
@@ -208,6 +263,9 @@ export const useAdminStore = defineStore('admin', {
       }
     },
 
+    // --------------------------
+    // Remove role from selected users
+    // --------------------------
     async removeRoleFromSelectedUsers(roleId, selectedUserIds) {
       const authStore = useAuthStore()
       const userStore = useUserStore()
@@ -229,17 +287,17 @@ export const useAdminStore = defineStore('admin', {
           },
         )
 
-        console.log('Role removed:', response.data)
         return response.data
       } catch (err) {
-        console.error('Failed to remove role:', err)
         this.error = err.response?.data?.detail || err.message || err
-        throw err
       } finally {
         this.loading = false
       }
     },
 
+    // --------------------------
+    // Activate or deactivate users
+    // --------------------------
     async updateUserActivity(userIds, status) {
       const authStore = useAuthStore()
       const userStore = useUserStore()
@@ -263,10 +321,8 @@ export const useAdminStore = defineStore('admin', {
           },
         )
 
-        console.log('User activity updated:', response.data)
         return response.data
       } catch (err) {
-        console.error('Failed to update user activity:', err)
         this.error = err.response?.data?.detail || err.message || err
         throw err
       } finally {
@@ -274,6 +330,9 @@ export const useAdminStore = defineStore('admin', {
       }
     },
 
+    // --------------------------
+    // Pagination helpers
+    // --------------------------
     async setPage(page) {
       this.meta.page = page
       await this.fetchUsers(page, this.meta.limit)
@@ -298,6 +357,9 @@ export const useAdminStore = defineStore('admin', {
       }
     },
 
+    // --------------------------
+    // Repeat last request
+    // --------------------------
     async refresh() {
       if (!this.lastRequest) {
         await this.fetchUsers()
@@ -328,6 +390,7 @@ export const useAdminStore = defineStore('admin', {
       }
     },
 
+    // Clear search input field
     clearSearch() {
       this.searchQuery = ''
     },

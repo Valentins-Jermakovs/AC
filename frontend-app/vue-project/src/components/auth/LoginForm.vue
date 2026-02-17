@@ -1,24 +1,37 @@
 <template>
-  <!-- login form -->
-  <!-- Animated error -->
+  <!-- Login form -->
+
+  <!-- Animated error message -->
   <Transition name="error-slide">
     <div v-if="error" class="overflow-hidden">
-      <h1 class="text-red-500 mb-2">
+      <h1 class="text-error mb-2">
         {{ error }}
       </h1>
     </div>
   </Transition>
+
   <div class="divider"></div>
+
+  <!-- Username and password inputs -->
   <form action="" class="flex flex-col gap-5">
     <div class="form-control flex flex-col gap-2">
       <label class="label">
-        <span class="label-text">{{ $t('common.username') }}</span>
+        <span class="label-text">
+          {{ $t('common.username') }}
+        </span>
       </label>
-      <input v-model="username" placeholder="testuser" class="input input-bordered w-full" />
+      <input 
+      v-model="username" 
+      placeholder="testuser" 
+      class="input input-bordered w-full" 
+      />
     </div>
+
     <div class="form-control flex flex-col gap-2">
       <label class="label">
-        <span class="label-text">{{ $t('common.password') }}</span>
+        <span class="label-text">
+          {{ $t('common.password') }}
+        </span>
       </label>
       <input
         v-model="password"
@@ -28,18 +41,26 @@
       />
     </div>
   </form>
+
+  <!-- Login button -->
   <div class="flex mt-6">
-    <button class="btn btn-primary flex-1" @click="login">
+    <button 
+    class="btn btn-primary flex-1" 
+    @click="login">
       {{ $t('common.login') }}
     </button>
   </div>
-  <!-- google auth button -->
+
+  <!-- Google login button -->
   <div class="flex mt-6">
-    <button class="btn btn-neutral flex-1" @click="loginGoogle">
+    <button 
+    class="btn btn-neutral flex-1" 
+    @click="loginGoogle">
       <font-awesome-icon icon="fa-brands fa-google" />
       {{ $t('common.login_with_google') }}
     </button>
   </div>
+
   <div class="divider"></div>
 </template>
 
@@ -51,35 +72,41 @@ import { api } from '@/services/axios'
 export default {
   data() {
     return {
-      username: '',
-      password: '',
-      error: '',
-      authStore: null,
+      username: '', // Username input
+      password: '', // Password input
+      error: '',    // Error message to show
+      authStore: null, // Store instance for auth
     }
   },
 
   mounted() {
+    // Initialize authStore
     this.authStore = useAuthStore()
 
+    // Check for access & refresh tokens in query params (OAuth redirect)
     const access = this.$route.query.access_token
     const refresh = this.$route.query.refresh_token
 
     if (access && refresh) {
+      // Set tokens and navigate to system page
       this.authStore.setAuthData(access, refresh)
       this.$router.replace('/system')
     }
   },
 
   methods: {
+    // Standard username/password login
     async login() {
       this.error = ''
 
+      // Validate fields
       if (!this.username || !this.password) {
         this.error = 'All fields are required'
         return
       }
 
       try {
+        // Call login action from store
         await this.authStore.login(this.username, this.password)
         this.$router.push('/system')
       } catch (err) {
@@ -94,6 +121,7 @@ export default {
       }
     },
 
+    // Redirect to Google login
     loginGoogle() {
       window.location.href = api.defaults.baseURL + API_ENDPOINTS.GOOGLE_LOGIN
     },
@@ -102,6 +130,7 @@ export default {
 </script>
 
 <style scoped>
+/* Animated error slide transition */
 .error-slide-enter-active,
 .error-slide-leave-active {
   transition: all 0.4s ease;

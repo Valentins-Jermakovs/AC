@@ -1,12 +1,13 @@
 <template>
   <section class="py-10 bg-base-200">
     <div class="container mx-auto flex flex-col md:flex-row items-stretch gap-8">
+      
       <!-- Image + Skeleton -->
       <div class="md:w-1/2 relative">
-        <!-- Skeleton -->
+        <!-- Skeleton placeholder while image is loading -->
         <div v-if="!loaded" class="skeleton w-full h-full rounded-box absolute inset-0"></div>
 
-        <!-- Image -->
+        <!-- Actual image -->
         <img
           src="@/assets/illustrations/11669206_20945802.jpg"
           alt="About"
@@ -17,7 +18,7 @@
         />
       </div>
 
-      <!-- Text -->
+      <!-- Text content -->
       <div class="md:w-1/2 p-5 lg:p-10">
         <h2 class="text-5xl font-bold mb-4 text-base-content">
           {{ $t('landingPage.about_title') }}
@@ -26,16 +27,23 @@
           {{ $t('landingPage.about_content') }}
         </p>
       </div>
+
     </div>
   </section>
 </template>
 
 <script>
+// Component state
 export default {
+  name: 'AboutSection', // Component name
   data() {
     return {
-      loaded: false,
+      loaded: false, // Tracks if the image has finished loading
     }
   },
 }
 </script>
+
+<style scoped>
+/* Scoped styles are empty; all styling via Tailwind CSS */
+</style>

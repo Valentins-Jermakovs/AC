@@ -1,16 +1,21 @@
 <template>
   <div class="transition-all duration-500">
-    <!-- register form -->
-    <!-- Animated error -->
+    <!-- Registration form -->
+
+    <!-- Animated error message -->
     <Transition name="error-slide">
       <div v-if="error" class="overflow-hidden">
-        <h1 class="text-red-500 mb-2">
+        <h1 class="text-error mb-2">
           {{ error }}
         </h1>
       </div>
     </Transition>
+
     <div class="divider"></div>
+
+    <!-- Form fields -->
     <form action="" class="flex flex-col gap-5">
+      <!-- Email input -->
       <div class="form-control flex flex-col gap-2">
         <label class="label">
           <span class="label-text">{{ $t('common.email') }}</span>
@@ -22,6 +27,8 @@
           class="required input input-bordered w-full"
         />
       </div>
+
+      <!-- Username input -->
       <div class="form-control flex flex-col gap-2">
         <label class="label">
           <span class="label-text">{{ $t('common.username') }}</span>
@@ -33,6 +40,8 @@
           class="input input-bordered w-full"
         />
       </div>
+
+      <!-- Password input -->
       <div class="form-control flex flex-col gap-2">
         <label class="label">
           <span class="label-text">{{ $t('common.password') }}</span>
@@ -44,6 +53,8 @@
           class="input input-bordered w-full"
         />
       </div>
+
+      <!-- Confirm password input -->
       <div class="form-control flex flex-col gap-2">
         <label class="label">
           <span class="label-text">{{ $t('common.confirm_password') }}</span>
@@ -56,16 +67,20 @@
         />
       </div>
     </form>
+
+    <!-- Register button -->
     <div class="flex mt-6">
       <button class="btn btn-primary flex-1" @click="register">{{ $t('common.register') }}</button>
     </div>
-    <!-- google auth button -->
+
+    <!-- Google registration button -->
     <div class="flex mt-6">
       <button class="btn btn-neutral flex-1" @click="loginGoogle">
         <font-awesome-icon icon="fa-brands fa-google" />
         {{ $t('common.register_with_google') }}
       </button>
     </div>
+
     <div class="divider"></div>
   </div>
 </template>
@@ -78,47 +93,55 @@ import { api } from '@/services/axios'
 export default {
   data() {
     return {
-      username: '',
-      password: '',
-      confirmPassword: '',
-      email: '',
-      error: '',
-      authStore: null,
+      username: '',         // Username input
+      password: '',         // Password input
+      confirmPassword: '',  // Confirm password input
+      email: '',            // Email input
+      error: '',            // Error message to show
+      authStore: null,      // Store instance for auth
     }
   },
 
   mounted() {
+    // Initialize auth store
     this.authStore = useAuthStore()
 
+    // Check for access & refresh tokens in query params (OAuth redirect)
     const access = this.$route.query.access_token
     const refresh = this.$route.query.refresh_token
 
     if (access && refresh) {
+      // Set tokens and navigate to system page
       this.authStore.setAuthData(access, refresh)
       this.$router.replace('/system')
     }
   },
 
   methods: {
+    // Standard registration method
     async register() {
       this.error = ''
 
+      // Validate all fields
       if (!this.username || !this.password || !this.confirmPassword || !this.email) {
         this.error = 'All fields are required'
         return
       }
 
+      // Check if passwords match
       if (this.password !== this.confirmPassword) {
         this.error = 'Passwords do not match'
         return
       }
 
+      // Check password length
       if (this.password.length < 8 || this.confirmPassword.length < 8) {
         this.error = 'Password must be at least 8 characters long'
         return
       }
 
       try {
+        // Call register action from auth store
         await this.authStore.register(this.username, this.email, this.password)
         this.$router.push('/system')
       } catch (err) {
@@ -133,6 +156,7 @@ export default {
       }
     },
 
+    // Redirect to Google login (OAuth)
     loginGoogle() {
       window.location.href = api.defaults.baseURL + API_ENDPOINTS.GOOGLE_LOGIN
     },
@@ -141,6 +165,7 @@ export default {
 </script>
 
 <style scoped>
+/* Animated error slide transition */
 .error-slide-enter-active,
 .error-slide-leave-active {
   transition: all 0.4s ease;

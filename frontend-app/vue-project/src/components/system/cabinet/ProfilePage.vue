@@ -1,36 +1,46 @@
 <template>
   <div class="flex flex-col gap-5 p-5">
+    <!-- Profile header, shows user info -->
     <ProfileHeader v-if="user" :user="user"></ProfileHeader>
 
+    <!-- Main content: user info, progress, modification actions -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-5" v-if="user">
       <UserInfoCard :user="user"></UserInfoCard>
 
       <div class="flex flex-col gap-5">
-        <UserProgressCard v-for="(item, index) in progressItems" :key="index" v-bind="item"></UserProgressCard>
+        <UserProgressCard
+          v-for="(item, index) in progressItems"
+          :key="index"
+          v-bind="item"
+        ></UserProgressCard>
       </div>
 
-      <UserModificationCard :actions="actions" @action-click="handleActionClick"></UserModificationCard>
+      <UserModificationCard
+        :actions="actions"
+        @action-click="handleActionClick"
+      ></UserModificationCard>
     </div>
 
+    <!-- Loading screen while user data is not loaded -->
     <LoadingScreen v-else></LoadingScreen>
 
-    <!-- Modals -->
+    <!-- Modals for changing username, email, password -->
     <UsernameModal 
-    v-model="openUsernameModal" 
-    :error="error" 
-    @submit="submitUsernameChange" 
+      v-model="openUsernameModal" 
+      :error="error" 
+      @submit="submitUsernameChange" 
     />
 
     <EmailChangeModal 
-    v-model="openEmailModal" 
-    :error="error" 
-    @submit="submitEmailChange" 
+      v-model="openEmailModal" 
+      :error="error" 
+      @submit="submitEmailChange" 
     />
 
     <PasswordChangeModal 
-    v-model="openPasswordModal" 
-    :error="error" 
-    @submit="submitPasswordChange" 
+      v-model="openPasswordModal" 
+      :error="error" 
+      @submit="submitPasswordChange" 
     />
   </div>
 </template>
@@ -40,9 +50,8 @@ import ProfileHeader from './ProfileHeader.vue'
 import UserInfoCard from './UserInfoCard.vue'
 import UserProgressCard from './UserProgressCard.vue'
 import UserModificationCard from './UserModificationCard.vue'
-import BaseDialog from '@/components/common/BaseDialog.vue'
-import { useUserStore } from '@/stores/user'
 import LoadingScreen from '@/components/common/LoadingScreen.vue'
+import { useUserStore } from '@/stores/user'
 
 import UsernameModal from './modals/UsernameModal.vue'
 import EmailChangeModal from './modals/EmailChangeModal.vue'
@@ -51,20 +60,11 @@ import PasswordChangeModal from './modals/PasswordChangeModal.vue'
 export default {
   name: 'UserProfileView',
 
-  data() {
-    return {
-      openUsernameModal: false,
-      openEmailModal: false,
-      openPasswordModal: false,
-    }
-  },
-
   components: {
     ProfileHeader,
     UserInfoCard,
     UserProgressCard,
     UserModificationCard,
-    BaseDialog,
     LoadingScreen,
 
     UsernameModal,
@@ -72,11 +72,32 @@ export default {
     PasswordChangeModal,
   },
 
+  data() {
+    return {
+      // Modal open states
+      openUsernameModal: false,
+      openEmailModal: false,
+      openPasswordModal: false,
+    }
+  },
+
   computed: {
+    // Pinia user store
+    userStore() {
+      return useUserStore()
+    },
+
+    // Current user data
     user() {
       return this.userStore.user
     },
 
+    // Error message from store
+    error() {
+      return this.userStore.error
+    },
+
+    // User KPI/progress cards
     progressItems() {
       return [
         {
@@ -106,13 +127,7 @@ export default {
       ]
     },
 
-    userStore() {
-      return useUserStore()
-    },
-    error() {
-      return this.userStore.error
-    },
-
+    // Actions available in UserModificationCard
     actions() {
       return [
         { key: 'username', title: this.$t('cabinet.profile.actions.edit_username') },
@@ -123,6 +138,7 @@ export default {
   },
 
   methods: {
+    // Close modal by type and reset error
     closeModal(modalName) {
       switch (modalName) {
         case 'username':
@@ -137,10 +153,10 @@ export default {
           this.openPasswordModal = false
           this.userStore.error = ''
           break
-        default:
-          break
       }
     },
+
+    // Handle action button click to open modal
     handleActionClick(key) {
       switch (key) {
         case 'username':
@@ -157,9 +173,10 @@ export default {
           break
       }
     },
+
+    // Submit username change
     async submitUsernameChange(username) {
       if (!username) return
-
       try {
         await this.userStore.changeUsername(username)
         this.openUsernameModal = false
@@ -167,9 +184,10 @@ export default {
         console.error('Failed to change username:', err)
       }
     },
+
+    // Submit email change
     async submitEmailChange(email) {
       if (!email) return
-
       try {
         await this.userStore.changeEmail(email)
         this.openEmailModal = false
@@ -177,9 +195,10 @@ export default {
         console.error('Failed to change email:', err)
       }
     },
+
+    // Submit password change
     async submitPasswordChange({ oldPassword, newPassword }) {
       if (!oldPassword || !newPassword) return
-
       try {
         await this.userStore.changePassword(newPassword, oldPassword)
         this.openPasswordModal = false
@@ -189,6 +208,7 @@ export default {
     },
   },
 
+  // Fetch current user on mount
   mounted() {
     if (!this.userStore.user) {
       this.userStore.fetchMe()
@@ -198,6 +218,7 @@ export default {
 </script>
 
 <style scoped>
+/* Error slide animation for modals */
 .error-slide-enter-active,
 .error-slide-leave-active {
   transition: all 0.4s ease;

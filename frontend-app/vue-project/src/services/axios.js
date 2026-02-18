@@ -18,7 +18,8 @@ const processQueue = (error, token = null) => {
   failedQueue.forEach((prom) => {
     if (error) {
       prom.reject(error) // Reject request if refresh failed
-    } else {
+    } 
+    else {
       prom.resolve(token) // Resolve request with new token
     }
   })

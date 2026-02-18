@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col xl:flex-row w-full bg-base-100 border border-base-300">
+  <div class="flex flex-col xl:flex-row w-full bg-base-100 border border-base-300 rounded-box">
     <!-- Search input + button -->
     <div class="flex flex-col lg:flex-row flex-1">
       <div class="flex flex-col sm:flex-row flex-1 p-4 gap-3 items-stretch sm:items-center">
@@ -74,6 +74,10 @@ export default {
   setup() {
     const store = useAdminStore()
     return { store }
+  },
+  mounted() {
+    this.store.searchMode = 'all'
+    this.store.searchQuery = ''
   },
 }
 </script>

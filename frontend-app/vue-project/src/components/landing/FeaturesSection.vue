@@ -4,65 +4,20 @@
       <h2 class="text-3xl font-bold mb-12">
         {{ $t('landingPage.features.title') }}
       </h2>
+
       <div class="grid md:grid-cols-3 gap-8">
-        <!-- Esošie trīs bloki -->
-        <div class="card p-6 md:bg-base-200 md:card-border md:border-base-300">
+        <div
+          v-for="(feature, index) in features"
+          :key="index"
+          class="card p-6 md:bg-base-200 md:card-border md:border-base-300"
+        >
           <div class="text-4xl mb-4">
-            <font-awesome-icon icon="tasks" />
+            <font-awesome-icon :icon="feature.icon" />
           </div>
           <h3 class="text-xl font-semibold mb-2">
-            {{ $t('landingPage.features.tasks') }}
+            {{ $t(feature.title) }}
           </h3>
-          <p>{{ $t('landingPage.features.tasks_description') }}</p>
-        </div>
-        <div class="card p-6 md:bg-base-200 md:card-border md:border-base-300">
-          <div class="text-4xl mb-4">
-            <font-awesome-icon icon="calendar-alt" />
-          </div>
-          <h3 class="text-xl font-semibold mb-2">
-            {{ $t('landingPage.features.events') }}
-          </h3>
-          <p>{{ $t('landingPage.features.events_description') }}</p>
-        </div>
-        <div class="card p-6 md:bg-base-200 md:card-border md:border-base-300">
-          <div class="text-4xl mb-4">
-            <font-awesome-icon icon="chart-bar" />
-          </div>
-          <h3 class="text-xl font-semibold mb-2">
-            {{ $t('landingPage.features.analytics') }}
-          </h3>
-          <p>{{ $t('landingPage.features.analytics_description') }}</p>
-        </div>
-
-        <!-- Jaunie bloki -->
-        <div class="card p-6 md:bg-base-200 md:card-border md:border-base-300">
-          <div class="text-4xl mb-4">
-            <font-awesome-icon icon="wallet" />
-          </div>
-          <h3 class="text-xl font-semibold mb-2">
-            {{ $t('landingPage.features.finances') }}
-          </h3>
-          <p>{{ $t('landingPage.features.finances_description') }}</p>
-        </div>
-
-        <div class="card p-6 md:bg-base-200 md:card-border md:border-base-300">
-          <div class="text-4xl mb-4">
-            <font-awesome-icon icon="fa-brands fa-google" />
-          </div>
-          <h3 class="text-xl font-semibold mb-2">
-            {{ $t('landingPage.features.google') }}
-          </h3>
-          <p>{{ $t('landingPage.features.google_description') }}</p>
-        </div>
-
-        <div class="card p-6 md:bg-base-200 md:card-border md:border-base-300">
-          <div class="text-4xl mb-4">
-            <font-awesome-icon icon="leaf" />
-          </div>
-          <h3 class="text-xl font-semibold mb-2">
-            {{ $t('landingPage.features.environment') }}
-          </h3>
-          <p>{{ $t('landingPage.features.environment_description') }}</p>
+          <p>{{ $t(feature.description) }}</p>
         </div>
       </div>
     </div>
@@ -70,6 +25,45 @@
 </template>
 
 <script>
+export default {
+  name: 'LandingFeatures',
+  data() {
+    return {
+      features: [
+        {
+          icon: 'tasks',
+          title: 'landingPage.features.tasks',
+          description: 'landingPage.features.tasks_description',
+        },
+        {
+          icon: 'calendar-alt',
+          title: 'landingPage.features.events',
+          description: 'landingPage.features.events_description',
+        },
+        {
+          icon: 'chart-bar',
+          title: 'landingPage.features.analytics',
+          description: 'landingPage.features.analytics_description',
+        },
+        {
+          icon: 'wallet',
+          title: 'landingPage.features.finances',
+          description: 'landingPage.features.finances_description',
+        },
+        {
+          icon: ['fab', 'google'],
+          title: 'landingPage.features.google',
+          description: 'landingPage.features.google_description',
+        },
+        {
+          icon: 'leaf',
+          title: 'landingPage.features.environment',
+          description: 'landingPage.features.environment_description',
+        },
+      ],
+    }
+  },
+}
 </script>
 
 <style scoped></style>

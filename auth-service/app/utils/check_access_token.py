@@ -27,7 +27,7 @@ ALGORITHM = os.getenv("ALGORITHM")
 # =========================
 # Access token validation
 # =========================
-async def check_access_token(access_token: str) -> str:
+async def check_access_token(access_token: str) -> int:
     """
     Validates JWT access token and extracts user ID.
 
@@ -48,7 +48,7 @@ async def check_access_token(access_token: str) -> str:
         user_id = payload.get("sub")
 
 
-        return user_id
+        return int(user_id)
         
 
     # Token is valid but expired

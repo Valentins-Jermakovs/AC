@@ -61,11 +61,13 @@ export const useAuthStore = defineStore('auth', {
     async register(username, email, password) {
       try {
         // Send registration request
-        const response = await api.post(API_ENDPOINTS.REGISTER, {
-          username,
-          email,
-          password,
-        })
+        const response = await api.post(
+          API_ENDPOINTS.REGISTER,
+          {
+            username,
+            email,
+            password,
+          })
 
         // Extract tokens
         const { access_token, refresh_token } = response.data
@@ -87,11 +89,13 @@ export const useAuthStore = defineStore('auth', {
       try {
         // If refresh token exists, inform backend
         if (this.refreshToken) {
-          await api.post(API_ENDPOINTS.LOGOUT, null, {
-            headers: {
-              Authorization: `Bearer ${this.refreshToken}`,
-            },
-          })
+          await api.post(
+            API_ENDPOINTS.LOGOUT, null,
+            {
+              headers: {
+                Authorization: `Bearer ${this.refreshToken}`,
+              },
+            })
         }
       } catch (e) {
         // Even if logout request fails, continue cleanup
@@ -108,11 +112,13 @@ export const useAuthStore = defineStore('auth', {
     async refreshAccessToken() {
 
       // Send refresh request with refresh token
-      const response = await api.post(API_ENDPOINTS.TOKEN_REFRESH, null, {
-        headers: {
-          Authorization: `Bearer ${this.refreshToken}`,
-        },
-      })
+      const response = await api.post(
+        API_ENDPOINTS.TOKEN_REFRESH, null,
+        {
+          headers: {
+            Authorization: `Bearer ${this.refreshToken}`,
+          },
+        })
 
       const { access_token, refresh_token } = response.data
 

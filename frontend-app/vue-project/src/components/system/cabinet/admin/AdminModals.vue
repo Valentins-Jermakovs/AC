@@ -1,5 +1,5 @@
 <template>
-  <!-- Add role modal -->
+  <!-- Add Role Modal -->
   <BaseDialog
     :model-value="addRoleModal"
     :title="$t('modals.add_role.title')"
@@ -20,7 +20,7 @@
     </div>
   </BaseDialog>
 
-  <!-- Remove role modal -->
+  <!-- Remove Role Modal -->
   <BaseDialog
     :model-value="removeRoleModal"
     :title="$t('modals.remove_role.title')"
@@ -41,7 +41,7 @@
     </div>
   </BaseDialog>
 
-  <!-- Change activity modal -->
+  <!-- Change Activity Status Modal -->
   <BaseDialog
     :model-value="changeActivityModal"
     :title="$t('modals.change_activity.title')"
@@ -66,14 +66,20 @@ import BaseDialog from '@/components/common/BaseDialog.vue'
 export default {
   name: 'AdminModals',
   components: { BaseDialog },
+
   props: {
+    // Boolean flags to show/hide each modal
     addRoleModal: Boolean,
     removeRoleModal: Boolean,
     changeActivityModal: Boolean,
+
+    // Currently selected options for each modal
     selectedAddRole: Number,
     selectedRemoveRole: Number,
     selectedActivityStatus: String,
   },
+
+  // Events emitted to parent component
   emits: [
     'add-role',
     'remove-role',
@@ -85,7 +91,9 @@ export default {
     'update:selected-remove-role',
     'update:selected-activity-status'
   ],
+
   methods: {
+    // Emit selected value when user changes role/activity selection
     onAddRoleChange(e) {
       this.$emit('update:selected-add-role', Number(e.target.value))
     },

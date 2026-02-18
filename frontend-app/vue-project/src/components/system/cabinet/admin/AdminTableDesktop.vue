@@ -4,6 +4,7 @@
       <thead>
         <tr>
           <th>
+            <!-- Select All Checkbox -->
             <input
               type="checkbox"
               class="checkbox checkbox-neutral"
@@ -75,11 +76,11 @@
 <script>
 import LoadingScreen from '@/components/common/LoadingScreen.vue'
 import { useAdminStore } from '@/stores/admin'
-import { computed } from 'vue'
 
 export default {
   name: 'AdminTableDesktop',
   components: { LoadingScreen },
+
   props: {
     selectedUserIds: {
       type: Array,
@@ -90,43 +91,58 @@ export default {
       default: false,
     },
   },
-  setup(props, { emit }) {
-    const store = useAdminStore()
 
-    // Lokālie getter/setter props
-    const selectedUserIdsLocal = computed({
-      get: () => props.selectedUserIds,
-      set: (val) => emit('update:selectedUserIds', val),
-    })
+  data() {
+    return {
+      // Reference to the admin store
+      store: useAdminStore(),
+    }
+  },
 
-    const selectAllLocal = computed({
-      get: () => props.selectAll,
-      set: (val) => emit('update:selectAll', val),
-    })
+  computed: {
+    // Local computed property for selected user IDs, synced with parent via v-model
+    selectedUserIdsLocal: {
+      get() {
+        return this.selectedUserIds
+      },
+      set(val) {
+        this.$emit('update:selectedUserIds', val)
+      },
+    },
 
-    // Toggle single checkbox
-    const toggleUser = (userId) => {
-      const newSelected = [...selectedUserIdsLocal.value]
+    // Local computed property for "select all" checkbox
+    selectAllLocal: {
+      get() {
+        return this.selectAll
+      },
+      set(val) {
+        this.$emit('update:selectAll', val)
+      },
+    },
+  },
+
+  methods: {
+    // Toggle selection of a single user
+    toggleUser(userId) {
+      const newSelected = [...this.selectedUserIdsLocal]
       const index = newSelected.indexOf(userId)
       if (index === -1) {
         newSelected.push(userId)
       } else {
         newSelected.splice(index, 1)
       }
-      selectedUserIdsLocal.value = newSelected
-    }
+      this.selectedUserIdsLocal = newSelected
+    },
 
-    // Toggle "select all"
-    const toggleAll = () => {
-      if (selectAllLocal.value) {
-        selectedUserIdsLocal.value = []
+    // Toggle "select all" checkbox
+    toggleAll() {
+      if (this.selectAllLocal) {
+        this.selectedUserIdsLocal = []
       } else {
-        selectedUserIdsLocal.value = store.users.map(u => u.id)
+        this.selectedUserIdsLocal = this.store.users.map(u => u.id)
       }
-      selectAllLocal.value = !selectAllLocal.value
-    }
-
-    return { store, selectedUserIdsLocal, selectAllLocal, toggleUser, toggleAll }
+      this.selectAllLocal = !this.selectAllLocal
+    },
   },
 }
 </script>

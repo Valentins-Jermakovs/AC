@@ -1,12 +1,15 @@
 <template>
   <div
-    class="w-full p-4 border border-base-300 bg-base-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+    class="w-full p-4 rounded-box border border-base-300 bg-base-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
   >
-    <!-- Limit + total + page info -->
+    <!-- Left section: Limit selector, total users, current page info -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:gap-6 w-full sm:w-auto">
-      <!-- Limit -->
+      
+      <!-- Page size selector -->
       <div class="flex flex-col sm:flex-row sm:items-center gap-2">
-        <label class="text-sm opacity-70">{{ $t('cabinet.admin.table_footer.limit') }}</label>
+        <label class="text-sm opacity-70">
+          {{ $t('cabinet.admin.table_footer.limit') }}
+        </label>
         <select
           :value="selectedPageSize"
           @change="onLimitChange"
@@ -20,13 +23,13 @@
         </select>
       </div>
 
-      <!-- Total matches -->
+      <!-- Total users count -->
       <div class="text-sm opacity-80 whitespace-nowrap">
         {{ $t('cabinet.admin.table_footer.total') }}
         <span class="font-semibold">{{ meta.total_users }}</span>
       </div>
 
-      <!-- Page info -->
+      <!-- Current page info -->
       <div class="text-sm opacity-80 whitespace-nowrap">
         {{ $t('cabinet.admin.table_footer.page') }}
         <span class="font-semibold">{{ meta.page }}</span> /
@@ -34,7 +37,7 @@
       </div>
     </div>
 
-    <!-- Pagination buttons -->
+    <!-- Right section: Pagination buttons -->
     <div class="flex flex-col sm:flex-row sm:gap-3 gap-2 w-full sm:w-auto">
       <button
         class="btn btn-neutral hover:btn-primary flex-1 p-2"
@@ -57,25 +60,33 @@
 <script>
 export default {
   name: 'AdminFooterPagination',
+
   props: {
+    // Currently selected page size
     selectedPageSize: {
       type: Number,
       default: 10,
     },
+
+    // Pagination metadata: total_users, page, total_pages
     meta: {
       type: Object,
       required: true,
     },
+
+    // Disable page size selector if true
     disableLimit: {
       type: Boolean,
       default: false,
     },
   },
+
   methods: {
+    // Emit new limit when user changes page size
     onLimitChange(e) {
       const newValue = Number(e.target.value)
       this.$emit('update:selectedPageSize', newValue)
-      this.$emit('changeLimit')
+      this.$emit('changeLimit') // notify parent to update data
     },
   },
 }

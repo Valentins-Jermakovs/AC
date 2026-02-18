@@ -247,12 +247,14 @@ export const useAdminStore = defineStore('admin', {
       this.error = null
 
       try {
-        const response = await api.post(API_ENDPOINTS.ADD_ROLES_TO_USER, selectedUserIds, {
-          params: { role_id: roleId },
-          headers: {
-            Authorization: `Bearer ${authStore.accessToken}`,
-          },
-        })
+        const response = await api.post(
+          API_ENDPOINTS.ADD_ROLES_TO_USER, selectedUserIds,
+          {
+            params: { role_id: roleId },
+            headers: {
+              Authorization: `Bearer ${authStore.accessToken}`,
+            },
+          })
 
         return response.data
       } catch (err) {
@@ -280,10 +282,13 @@ export const useAdminStore = defineStore('admin', {
 
       try {
         const response = await api.post(
-          `${API_ENDPOINTS.REMOVE_ROLES_FROM_USER}?role_id=${roleId}`,
+          API_ENDPOINTS.REMOVE_ROLES_FROM_USER,
           selectedUserIds,
           {
-            headers: { Authorization: `Bearer ${authStore.accessToken}` },
+            params: { role_id: roleId },
+            headers: {
+              Authorization: 'Bearer ' + authStore.accessToken,
+            },
           },
         )
 
@@ -314,12 +319,16 @@ export const useAdminStore = defineStore('admin', {
         const isActive = status === 'active'
 
         const response = await api.put(
-          `${API_ENDPOINTS.CHANGE_USER_ACTIVITY}?is_active=${isActive}`,
+          API_ENDPOINTS.CHANGE_USER_ACTIVITY,
           userIds,
           {
-            headers: { Authorization: `Bearer ${authStore.accessToken}` },
+            params: { is_active: isActive },
+            headers: {
+              Authorization: 'Bearer ' + authStore.accessToken,
+            },
           },
         )
+
 
         return response.data
       } catch (err) {

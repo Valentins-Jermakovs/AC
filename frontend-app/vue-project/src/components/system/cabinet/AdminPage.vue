@@ -2,7 +2,6 @@
   <AdminCards />
 
   <div class="px-4 sm:px-5 pb-5 flex flex-col w-full">
-
     <!-- Top Controls -->
     <AdminTopControls
       :selected-user-ids="selectedUserIds"
@@ -63,13 +62,12 @@
       @remove-role="removeRole"
       @change-activity="changeActivity"
     />
-
   </div>
 </template>
 
 <script>
-import { ref, watch, onMounted } from 'vue'
 import { useAdminStore } from '@/stores/admin'
+
 import AdminCards from './admin/AdminCards.vue'
 import AdminTopControls from './admin/AdminTopControls.vue'
 import AdminTableDesktop from './admin/AdminTableDesktop.vue'
@@ -87,119 +85,120 @@ export default {
     AdminFooterPagination,
     AdminModals,
   },
-  setup() {
+
+  data() {
     const adminStore = useAdminStore()
 
-    // Modāli logi
-    const addRoleModal = ref(false)
-    const removeRoleModal = ref(false)
-    const changeActivityModal = ref(false)
-
-    // Izvēlētie dati
-    const selectedAddRole = ref(5)
-    const selectedRemoveRole = ref(5)
-    const selectedActivityStatus = ref('active')
-    const selectedUserIds = ref([])
-    const selectAll = ref(false)
-
-    // Error messages
-    const emptyError = ref('')
-
-    // Methods
-    const clearEmptyError = () => (emptyError.value = '')
-
-    const setNewLimit = async () => {
-      await adminStore.setLimit(adminStore.meta.limit)
-      await adminStore.refresh()
-    }
-
-    const onChangeLimit = (limit) => {
-      adminStore.meta.limit = limit
-    }
-
-    const searchButton = async () => {
-      const query = adminStore.searchQuery.toLowerCase()
-      if (adminStore.searchMode === 'all') {
-        adminStore.fetchUsers()
-        adminStore.clearSearch()
-      } else if (adminStore.searchMode === 'id') {
-        if (!query) return (emptyError.value = 'Tukšs ievades lauks!')
-        const numericId = Number(query)
-        if (!Number.isInteger(numericId)) return (emptyError.value = 'Invalid ID format')
-        await adminStore.getUserById(numericId)
-        emptyError.value = ''
-      } else if (adminStore.searchMode === 'username') {
-        if (!query) return (emptyError.value = 'Tukšs ievades lauks!')
-        await adminStore.getUserByNameEmail(query)
-        emptyError.value = ''
-      } else if (adminStore.searchMode === 'role') {
-        if (!query) return (emptyError.value = 'Tukšs ievades lauks!')
-        await adminStore.getUserByRole(query)
-        emptyError.value = ''
-      }
-    }
-
-    const addRole = async () => {
-      await adminStore.addRoleToSelectedUsers(selectedAddRole.value, selectedUserIds.value)
-      addRoleModal.value = false
-      adminStore.error = ''
-      selectedAddRole.value = 5
-      await adminStore.refresh()
-    }
-
-    const removeRole = async () => {
-      await adminStore.removeRoleFromSelectedUsers(selectedRemoveRole.value, selectedUserIds.value)
-      removeRoleModal.value = false
-      adminStore.error = ''
-      selectedRemoveRole.value = 5
-      await adminStore.refresh()
-    }
-
-    const changeActivity = async () => {
-      await adminStore.updateUserActivity(selectedUserIds.value, selectedActivityStatus.value)
-      changeActivityModal.value = false
-      adminStore.error = ''
-      selectedActivityStatus.value = 'active'
-      await adminStore.refresh()
-    }
-
-    watch(selectedUserIds, (val) => {
-      selectAll.value = val.length === adminStore.users.length
-    })
-
-    watch(() => adminStore.users, () => {
-      selectedUserIds.value = []
-      selectAll.value = false
-    })
-
-    onMounted(() => {
-      adminStore.fetchUsers()
-    })
-
     return {
-      adminStore,
-      addRoleModal,
-      removeRoleModal,
-      changeActivityModal,
-      selectedAddRole,
-      selectedRemoveRole,
-      selectedActivityStatus,
-      selectedUserIds,
-      selectAll,
-      emptyError,
-      clearEmptyError,
-      setNewLimit,
-      searchButton,
-      addRole,
-      removeRole,
-      changeActivity,
-      onChangeLimit,
+      adminStore,               // Pinia store
+
+      // Modal states
+      addRoleModal: false,
+      removeRoleModal: false,
+      changeActivityModal: false,
+
+      // Selected options
+      selectedAddRole: 5,
+      selectedRemoveRole: 5,
+      selectedActivityStatus: 'active',
+      selectedUserIds: [],
+      selectAll: false,
+
+      // Error message
+      emptyError: '',
     }
+  },
+
+  methods: {
+    // Clear error
+    clearEmptyError() {
+      this.emptyError = ''
+    },
+
+    // Set new limit and refresh table
+    async setNewLimit() {
+      await this.adminStore.setLimit(this.adminStore.meta.limit)
+      await this.adminStore.refresh()
+    },
+
+    // Update page size without refresh
+    onChangeLimit(limit) {
+      this.adminStore.meta.limit = limit
+    },
+
+    // Search users based on search mode
+    async searchButton() {
+      const query = this.adminStore.searchQuery.toLowerCase()
+
+      if (this.adminStore.searchMode === 'all') {
+        this.adminStore.fetchUsers()
+        this.adminStore.clearSearch()
+      } else if (this.adminStore.searchMode === 'id') {
+        if (!query) return (this.emptyError = 'Tukšs ievades lauks!')
+        const numericId = Number(query)
+        if (!Number.isInteger(numericId)) return (this.emptyError = 'Invalid ID format')
+        await this.adminStore.getUserById(numericId)
+        this.emptyError = ''
+      } else if (this.adminStore.searchMode === 'username') {
+        if (!query) return (this.emptyError = 'Tukšs ievades lauks!')
+        await this.adminStore.getUserByNameEmail(query)
+        this.emptyError = ''
+      } else if (this.adminStore.searchMode === 'role') {
+        if (!query) return (this.emptyError = 'Tukšs ievades lauks!')
+        await this.adminStore.getUserByRole(query)
+        this.emptyError = ''
+      }
+    },
+
+    // Add role to selected users
+    async addRole() {
+      await this.adminStore.addRoleToSelectedUsers(this.selectedAddRole, this.selectedUserIds)
+      this.addRoleModal = false
+      this.adminStore.error = ''
+      this.selectedAddRole = 5
+      await this.adminStore.refresh()
+    },
+
+    // Remove role from selected users
+    async removeRole() {
+      await this.adminStore.removeRoleFromSelectedUsers(this.selectedRemoveRole, this.selectedUserIds)
+      this.removeRoleModal = false
+      this.adminStore.error = ''
+      this.selectedRemoveRole = 5
+      await this.adminStore.refresh()
+    },
+
+    // Change activity status for selected users
+    async changeActivity() {
+      await this.adminStore.updateUserActivity(this.selectedUserIds, this.selectedActivityStatus)
+      this.changeActivityModal = false
+      this.adminStore.error = ''
+      this.selectedActivityStatus = 'active'
+      await this.adminStore.refresh()
+    },
+  },
+
+  watch: {
+    // Update "select all" checkbox based on selected users
+    selectedUserIds(val) {
+      this.selectAll = val.length === this.adminStore.users.length
+    },
+
+    // Reset selections when users list changes
+    'adminStore.users'() {
+      this.selectedUserIds = []
+      this.selectAll = false
+    },
+  },
+
+  mounted() {
+    this.adminStore.fetchUsers()
   },
 }
 </script>
 
 <style scoped>
+/* Error message slide animation */
 .error-slide-enter-active,
 .error-slide-leave-active {
   transition: all 0.4s ease;

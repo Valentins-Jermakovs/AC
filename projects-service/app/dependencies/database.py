@@ -25,6 +25,7 @@ load_dotenv()
 # - started
 # - succeeded
 # - failed
+#
 # This function is global. It will be called for every command
 # executed on the database.
 # =========================

@@ -1,17 +1,17 @@
 # Imports
 from typing import Optional
-from pydantic import BaseModel, field_serializer
+from pydantic import BaseModel, field_serializer, Field
 from datetime import datetime
 
 # =============================
 # PrivateTask schema - response
 # =============================
-class PrivateTask(BaseModel):
+class PrivateTaskSchema(BaseModel):
     id: str                             # Task ID
     title: str                          # Title
     description: Optional[str] = None   # Description
     createdAt: datetime                 # Creation date
-    dueDate: Optional[str] = None       # Due date
+    dueDate: Optional[datetime] = None  # Due date
     completed: bool                     # Completion status
     
     # Serializers
@@ -22,3 +22,7 @@ class PrivateTask(BaseModel):
     @field_serializer("dueDate")
     def serialize_due_date(self, value: Optional[datetime]) -> Optional[str]:
         return value.strftime("%Y-%m-%d") if value else None
+    
+    @field_serializer("id")
+    def serialize_id(self, value):
+        return str(value)

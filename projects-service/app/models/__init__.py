@@ -15,4 +15,4 @@ from .workspace_stage import WorkspaceStage
 from .workspace_task import WorkspaceTask
 
 # ===== Private =====
-from .private_task import PrivateTask
+from .private_task import PrivateTaskModel

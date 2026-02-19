@@ -3,7 +3,7 @@ from pymongo import AsyncMongoClient, monitoring
 from beanie import init_beanie
 import os
 from dotenv import load_dotenv
-from ..models.private_task import PrivateTask
+from ..models import PrivateTaskModel
 
 # Colors for logging
 class bcolors:
@@ -56,5 +56,5 @@ async def init_db():
     # Initialize database
     await init_beanie(
         database=db,
-        document_models=[PrivateTask]
+        document_models=[PrivateTaskModel]
     )

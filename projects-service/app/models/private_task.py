@@ -9,7 +9,7 @@ from ..utils.current_date import get_current_date
 # ========================
 # PrivateTask model
 # ========================
-class PrivateTask(Document):
+class PrivateTaskModel(Document):
     userId: str                                                     # User ID
     title: str                                                      # Task title
     description: Optional[str] = None                               # Task description

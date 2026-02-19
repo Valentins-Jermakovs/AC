@@ -1,5 +1,5 @@
 # Imports
-from beanie import Document, Indexed
+from beanie import Document
 from pydantic import Field
 from datetime import datetime
 from typing import Optional
@@ -23,6 +23,7 @@ class PrivateTask(Document):
         indexes = [
             "userId",       # Index for user ID
             "completed",    # Index for completion status
+            "dueDate",      # Index for due date
             [
                 ("userId", 1),      # Compound index for user ID
                 ("completed", 1),   # and completion status

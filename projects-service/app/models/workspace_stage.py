@@ -7,26 +7,23 @@ from beanie import Document
 from ..utils.current_date import get_current_date
 
 # ========================
-# WorkspaceTask model
+# WorkspaceStage model
 # ========================
-class WorkspaceTask(Document):
-    projectId: str                      # Project ID
-    stageId: str                        # Stage ID
-    title: str                          # Task title
-    description: Optional[str] = None   # Optional description
-    storyPoints: Optional[int] = None   # Optional story points
-    priority: Optional[int] = None      # Optional priority
-    status: Optional[str] = None        # Optional status
+class WorkspaceStage(Document):
+    projectId: str  # Foreign key
+    title: str      # Stage title
+    order: int      # Stage order
+    description: Optional[str] = None   # Stage description
     createdAt: datetime = Field(default_factory=get_current_date)    # Creation date
 
     class Settings:
-        name = "workspace_tasks"
+        name = "workspace_stages"
         indexes = [
             "projectId",        # Index for project ID
-            "stageId",          # Index for stage ID
+            "order",            # Index for order
             [
                 ("projectId", 1),   # Compound index for project ID
-                ("stageId", 1),     # and stage ID
+                ("order", 1),       # and order
                 ("createdAt", -1)   # Sort by creation date in descending order
             ],
         ]

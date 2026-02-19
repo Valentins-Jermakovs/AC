@@ -1,7 +1,10 @@
+# Imports
+from beanie import Document
+
 # ===========================
 # Kanban Board Member Model
 # ===========================
-class KanabnBoardMember:
+class KanbanBoardMember(Document):
     boardId: str    # Reference to the kanban board
     userId: str     # Reference to the user
     role: str       # Role of the user in the kanban board

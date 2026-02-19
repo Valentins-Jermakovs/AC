@@ -1,14 +1,13 @@
 # Imports
-from datetime import datetime
 from typing import Optional
-from pydantic import Field
+from beanie import Document
 # Utilities
 from ..utils.current_date import get_current_date
 
 # ========================
 # KanbanTask model
 # ========================
-class KanbanTask:
+class KanbanTask(Document):
     boardId: str    # Board ID
     stageId: str    # Stage ID
 

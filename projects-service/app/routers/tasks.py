@@ -13,6 +13,7 @@ from ..utils.check_access_token import check_access_token
 from ..services.private_tasks.create_private_task import create_private_task
 from ..services.private_tasks.read_tasks_paginated import get_all_private_tasks_paginated
 from ..services.private_tasks.update_private_task import update_private_task
+from ..services.private_tasks.remove_private_task import remove_private_task
 
 router = APIRouter(
     prefix="/tasks",
@@ -121,3 +122,25 @@ async def update_private_task_endpoint(
 
     return updated_private_task
 
+# Route for remove a task by _id
+@router.delete(
+    "/remove/{task_id}",
+    summary="Remove a task",
+    description="Remove a task from the database"
+)
+async def remove_private_task_endpoint(
+    task_id: str,
+    credantials: HTTPAuthorizationCredentials = Depends(security)
+):
+    """
+    Remove a task from the database.
+
+    Steps:
+    1. Extract access token
+    2. Verify token and get user ID
+    3. Call service to remove private task from DB
+    """
+    access_token = credantials.credentials
+    user_id = await check_access_token(access_token)
+
+    return await remove_private_task(task_id, user_id)

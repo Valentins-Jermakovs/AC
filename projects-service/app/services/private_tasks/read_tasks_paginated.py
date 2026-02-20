@@ -36,7 +36,7 @@ async def get_all_private_tasks_paginated(
     total_tasks = await PrivateTaskModel.find(query).count()
 
     # Raise 404 if requested page exceeds total tasks
-    if offset > total_tasks:
+    if offset >= total_tasks and total_tasks != 0:
         raise HTTPException(status_code=404, detail="Page not found")
 
     # Raise 404 if dont find any tasks
@@ -66,7 +66,7 @@ async def get_all_private_tasks_paginated(
     meta = PaginationMeta(
         page=page,
         limit=limit,
-        total_pages=total_tasks // limit + 1,
+        total_pages=(total_tasks + limit - 1) // limit,
         total_items=total_tasks,
     )
 

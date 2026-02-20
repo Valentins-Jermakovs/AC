@@ -4,7 +4,7 @@ from fastapi import HTTPException
 # Models
 from ...models import PrivateTaskModel
 # Schemas
-from ...schemas.response.private_tasks_paginated import PaginatedPrivateTasksSchema, PaginationMeta
+from ...schemas.response.private_tasks_paginated import PaginationMeta
 from ...schemas.response.private_task import PrivateTaskSchema
 
 '''

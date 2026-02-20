@@ -6,11 +6,13 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from ..schemas.response.private_task import PrivateTaskSchema
 from ..schemas.response.private_tasks_paginated import PaginatedPrivateTasksSchema
 from ..schemas.data.private_task_create import PrivateTaskCreateSchema
+from ..schemas.data.private_task_update import PrivateTaskUpdateSchema
 # Utils
 from ..utils.check_access_token import check_access_token
 # Services
 from ..services.private_tasks.create_private_task import create_private_task
 from ..services.private_tasks.read_tasks_paginated import get_all_private_tasks_paginated
+from ..services.private_tasks.update_private_task import update_private_task
 
 router = APIRouter(
     prefix="/tasks",
@@ -66,10 +68,56 @@ async def get_all_private_tasks_endpoint(
     limit: int = 10,
     credantials: HTTPAuthorizationCredentials = Depends(security),
 ):
+    """
+    Get all private tasks from the database with pagination.
+
+    Steps:
+    1. Extract access token
+    2. Verify token and get user ID
+    3. Call service to get all private tasks from DB
+    4. Return all private tasks
+    """
     access_token = credantials.credentials
     user_id = await check_access_token(access_token)
 
     all_private_tasks = await get_all_private_tasks_paginated(page, limit, user_id)
 
     return all_private_tasks
+
+# Route for update a task by _id
+@router.put(
+    "/update/{task_id}",
+    summary="Update a task",
+    description="Update a task in the database",
+    response_model=PrivateTaskSchema
+)
+async def update_private_task_endpoint(
+    task_id: str,
+    data: Annotated[PrivateTaskUpdateSchema, 
+        Body(
+            example={
+                "title": "Task title",
+                "description": "Task description",
+                "dueDate": "2023-05-31",
+                "completed": True
+            }
+        )
+    ],
+    credantials: HTTPAuthorizationCredentials = Depends(security)
+):
+    """
+    Update a task in the database.
+
+    Steps:
+    1. Extract access token
+    2. Verify token and get user ID
+    3. Call service to update private task in DB
+    4. Return updated private task
+    """
+    access_token = credantials.credentials
+    user_id = await check_access_token(access_token)
+
+    updated_private_task = await update_private_task(task_id, data.title, data.description, data.dueDate, data.completed)
+
+    return updated_private_task
 

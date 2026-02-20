@@ -14,6 +14,7 @@ from ..services.private_tasks.create_private_task import create_private_task
 from ..services.private_tasks.read_tasks_paginated import get_all_private_tasks_paginated
 from ..services.private_tasks.update_private_task import update_private_task
 from ..services.private_tasks.remove_private_task import remove_private_task
+from ..services.private_tasks.find_task import find_task_by_title
 
 router = APIRouter(
     prefix="/tasks",
@@ -57,7 +58,7 @@ async def create_private_task_endpoint(
 
     return new_private_task
 
-# Route for tasks pagination
+# Route for all tasks (paginated)
 @router.get(
     "/all",
     summary="Get all private tasks",
@@ -84,6 +85,35 @@ async def get_all_private_tasks_endpoint(
     all_private_tasks = await get_all_private_tasks_paginated(page, limit, user_id)
 
     return all_private_tasks
+
+# Route for find tasks by title
+@router.get(
+    "/find",
+    summary="Find tasks by title",
+    description="Find tasks by title from the database",
+    response_model=PaginatedPrivateTasksSchema,
+)
+async def find_tasks_by_title_endpoint(
+    title: str,
+    page: int = 1,
+    limit: int = 10,
+    credantials: HTTPAuthorizationCredentials = Depends(security),
+):
+    """
+    Find tasks by title from the database with pagination.
+
+    Steps:
+    1. Extract access token
+    2. Verify token and get user ID
+    3. Call service to find tasks by title from DB
+    4. Return found tasks
+    """
+    access_token = credantials.credentials
+    user_id = await check_access_token(access_token)
+
+    found_tasks = await find_task_by_title(title, user_id, page=page, limit=limit)
+
+    return found_tasks
 
 # Route for update a task by _id
 @router.put(

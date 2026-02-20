@@ -1,6 +1,6 @@
 # Imports
 from typing import Optional
-from pydantic import BaseModel, field_serializer, Field
+from pydantic import BaseModel, field_serializer
 from datetime import datetime
 
 # =============================

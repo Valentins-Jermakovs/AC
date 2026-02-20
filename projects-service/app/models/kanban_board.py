@@ -8,7 +8,7 @@ from ..utils.current_date import get_current_date
 # ========================
 # KanbanBoard model
 # ========================
-class KanbanBoard(Document):
+class KanbanBoardModel(Document):
     userId: str                                                      # User ID
     title: str                                                       # Board title
     createdAt: datetime = Field(default_factory=get_current_date)    # Creation date (automatically set)

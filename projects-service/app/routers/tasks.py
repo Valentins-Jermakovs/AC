@@ -14,8 +14,7 @@ from ..services.private_tasks.create_private_task import create_private_task
 from ..services.private_tasks.read_tasks_paginated import get_all_private_tasks_paginated
 from ..services.private_tasks.update_private_task import update_private_task
 from ..services.private_tasks.remove_private_task import remove_private_task
-from ..services.private_tasks.find_task import find_task_by_title
-
+from ..services.private_tasks.find_task import find_task_by_title, find_task_by_description, find_task_by_duedate, find_task_by_month
 router = APIRouter(
     prefix="/tasks",
     tags=["Private tasks management service"]
@@ -88,7 +87,7 @@ async def get_all_private_tasks_endpoint(
 
 # Route for find tasks by title
 @router.get(
-    "/find",
+    "/title",
     summary="Find tasks by title",
     description="Find tasks by title from the database",
     response_model=PaginatedPrivateTasksSchema,
@@ -112,6 +111,94 @@ async def find_tasks_by_title_endpoint(
     user_id = await check_access_token(access_token)
 
     found_tasks = await find_task_by_title(title, user_id, page=page, limit=limit)
+
+    return found_tasks
+
+# Rote for find task by description
+@router.get(
+    "/description",
+    summary="Find tasks by description",
+    description="Find tasks by description from the database",
+    response_model=PaginatedPrivateTasksSchema,
+)
+async def find_tasks_by_description_endpoint(
+    description: str,
+    page: int = 1,
+    limit: int = 10,
+    credantials: HTTPAuthorizationCredentials = Depends(security),
+):
+    """
+    Find tasks by description from the database with pagination.
+
+    Steps:
+    1. Extract access token
+    2. Verify token and get user ID
+    3. Call service to find tasks by description from DB
+    4. Return found tasks
+    """
+    access_token = credantials.credentials
+    user_id = await check_access_token(access_token)
+
+    found_tasks = await find_task_by_description(description, user_id, page=page, limit=limit)
+
+    return found_tasks
+
+# Find task by due date
+@router.get(
+    "/duedate",
+    summary="Find tasks by due date",
+    description="Find tasks by due date from the database",
+    response_model=PaginatedPrivateTasksSchema,
+)
+async def find_tasks_by_duedate_endpoint(
+    due_date: str,
+    page: int = 1,
+    limit: int = 10,
+    credantials: HTTPAuthorizationCredentials = Depends(security),
+):
+    """
+    Find tasks by due date from the database with pagination.
+
+    Steps:
+    1. Extract access token
+    2. Verify token and get user ID
+    3. Call service to find tasks by due date from DB
+    4. Return found tasks
+    """
+    access_token = credantials.credentials
+    user_id = await check_access_token(access_token)
+
+    found_tasks = await find_task_by_duedate(due_date, user_id, page=page, limit=limit)
+
+    return found_tasks
+
+# Find task by month
+@router.get(
+    "/month",
+    summary="Find tasks by month",
+    description="Find tasks by month from the database",
+    response_model=PaginatedPrivateTasksSchema,
+)
+async def find_tasks_by_month_endpoint(
+    year: int,
+    month: int,
+    page: int = 1,
+    limit: int = 10,
+    credantials: HTTPAuthorizationCredentials = Depends(security),
+):
+    """
+    Find tasks by month from the database with pagination.
+
+    Steps:
+    1. Extract access token
+    2. Verify token and get user ID
+    3. Call service to find tasks by month from DB
+    4. Return found tasks
+    """
+    access_token = credantials.credentials
+    user_id = await check_access_token(access_token)
+
+    found_tasks = await find_task_by_month(year=year, month=month, user_id=user_id, page=page, limit=limit)
 
     return found_tasks
 

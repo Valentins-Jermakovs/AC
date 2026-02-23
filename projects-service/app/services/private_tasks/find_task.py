@@ -1,8 +1,7 @@
 # Imports
 from fastapi import HTTPException
-from bson import ObjectId
 import re
-from datetime import datetime, timedelta
+from datetime import datetime
 import calendar
 # Models
 from ...models import PrivateTaskModel

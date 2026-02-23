@@ -1,23 +1,28 @@
 # Imports
 from fastapi import HTTPException
 from bson import ObjectId
-from ...models import KanbanBoardModel
+from ...models import KanbanBoardModel, KanbanStageModel
 
 async def remove_board(board_id: str, user_id: str):
 
-    # Raise if task_id is not valid
+    # Raise if board_id is not valid
     if not ObjectId.is_valid(board_id):
-        raise HTTPException(status_code=400, detail="Invalid task ID")
+        raise HTTPException(status_code=400, detail="Invalid board ID")
 
-    # try to find task by user_id and task_id
+    # try to find board by user_id and board_id
     board = await KanbanBoardModel.find_one({
         "_id": ObjectId(board_id),
         "userId": user_id
     })
 
-    # Raise if task not found
+    # Raise if board not found
     if not board:
         raise HTTPException(status_code=404, detail="Board not found")
+    
+    # Find all stages and remove them
+    await KanbanStageModel.find({
+        "boardId": board_id
+    }).delete()
 
     # Remove task
     await board.delete()

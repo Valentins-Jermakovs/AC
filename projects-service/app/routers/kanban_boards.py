@@ -18,7 +18,7 @@ from ..services.kanban.get_all_boards import get_all_boards_paginated
 
 # Router
 router = APIRouter(
-    prefix="/kanban",
+    prefix="/kanban/boards",
     tags=["Kanban board management service"]
 )
 

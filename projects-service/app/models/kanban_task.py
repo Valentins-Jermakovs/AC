@@ -7,7 +7,7 @@ from ..utils.current_date import get_current_date
 # ========================
 # KanbanTask model
 # ========================
-class KanbanTask(Document):
+class KanbanTaskModel(Document):
     boardId: str    # Board ID
     stageId: str    # Stage ID
 

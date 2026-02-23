@@ -5,7 +5,8 @@ from contextlib import asynccontextmanager
 from .routers import (
     tasks,
     kanban_boards,
-    kanban_stages
+    kanban_stages,
+    kanban_tasks
 )
 
 # =========================
@@ -35,3 +36,4 @@ app = FastAPI(lifespan=lifespan)
 app.include_router(tasks.router)
 app.include_router(kanban_boards.router)
 app.include_router(kanban_stages.router)
+app.include_router(kanban_tasks.router)

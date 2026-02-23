@@ -4,7 +4,8 @@ from contextlib import asynccontextmanager
 # API routers
 from .routers import (
     tasks,
-    kanban
+    kanban_boards,
+    kanban_stages
 )
 
 # =========================
@@ -32,4 +33,5 @@ app = FastAPI(lifespan=lifespan)
 # =========================
 # Each router adds its own endpoints to the app
 app.include_router(tasks.router)
-app.include_router(kanban.router)
+app.include_router(kanban_boards.router)
+app.include_router(kanban_stages.router)

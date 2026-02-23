@@ -5,7 +5,7 @@
 # ===== Kanban =====
 from .kanban_board import KanbanBoardModel
 from .kanban_board_member import KanbanBoardMember
-from .kanban_stage import KanbanStage
+from .kanban_stage import KanbanStageModel
 from .kanban_task import KanbanTask
 
 # ===== Workspace =====

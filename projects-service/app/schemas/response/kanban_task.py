@@ -7,5 +7,7 @@ from pydantic import BaseModel
 # ============================================================
 class KanbanTaskSchema(BaseModel):
     id: str
+    stageId: Optional[str] = None
     title: str
     description: Optional[str] = None
+    order: Optional[float] = None

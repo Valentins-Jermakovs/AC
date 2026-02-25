@@ -4,7 +4,7 @@ from beanie import Document
 # ============================
 # WorkspaceProjectMember Model
 # ============================
-class WorkspaceProjectMember(Document):
+class WorkspaceProjectMemberModel(Document):
     projectId: str  # Project ID
     userId: str     # User ID
     role: str       # Role

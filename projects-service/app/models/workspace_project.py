@@ -6,8 +6,8 @@ from beanie import Document
 # Utilities
 from ..utils.current_date import get_current_date
 
-class WorkspaceProject(Document):
-    userId: str        # User ID
+class WorkspaceProjectModel(Document):
+    userId: str        # User ID (owner)
     title: str         # Project title
     description: Optional[str] = None                                # Project description
     createdAt: datetime = Field(default_factory=get_current_date)    # Creation date (auto-generated)

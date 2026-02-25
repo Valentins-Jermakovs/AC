@@ -8,7 +8,8 @@ from ..models import (
     KanbanBoardModel, 
     KanbanStageModel, 
     KanbanTaskModel,
-    KanbanBoardMemberModel
+    KanbanBoardMemberModel,
+    WorkspaceProjectModel
 )
 
 # Colors for logging
@@ -67,6 +68,7 @@ async def init_db():
             KanbanBoardModel,
             KanbanStageModel,
             KanbanTaskModel,
-            KanbanBoardMemberModel
+            KanbanBoardMemberModel,
+            WorkspaceProjectModel
         ]
     )

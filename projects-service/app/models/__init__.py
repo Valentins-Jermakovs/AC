@@ -9,7 +9,7 @@ from .kanban_stage import KanbanStageModel
 from .kanban_task import KanbanTaskModel
 
 # ===== Workspace =====
-from .workspace_project import WorkspaceProject
+from .workspace_project import WorkspaceProjectModel
 from .workspace_project_member import WorkspaceProjectMember
 from .workspace_stage import WorkspaceStage
 from .workspace_task import WorkspaceTask

@@ -1,7 +1,7 @@
 # Imports
 from fastapi import HTTPException
 from bson import ObjectId
-from ...models import KanbanBoardModel, KanbanStageModel
+from ...models import KanbanBoardModel, KanbanStageModel, KanbanTaskModel, KanbanBoardMemberModel
 
 async def remove_board(board_id: str, user_id: str):
 
@@ -21,6 +21,16 @@ async def remove_board(board_id: str, user_id: str):
     
     # Find all stages and remove them
     await KanbanStageModel.find({
+        "boardId": board_id
+    }).delete()
+
+    # Find all tasks and remove them
+    await KanbanTaskModel.find({
+        "boardId": board_id
+    }).delete()
+
+    # Find all board members and remove them
+    await KanbanBoardMemberModel.find({
         "boardId": board_id
     }).delete()
 

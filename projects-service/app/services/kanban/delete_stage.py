@@ -1,6 +1,7 @@
 from fastapi import HTTPException
 from bson import ObjectId
 from ...models import KanbanStageModel
+from ...models import KanbanTaskModel
 
 async def delete_stage(
     stage_id: str
@@ -9,6 +10,11 @@ async def delete_stage(
     stage = await KanbanStageModel.find_one({
         "_id": ObjectId(stage_id)
     })
+
+    # Delete tasks
+    await KanbanTaskModel.find({
+        "stageId": stage_id
+    }).delete()
 
     # Raise if stage not found
     if not stage:

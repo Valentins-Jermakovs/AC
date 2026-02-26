@@ -28,11 +28,37 @@ class User(SQLModel, table=True):
     """
     __tablename__ = 'users'
 
-    id: Optional[int] = Field(default=None, primary_key=True)  # Primary key
-    username: Optional[str] = Field(default=None, max_length=50, index=True, unique=True)  # Username
-    password_hash: Optional[str] = Field(default=None, max_length=255)  # Hashed password
-    email: str = Field(max_length=100, index=True, unique=True)  # Email
-    google_id: Optional[str] = Field(default=None, index=True, unique=True)  # Google OAuth ID
-    auth_provider: str = Field(default="local", max_length=20)  # Auth provider
-    created_at: datetime = Field(default_factory=get_current_date)  # Creation timestamp
-    active: bool = Field(default=True)  # Active status
+    id: Optional[int] = Field(              # Primary key
+        default=None, 
+        primary_key=True
+    )  
+    username: Optional[str] = Field(        # Username
+        default=None, 
+        max_length=50, 
+        index=True, 
+        unique=True
+    )  
+    password_hash: Optional[str] = Field(   # Hashed password
+        default=None,
+        max_length=255
+    )  
+    email: str = Field(                     # Email
+        max_length=100, 
+        index=True, 
+        unique=True
+    )  
+    google_id: Optional[str] = Field(       # Google OAuth ID
+        default=None, 
+        index=True, 
+        unique=True
+    )  
+    auth_provider: str = Field(             # Auth provider
+        default="local", 
+        max_length=20
+    )  
+    created_at: datetime = Field(           # Creation timestamp
+        default_factory=get_current_date
+    )  
+    active: bool = Field(                   # User status
+        default=True
+    )  

@@ -1,9 +1,11 @@
 # =========================
-# Database dependency
+# Database dependency (ASYNC VERSION)
 # =========================
 
-# Imports
-from sqlmodel import Session, create_engine
+# Imports - libraries
+from sqlmodel.ext.asyncio.session import AsyncSession
+from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.orm import sessionmaker
 import os
 from dotenv import load_dotenv
 
@@ -11,33 +13,31 @@ from dotenv import load_dotenv
 # =========================
 # Load environment variables
 # =========================
-load_dotenv()   # Read .env file
-DATABASE_URL = os.getenv("DATABASE_URL")    # Get database URL
-engine = create_engine(DATABASE_URL, echo=True) # Create database engine with logging enabled
+load_dotenv()
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+# Create async engine
+engine = create_async_engine(
+    DATABASE_URL,
+    echo=True,
+    future=True
+)
+
+# Create async session factory
+async_session = sessionmaker(
+    engine,
+    class_=AsyncSession,
+    expire_on_commit=False
+)
 
 
 # =========================
 # Database session dependency
 # =========================
-def get_db():
+async def get_db():
     """
-    Provide a SQLModel Session for FastAPI endpoints.
-
-    Usage:
-    - Use `Depends(get_db)` in endpoints to access DB session.
-    - Session is automatically closed after request.
-
-    Steps:
-    1. Create a new session bound to the database engine.
-    2. Yield the session to the endpoint.
-    3. Ensure session is closed in the finally block.
-
-    Notes:
-    - DATABASE_URL must be set in the .env file.
-    - For Docker setup, use the DB container name in DATABASE_URL (e.g., auth_postgres).
+    Async database session dependency for FastAPI.
+    Use with: Depends(get_db)
     """
-    session = Session(engine)   # Create new session
-    try:                        
-        yield session           # Provide session to endpoint
-    finally:                    
-        session.close()         # Close session
+    async with async_session() as session:
+        yield session

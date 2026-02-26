@@ -3,7 +3,8 @@
 # =========================
 
 from fastapi import HTTPException
-from sqlmodel import Session, select
+from sqlmodel.ext.asyncio.session import AsyncSession
+from sqlmodel import select
 from ...models import User
 from ...utils.get_user_with_role import get_user_with_role
 
@@ -11,9 +12,9 @@ from ...utils.get_user_with_role import get_user_with_role
 # Change user username
 # =========================
 async def change_user_username(
-    user_id: int, 
-    new_username: str, 
-    db: Session
+    user_id: int,
+    new_username: str,
+    db: AsyncSession
 ):
     """
     Changes a user's username.
@@ -36,32 +37,27 @@ async def change_user_username(
     :raises HTTPException: 404 if user not found, 403 if inactive, 400 if username exists
     """
 
-    # Load user from database
-    user = db.get(User, user_id)
+    user = await db.get(User, user_id)
 
-    # Normalize new username
     new_username = new_username.strip().lower()
 
-    # Validation: user existence
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
-    
-    # Validation: user active
+
     if not user.active:
         raise HTTPException(status_code=403, detail="User is inactive")
 
-    # Validation: username uniqueness
-    existing_user = db.exec(
+    result = await db.exec(
         select(User).where(User.username == new_username)
-    ).first()
+    )
+    existing_user = result.first()
 
     if existing_user:
         raise HTTPException(status_code=400, detail="User already exists")
-    
-    # Update username
-    user.username = new_username
-    db.commit()
-    db.refresh(user)
 
-    # Return user data including roles
+    user.username = new_username
+
+    await db.commit()
+    await db.refresh(user)
+
     return await get_user_with_role(user_id, db)

@@ -61,7 +61,11 @@ async def modify_username(
     user_id = await check_access_token(access_token)
     
     # Update username
-    user = await change_user_username(user_id, data.new_username, db)
+    user = await change_user_username(
+        user_id=user_id, 
+        new_username=data.new_username, 
+        db=db
+    )
 
     return user
 
@@ -95,7 +99,11 @@ async def modify_email(
     user_id = await check_access_token(access_token)
 
     # Update email
-    user = await change_user_email(user_id, data.new_email, db)
+    user = await change_user_email(
+        user_id=user_id, 
+        new_email=data.new_email, 
+        db=db
+    )
 
     return user
 

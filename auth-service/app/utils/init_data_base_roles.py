@@ -1,46 +1,27 @@
 # =========================
-# Default roles initialization
+# Default roles initialization (ASYNC)
 # =========================
 
-# SQLModel imports
-from sqlmodel import Session, select
-
-# Database model
+# Imports
+# Libraries
+from sqlmodel import select
+from sqlmodel.ext.asyncio.session import AsyncSession
+# Models
 from ..models import Role
 
+
 """
-Initializes default system roles.
-
-Behavior:
-- Checks if any roles already exist in the database
-- If roles exist, initialization is skipped
-- If no roles exist, creates predefined system roles
-
-This function should be called once during application startup.
-
-Default roles:
-- user             : Basic user, can manage only own data
-- admin            : Full system access
-- developer        : Full system access (technical role)
-- manager          : Full system access (business role)
-- support          : Full system access (support operations)
-- content_manager  : Full system access (content management)
-
-Input:
-- engine : SQLModel / SQLAlchemy engine instance
-
-Output:
-- None
+Initializes default system roles asynchronously.
 """
+
 
 # =========================
 # Initialize roles
 # =========================
-def init_roles(engine):
-    # Open database session
-    with Session(engine) as session:
+async def init_roles(engine):
 
-        # Predefined system roles (name -> description)
+    async with AsyncSession(engine) as session:
+
         roles = {
             "user": "User can register, login and manage only own data",
             "admin": "Administrator with full system access",
@@ -50,22 +31,21 @@ def init_roles(engine):
             "content_manager": "Content manager with full system access",
         }
 
-        # Check if roles already exist
-        existing_roles = session.exec(
-            select(Role)
-        ).all()
+        # Same SQL — no scalars changes
+        result = await session.exec(select(Role))
+        existing_roles = result.all()
 
-        # If roles exist, do not create duplicates
+        # If roles already exist → skip
         if existing_roles:
             return
 
         # Create default roles
         for role_name, role_description in roles.items():
-            role = Role(
-                name=role_name, 
-                description=role_description
+            session.add(
+                Role(
+                    name=role_name,
+                    description=role_description
+                )
             )
-            session.add(role)
 
-        # Save changes to database
-        session.commit()
+        await session.commit()

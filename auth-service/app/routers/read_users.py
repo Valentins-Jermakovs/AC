@@ -60,7 +60,11 @@ async def fetch_all_users_paginated(
     access_token = credentials.credentials
     user_id = await check_admin_role(access_token, db)
 
-    paginated_users = await get_users_paginated(db, page, limit)
+    paginated_users = await get_users_paginated(
+        db=db, 
+        page=page, 
+        limit=limit
+    )
 
     return {
         "items": paginated_users.items,
@@ -124,7 +128,10 @@ async def fetch_user_by_id(
     access_token = credentials.credentials
     user_id = await check_admin_role(access_token, db)
 
-    user = await get_user_by_id(find_user_by_id, db)
+    user = await get_user_by_id(
+        user_id=find_user_by_id, 
+        db=db
+    )
 
     return user
 
@@ -157,7 +164,12 @@ async def fetch_user_by_username_or_email(
     access_token = credentials.credentials
     user_id = await check_admin_role(access_token, db)
 
-    users = await get_user_by_username_or_email(name_or_email, db, page, limit)
+    users = await get_user_by_username_or_email(
+        username_or_email=name_or_email, 
+        db=db, 
+        page=page, 
+        limit=limit
+    )
 
     return {
         "items": users.items,
@@ -184,7 +196,12 @@ async def fetch_users_by_role(  # business logic
     access_token = credentials.credentials
     user_id = await check_admin_role(access_token, db)
 
-    users = await get_users_by_role(role, db, page, limit)
+    users = await get_users_by_role(
+        role=role, 
+        db=db, 
+        page=page, 
+        limit=limit
+    )
 
     return {
         "items": users.items,

@@ -2,13 +2,11 @@
 # User activity service
 # =========================
 
-# SQLModel imports
-from sqlmodel import Session, select
-# FastAPI exception
+from sqlmodel import select
+from sqlmodel.ext.asyncio.session import AsyncSession
 from fastapi import HTTPException
-# Database model
+
 from ...models import User
-# Response schema
 from ...schemas.users.user_activity_schema import UserActivitySchema
 
 
@@ -18,52 +16,48 @@ from ...schemas.users.user_activity_schema import UserActivitySchema
 async def change_users_activity_status(
     user_ids: list[int],
     is_active: bool,
-    db: Session,
+    db: AsyncSession,
     user_id: str
 ):
     """
     Changes activity status for multiple users.
-
-    Behavior:
-    - Loads users by provided IDs
-    - Verifies that all users exist
-    - Updates `active` field for each user
-    - Returns updated user activity data
-
-    :param user_ids: list of user IDs to update
-    :param is_active: new activity status (True / False)
-    :param db: database session
-    :return: list of UserActivitySchema objects
     """
 
-
-    # Load users from database
-    users = db.exec(
+    # =========================
+    # Load users async
+    # =========================
+    result = await db.exec(
         select(User).where(User.id.in_(user_ids))
-    ).all()
+    )
 
-    # If some users were not found, return 404
+    users = result.all()
+
+    # If some users were not found
     if len(users) != len(user_ids):
         raise HTTPException(
-            status_code=404, 
+            status_code=404,
             detail="User not found"
         )
 
-    # If user is trying to change their own activity status, return 403
+    # Prevent user from disabling himself
     if int(user_id) in [user.id for user in users]:
         raise HTTPException(
-            status_code=403, 
+            status_code=403,
             detail="You cannot change your own activity status"
         )
 
-    # Update activity status for each user
+    # =========================
+    # Update users
+    # =========================
     for user in users:
         user.active = is_active
 
-    # Save changes to database
-    db.commit()
+    # Async commit
+    await db.commit()
 
+    # =========================
     # Build response
+    # =========================
     return [
         UserActivitySchema(
             id=user.id,

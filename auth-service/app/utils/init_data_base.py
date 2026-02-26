@@ -1,66 +1,45 @@
 # =========================
-# Database initialization
+# Database initialization (ASYNC)
 # =========================
 
-# SQLModel core imports
-from sqlmodel import (SQLModel, create_engine)
-# Import all models so they are registered in metadata
-from ..models import (
-    Role,
-    Token,
-    User,
-    UserRole
-)
-# Default roles initialization
-from ..utils.init_data_base_roles import init_roles
-# Environment variables
+# Imports
+# Libraries
+from sqlmodel import SQLModel
+from sqlalchemy.ext.asyncio import create_async_engine
 from dotenv import load_dotenv
 import os
-
-"""
-Database tables initialization.
-
-Behavior:
-- Creates all database tables defined in SQLModel metadata
-- Safe to run multiple times (tables are created only if missing)
-- Initializes default system roles after tables are created
-
-This function should be executed once on application startup.
-
-Input:
-- None
-
-Output:
-- None
-"""
+# Import models so metadata registers them
+from ..models import Role, Token, User, UserRole
+# Default roles
+from ..utils.init_data_base_roles import init_roles
 
 
 # =========================
-# Database engine setup
+# Load environment variables
 # =========================
-
-# Load environment variables from .env file
 load_dotenv()
-# Database connection string
 DATABASE_URL = os.getenv("DATABASE_URL")
-# Create database engine
-# echo=True enables SQL logging (useful for development)
-engine = create_engine(
-    DATABASE_URL, 
-    echo=True
+
+
+# =========================
+# Async engine
+# =========================
+engine = create_async_engine(
+    DATABASE_URL,
+    echo=True,
 )
 
 
 # =========================
 # Initialize database
 # =========================
-def init_db():
+async def init_db():
     """
-    Initializes database schema and default data.
+    Creates tables asynchronously and initializes default data.
     """
 
-    # Create all tables if they do not exist
-    SQLModel.metadata.create_all(engine)
+    async with engine.begin() as conn:
+        await conn.run_sync(SQLModel.metadata.create_all)
 
-    # Initialize default roles
-    init_roles(engine)
+    # Initialize roles AFTER tables are created
+    await init_roles(engine)

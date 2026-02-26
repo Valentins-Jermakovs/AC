@@ -3,71 +3,73 @@
 # =========================
 
 from fastapi import HTTPException
-from sqlmodel import Session, select
+from sqlmodel.ext.asyncio.session import AsyncSession
+from sqlmodel import select
 from ...models import User
 from ...utils.get_user_with_role import get_user_with_role
 import re
 
 
 # =========================
-# Change user email
+# Change user email (ASYNC SAFE)
 # =========================
 async def change_user_email(
-    user_id: int, 
-    new_email: str, 
-    db: Session
+    user_id: int,
+    new_email: str,
+    db: AsyncSession
 ):
     """
     Changes a user's email address.
-
-    Steps:
-    1. Load user by ID
-       - Raises 404 if not found
-       - Raises 403 if user is inactive
-    2. Normalize new email (strip & lowercase)
-    3. Check if new email already exists
-       - Raises 400 if duplicate
-    4. Update email in database
-    5. Commit changes and refresh user object
-    6. Return user data with roles
-
-    :param user_id: ID of the user to update
-    :param new_email: New email address
-    :param db: Database session
-    :return: UserSchema with updated email and roles
-    :raises HTTPException: 404 if user not found, 403 if inactive, 400 if email exists
     """
 
-    # Load user from database
-    user = db.get(User, user_id)
+    # Load user asynchronously
+    user = await db.get(User, user_id)
 
-    # Normalize new email
+    # Normalize
     new_email = new_email.strip().lower()
 
-    # Validate email 
+    # Validate email format
     regex = r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,7}"
+    if not re.fullmatch(regex, new_email):
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid email format"
+        )
 
-    if not re.match(regex, new_email):
-        raise HTTPException(status_code=400, detail="Invalid email format")
-
-
-    # Validation: user existence
+    # Validation: user exists
     if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-    
+        raise HTTPException(
+            status_code=404,
+            detail="User not found"
+        )
+
     # Validation: user active
     if not user.active:
-        raise HTTPException(status_code=403, detail="User is inactive")
+        raise HTTPException(
+            status_code=403,
+            detail="User is inactive"
+        )
 
-    # Validation: email uniqueness
-    existing_user = db.exec(select(User).where(User.email == new_email)).first()
+    # Check email uniqueness (async correct way)
+    result = await db.exec(
+        select(User).where(User.email == new_email)
+    )
+    existing_user = result.first()
+
     if existing_user:
-        raise HTTPException(status_code=400, detail="Email already exists")
+        raise HTTPException(
+            status_code=400,
+            detail="Email already exists"
+        )
 
-    # Update user email
+    # Update
     user.email = new_email
-    db.commit()
-    db.refresh(user)
 
-    # Return user data including roles
+    # Commit async
+    await db.commit()
+
+    # Refresh async
+    await db.refresh(user)
+
+    # Return aggregated user
     return await get_user_with_role(user_id, db)

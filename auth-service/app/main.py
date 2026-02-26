@@ -33,7 +33,7 @@ from .routers import (
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Initialize database when application starts
-    init_db()
+    await init_db()
     # Application works while this yield exists
     yield
 

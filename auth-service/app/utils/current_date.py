@@ -16,4 +16,4 @@ def get_current_date():
     - Safe for databases and tokens
     - Can be converted to local time later if needed
     """
-    return datetime.now(timezone.utc)
+    return datetime.now(timezone.utc).replace(tzinfo=None)

@@ -56,7 +56,12 @@ async def change_user_activity_status(
     user_id = await check_admin_role(access_token, db)
 
     # Update activity status for users in DB
-    users = await change_users_activity_status(user_ids, is_active, db, user_id)
+    users = await change_users_activity_status(
+        user_ids=user_ids, 
+        is_active=is_active, 
+        db=db, 
+        user_id=user_id
+    )
 
     # Return updated user info
     return users

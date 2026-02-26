@@ -1,47 +1,39 @@
 # =========================
-# Logout service
+# Logout service (ASYNC)
 # =========================
-from sqlmodel import Session, select
+
+# Imports
+# Libraries
+from sqlmodel import select
+from sqlmodel.ext.asyncio.session import AsyncSession
 from fastapi import HTTPException
-# Database model
+# Models
 from ...models import Token
 
 
-# =========================
-# Logout user
-# =========================
-async def logout(db: Session, refresh_token: str):
+async def logout(
+    db: AsyncSession,
+    refresh_token: str
+) -> dict:
     """
-    Logs out a user by invalidating their refresh token.
-
-    Steps:
-    1. Look up the provided refresh token in the database
-    2. Raise 401 if token does not exist (invalid token)
-    3. Delete the token to log out the user
-    4. Commit changes to persist deletion
-    5. Return confirmation message
-
-    :param db: SQLModel database session
-    :param refresh_token: refresh token string from client
-    :return: dict with confirmation message
-    :raises HTTPException: 401 if token is invalid
+    Invalidates refresh token by deleting it from database.
     """
 
-    # Find the refresh token in database
-    token = db.exec(
+    # Find token
+    result = await db.exec(
         select(Token).where(Token.refresh_token == refresh_token)
-    ).first()
+    )
 
-    # Token not found → unauthorized
+    token = result.first()
+
     if not token:
         raise HTTPException(
             status_code=401,
             detail="Invalid refresh token"
         )
 
-    # Delete token to log user out
-    db.delete(token)
-    db.commit()
+    await db.delete(token)
 
-    # Return confirmation
+    await db.commit()
+
     return {"message": "Logout successful"}

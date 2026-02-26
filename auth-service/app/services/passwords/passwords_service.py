@@ -18,7 +18,7 @@ password_hash = PasswordHash.recommended()
 # =========================
 # Hash a password
 # =========================
-def get_password_hash(password: str) -> str:
+async def get_password_hash(password: str) -> str:
     """
     Hashes a plain text password using Argon2.
 
@@ -31,7 +31,7 @@ def get_password_hash(password: str) -> str:
 # =========================
 # Verify a password
 # =========================
-def verify_password(plain_password: str, hashed_password: str) -> bool:
+async def verify_password(plain_password: str, hashed_password: str) -> bool:
     """
     Verifies a plain password against a stored hash.
 

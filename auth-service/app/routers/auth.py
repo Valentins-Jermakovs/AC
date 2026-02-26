@@ -1,18 +1,22 @@
 # =========================
 # Authentication service
 # =========================
-
-# Imports
+# FastAPI
 from fastapi import APIRouter, Depends, Body, Request
 from fastapi.security import (
-    HTTPBearer, 
-    HTTPAuthorizationCredentials, 
+    HTTPBearer,
+    HTTPAuthorizationCredentials,
     OAuth2PasswordRequestForm
 )
+from fastapi.responses import RedirectResponse
+# OAuth
 from authlib.integrations.starlette_client import OAuth
-import os
+# SQLAlchemy async
+from sqlmodel.ext.asyncio.session import AsyncSession
+# Typing
 from typing import Annotated
-from sqlmodel import Session
+import os
+from urllib.parse import urlencode
 # Schemas
 from ..schemas.auth.registration_schema import RegistrationSchema
 from ..schemas.auth.login_schema import LoginSchema
@@ -25,23 +29,20 @@ from ..services.auth.google_auth_service import google_auth_callback
 # Dependencies
 from ..dependencies.data_base_connection import get_db
 
-from fastapi.responses import RedirectResponse
-from urllib.parse import urlencode
-import os
-
 
 # =========================
 # Router setup
 # =========================
 router = APIRouter(
-    prefix="/auth", # All auth endpoints start with /auth
-    tags=["Auth service"]   # Tag for docs grouping
+    prefix="/auth",
+    tags=["Auth service"]
 )
 
 
-# =========================
-# User login endpoint
-# =========================
+# ============================================================
+# LOGIN
+# ============================================================
+
 @router.post(
     "/login",
     response_model=TokenRefreshSchema,
@@ -49,28 +50,27 @@ router = APIRouter(
     description="OAuth2 compatible login"
 )
 async def user_authentication(
-    form_data: Annotated[OAuth2PasswordRequestForm, Depends()], # Form data: username + password
-    db: Annotated[Session, Depends(get_db)] # DB session
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
+    db: Annotated[AsyncSession, Depends(get_db)]
 ):
-    """
-    Authenticates a user using username and password.
-
-    Steps:
-    1. Get username and password from form
-    2. Call login_user service to validate and generate tokens
-    3. Return access and refresh tokens
-    """
-    data = LoginSchema( # get form data
+    data = LoginSchema(
         username=form_data.username,
         password=form_data.password
     )
-    return await login_user(db, data)
+
+    return await login_user(db=db, data=data)
 
 
-# =========================
-# Google OAuth setup
-# =========================
+# ============================================================
+# GOOGLE OAUTH SETUP 
+#
+# use this for test:
+# http://localhost:8000/auth/google/login - login
+# http://localhost:8000/auth/google/callback - callback redirect to frontend
+# ============================================================
+
 oauth = OAuth()
+
 CONF_URL = "https://accounts.google.com/.well-known/openid-configuration"
 
 oauth.register(
@@ -79,27 +79,32 @@ oauth.register(
     client_secret=os.getenv("GOOGLE_CLIENT_SECRET"),
     server_metadata_url=CONF_URL,
     client_kwargs={
-        "scope": "openid email profile",    # Request email and profile info
+        "scope": "openid email profile",
     },
 )
 
 
-# http://localhost:8000/auth/google/login
-# =========================
-# Google login endpoint
-# =========================
-@router.get("/google/login", response_model=None)
-async def get_google_login(request: Request):
-    redirect_uri = os.getenv("GOOGLE_REDIRECT_URI")
-    return await oauth.google.authorize_redirect(request, redirect_uri)
+# ============================================================
+# GOOGLE LOGIN REDIRECT
+# ============================================================
 
-# =========================
-# Google callback endpoint
-# =========================
+@router.get("/google/login")
+async def get_google_login(request: Request):
+    redirect_uri = request.url_for("google_auth_handler")
+    return await oauth.google.authorize_redirect(
+        request,
+        redirect_uri
+    )
+
+
+# ============================================================
+# GOOGLE CALLBACK
+# ============================================================
+
 @router.get("/google/callback")
 async def google_auth_handler(
     request: Request,
-    db: Session = Depends(get_db),
+    db: Annotated[AsyncSession, Depends(get_db)],
 ):
     tokens = await google_auth_callback(oauth, db, request)
 
@@ -118,59 +123,49 @@ async def google_auth_handler(
         status_code=303
     )
 
-# =========================
-# User registration endpoint
-# =========================
+
+# ============================================================
+# REGISTER
+# ============================================================
+
 @router.post(
     "/register",
-    summary="Create a new user", 
-    description="Get JSON data and create a new user in the database",
+    summary="Create a new user",
     response_model=TokenRefreshSchema
 )
 async def user_registration(
-    data: Annotated[RegistrationSchema,
+    data: Annotated[
+        RegistrationSchema,
         Body(
             example={
-                "username": "testuser", 
-                "email": "test@inbox.lv", 
+                "username": "testuser",
+                "email": "test@inbox.lv",
                 "password": "12345678"
             }
         )
     ],
-    db: Annotated[Session, Depends(get_db)]
+    db: Annotated[AsyncSession, Depends(get_db)]
 ):
-    """
-    Register a new user and return access/refresh tokens.
-
-    Steps:
-    1. Get user data from JSON body
-    2. Call register_user service
-    3. Return generated tokens
-    """
-    register_user_with_token = await register_user(data, db)
-    return register_user_with_token
+    return await register_user(data=data, db=db)
 
 
-# =========================
-# User logout endpoint
-# =========================
-logout_scheme = HTTPBearer()    # Extract refresh token from header
+# ============================================================
+# LOGOUT
+# ============================================================
+
+logout_scheme = HTTPBearer()
+
+
 @router.post(
     "/logout",
-    summary="Logout a user", 
-    description="Get JSON data and logout a user in the database"
+    summary="Logout a user"
 )
 async def logout_user(
-    data: Annotated[HTTPAuthorizationCredentials, Depends(logout_scheme)],
-    db: Annotated[Session, Depends(get_db)]
+    data: Annotated[
+        HTTPAuthorizationCredentials,
+        Depends(logout_scheme)
+    ],
+    db: Annotated[AsyncSession, Depends(get_db)]
 ):
-    """
-    Logout user by deleting refresh token.
-
-    Steps:
-    1. Get refresh token from HTTP header
-    2. Call logout service to remove it from DB
-    3. Return confirmation message
-    """
     refresh_token = data.credentials
-    return await logout(db, refresh_token)
+    return await logout(db=db, refresh_token=refresh_token)

@@ -248,13 +248,17 @@ export const useAdminStore = defineStore('admin', {
 
       try {
         const response = await api.post(
-          API_ENDPOINTS.ADD_ROLES_TO_USER, selectedUserIds,
+          API_ENDPOINTS.ADD_ROLES_TO_USER,
           {
-            params: { role_id: roleId },
+            role_id: roleId,
+            user_ids: selectedUserIds
+          },
+          {
             headers: {
-              Authorization: `Bearer ${authStore.accessToken}`,
-            },
-          })
+              Authorization: `Bearer ${authStore.accessToken}`
+            }
+          }
+        )
 
         return response.data
       } catch (err) {
@@ -283,13 +287,15 @@ export const useAdminStore = defineStore('admin', {
       try {
         const response = await api.post(
           API_ENDPOINTS.REMOVE_ROLES_FROM_USER,
-          selectedUserIds,
           {
-            params: { role_id: roleId },
-            headers: {
-              Authorization: 'Bearer ' + authStore.accessToken,
-            },
+            role_id: roleId,
+            user_ids: selectedUserIds
           },
+          {
+            headers: {
+              Authorization: `Bearer ${authStore.accessToken}`
+            }
+          }
         )
 
         return response.data
@@ -320,13 +326,15 @@ export const useAdminStore = defineStore('admin', {
 
         const response = await api.put(
           API_ENDPOINTS.CHANGE_USER_ACTIVITY,
-          userIds,
           {
-            params: { is_active: isActive },
-            headers: {
-              Authorization: 'Bearer ' + authStore.accessToken,
-            },
+            user_ids: userIds,
+            is_active: isActive
           },
+          {
+            headers: {
+              Authorization: `Bearer ${authStore.accessToken}`
+            }
+          }
         )
 
 

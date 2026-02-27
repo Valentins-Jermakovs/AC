@@ -104,7 +104,7 @@ async def fetch_current_user_endpoint(
     summary="Get user by ID",
 )
 async def fetch_user_by_id_endpoint(
-    find_user_by_id: int, 
+    user_id: int, 
     db: Annotated[AsyncSession, Depends(get_db)],
     admin_user_id: int = Depends(get_admin_user_id),
 ):
@@ -119,7 +119,7 @@ async def fetch_user_by_id_endpoint(
     """
 
     user = await get_user_by_id(
-        user_id=find_user_by_id, 
+        user_id=user_id, 
         db=db
     )
 

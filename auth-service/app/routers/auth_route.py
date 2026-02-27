@@ -104,7 +104,7 @@ async def get_google_login(request: Request):
     use this for test:
     http://localhost:8000/auth/google/login
     '''
-    redirect_uri = request.url_for("google_auth_handler")
+    redirect_uri = os.getenv("GOOGLE_REDIRECT_URI")
     return await oauth.google.authorize_redirect(
         request,
         redirect_uri

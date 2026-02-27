@@ -17,3 +17,11 @@ class ChangeUsernameSchema(BaseModel):
     - new_username (str): New username to set for the user
     """
     new_username: str
+
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "new_username": "new_user_name"
+            }
+        }
+    }

@@ -17,3 +17,11 @@ class ChangeEmailSchema(BaseModel):
     - new_email (str): New email address to set for the user
     """
     new_email: str
+
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "new_email": "new@email.com"
+            }
+        }
+    }

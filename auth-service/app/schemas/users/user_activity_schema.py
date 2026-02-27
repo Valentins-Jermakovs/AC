@@ -1,5 +1,5 @@
 # =========================
-# User activity schema
+# User activity schemas
 # =========================
 
 # Imports
@@ -10,7 +10,30 @@ from typing import Optional
 # =========================
 # User activity data
 # =========================
-class UserActivitySchema(BaseModel):
+class UserActivitySchemaData(BaseModel):
+    """
+    Schema representing user activity status.
+
+    Attributes:
+    - user_ids (list[int]): List of user IDs
+    - is_active (bool): Whether the user is active (True) or inactive (False)
+    """
+    user_ids: list[int]
+    is_active: bool
+
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "user_ids": [1, 2, 3],
+                "is_active": True
+            }
+        }
+    }
+
+# =========================
+# User activity response
+# =========================
+class UserActivitySchemaResponse(BaseModel):
     """
     Schema representing user activity status.
 

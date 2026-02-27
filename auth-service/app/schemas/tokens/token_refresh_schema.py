@@ -21,3 +21,13 @@ class TokenRefreshSchema(BaseModel):
     access_token: str
     token_type: str
     refresh_token: str
+
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "access_token": "eyJhbGciOiJIUzI1NiIs...",
+                "refresh_token": "eyJhbGciOiJIUzI1NiIs...",
+                "token_type": "bearer"
+            }
+        }
+    }

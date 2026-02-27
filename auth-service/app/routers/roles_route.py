@@ -3,7 +3,7 @@
 # =========================
 
 # Imports
-from sqlmodel import Session
+from sqlmodel.ext.asyncio.session import AsyncSession
 from fastapi import APIRouter, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from typing import Annotated
@@ -14,6 +14,9 @@ from ..services.role_management.remove_role_from_user import remove_role_from_us
 from ..dependencies.data_base_connection import get_db
 # Utils
 from ..utils.check_admin_role import check_admin_role
+# Schemas
+from ..schemas.roles.role_assignment_schema import RoleAssignmentSchema
+from ..schemas.roles.role_operation_response_schema import RoleOperationResponseSchema
 
 
 # =========================
@@ -28,11 +31,10 @@ router = APIRouter(
 # =========================
 # Add role for users endpoint
 # =========================
-@router.post("/add")
+@router.post("/add", response_model=RoleOperationResponseSchema)
 async def add_role_for_user_endpoint(
-    user_ids: list[int],    # List of user IDs to add role
-    role_id: int,           # Role ID to add
-    db: Annotated[Session, Depends(get_db)],    # DB session
+    data: RoleAssignmentSchema,
+    db: Annotated[AsyncSession, Depends(get_db)],    # DB session
     credentials: Annotated[HTTPAuthorizationCredentials, Depends(HTTPBearer())] # Access token
 ):
     """
@@ -48,8 +50,8 @@ async def add_role_for_user_endpoint(
     user_id = await check_admin_role(access_token, db)
 
     return await add_role_for_users(
-        user_ids=user_ids, 
-        role_id=role_id, 
+        user_ids=data.user_ids, 
+        role_id=data.role_id, 
         db=db, 
         user_id=user_id
     )
@@ -58,11 +60,10 @@ async def add_role_for_user_endpoint(
 # =========================
 # Remove role from users endpoint
 # =========================
-@router.post("/remove")
+@router.post("/remove", response_model=RoleOperationResponseSchema)
 async def remove_role_from_user_endpoint(
-    user_ids: list[int],    # List of user IDs to remove role
-    role_id: int,           # Role ID to remove
-    db: Annotated[Session, Depends(get_db)],    # DB session
+    data: RoleAssignmentSchema,
+    db: Annotated[AsyncSession, Depends(get_db)],    # DB session
     credentials: Annotated[HTTPAuthorizationCredentials, Depends(HTTPBearer())] # Access token
 ):
     """
@@ -78,8 +79,8 @@ async def remove_role_from_user_endpoint(
     user_id = await check_admin_role(access_token, db)
     
     return await remove_role_from_users(
-        user_ids=user_ids, 
-        role_id=role_id, 
+        user_ids=data.user_ids, 
+        role_id=data.role_id, 
         db=db, 
         user_id=user_id
     )

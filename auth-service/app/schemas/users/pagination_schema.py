@@ -40,3 +40,7 @@ class PaginatedUsersSchema(BaseModel):
     """
     items: List[UserSchema]
     meta: PaginationMeta | None = None
+
+    model_config = {
+        "from_attributes": True
+    }

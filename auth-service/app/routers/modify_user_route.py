@@ -6,7 +6,7 @@
 from fastapi import APIRouter, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from typing import Annotated
-from sqlmodel import Session
+from sqlmodel.ext.asyncio.session import AsyncSession
 # Dependencies
 from ..dependencies.data_base_connection import get_db
 # Services
@@ -42,7 +42,7 @@ security = HTTPBearer()
 )
 async def modify_username(
     data: ChangeUsernameSchema, # New username from request body
-    db: Annotated[Session, Depends(get_db)],    # Database session
+    db: Annotated[AsyncSession, Depends(get_db)],    # Database session
     credentials: HTTPAuthorizationCredentials = Depends(security),  # Access token from header
 ):
     """
@@ -79,7 +79,7 @@ async def modify_username(
     )
 async def modify_email_endpoint(
     data: ChangeEmailSchema,    # New email from request body
-    db: Annotated[Session, Depends(get_db)],
+    db: Annotated[AsyncSession, Depends(get_db)],
     credentials: HTTPAuthorizationCredentials = Depends(security),  # Access token from header
 ):
     """
@@ -116,7 +116,7 @@ async def modify_email_endpoint(
     )
 async def change_password_endpoint(
     data: ChangePasswordSchema, # Old and new password from request body
-    db: Annotated[Session, Depends(get_db)],
+    db: Annotated[AsyncSession, Depends(get_db)],
     credentials: HTTPAuthorizationCredentials = Depends(security),  # Access token from header
 ):
     """

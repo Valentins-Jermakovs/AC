@@ -32,3 +32,15 @@ class UserSchema(BaseModel):
     @field_serializer("created_at")
     def serialize_created_at(self, value: datetime):
         return value.strftime("%Y-%m-%d")
+    
+    model_config = {
+        "from_attributes": True,
+        "json_schema_extra": {
+            "example": {
+                "id": 1,
+                "username": "test",
+                "email": "test@email.com",
+                "active": True
+            }
+        }
+    }

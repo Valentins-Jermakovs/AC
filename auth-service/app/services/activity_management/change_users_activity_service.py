@@ -10,7 +10,7 @@ from fastapi import HTTPException
 # Models
 from ...models import UserModel
 # Schemas
-from ...schemas.users.user_activity_schema import UserActivitySchema
+from ...schemas.users.user_activity_schema import UserActivitySchemaResponse
 
 
 # =========================
@@ -21,7 +21,7 @@ async def change_users_activity_status(
     is_active: bool,
     db: AsyncSession,
     user_id: str
-):
+) -> list[UserActivitySchemaResponse]:
     """
     Changes activity status for multiple users.
     """
@@ -62,7 +62,7 @@ async def change_users_activity_status(
     # Build response
     # =========================
     return [
-        UserActivitySchema(
+        UserActivitySchemaResponse(
             id=user.id,
             username=user.username,
             email=user.email,

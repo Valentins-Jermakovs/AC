@@ -19,3 +19,12 @@ class ChangePasswordSchema(BaseModel):
     """
     old_password: str | None = None
     new_password: str
+
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "old_password": "old123",
+                "new_password": "new123456"
+            }
+        }
+    }

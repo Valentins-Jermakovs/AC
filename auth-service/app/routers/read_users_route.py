@@ -6,7 +6,7 @@
 from fastapi import APIRouter, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from typing import Annotated
-from sqlmodel import Session
+from sqlmodel.ext.asyncio.session import AsyncSession
 # Schemas
 from ..schemas.users.pagination_schema import PaginatedUsersSchema
 from ..schemas.users.user_schema import UserSchema
@@ -42,7 +42,7 @@ security = HTTPBearer()
     summary="Get all users paginated",
 )
 async def fetch_all_users_endpoint(
-    db: Annotated[Session, Depends(get_db)],
+    db: Annotated[AsyncSession, Depends(get_db)],
     credentials: HTTPAuthorizationCredentials = Depends(security),  # Access token from header
     page: int = 1,
     limit: int = 10,
@@ -65,10 +65,7 @@ async def fetch_all_users_endpoint(
         limit=limit
     )
 
-    return {
-        "items": paginated_users.items,
-        "meta": paginated_users.meta,
-    }
+    return paginated_users
 
 # =========================
 # Get info about current user
@@ -79,7 +76,7 @@ async def fetch_all_users_endpoint(
     summary="Get info about current user",
 )
 async def fetch_current_user_endpoint(
-    db: Annotated[Session, Depends(get_db)],
+    db: Annotated[AsyncSession, Depends(get_db)],
     credentials: HTTPAuthorizationCredentials = Depends(security),
 ):
     """
@@ -104,13 +101,13 @@ async def fetch_current_user_endpoint(
 # Get user by ID
 # =========================
 @router.get(
-    "/{find_user_by_id}", 
+    "/{user_id}", 
     response_model=UserSchema,
     summary="Get user by ID",
 )
 async def fetch_user_by_id_endpoint(
     find_user_by_id: int, 
-    db: Annotated[Session, Depends(get_db)],
+    db: Annotated[AsyncSession, Depends(get_db)],
     credentials: HTTPAuthorizationCredentials = Depends(security),
 ):
     """
@@ -143,7 +140,7 @@ async def fetch_user_by_id_endpoint(
 )
 async def fetch_user_by_username_or_email_endpoint(
     name_or_email: str,
-    db: Annotated[Session, Depends(get_db)],
+    db: Annotated[AsyncSession, Depends(get_db)],
     page: int = 1,
     limit: int = 10,
     credentials: HTTPAuthorizationCredentials = Depends(security),  # Access token from header
@@ -167,10 +164,7 @@ async def fetch_user_by_username_or_email_endpoint(
         limit=limit
     )
 
-    return {
-        "items": users.items,
-        "meta": users.meta,
-    }
+    return users
 
 
 # =========================
@@ -183,7 +177,7 @@ async def fetch_user_by_username_or_email_endpoint(
 )
 async def fetch_users_by_role_endpoint(  # business logic
     role: str,
-    db: Annotated[Session, Depends(get_db)],
+    db: Annotated[AsyncSession, Depends(get_db)],
     page: int = 1,
     limit: int = 10,
     credentials: HTTPAuthorizationCredentials = Depends(security),  # Access token from header
@@ -207,7 +201,4 @@ async def fetch_users_by_role_endpoint(  # business logic
         limit=limit
     )
 
-    return {
-        "items": users.items,
-        "meta": users.meta,
-    }
+    return users

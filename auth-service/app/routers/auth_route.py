@@ -153,16 +153,7 @@ async def google_auth_handler(
     response_model=TokenRefreshSchema
 )
 async def user_registration_endpoint(
-    data: Annotated[
-        RegistrationSchema,
-        Body(
-            example={
-                "username": "testuser",
-                "email": "test@inbox.lv",
-                "password": "12345678"
-            }
-        )
-    ],
+    data: RegistrationSchema,
     db: Annotated[AsyncSession, Depends(get_db)]
 ):
     '''

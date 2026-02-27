@@ -3,16 +3,18 @@
 # =========================
 
 # Imports
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Body
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from typing import Annotated
-from sqlmodel import Session
+from sqlmodel.ext.asyncio.session import AsyncSession
 # Services
 from ..services.activity_management.change_users_activity_service import change_users_activity_status
 # Dependencies
 from ..dependencies.data_base_connection import get_db
 # Utils
 from ..utils.check_admin_role import check_admin_role
+# Schemas
+from ..schemas.users.user_activity_schema import UserActivitySchemaData, UserActivitySchemaResponse
 
 
 # =========================
@@ -30,11 +32,11 @@ router = APIRouter(
 @router.put(
     "/",
     summary="Change users activity status", # Short description for docs
+    response_model=list[UserActivitySchemaResponse]
 )
 async def change_user_activity_status_endpoint(
-    user_ids: list[int],    # List of user IDs to update
-    is_active: bool,        # New activity status to set
-    db: Annotated[Session, Depends(get_db)],    # DB session injected automatically
+    data: UserActivitySchemaData,
+    db: Annotated[AsyncSession, Depends(get_db)],    # DB session injected automatically
     credentials: HTTPAuthorizationCredentials = Depends(HTTPBearer())
     # Require HTTP Bearer token for authentication
 ):
@@ -56,8 +58,8 @@ async def change_user_activity_status_endpoint(
 
     # Update activity status for users in DB
     users = await change_users_activity_status(
-        user_ids=user_ids, 
-        is_active=is_active, 
+        user_ids=data.user_ids, 
+        is_active=data.is_active, 
         db=db, 
         user_id=user_id
     )

@@ -3,13 +3,14 @@
 # =========================
 
 # Imports
+
 from fastapi import APIRouter, Depends
 from fastapi.security import (
     HTTPBearer,
     HTTPAuthorizationCredentials
 )
+from sqlmodel.ext.asyncio.session import AsyncSession
 from typing import Annotated
-from sqlmodel import Session
 # Services
 from ..services.tokens_management.refresh_tokens_service import refresh_access_token, check_access_token
 # Schemas
@@ -64,7 +65,7 @@ async def check_token_endpoint(
 @router.post("/refresh", response_model=TokenRefreshSchema)
 async def refresh_token_endpoint(
     credentials: Annotated[HTTPAuthorizationCredentials, Depends(refresh_scheme)],
-    db: Session = Depends(get_db)
+    db: Annotated[AsyncSession, Depends(get_db)]
 ):
     """
     Generate a new access token using a refresh token.

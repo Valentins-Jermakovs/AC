@@ -11,7 +11,7 @@ from typing import List
 # Models
 from ...models import UserModel, RoleModel, UserRoleModel
 # Schemas
-from ...schemas.users.user_schema import UserSchema
+from ...schemas.roles.role_operation_response_schema import RoleOperationResponseSchema
 # Utils
 from ...utils.get_users_roles_map import get_users_roles_map
 
@@ -24,7 +24,7 @@ async def remove_role_from_users(
     role_id: int,
     db: AsyncSession,
     user_id: str
-) -> List[UserSchema]:
+) -> RoleOperationResponseSchema:
     """
     Removes a role from multiple users.
     """
@@ -93,14 +93,7 @@ async def remove_role_from_users(
     # =========================
     roles_map = await get_users_roles_map(user_ids, db)
 
-    return [
-        UserSchema(
-            id=user.id,
-            username=user.username,
-            email=user.email,
-            active=user.active,
-            roles=roles_map.get(user.id, []),
-            created_at=user.created_at
-        )
-        for user in users
-    ]
+    return RoleOperationResponseSchema(
+        updated_users=[user.id for user in users],
+        role_id=role_id
+    )  

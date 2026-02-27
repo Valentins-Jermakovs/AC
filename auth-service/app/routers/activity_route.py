@@ -3,16 +3,14 @@
 # =========================
 
 # Imports
-from fastapi import APIRouter, Depends, Body
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi import APIRouter, Depends
 from typing import Annotated
 from sqlmodel.ext.asyncio.session import AsyncSession
 # Services
 from ..services.activity_management.change_users_activity_service import change_users_activity_status
 # Dependencies
 from ..dependencies.data_base_connection import get_db
-# Utils
-from ..utils.check_admin_role import check_admin_role
+from ..dependencies.admin_dependency import get_admin_user_id
 # Schemas
 from ..schemas.users.user_activity_schema import UserActivitySchemaData, UserActivitySchemaResponse
 
@@ -37,7 +35,7 @@ router = APIRouter(
 async def change_user_activity_status_endpoint(
     data: UserActivitySchemaData,
     db: Annotated[AsyncSession, Depends(get_db)],    # DB session injected automatically
-    credentials: HTTPAuthorizationCredentials = Depends(HTTPBearer())
+    admin_user_id: int = Depends(get_admin_user_id),
     # Require HTTP Bearer token for authentication
 ):
     """
@@ -50,18 +48,12 @@ async def change_user_activity_status_endpoint(
     4. Return updated users
     """
 
-    # Extract token from HTTP credentials
-    access_token = credentials.credentials
-
-    # Verify admin role, raise error if user is not admin
-    user_id = await check_admin_role(access_token, db)
-
     # Update activity status for users in DB
     users = await change_users_activity_status(
         user_ids=data.user_ids, 
         is_active=data.is_active, 
         db=db, 
-        user_id=user_id
+        user_id=admin_user_id
     )
 
     # Return updated user info

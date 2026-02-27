@@ -1,11 +1,12 @@
 # =========================
 # Authentication service
 # =========================
-# FastAPI
+
+# Imports
+# Libraries
 from fastapi import (
     APIRouter, 
     Depends, 
-    Body, 
     Request
 )
 from fastapi.security import (
@@ -14,11 +15,8 @@ from fastapi.security import (
     OAuth2PasswordRequestForm
 )
 from fastapi.responses import RedirectResponse
-# OAuth
 from authlib.integrations.starlette_client import OAuth
-# SQLAlchemy async
 from sqlmodel.ext.asyncio.session import AsyncSession
-# Typing
 from typing import Annotated
 import os
 from urllib.parse import urlencode

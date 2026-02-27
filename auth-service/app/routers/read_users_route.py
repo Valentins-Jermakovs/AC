@@ -17,8 +17,8 @@ from ..services.read_users.read_user_by_name_or_email_service import get_user_by
 from ..services.read_users.read_user_by_role_service import get_users_by_role
 # Dependencies
 from ..dependencies.data_base_connection import get_db
+from ..dependencies.admin_dependency import get_admin_user_id
 # Utils
-from ..utils.check_admin_role import check_admin_role
 from ..utils.check_access_token import check_access_token
 
 
@@ -43,7 +43,7 @@ security = HTTPBearer()
 )
 async def fetch_all_users_endpoint(
     db: Annotated[AsyncSession, Depends(get_db)],
-    credentials: HTTPAuthorizationCredentials = Depends(security),  # Access token from header
+    admin_user_id: int = Depends(get_admin_user_id),
     page: int = 1,
     limit: int = 10,
 ):
@@ -56,8 +56,6 @@ async def fetch_all_users_endpoint(
     3. Get paginated users from DB
     4. Return items and metadata
     """
-    access_token = credentials.credentials
-    user_id = await check_admin_role(access_token, db)
 
     paginated_users = await get_users_paginated(
         db=db, 
@@ -108,7 +106,7 @@ async def fetch_current_user_endpoint(
 async def fetch_user_by_id_endpoint(
     find_user_by_id: int, 
     db: Annotated[AsyncSession, Depends(get_db)],
-    credentials: HTTPAuthorizationCredentials = Depends(security),
+    admin_user_id: int = Depends(get_admin_user_id),
 ):
     """
     Retrieve one user by ID.
@@ -119,8 +117,6 @@ async def fetch_user_by_id_endpoint(
     3. Fetch user by ID from DB
     4. Return as single-item list
     """
-    access_token = credentials.credentials
-    user_id = await check_admin_role(access_token, db)
 
     user = await get_user_by_id(
         user_id=find_user_by_id, 
@@ -141,9 +137,9 @@ async def fetch_user_by_id_endpoint(
 async def fetch_user_by_username_or_email_endpoint(
     name_or_email: str,
     db: Annotated[AsyncSession, Depends(get_db)],
+    admin_user_id: int = Depends(get_admin_user_id),
     page: int = 1,
     limit: int = 10,
-    credentials: HTTPAuthorizationCredentials = Depends(security),  # Access token from header
 ):
     """
     Search for users by username or email.
@@ -154,8 +150,6 @@ async def fetch_user_by_username_or_email_endpoint(
     3. Search users in DB with pagination
     4. Return items and metadata
     """
-    access_token = credentials.credentials
-    user_id = await check_admin_role(access_token, db)
 
     users = await get_user_by_username_or_email(
         username_or_email=name_or_email, 
@@ -178,9 +172,9 @@ async def fetch_user_by_username_or_email_endpoint(
 async def fetch_users_by_role_endpoint(  # business logic
     role: str,
     db: Annotated[AsyncSession, Depends(get_db)],
+    admin_user_id: int = Depends(get_admin_user_id),
     page: int = 1,
     limit: int = 10,
-    credentials: HTTPAuthorizationCredentials = Depends(security),  # Access token from header
 ):
     '''
     Get users by role.
@@ -191,8 +185,6 @@ async def fetch_users_by_role_endpoint(  # business logic
     3. Get users by role from DB
     4. Return items and metadata
     '''
-    access_token = credentials.credentials
-    user_id = await check_admin_role(access_token, db)
 
     users = await get_users_by_role(
         role=role, 

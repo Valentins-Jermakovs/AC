@@ -5,15 +5,13 @@
 # Imports
 from sqlmodel.ext.asyncio.session import AsyncSession
 from fastapi import APIRouter, Depends
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from typing import Annotated
 # Services
 from ..services.role_management.add_role_for_user import add_role_for_users
 from ..services.role_management.remove_role_from_user import remove_role_from_users
 # Dependencies
 from ..dependencies.data_base_connection import get_db
-# Utils
-from ..utils.check_admin_role import check_admin_role
+from ..dependencies.admin_dependency import get_admin_user_id
 # Schemas
 from ..schemas.roles.role_assignment_schema import RoleAssignmentSchema
 from ..schemas.roles.role_operation_response_schema import RoleOperationResponseSchema
@@ -35,7 +33,7 @@ router = APIRouter(
 async def add_role_for_user_endpoint(
     data: RoleAssignmentSchema,
     db: Annotated[AsyncSession, Depends(get_db)],    # DB session
-    credentials: Annotated[HTTPAuthorizationCredentials, Depends(HTTPBearer())] # Access token
+    admin_user_id: int = Depends(get_admin_user_id),
 ):
     """
     Add a role to multiple users.
@@ -46,14 +44,12 @@ async def add_role_for_user_endpoint(
     3. Call service to add role for users
     4. Return result
     """
-    access_token = credentials.credentials
-    user_id = await check_admin_role(access_token, db)
 
     return await add_role_for_users(
         user_ids=data.user_ids, 
         role_id=data.role_id, 
         db=db, 
-        user_id=user_id
+        user_id=admin_user_id
     )
 
 
@@ -64,7 +60,7 @@ async def add_role_for_user_endpoint(
 async def remove_role_from_user_endpoint(
     data: RoleAssignmentSchema,
     db: Annotated[AsyncSession, Depends(get_db)],    # DB session
-    credentials: Annotated[HTTPAuthorizationCredentials, Depends(HTTPBearer())] # Access token
+    admin_user_id: int = Depends(get_admin_user_id),
 ):
     """
     Remove a role from multiple users.
@@ -75,12 +71,10 @@ async def remove_role_from_user_endpoint(
     3. Call service to remove role from users
     4. Return result
     """
-    access_token = credentials.credentials
-    user_id = await check_admin_role(access_token, db)
     
     return await remove_role_from_users(
         user_ids=data.user_ids, 
         role_id=data.role_id, 
         db=db, 
-        user_id=user_id
+        user_id=admin_user_id
     )

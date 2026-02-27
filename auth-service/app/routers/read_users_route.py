@@ -27,7 +27,7 @@ from ..utils.check_access_token import check_access_token
 # =========================
 router = APIRouter(
     prefix="/users",    # All endpoints start with /users
-    tags=["Users read service"] # Tag for documentation
+    tags=["Users read service [Mostly for admins]"] # Tag for documentation
 )
 
 # Security scheme for access token

@@ -22,7 +22,7 @@ from ..schemas.roles.role_operation_response_schema import RoleOperationResponse
 # =========================
 router = APIRouter(
     prefix="/roles",    # All endpoints start with /roles
-    tags=["Roles management service"],  # Tag for docs grouping
+    tags=["Roles management service [Only for admins]"],  # Tag for docs grouping
 )
 
 

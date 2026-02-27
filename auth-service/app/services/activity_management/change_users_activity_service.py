@@ -2,11 +2,14 @@
 # User activity service
 # =========================
 
+# Imports
+# Libraries
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 from fastapi import HTTPException
-
-from ...models import User
+# Models
+from ...models import UserModel
+# Schemas
 from ...schemas.users.user_activity_schema import UserActivitySchema
 
 
@@ -27,7 +30,7 @@ async def change_users_activity_status(
     # Load users async
     # =========================
     result = await db.exec(
-        select(User).where(User.id.in_(user_ids))
+        select(UserModel).where(UserModel.id.in_(user_ids))
     )
 
     users = result.all()

@@ -2,12 +2,16 @@
 # User retrieval service
 # =========================
 
+# Imports
+# Libraries
 from sqlmodel import select
 from fastapi import HTTPException
 from sqlmodel.ext.asyncio.session import AsyncSession
-
-from ...models import User
+# Models
+from ...models import UserModel
+# Schemas
 from ...schemas.users.user_schema import UserSchema
+# Utils
 from ...utils.get_users_roles_map import get_users_roles_map
 
 
@@ -21,7 +25,7 @@ async def get_user_by_id(
 
     # Proper async query
     result = await db.exec(
-        select(User).where(User.id == user_id)
+        select(UserModel).where(UserModel.id == user_id)
     )
 
     # In async SQLModel this returns User object (not tuple)

@@ -2,10 +2,14 @@
 # User password change service
 # =========================
 
+# Imports
 from fastapi import HTTPException
 from sqlmodel.ext.asyncio.session import AsyncSession
-from ...models import User
+# Models
+from ...models import UserModel
+# Utils
 from ...utils.get_user_with_role import get_user_with_role
+# Services
 from ..passwords.passwords_service import get_password_hash, verify_password
 
 
@@ -30,7 +34,7 @@ async def change_user_password(
         )
 
     # Load user async
-    user = await db.get(User, user_id)
+    user = await db.get(UserModel, user_id)
 
     if not user:
         raise HTTPException(

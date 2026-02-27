@@ -2,10 +2,14 @@
 # User modification service
 # =========================
 
+# Imports
+# Libraries
 from fastapi import HTTPException
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlmodel import select
-from ...models import User
+# Models
+from ...models import UserModel
+# Utils
 from ...utils.get_user_with_role import get_user_with_role
 
 # =========================
@@ -37,7 +41,7 @@ async def change_user_username(
     :raises HTTPException: 404 if user not found, 403 if inactive, 400 if username exists
     """
 
-    user = await db.get(User, user_id)
+    user = await db.get(UserModel, user_id)
 
     new_username = new_username.strip().lower()
 
@@ -48,7 +52,7 @@ async def change_user_username(
         raise HTTPException(status_code=403, detail="User is inactive")
 
     result = await db.exec(
-        select(User).where(User.username == new_username)
+        select(UserModel).where(UserModel.username == new_username)
     )
     existing_user = result.first()
 

@@ -2,14 +2,18 @@
 # User search service (ASYNC FIXED)
 # =========================
 
+# Imports
+# Libraries
 from sqlmodel import select
 from sqlalchemy import or_
 from fastapi import HTTPException
 from sqlmodel.ext.asyncio.session import AsyncSession
-
-from ...models import User
+# Models
+from ...models import UserModel
+# Schemas
 from ...schemas.users.user_schema import UserSchema
-from ...schemas.users.pagination_schema import PaginatedUsers, PaginationMeta
+from ...schemas.users.pagination_schema import PaginatedUsersSchema, PaginationMeta
+# Utils
 from ...utils.get_users_roles_map import get_users_roles_map
 
 
@@ -21,17 +25,17 @@ async def get_user_by_username_or_email(
     db: AsyncSession,
     page: int = 1,
     limit: int = 10
-) -> PaginatedUsers:
+) -> PaginatedUsersSchema:
 
     offset = (page - 1) * limit
     search = username_or_email.strip().lower()
 
     # ASYNC QUERY — WAIT FOR IT
     result = await db.exec(
-        select(User).where(
+        select(UserModel).where(
             or_(
-                User.username.ilike(f"%{search}%"),
-                User.email.ilike(f"%{search}%")
+                UserModel.username.ilike(f"%{search}%"),
+                UserModel.email.ilike(f"%{search}%")
             )
         )
     )
@@ -75,4 +79,4 @@ async def get_user_by_username_or_email(
         total_pages=(total_users + limit - 1) // limit
     )
 
-    return PaginatedUsers(items=items, meta=meta)
+    return PaginatedUsersSchema(items=items, meta=meta)

@@ -2,16 +2,15 @@
 # User data aggregation
 # =========================
 
+# Imports
+# Libraries
 from sqlmodel.ext.asyncio.session import AsyncSession
 from fastapi import HTTPException
-
 # Database model
-from ..models import User
-
+from ..models import UserModel
 # Response schema
 from ..schemas.users.user_schema import UserSchema
-
-# Utility that maps users to their roles
+# Utils
 from .get_users_roles_map import get_users_roles_map
 
 
@@ -32,7 +31,7 @@ async def get_user_with_role(
     """
 
     # Async fetch
-    user = await db.get(User, user_id)
+    user = await db.get(UserModel, user_id)
 
     # User not found
     if not user:

@@ -8,7 +8,7 @@ from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 from fastapi import HTTPException
 # Models
-from ...models import User, Token
+from ...models import UserModel, TokenModel
 # Password utility
 from ..passwords.passwords_service import verify_password
 # Token management
@@ -37,7 +37,7 @@ async def login_user(
     # Find user
     # =========================
     result = await db.exec(
-        select(User).where(User.username == data.username)
+        select(UserModel).where(UserModel.username == data.username)
     )
     user = result.first()
 
@@ -62,7 +62,7 @@ async def login_user(
     # Delete old refresh tokens
     # =========================
     result = await db.exec(
-        select(Token).where(Token.user_id == user.id)
+        select(TokenModel).where(TokenModel.user_id == user.id)
     )
     old_tokens = result.all()
 

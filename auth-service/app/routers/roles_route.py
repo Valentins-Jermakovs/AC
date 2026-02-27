@@ -29,7 +29,7 @@ router = APIRouter(
 # Add role for users endpoint
 # =========================
 @router.post("/add")
-async def add_role_for_user(
+async def add_role_for_user_endpoint(
     user_ids: list[int],    # List of user IDs to add role
     role_id: int,           # Role ID to add
     db: Annotated[Session, Depends(get_db)],    # DB session
@@ -59,7 +59,7 @@ async def add_role_for_user(
 # Remove role from users endpoint
 # =========================
 @router.post("/remove")
-async def remove_role_from_user(
+async def remove_role_from_user_endpoint(
     user_ids: list[int],    # List of user IDs to remove role
     role_id: int,           # Role ID to remove
     db: Annotated[Session, Depends(get_db)],    # DB session

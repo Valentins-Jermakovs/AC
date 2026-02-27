@@ -18,12 +18,12 @@ from .utils.init_data_base import init_db
 
 # Import all API routers (each router = separate feature)
 from .routers import (
-    auth,           # login / authentication endpoints
-    refresh,        # refresh token logic
-    read_users,     # get user data
-    modify_user,    # update user data
-    activity,       # user activity management (deactivate / activate)
-    roles           # user roles and permissions
+    auth_route,           # login / authentication endpoints
+    refresh_route,        # refresh token logic
+    read_users_route,     # get user data
+    modify_user_route,    # update user data
+    activity_route,       # user activity management (deactivate / activate)
+    roles_route           # user roles and permissions
 )
 
 # =========================
@@ -62,9 +62,9 @@ app.add_middleware(SessionMiddleware, secret_key=os.getenv("SECRET_KEY"))
 # =========================
 # Each router adds its own endpoints to the app
 
-app.include_router(auth.router)             # /auth/*
-app.include_router(refresh.router)          # /refresh/*
-app.include_router(read_users.router)       # /users/*
-app.include_router(modify_user.router)      # /modify/*
-app.include_router(activity.router)         # /activity/*
-app.include_router(roles.router)            # /roles/*
+app.include_router(auth_route.router)             # /auth/*
+app.include_router(refresh_route.router)          # /refresh/*
+app.include_router(read_users_route.router)       # /users/*
+app.include_router(modify_user_route.router)      # /modify/*
+app.include_router(activity_route.router)         # /activity/*
+app.include_router(roles_route.router)            # /roles/*

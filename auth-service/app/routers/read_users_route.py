@@ -3,12 +3,12 @@
 # =========================
 
 # Imports
-from fastapi import APIRouter, Depends, Header
+from fastapi import APIRouter, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from typing import Annotated
 from sqlmodel import Session
 # Schemas
-from ..schemas.users.pagination_schema import PaginatedUsers
+from ..schemas.users.pagination_schema import PaginatedUsersSchema
 from ..schemas.users.user_schema import UserSchema
 # Services
 from ..services.read_users.read_all_users_service import get_users_paginated
@@ -38,11 +38,10 @@ security = HTTPBearer()
 # =========================
 @router.get(
     "/",
-    response_model=PaginatedUsers,
+    response_model=PaginatedUsersSchema,
     summary="Get all users paginated",
-    description="Get all users from the database",
 )
-async def fetch_all_users_paginated(
+async def fetch_all_users_endpoint(
     db: Annotated[Session, Depends(get_db)],
     credentials: HTTPAuthorizationCredentials = Depends(security),  # Access token from header
     page: int = 1,
@@ -78,9 +77,8 @@ async def fetch_all_users_paginated(
     "/me",
     response_model=UserSchema,
     summary="Get info about current user",
-    description="Get info about current user from the database",
 )
-async def fetch_current_user(
+async def fetch_current_user_endpoint(
     db: Annotated[Session, Depends(get_db)],
     credentials: HTTPAuthorizationCredentials = Depends(security),
 ):
@@ -109,9 +107,8 @@ async def fetch_current_user(
     "/{find_user_by_id}", 
     response_model=UserSchema,
     summary="Get user by ID",
-    description="Get user by ID from the database"
 )
-async def fetch_user_by_id(
+async def fetch_user_by_id_endpoint(
     find_user_by_id: int, 
     db: Annotated[Session, Depends(get_db)],
     credentials: HTTPAuthorizationCredentials = Depends(security),
@@ -141,11 +138,10 @@ async def fetch_user_by_id(
 # =========================
 @router.get(
     "/search/{name_or_email}",
-    response_model=PaginatedUsers,
+    response_model=PaginatedUsersSchema,
     summary="Get user by username or email",
-    description="Get user by username or email from the database",
 )
-async def fetch_user_by_username_or_email(
+async def fetch_user_by_username_or_email_endpoint(
     name_or_email: str,
     db: Annotated[Session, Depends(get_db)],
     page: int = 1,
@@ -182,17 +178,25 @@ async def fetch_user_by_username_or_email(
 # =========================
 @router.get(    # router path
     "/role/{role}", 
-    response_model=PaginatedUsers,
+    response_model=PaginatedUsersSchema,
     summary="Get users by role",
-    description="Get users by role from the database"
 )
-async def fetch_users_by_role(  # business logic
+async def fetch_users_by_role_endpoint(  # business logic
     role: str,
     db: Annotated[Session, Depends(get_db)],
     page: int = 1,
     limit: int = 10,
     credentials: HTTPAuthorizationCredentials = Depends(security),  # Access token from header
 ):
+    '''
+    Get users by role.
+
+    Steps:
+    1. Extract access token
+    2. Verify admin role
+    3. Get users by role from DB
+    4. Return items and metadata
+    '''
     access_token = credentials.credentials
     user_id = await check_admin_role(access_token, db)
 

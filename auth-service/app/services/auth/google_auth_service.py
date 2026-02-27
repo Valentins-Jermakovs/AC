@@ -2,18 +2,25 @@
 # Google OAuth authentication service (ASYNC)
 # =========================
 
+# Imports
+# Libraries
 from fastapi import Request, HTTPException
 from authlib.integrations.starlette_client import OAuth
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
-
+# Services
 from ..tokens_management.create_tokens_service import (
     create_access_token,
     create_refresh_token,
     save_refresh_token
 )
-
-from ...models import UserRole, Token, User
+# Models
+from ...models import (
+    UserRoleModel, 
+    TokenModel, 
+    UserModel
+)
+# Schemas
 from ...schemas.tokens.token_refresh_schema import TokenRefreshSchema
 
 
@@ -36,7 +43,7 @@ async def google_auth_callback(
     # 2. Find user by google_id
     # -------------------------
     result = await db.exec(
-        select(User).where(User.google_id == google_id)
+        select(UserModel).where(UserModel.google_id == google_id)
     )
     user = result.first()  #  User object
 
@@ -48,7 +55,7 @@ async def google_auth_callback(
     # -------------------------
     if not user:
         result = await db.exec(
-            select(User).where(User.email == email)
+            select(UserModel).where(UserModel.email == email)
         )
         user = result.first()
 
@@ -62,7 +69,7 @@ async def google_auth_callback(
         user.google_id = google_id
         user.auth_provider = "google"
     else:
-        user = User(
+        user = UserModel(
             email=email,
             google_id=google_id,
             auth_provider="google",
@@ -76,7 +83,7 @@ async def google_auth_callback(
         await db.refresh(user)
 
         # Assign default role
-        db.add(UserRole(user_id=user.id, role_id=1))
+        db.add(UserRoleModel(user_id=user.id, role_id=1))
         await db.commit()
 
     # If user was updated (not new), commit changes
@@ -87,7 +94,7 @@ async def google_auth_callback(
     # 5. Delete old tokens
     # -------------------------
     result = await db.exec(
-        select(Token).where(Token.user_id == user.id)
+        select(TokenModel).where(TokenModel.user_id == user.id)
     )
     old_tokens = result.all()
 

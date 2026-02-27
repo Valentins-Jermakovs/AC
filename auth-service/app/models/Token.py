@@ -13,7 +13,7 @@ from ..utils.current_date import get_current_date  # Utility to get current date
 # =========================
 # Token table in database
 # =========================
-class Token(SQLModel, table=True):
+class TokenModel(SQLModel, table=True):
     """
     Represents a refresh token in the database.
 

@@ -30,7 +30,7 @@ class PaginationMeta(BaseModel):
 # =========================
 # Paginated users response
 # =========================
-class PaginatedUsers(BaseModel):
+class PaginatedUsersSchema(BaseModel):
     """
     Schema for returning paginated list of users.
 

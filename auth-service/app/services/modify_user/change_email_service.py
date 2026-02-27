@@ -2,12 +2,17 @@
 # User modification service
 # =========================
 
+# Imports
+# Libraries
 from fastapi import HTTPException
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlmodel import select
-from ...models import User
-from ...utils.get_user_with_role import get_user_with_role
 import re
+# Models
+from ...models import UserModel
+# Utils
+from ...utils.get_user_with_role import get_user_with_role
+
 
 
 # =========================
@@ -23,7 +28,7 @@ async def change_user_email(
     """
 
     # Load user asynchronously
-    user = await db.get(User, user_id)
+    user = await db.get(UserModel, user_id)
 
     # Normalize
     new_email = new_email.strip().lower()
@@ -52,7 +57,7 @@ async def change_user_email(
 
     # Check email uniqueness (async correct way)
     result = await db.exec(
-        select(User).where(User.email == new_email)
+        select(UserModel).where(UserModel.email == new_email)
     )
     existing_user = result.first()
 

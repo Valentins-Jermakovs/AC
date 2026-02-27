@@ -3,16 +3,17 @@
 # =========================
 
 # Imports
-from sqlmodel import Field, SQLModel  # SQLModel base and fields
+from sqlmodel import Field, SQLModel
 from typing import Optional
 from datetime import datetime
-from ..utils.current_date import get_current_date  # Utility to get current datetime
+# Utils
+from ..utils.current_date import get_current_date
 
 
 # =========================
 # User table in database
 # =========================
-class User(SQLModel, table=True):
+class UserModel(SQLModel, table=True):
     """
     Represents a user in the database.
 

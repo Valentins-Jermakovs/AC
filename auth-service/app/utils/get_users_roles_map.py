@@ -2,11 +2,12 @@
 # User roles mapping utility (ASYNC)
 # =========================
 
+# Imports
+# Libraries
 from sqlalchemy import select
 from sqlmodel.ext.asyncio.session import AsyncSession
-
 # Database models
-from ..models import User, Role, UserRole
+from ..models import UserModel, RoleModel, UserRoleModel
 
 
 # =========================
@@ -34,10 +35,10 @@ async def get_users_roles_map(
     # Query in ONE async call
     # =========================
     result = await db.exec(
-        select(User.id, Role.name)
-        .join(UserRole, UserRole.user_id == User.id)
-        .join(Role, Role.id == UserRole.role_id)
-        .where(User.id.in_(user_ids))
+        select(UserModel.id, RoleModel.name)
+        .join(UserRoleModel, UserRoleModel.user_id == UserModel.id)
+        .join(RoleModel, RoleModel.id == UserRoleModel.role_id)
+        .where(UserModel.id.in_(user_ids))
     )
 
     rows = result.all()

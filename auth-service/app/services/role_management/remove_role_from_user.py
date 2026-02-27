@@ -2,13 +2,17 @@
 # Remove role from users service
 # =========================
 
+# Imports
+# Libraries
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 from fastapi import HTTPException
 from typing import List
-
-from ...models import User, Role, UserRole
+# Models
+from ...models import UserModel, RoleModel, UserRoleModel
+# Schemas
 from ...schemas.users.user_schema import UserSchema
+# Utils
 from ...utils.get_users_roles_map import get_users_roles_map
 
 
@@ -29,7 +33,7 @@ async def remove_role_from_users(
     # Fetch users async
     # =========================
     result_users = await db.exec(
-        select(User).where(User.id.in_(user_ids))
+        select(UserModel).where(UserModel.id.in_(user_ids))
     )
 
     users = result_users.all()
@@ -51,7 +55,7 @@ async def remove_role_from_users(
     # Fetch role async
     # =========================
     result_role = await db.exec(
-        select(Role).where(Role.id == role_id)
+        select(RoleModel).where(RoleModel.id == role_id)
     )
 
     role = result_role.first()
@@ -68,9 +72,9 @@ async def remove_role_from_users(
     for user in users:
 
         result_user_role = await db.exec(
-            select(UserRole).where(
-                UserRole.user_id == user.id,
-                UserRole.role_id == role_id
+            select(UserRoleModel).where(
+                UserRoleModel.user_id == user.id,
+                UserRoleModel.role_id == role_id
             )
         )
 

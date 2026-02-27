@@ -2,6 +2,8 @@
 # Refresh Service
 # =========================
 
+# Imports
+# Libraries
 from sqlmodel import select
 from fastapi import HTTPException, status
 from jose import jwt, JWTError, ExpiredSignatureError
@@ -9,9 +11,11 @@ from datetime import datetime, timezone
 from dotenv import load_dotenv
 import os
 from sqlmodel.ext.asyncio.session import AsyncSession
-
-from ...models import Token, User
+# Models
+from ...models import TokenModel, UserModel
+# Schemas
 from ...schemas.tokens.token_refresh_schema import TokenRefreshSchema
+# Services
 from .create_tokens_service import (
     create_access_token,
     create_refresh_token,
@@ -65,8 +69,8 @@ async def refresh_access_token(
 ) -> TokenRefreshSchema:
 
     result = await db.exec(
-        select(Token).where(
-            Token.refresh_token == refresh_token
+        select(TokenModel).where(
+            TokenModel.refresh_token == refresh_token
         )
     )
 
@@ -92,7 +96,7 @@ async def refresh_access_token(
 
     # check user
     user_result = await db.exec(
-        select(User).where(User.id == token.user_id)
+        select(UserModel).where(UserModel.id == token.user_id)
     )
 
     user = user_result.first()

@@ -39,7 +39,6 @@ security = HTTPBearer()
     "/username/", 
     response_model=UserSchema,
     summary="Change user username",
-    description="Set user username in the database"
 )
 async def modify_username(
     data: ChangeUsernameSchema, # New username from request body
@@ -77,9 +76,8 @@ async def modify_username(
         "/email/", 
         response_model=UserSchema,
         summary="Change user email",
-        description="Set user email in the database"
     )
-async def modify_email(
+async def modify_email_endpoint(
     data: ChangeEmailSchema,    # New email from request body
     db: Annotated[Session, Depends(get_db)],
     credentials: HTTPAuthorizationCredentials = Depends(security),  # Access token from header
@@ -115,9 +113,8 @@ async def modify_email(
         "/password/", 
         response_model=UserSchema,
         summary="Change user password",
-        description="Set user password in the database"
     )
-async def modify_password(
+async def change_password_endpoint(
     data: ChangePasswordSchema, # Old and new password from request body
     db: Annotated[Session, Depends(get_db)],
     credentials: HTTPAuthorizationCredentials = Depends(security),  # Access token from header

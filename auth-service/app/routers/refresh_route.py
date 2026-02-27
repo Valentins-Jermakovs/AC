@@ -23,7 +23,7 @@ from ..dependencies.data_base_connection import get_db
 # Router setup
 # =========================
 router = APIRouter(
-    prefix="/token",    # All endpoints start with /token
+    prefix="/token",                            # All endpoints start with /token
     tags=["Tokens check and refresh service"]   # Tag for docs grouping
 )
 
@@ -37,7 +37,7 @@ access_scheme = HTTPBearer()    # For access token
 # Check access token endpoint
 # =========================
 @router.get("/check", response_model=TokenRefreshSchema)
-async def check_token(
+async def check_token_endpoint(
     credentials: Annotated[HTTPAuthorizationCredentials, Depends(access_scheme)],
 ):
     """
@@ -62,7 +62,7 @@ async def check_token(
 # Refresh access token endpoint
 # =========================
 @router.post("/refresh", response_model=TokenRefreshSchema)
-async def refresh_token(
+async def refresh_token_endpoint(
     credentials: Annotated[HTTPAuthorizationCredentials, Depends(refresh_scheme)],
     db: Session = Depends(get_db)
 ):

@@ -8,7 +8,7 @@ from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 from fastapi import HTTPException
 # Models
-from ...models import User, Role, UserRole
+from ...models import UserModel, RoleModel, UserRoleModel
 # Schemas
 from ...schemas.auth.registration_schema import RegistrationSchema
 from ...schemas.tokens.token_refresh_schema import TokenRefreshSchema
@@ -38,7 +38,7 @@ async def register_user(
     # Check if username exists
     # =========================
     result = await db.exec(
-        select(User).where(User.username == data.username)
+        select(UserModel).where(UserModel.username == data.username)
     )
     existing_user = result.first()
 
@@ -49,7 +49,7 @@ async def register_user(
     # Check if email exists
     # =========================
     result = await db.exec(
-        select(User).where(User.email == data.email)
+        select(UserModel).where(UserModel.email == data.email)
     )
     existing_email = result.first()
 
@@ -59,7 +59,7 @@ async def register_user(
     # =========================
     # Create user
     # =========================
-    user = User(
+    user = UserModel(
         username=data.username,
         email=data.email,
         password_hash= await get_password_hash(data.password)
@@ -73,13 +73,13 @@ async def register_user(
     # Assign default role
     # =========================
     result = await db.exec(
-        select(Role).where(Role.name == "user")
+        select(RoleModel).where(RoleModel.name == "user")
     )
     user_role = result.first()
 
     if user_role:
         db.add(
-            UserRole(
+            UserRoleModel(
                 user_id=user.id,
                 role_id=user_role.id
             )

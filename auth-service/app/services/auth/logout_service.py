@@ -8,7 +8,7 @@ from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 from fastapi import HTTPException
 # Models
-from ...models import Token
+from ...models import TokenModel
 
 
 async def logout(
@@ -21,7 +21,7 @@ async def logout(
 
     # Find token
     result = await db.exec(
-        select(Token).where(Token.refresh_token == refresh_token)
+        select(TokenModel).where(TokenModel.refresh_token == refresh_token)
     )
 
     token = result.first()

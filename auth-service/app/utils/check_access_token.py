@@ -2,13 +2,11 @@
 # Token validation utility
 # =========================
 
-# FastAPI exceptions and HTTP status codes
-from fastapi import HTTPException, status
-# JWT handling (decode tokens and catch errors)
+# Imports
+# Libraries
+from fastapi import HTTPException
 from jose import jwt, JWTError, ExpiredSignatureError
-# Load environment variables from .env file
 from dotenv import load_dotenv
-# Standard library
 import os
 
 

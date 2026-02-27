@@ -2,11 +2,15 @@
 # Admin role verification
 # =========================
 
+# Imports
+# Libraries
 from fastapi import HTTPException, status
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
+# Utils
 from .check_access_token import check_access_token
-from ..models import Role, UserRole
+# Models
+from ..models import RoleModel, UserRoleModel
 
 
 # =========================
@@ -24,7 +28,7 @@ async def check_admin_role(access_token: str, db: AsyncSession) -> str:
 
     # Get all user roles (ASYNC -> MUST await)
     result = await db.exec(
-        select(UserRole).where(UserRole.user_id == user_id)
+        select(UserRoleModel).where(UserRoleModel.user_id == user_id)
     )
 
     user_roles = result.all()
@@ -40,7 +44,7 @@ async def check_admin_role(access_token: str, db: AsyncSession) -> str:
     for user_role in user_roles:
 
         role_result = await db.exec(
-            select(Role).where(Role.id == user_role.role_id)
+            select(RoleModel).where(RoleModel.id == user_role.role_id)
         )
 
         role = role_result.first()

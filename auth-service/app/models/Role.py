@@ -9,7 +9,7 @@ from sqlmodel import Field, SQLModel
 # =========================
 # Role table in database
 # =========================
-class Role(SQLModel, table=True):
+class RoleModel(SQLModel, table=True):
     """
     Represents a role in the database.
 

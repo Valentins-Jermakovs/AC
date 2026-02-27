@@ -20,7 +20,7 @@ from ..utils.check_admin_role import check_admin_role
 # =========================
 router = APIRouter(
     prefix="/activity", # All endpoints in this router start with /activity
-    tags=["Users activity management service"]  # Tag for documentation grouping
+    tags=["Users activity management service [Only for admins]"]  # Tag for documentation grouping
 )
 
 
@@ -30,9 +30,8 @@ router = APIRouter(
 @router.put(
     "/",
     summary="Change users activity status", # Short description for docs
-    description="Set user activity status in the database"  # Longer description
 )
-async def change_user_activity_status(
+async def change_user_activity_status_endpoint(
     user_ids: list[int],    # List of user IDs to update
     is_active: bool,        # New activity status to set
     db: Annotated[Session, Depends(get_db)],    # DB session injected automatically

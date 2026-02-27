@@ -2,7 +2,12 @@
 # Authentication service
 # =========================
 # FastAPI
-from fastapi import APIRouter, Depends, Body, Request
+from fastapi import (
+    APIRouter, 
+    Depends, 
+    Body, 
+    Request
+)
 from fastapi.security import (
     HTTPBearer,
     HTTPAuthorizationCredentials,
@@ -47,12 +52,18 @@ router = APIRouter(
     "/login",
     response_model=TokenRefreshSchema,
     summary="Authenticate a user",
-    description="OAuth2 compatible login"
 )
-async def user_authentication(
+async def user_login_endpoint(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     db: Annotated[AsyncSession, Depends(get_db)]
 ):
+    '''
+    Login user:
+
+    1. Extract username and password
+    2. Create LoginSchema instance
+    3. Call login_user service
+    '''
     data = LoginSchema(
         username=form_data.username,
         password=form_data.password
@@ -90,6 +101,11 @@ oauth.register(
 
 @router.get("/google/login")
 async def get_google_login(request: Request):
+    '''
+    Redirect to Google login
+    use this for test:
+    http://localhost:8000/auth/google/login
+    '''
     redirect_uri = request.url_for("google_auth_handler")
     return await oauth.google.authorize_redirect(
         request,
@@ -106,6 +122,9 @@ async def google_auth_handler(
     request: Request,
     db: Annotated[AsyncSession, Depends(get_db)],
 ):
+    '''
+    Handle Google callback
+    '''
     tokens = await google_auth_callback(oauth, db, request)
 
     frontend_url = os.getenv(
@@ -133,7 +152,7 @@ async def google_auth_handler(
     summary="Create a new user",
     response_model=TokenRefreshSchema
 )
-async def user_registration(
+async def user_registration_endpoint(
     data: Annotated[
         RegistrationSchema,
         Body(
@@ -146,6 +165,13 @@ async def user_registration(
     ],
     db: Annotated[AsyncSession, Depends(get_db)]
 ):
+    '''
+    Register user:
+
+    1. Extract username, email and password
+    2. Create RegistrationSchema instance
+    3. Call register_user service
+    '''
     return await register_user(data=data, db=db)
 
 
@@ -160,12 +186,18 @@ logout_scheme = HTTPBearer()
     "/logout",
     summary="Logout a user"
 )
-async def logout_user(
+async def logout_user_endpoint(
     data: Annotated[
         HTTPAuthorizationCredentials,
         Depends(logout_scheme)
     ],
     db: Annotated[AsyncSession, Depends(get_db)]
 ):
+    '''
+    Logout user:
+
+    1. Extract refresh token
+    2. Call logout service
+    '''
     refresh_token = data.credentials
     return await logout(db=db, refresh_token=refresh_token)

@@ -2,14 +2,18 @@
 # User listing by role service (ASYNC FIXED)
 # =========================
 
+# Imports
+# Libraries
 from sqlmodel import select
 from fastapi import HTTPException
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy import select as sa_select
-
-from ...models import User, Role, UserRole
+# Models
+from ...models import UserModel, RoleModel, UserRoleModel
+# Schemas
 from ...schemas.users.user_schema import UserSchema
-from ...schemas.users.pagination_schema import PaginatedUsers, PaginationMeta
+from ...schemas.users.pagination_schema import PaginatedUsersSchema, PaginationMeta
+# Utils
 from ...utils.get_users_roles_map import get_users_roles_map
 
 
@@ -21,17 +25,17 @@ async def get_users_by_role(
     db: AsyncSession,
     page: int = 1,
     limit: int = 10
-) -> PaginatedUsers:
+) -> PaginatedUsersSchema:
 
     role = role.strip().lower()
     offset = (page - 1) * limit
 
     # ASYNC QUERY — IMPORTANT: await
     result = await db.exec(
-        select(User)
-        .join(UserRole, UserRole.user_id == User.id)
-        .join(Role, Role.id == UserRole.role_id)
-        .where(Role.name == role)
+        select(UserModel)
+        .join(UserRoleModel, UserRoleModel.user_id == UserModel.id)
+        .join(RoleModel, RoleModel.id == UserRoleModel.role_id)
+        .where(RoleModel.name == role)
     )
 
     users = result.all()
@@ -69,4 +73,4 @@ async def get_users_by_role(
         total_pages=(total_users + limit - 1) // limit
     )
 
-    return PaginatedUsers(items=items, meta=meta)
+    return PaginatedUsersSchema(items=items, meta=meta)

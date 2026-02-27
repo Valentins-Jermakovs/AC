@@ -3,13 +3,13 @@
 # =========================
 
 # Imports
-from sqlmodel import Field, SQLModel  # SQLModel base and fields
+from sqlmodel import Field, SQLModel
 
 
 # =========================
 # UserRole table in database
 # =========================
-class UserRole(SQLModel, table=True):
+class UserRoleModel(SQLModel, table=True):
     """
     Represents the relationship between users and roles in the database.
 

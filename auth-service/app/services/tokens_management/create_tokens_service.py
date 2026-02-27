@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 # Models
-from ...models import Token
+from ...models import TokenModel
 # Utils
 from ...utils.current_date import get_current_date
 
@@ -75,9 +75,9 @@ async def save_refresh_token(
     user_id: int,
     db: AsyncSession,
     expires_days: int = 7
-) -> Token:
+) -> TokenModel:
 
-    token = Token(
+    token = TokenModel(
         user_id=user_id,
         refresh_token=refresh_token,
         created_at=get_current_date(),
@@ -102,8 +102,8 @@ async def delete_refresh_token(
 ) -> None:
 
     result = await db.exec(
-        select(Token).where(
-            Token.refresh_token == refresh_token
+        select(TokenModel).where(
+            TokenModel.refresh_token == refresh_token
         )
     )
 

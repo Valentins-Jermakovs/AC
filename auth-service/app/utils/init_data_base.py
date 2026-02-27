@@ -9,7 +9,7 @@ from sqlalchemy.ext.asyncio import create_async_engine
 from dotenv import load_dotenv
 import os
 # Import models so metadata registers them
-from ..models import Role, Token, User, UserRole
+from ..models import RoleModel, TokenModel, UserModel, UserRoleModel
 # Default roles
 from ..utils.init_data_base_roles import init_roles
 

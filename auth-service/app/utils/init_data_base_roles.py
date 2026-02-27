@@ -7,7 +7,7 @@
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 # Models
-from ..models import Role
+from ..models import RoleModel
 
 
 """
@@ -32,7 +32,7 @@ async def init_roles(engine):
         }
 
         # Same SQL — no scalars changes
-        result = await session.exec(select(Role))
+        result = await session.exec(select(RoleModel))
         existing_roles = result.all()
 
         # If roles already exist → skip
@@ -42,7 +42,7 @@ async def init_roles(engine):
         # Create default roles
         for role_name, role_description in roles.items():
             session.add(
-                Role(
+                RoleModel(
                     name=role_name,
                     description=role_description
                 )

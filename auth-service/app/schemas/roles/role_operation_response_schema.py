@@ -1,5 +1,9 @@
+# Imports
 from pydantic import BaseModel
 
+# ========================
+# Role operation response
+# ========================
 class RoleOperationResponseSchema(BaseModel):
     updated_users: list[int]
     role_id: int

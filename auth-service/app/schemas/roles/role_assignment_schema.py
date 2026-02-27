@@ -1,6 +1,9 @@
+# Imports
 from pydantic import BaseModel
 
-
+# ========================
+# Role assignment schema
+# ========================
 class RoleAssignmentSchema(BaseModel):
     user_ids: list[int]
     role_id: int

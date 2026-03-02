@@ -1,6 +1,6 @@
 # Virtual environments
 /auth-service/auth-venv
-/projects-service/project-venv
+/projects-service/projects-venv
 
 # Python cache
 __pycache__/

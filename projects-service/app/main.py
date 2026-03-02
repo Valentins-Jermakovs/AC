@@ -1,16 +1,12 @@
+# Imports
 from fastapi import FastAPI
 from .dependencies.database import init_db
 from contextlib import asynccontextmanager
 # API routers
-from .routers import (
-    tasks,
-    kanban_boards,
-    kanban_stages,
-    kanban_tasks,
-    kanban_members,
-    workspace_projects,
-    workspace_members
-)
+from .routers.tasks import tasks_route
+from .routers.kanban import kanban_boards_route
+from .routers.kanban import kanban_members_route
+from .routers.kanban import kanban_stages_route
 
 # =========================
 # Application lifespan
@@ -36,10 +32,13 @@ app = FastAPI(lifespan=lifespan)
 # API routers registration
 # =========================
 # Each router adds its own endpoints to the app
-app.include_router(tasks.router)
-app.include_router(kanban_boards.router)
-app.include_router(kanban_stages.router)
-app.include_router(kanban_tasks.router)
-app.include_router(kanban_members.router)
-app.include_router(workspace_projects.router)
-app.include_router(workspace_members.router)
+app.include_router(tasks_route.router)
+app.include_router(kanban_boards_route.router)
+app.include_router(kanban_members_route.router)
+app.include_router(kanban_stages_route.router)
+# app.include_router(kanban_boards.router)
+# app.include_router(kanban_stages.router)
+# app.include_router(kanban_tasks.router)
+# app.include_router(kanban_members.router)
+# app.include_router(workspace_projects.router)
+# app.include_router(workspace_members.router)

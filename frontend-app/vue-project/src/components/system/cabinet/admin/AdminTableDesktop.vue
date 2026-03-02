@@ -12,7 +12,6 @@
               @change="toggleAll"
             />
           </th>
-          <th>ID</th>
           <th>{{ $t('cabinet.admin.table_top.username') }}</th>
           <th>{{ $t('cabinet.admin.table_top.email') }}</th>
           <th>{{ $t('cabinet.admin.table_top.roles') }}</th>
@@ -55,7 +54,6 @@
               @change="toggleUser(user.id)"
             />
           </td>
-          <td>{{ user.id }}</td>
           <td>{{ user.username }}</td>
           <td class="truncate max-w-50" :title="user.email">{{ user.email }}</td>
           <td>

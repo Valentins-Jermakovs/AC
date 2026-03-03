@@ -1,19 +1,23 @@
 # Imports
-from fastapi import Depends, APIRouter, Body
-from typing import Annotated
+from fastapi import Depends, APIRouter
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 # Utils
-from ..utils.check_access_token import check_access_token
+from app.utils.check_access_token import check_access_token
 # Schemas
-from ..schemas.response.kanban_task import KanbanTaskSchema
-from ..schemas.data.kanban_task_create import KanbanTaskCreateSchema
-from ..schemas.data.kanban_task_update import KanbanTaskUpdate
-# Serrvices
-from ..services.kanban.create_task import create_task
-from ..services.kanban.update_task import update_task
-from ..services.kanban.task_delete import delete_task
-from ..services.kanban.move_task import move_task_in_stage, move_task_between_stages
-from ..services.kanban.get_all_tasks import get_all_tasks
+# ===== response:
+from app.schemas.response.kanban.tasks.kanban_task_schema import KanbanTaskSchema
+# ===== data:
+from app.schemas.data.kanban.tasks.kanban_task_create_schema import KanbanTaskCreateSchema
+from app.schemas.data.kanban.tasks.kanban_task_update_schema import KanbanTaskUpdateSchema
+from app.schemas.data.kanban.tasks.kanban_task_move_schema import KanbanTaskMoveSchema
+from app.schemas.data.kanban.tasks.kanban_task_move_btw_stages_schema import KanbanTaskMoveBtwStagesSchema
+from app.schemas.data.kanban.tasks.kanban_task_remove_schema import KanbanTaskRemoveSchema
+# Services
+from app.services.kanban.tasks.create_task_service import create_task
+from app.services.kanban.tasks.get_all_tasks_service import get_all_tasks
+from app.services.kanban.tasks.update_task_service import update_task
+from app.services.kanban.tasks.move_task_service import move_task_in_stage, move_task_between_stages
+from app.services.kanban.tasks.task_delete_service import delete_task
 
 # Router
 router = APIRouter(
@@ -24,11 +28,10 @@ router = APIRouter(
 # Security scheme for access token
 security = HTTPBearer()
 
+# ===== Tasks GET ==========================================================
 # Route for getting all tasks
 @router.get(
     "/all",
-    summary="Get all tasks",
-    description="Get all tasks from the database",
 )
 async def get_all_tasks_endpoint(
     stage_id: str,
@@ -46,23 +49,18 @@ async def get_all_tasks_endpoint(
     access_token = credantials.credentials
     user_id = await check_access_token(access_token)
 
-    return await get_all_tasks(stage_id=stage_id)
+    return await get_all_tasks(
+        stage_id=stage_id
+    )
 
+# ===== Tasks POST ==========================================================
 # Route for creating a new kanban task
 @router.post(
     "/create",
-    summary="Create a kanban task",
-    description="Create a new kanban task in the database",
     response_model=KanbanTaskSchema
 )
 async def create_task_endpoint(
-    data: Annotated[KanbanTaskCreateSchema, 
-        Body(example={
-            "title": "Task title",
-            "stage_id": "stage_id",
-            "board_id": "board_id",
-            "description": "Task description"
-        })],
+    data: KanbanTaskCreateSchema,
     credantials: HTTPAuthorizationCredentials = Depends(security)
 ):
     """
@@ -77,22 +75,21 @@ async def create_task_endpoint(
     access_token = credantials.credentials
     user_id = await check_access_token(access_token)
 
-    return await create_task(data.title, data.stage_id, data.board_id, data.description)
+    return await create_task(
+        title=data.title, 
+        stage_id=data.stage_id, 
+        board_id=data.board_id, 
+        description=data.description
+    )
 
+# ===== Tasks PUT ==========================================================
 # Route for update task
 @router.put(
     "/update/{task_id}",
-    summary="Update a task",
-    description="Update a task in the database",
     response_model=KanbanTaskSchema
 )
 async def update_task_endpoint(
-    data: Annotated[KanbanTaskUpdate, 
-        Body(example={
-            "task_id": "task_id",
-            "title": "Task title",
-            "description": "Task description"
-        })],
+    data: KanbanTaskUpdateSchema,
     credantials: HTTPAuthorizationCredentials = Depends(security)
 ):
     """
@@ -107,18 +104,18 @@ async def update_task_endpoint(
     access_token = credantials.credentials
     user_id = await check_access_token(access_token)
 
-    return await update_task(data.task_id, data.title, data.description)
+    return await update_task(
+        task_id=data.task_id, 
+        title=data.title, 
+        description=data.description
+    )
 
 # Route for move task in stage
 @router.put(
     "/move-in-stage",
-    summary="Move a task",
-    description="Move a task in the database",
 )
 async def move_task_endpoint(
-    task_id: str,
-    direction: str,
-    stage_id: str,
+    data: KanbanTaskMoveSchema,
     credantials: HTTPAuthorizationCredentials = Depends(security)
 ):
     """
@@ -134,17 +131,18 @@ async def move_task_endpoint(
     access_token = credantials.credentials
     user_id = await check_access_token(access_token)
 
-    return await move_task_in_stage(task_id=task_id, direction=direction, stage_id=stage_id)
+    return await move_task_in_stage(
+        task_id=data.task_id, 
+        direction=data.direction, 
+        stage_id=data.stage_id
+    )
 
 # Route for move task between stages
 @router.put(
     "/move-between-stages",
-    summary="Move a task",
-    description="Move a task in the database",
 )
 async def move_task_between_stages_endpoint(
-    task_id: str,
-    target_stage_id: str,
+    data: KanbanTaskMoveBtwStagesSchema,
     credantials: HTTPAuthorizationCredentials = Depends(security)
 ):
     """
@@ -160,16 +158,18 @@ async def move_task_between_stages_endpoint(
     access_token = credantials.credentials
     user_id = await check_access_token(access_token)
 
-    return await move_task_between_stages(task_id=task_id, target_stage_id=target_stage_id)
+    return await move_task_between_stages(
+        task_id=data.task_id, 
+        target_stage_id=data.target_stage_id
+    )
 
+# ===== Tasks DELETE ==========================================================
 # Route for delete task
 @router.delete(
     "/remove/{task_id}",
-    summary="Remove a task",
-    description="Remove a task from the database"
 )
 async def remove_task_endpoint(
-    task_id: str,
+    data: KanbanTaskRemoveSchema,
     credantials: HTTPAuthorizationCredentials = Depends(security)
 ):
     """
@@ -183,4 +183,4 @@ async def remove_task_endpoint(
     access_token = credantials.credentials
     user_id = await check_access_token(access_token)
 
-    return await delete_task(task_id)
+    return await delete_task(task_id=data.task_id)

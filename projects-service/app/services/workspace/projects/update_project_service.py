@@ -1,14 +1,22 @@
+# Imports
 from fastapi import HTTPException
-from ...models import WorkspaceProjectModel
+from app.models import WorkspaceProjectModel
 from typing import Optional
 from bson import ObjectId
-from ...schemas.response.workspace_project import WorkspaceProjectSchema
+# Schemas
+from app.schemas.response.workspaces.projects.workspace_project import WorkspaceProjectSchema
+# Models
+from app.models import WorkspaceProjectModel
 
 async def update_project (
     project_id: str,
     title: str,
     description: Optional[str] = None
-):
+) -> WorkspaceProjectSchema:
+    
+    if not project_id:
+        raise HTTPException(status_code=400, detail="Project ID is required")
+
     # Raise if project_id is not valid
     if not ObjectId.is_valid(project_id):
         raise HTTPException(status_code=400, detail="Invalid project ID")
@@ -32,9 +40,13 @@ async def update_project (
     if len(title) < 3:
         raise HTTPException(status_code=400, detail="Title is too short")
     
-    # Raise if desciption or title are the same
+    # Raise if desrciption or title are the same
     if title == project.title and description == project.description:
         raise HTTPException(status_code=400, detail="Title and description are the same")
+
+    # Raise if title not uniqe
+    if await WorkspaceProjectModel.find_one({"title": title}):
+        raise HTTPException(status_code=400, detail="Title must be unique")
 
     # If description not exist
     if description is None:

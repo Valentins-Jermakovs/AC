@@ -10,3 +10,16 @@ class KanbanTaskCreateSchema(BaseModel):
     stage_id: str
     title: str
     description: Optional[str] = None
+
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "board_id": "board_id",
+                    "stage_id": "stage_id",
+                    "title": "Kanban task title",
+                    "description": "Kanban task description"
+                }
+            ]
+        }
+    }

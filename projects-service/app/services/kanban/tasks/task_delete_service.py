@@ -2,11 +2,15 @@
 from fastapi import HTTPException
 from bson import ObjectId
 # Models
-from ...models import KanbanTaskModel
+from app.models import KanbanTaskModel
 # Schemas
-from ...schemas.response.kanban_task import KanbanTaskSchema
+from app.schemas.response.kanban.tasks.kanban_task_schema import KanbanTaskSchema
 
-async def delete_task(task_id: str):
+async def delete_task(task_id: str) -> dict:
+
+    if not task_id:
+        raise HTTPException(status_code=400, detail="Task ID is required")
+
     # Raise if task_id is not valid
     if not ObjectId.is_valid(task_id):
         raise HTTPException(status_code=400, detail="Invalid task ID")

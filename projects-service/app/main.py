@@ -4,9 +4,15 @@ from .dependencies.database import init_db
 from contextlib import asynccontextmanager
 # API routers
 from .routers.tasks import tasks_route
-from .routers.kanban import kanban_boards_route
-from .routers.kanban import kanban_members_route
-from .routers.kanban import kanban_stages_route
+from .routers.kanban import (
+    kanban_boards_route, 
+    kanban_members_route,
+    kanban_stages_route,
+    kanban_tasks_route
+)
+from .routers.workspaces import (
+    workspace_projects_route
+)
 
 # =========================
 # Application lifespan
@@ -36,9 +42,5 @@ app.include_router(tasks_route.router)
 app.include_router(kanban_boards_route.router)
 app.include_router(kanban_members_route.router)
 app.include_router(kanban_stages_route.router)
-# app.include_router(kanban_boards.router)
-# app.include_router(kanban_stages.router)
-# app.include_router(kanban_tasks.router)
-# app.include_router(kanban_members.router)
-# app.include_router(workspace_projects.router)
-# app.include_router(workspace_members.router)
+app.include_router(kanban_tasks_route.router)
+app.include_router(workspace_projects_route.router)

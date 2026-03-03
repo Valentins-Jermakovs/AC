@@ -2,15 +2,34 @@
 from fastapi import HTTPException
 from bson import ObjectId
 # Models
-from ...models import KanbanTaskModel
-# Schemas
-from ...schemas.response.kanban_task import KanbanTaskSchema
+from app.models import KanbanTaskModel
 
+
+# ==================================
+# Function move task in stage
+# ==================================
 async def move_task_in_stage(
     task_id: str,
     stage_id: str,
     direction: str  # "up" or "down"
-):
+) -> dict:
+    
+    if not task_id:
+        raise HTTPException(status_code=400, detail="Task ID is required")
+
+    if not stage_id:
+        raise HTTPException(status_code=400, detail="Stage ID is required")
+    
+    if direction not in ["up", "down"]:
+        raise HTTPException(status_code=400, detail="Direction must be 'up' or 'down'")
+
+    if not ObjectId.is_valid(task_id):
+        raise HTTPException(status_code=400, detail="Invalid task ID")
+
+    if not ObjectId.is_valid(stage_id):
+        raise HTTPException(status_code=400, detail="Invalid stage ID")
+
+
     # Get all tasks sorted
     tasks = await KanbanTaskModel.find(
         KanbanTaskModel.stageId == stage_id
@@ -53,11 +72,20 @@ async def move_task_in_stage(
 
     return {"message": "Task in stage moved successfully"}
 
-# move task between stages
+# ==================================
+# Move task between stages
+# ==================================
 async def move_task_between_stages(
     task_id: str,
     target_stage_id: str,
-):
+) -> dict:
+    
+    if not task_id:
+        raise HTTPException(status_code=400, detail="Task ID is required")
+
+    if not target_stage_id:
+        raise HTTPException(status_code=400, detail="Target stage ID is required")
+
     # Validate task_id
     if not ObjectId.is_valid(task_id):
         raise HTTPException(status_code=400, detail="Invalid task ID")

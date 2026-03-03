@@ -2,16 +2,16 @@
 from pydantic import BaseModel, Field
 from typing import List
 # Schemas
-from .private_task import PrivateTaskSchema
+from app.schemas.response.workspaces.projects.workspace_project import WorkspaceProjectSchema
 
 # ============================
 # PaginationMeta schema - meta
 # ============================
 class PaginationMetaSchema(BaseModel):
-    page: int           # Current page number
-    limit: int          # Number of items per page
-    total_pages: int    # Total number of pages
-    total_items: int    # Total number of results
+    page: int
+    limit: int
+    total_pages: int
+    total_items: int
 
     model_config = {
         "json_schema_extra": {
@@ -25,20 +25,20 @@ class PaginationMetaSchema(BaseModel):
     }
 
 # ============================
-# PaginatedPrivateTasks schema
+# WorkspaceProjectsPaginatedSchema
 # ============================
-class PaginatedPrivateTasksSchema(BaseModel):
-    items: List[PrivateTaskSchema] = Field(default_factory=list)    # List of private tasks
-    meta: PaginationMetaSchema                                      # Pagination metadata
+class WorkspaceProjectsPaginatedSchema(BaseModel):
+    items: List[WorkspaceProjectSchema] = Field(default_factory=list)
+    meta: PaginationMetaSchema
 
     model_config = {
         "json_schema_extra": {
             "example": {
                 "items": [
                     {
-                        "taskId": "1",
-                        "title": "Private task 1",
-                        "description": "Private task description 1",
+                        "projectId": "1",
+                        "title": "Project 1",
+                        "description": "Project description 1",
                         "userId": "1",
                         "workspaceId": "1"
                     }

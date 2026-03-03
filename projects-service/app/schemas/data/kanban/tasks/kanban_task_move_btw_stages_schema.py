@@ -1,22 +1,19 @@
 # Imports
-from typing import Optional
 from pydantic import BaseModel
 
 # ============================================================
-# KanbanTaskUpdate schema for updating a kanban task
+# KanbanTaskMoveBtwStages schema
 # ============================================================
-class KanbanTaskUpdateSchema(BaseModel):
+class KanbanTaskMoveBtwStagesSchema(BaseModel):
     task_id: str
-    title: Optional[str] = None
-    description: Optional[str] = None
+    target_stage_id: str
 
     model_config = {
         "json_schema_extra": {
             "examples": [
                 {
                     "task_id": "task_id",
-                    "title": "Kanban task title",
-                    "description": "Kanban task description"
+                    "target_stage_id": "target_stage_id"
                 }
             ]
         }

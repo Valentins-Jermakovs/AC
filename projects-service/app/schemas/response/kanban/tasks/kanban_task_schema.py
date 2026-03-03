@@ -3,7 +3,7 @@ from typing import Optional
 from pydantic import BaseModel
 
 # ============================================================
-# KanbanTaskSchema schema for creating a new kanban task
+# KanbanTaskSchema schema
 # ============================================================
 class KanbanTaskSchema(BaseModel):
     id: str

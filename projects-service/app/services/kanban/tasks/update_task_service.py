@@ -3,9 +3,9 @@ from fastapi import HTTPException
 from bson import ObjectId
 from typing import Optional
 # Models
-from ...models import KanbanTaskModel
+from app.models import KanbanTaskModel
 # Schemas
-from ...schemas.response.kanban_task import KanbanTaskSchema
+from app.schemas.response.kanban.tasks.kanban_task_schema import KanbanTaskSchema
 
 
 # Function update task
@@ -19,7 +19,7 @@ async def update_task(
     task_id: str, 
     title: Optional[str] = None, 
     description: Optional[str] = None,
-):
+) -> KanbanTaskSchema:
     # Raise if task_id is not valid
     if not ObjectId.is_valid(task_id):
         raise HTTPException(status_code=400, detail="Invalid task ID")
@@ -35,10 +35,31 @@ async def update_task(
 
     # If task new title exist
     if title is not None and title != task.title:
+    
+        # task unique title
+        if await KanbanTaskModel.find_one({"title": title}):
+            raise HTTPException(status_code=400, detail="Task title already exists")
+        
+        # Check title
+        title = title.strip()
+        
+        if len(title) > 100:
+            raise HTTPException(status_code=400, detail="Title is too long")
+        
+        if len(title) < 3:
+            raise HTTPException(status_code=400, detail="Title is too short")
+        
         updated_data["title"] = title
 
     # If task new description exist
     if description is not None and description != task.description:
+
+        if len(description) > 1000:
+            raise HTTPException(status_code=400, detail="Description is too long")
+        
+        if len(description) < 3:
+            raise HTTPException(status_code=400, detail="Description is too short")
+
         updated_data["description"] = description
 
     if not updated_data:

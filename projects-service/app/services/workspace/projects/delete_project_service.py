@@ -1,9 +1,14 @@
+# Imports
 from fastapi import HTTPException
 from bson import ObjectId
-from ...models import WorkspaceProjectModel
+# Models
+from app.models import WorkspaceProjectModel
 
-async def delete_project(project_id: str):
+async def delete_project(project_id: str) -> dict:
     
+    if not project_id:
+        raise HTTPException(status_code=400, detail="Project ID is required")
+
     # Raise if project_id is not valid
     if not ObjectId.is_valid(project_id):
         raise HTTPException(status_code=400, detail="Invalid project ID")

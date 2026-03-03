@@ -1,14 +1,34 @@
+# Imports
 from typing import Optional
-from ...models import WorkspaceProjectModel
-from ...schemas.response.workspace_project import WorkspaceProjectSchema
+from fastapi import HTTPException
+# Models
+from app.models import WorkspaceProjectModel
+# Schemas
+from app.schemas.response.workspaces.projects.workspace_project import WorkspaceProjectSchema
 
-
+# ================================
+# Function create project
+# =================================
 async def create_project(
     title: str,
     user_id: str,
     description: Optional[str] = None
-):
+) -> WorkspaceProjectSchema:
     
+    if not user_id:
+        raise HTTPException(status_code=400, detail="User ID is required")
+    # Raise if title is empty
+    if not title:
+        raise HTTPException(status_code=400, detail="Title is required")
+    # Raise if title is too long
+    if len(title) > 100:
+        raise HTTPException(status_code=400, detail="Title is too long")
+    # Raise if title is too short
+    if len(title) < 3:
+        raise HTTPException(status_code=400, detail="Title is too short")
+    # Check title uniuqe
+    if await WorkspaceProjectModel.find_one({"title": title}):
+        raise HTTPException(status_code=400, detail="Title must be unique")
     # If description not exist
     if description is None:
         description = ""

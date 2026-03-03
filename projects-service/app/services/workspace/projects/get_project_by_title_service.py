@@ -1,44 +1,70 @@
+# Imports
 from fastapi import HTTPException
+import re
 from typing import Optional
-from ...models import WorkspaceProjectModel
-from ...schemas.response.workspace_project import WorkspaceProjectSchema
+# Models
+from app.models import WorkspaceProjectModel
+# Schemas
+from app.schemas.response.workspaces.projects.workspace_project import WorkspaceProjectSchema
+from app.schemas.response.workspaces.projects.worskpace_projects_paginated_schema import WorkspaceProjectsPaginatedSchema, PaginationMetaSchema
 
-
+# ===============================
+# Function get project by title or description
+# ===============================
 async def get_project_by_title_or_description(
     title: Optional[str] = None,
-    description: Optional[str] = None
-):
-    # If nothing provided
+    description: Optional[str] = None,
+    limit: int = 10,
+    page: int = 1
+) -> WorkspaceProjectsPaginatedSchema:
+    
     if not title and not description:
         raise HTTPException(status_code=400, detail="Title or description required")
+    
+    if not limit or not page:
+        raise HTTPException(status_code=400, detail="Limit and page are required")
+    
+    if limit <= 0:
+        raise HTTPException(status_code=400, detail="Limit must be a positive integer")
+    
+    if page <= 0:
+        raise HTTPException(status_code=400, detail="Page must be a positive integer")
+    
+    if limit > 100:
+        raise HTTPException(status_code=400, detail="Limit must be less than 100")
+    
 
-    query_conditions = []
+    # Pagination offset
+    offset = (page - 1) * limit
 
-    if title:
-        query_conditions.append({
-            "title": {"$regex": title, "$options": "i"}
-        })
+    # Count total projects - filter by title and description in lowercase
+    total_projects = await WorkspaceProjectModel.find({
+        "$or": [
+            {"title": {"$regex": re.escape(title), "$options": "i"}},
+            {"description": {"$regex": re.escape(description), "$options": "i"}}
+        ]
+    }).count()
 
-    if description:
-        query_conditions.append({
-            "description": {"$regex": description, "$options": "i"}
-        })
+    # Find projects
+    projects = await WorkspaceProjectModel.find({
+        "$or": [
+            {"title": {"$regex": re.escape(title), "$options": "i"}},
+            {"description": {"$regex": re.escape(description), "$options": "i"}}
+        ]
+    })
 
-    # If only one condition → no need for $or
-    if len(query_conditions) == 1:
-        project = await WorkspaceProjectModel.find_one(query_conditions[0])
-    else:
-        project = await WorkspaceProjectModel.find_one({
-            "$or": query_conditions
-        })
-
-    if not project:
-        raise HTTPException(status_code=404, detail="Project not found")
-
-    return WorkspaceProjectSchema(
-        id=str(project.id),
-        userId=project.userId,
-        title=project.title,
-        description=project.description,
-        createdAt=project.createdAt,
+    # Return projects
+    return WorkspaceProjectsPaginatedSchema(
+        data=[WorkspaceProjectSchema(
+            id=str(project.id),
+            userId=project.userId,
+            title=project.title,
+            description=project.description,
+            createdAt=project.createdAt,
+        ) for project in projects],
+        meta=PaginationMetaSchema(
+            total=total_projects,
+            page=page,
+            limit=limit
+        )
     )

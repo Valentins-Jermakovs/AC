@@ -11,7 +11,8 @@ from .routers.kanban import (
     kanban_tasks_route
 )
 from .routers.workspaces import (
-    workspace_projects_route
+    workspace_projects_route,
+    workspace_members_route
 )
 
 # =========================
@@ -44,3 +45,4 @@ app.include_router(kanban_members_route.router)
 app.include_router(kanban_stages_route.router)
 app.include_router(kanban_tasks_route.router)
 app.include_router(workspace_projects_route.router)
+app.include_router(workspace_members_route.router)

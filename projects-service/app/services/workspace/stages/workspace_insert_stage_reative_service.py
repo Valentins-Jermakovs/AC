@@ -1,22 +1,22 @@
 # Imports
 from fastapi import HTTPException
 from bson import ObjectId
+from typing import Optional
 # Models
-from app.models import KanbanStageModel
+from app.models import WorkspaceStageModel
 # Schemas
-from app.schemas.response.kanban.stages.kanban_stage_schema import KanbanStageSchema
+from app.schemas.response.workspaces.stages.workspace_stage_schema import WorkspaceStageSchema
 
-# ==========================
-# Insert a new kanban stage
-# ==========================
+
 async def insert_stage_relative(
-    board_id: str,
+    project_id: str,
     title: str,
     reference_stage_id: str, # stage which will be used as reference
-    position: str  # "before" or "after"
-) -> KanbanStageSchema:
+    position: str,  # "before" or "after"
+    description: Optional[str] = None,
+) -> WorkspaceStageSchema:
     
-    if board_id is None:
+    if project_id is None:
         raise HTTPException(status_code=400, detail="Board ID is required")
     
     if title is None:
@@ -42,16 +42,16 @@ async def insert_stage_relative(
 
     # if title not unique
     # Find stage with user_id and title
-    stage = await KanbanStageModel.find_one({
+    stage = await WorkspaceStageModel.find_one({
         "title": title,
-        "boardId": board_id
+        "projectId": project_id
     })
     if stage:
         raise HTTPException(status_code=400, detail="Title must be unique")
 
     # Find reference stage
-    reference_stage = await KanbanStageModel.find_one({
-        "boardId": board_id,
+    reference_stage = await WorkspaceStageModel.find_one({
+        "projectId": project_id,
         "_id": ObjectId(reference_stage_id)
     })
 
@@ -59,10 +59,10 @@ async def insert_stage_relative(
     if not reference_stage:
         raise HTTPException(status_code=404, detail="Stage not found")
 
-    # Fing neighbour depending on position
+    # Find neighbour depending on position
     if position == "after":
-        next_stage = await KanbanStageModel.find({
-            "boardId": board_id,
+        next_stage = await WorkspaceStageModel.find({
+            "projectId": project_id,
             "order": {"$gt": reference_stage.order}
         }).sort("order").first_or_none()
 
@@ -72,8 +72,8 @@ async def insert_stage_relative(
             new_order = reference_stage.order + 1000.0
     
     elif position == "before":
-        prev_stage = await KanbanStageModel.find({
-            "boardId": board_id,
+        prev_stage = await WorkspaceStageModel.find({
+            "projectId": project_id,
             "order": {"$lt": reference_stage.order}
         }).sort("-order").first_or_none()
 
@@ -85,18 +85,24 @@ async def insert_stage_relative(
     else:
         raise HTTPException(status_code=400, detail="Invalid position")
 
+    
+
     # Create new stage
-    stage = KanbanStageModel(
-        boardId=board_id,
+    stage = WorkspaceStageModel(
+        projectId=project_id,
         title=title,
         order=new_order
     )
 
+    if description is not None:
+        stage.description = description
+
     await stage.insert()
 
-    return KanbanStageSchema(
+    return WorkspaceStageSchema(
         id=str(stage.id),
         title=stage.title,
         order=stage.order,
+        description=stage.description,
         createdAt=stage.createdAt
     )

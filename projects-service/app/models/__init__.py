@@ -13,8 +13,8 @@ from .kanban_models import (
 # ===== Workspace =====
 from .workspace_models import (
     WorkspaceProjectModel,
-    WorkspaceStage,
-    WorkspaceTask,
+    WorkspaceStageModel,
+    WorkspaceTaskModel,
     WorkspaceProjectMemberModel
 )
 # ===== Private =====

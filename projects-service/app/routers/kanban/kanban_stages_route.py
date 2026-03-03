@@ -34,8 +34,6 @@ security = HTTPBearer()
 # Route for getting all kanban stages
 @router.get(
     "/all",
-    summary="Get all kanban stages",
-    description="Get all kanban stages from the database",
     response_model=AllKanbanStagesSchema
 )
 async def get_all_stages_endpoint(
@@ -108,7 +106,8 @@ async def create_stage_relative_endpoint(
         board_id=data.board_id, 
         title=data.title, 
         reference_stage_id=data.reference_stage_id, 
-        position=data.position)
+        position=data.position
+    )
 
 # ===== Stage PUT ==========================================================
 # Route for move a kanban stage
@@ -167,7 +166,7 @@ async def update_stage_endpoint(
 # ===== Stage DELETE ==========================================================
 # Route for deleting a kanban stage
 @router.delete(
-    "/delete",
+    "/delete/{stage_id}",
 )
 async def delete_stage_endpoint(
     data: RemoveKanbanStage,

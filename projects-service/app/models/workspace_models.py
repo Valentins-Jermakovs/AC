@@ -4,7 +4,7 @@ from datetime import datetime
 from pydantic import Field
 from typing import Optional
 # Utilities
-from ..utils.current_date import get_current_date
+from app.utils.current_date import get_current_date
 
 '''
 
@@ -42,7 +42,7 @@ class WorkspaceProjectModel(Document):
 # ========================
 # WorkspaceStage model
 # ========================
-class WorkspaceStage(Document):
+class WorkspaceStageModel(Document):
     projectId: str  # Foreign key
     title: str      # Stage title
     order: int      # Stage order
@@ -65,7 +65,7 @@ class WorkspaceStage(Document):
 # ========================
 # WorkspaceTask model
 # ========================
-class WorkspaceTask(Document):
+class WorkspaceTaskModel(Document):
     projectId: str                      # Project ID
     stageId: str                        # Stage ID
     title: str                          # Task title

@@ -6,13 +6,13 @@ from typing import Optional
 # WorkspaceCreateTask schema - request
 # =============================
 class WorkspaceCreateTaskSchema(BaseModel):
-    project_id: str                 # Project ID
-    stage_id: str                   # Stage ID
-    title: str                      # Task title
-    description: Optional[str]      # Task description
-    story_points: Optional[int]     # Story points
-    priority: Optional[int]         # Priority
-    status: Optional[str]           # Status
+    project_id: str                       # Project ID
+    stage_id: str                         # Stage ID
+    title: str                            # Task title
+    description: Optional[str] = None     # Task description
+    story_points: int                     # Story points
+    priority: int                         # Priority
+    status: str                           # Status
 
     # Model config - examples
     model_config = {

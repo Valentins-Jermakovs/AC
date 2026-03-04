@@ -6,6 +6,7 @@ from app.utils.check_access_token import check_access_token
 # Schemas
 # ===== response:
 from app.schemas.response.workspaces.tasks.workspace_task_schema import WorkspaceTaskSchema
+from app.schemas.response.workspaces.tasks.workspace_task_list_schema import WorkspaceTaskListSchema
 # ===== data:
 from app.schemas.data.workspace.tasks.workspace_create_task_schema import WorkspaceCreateTaskSchema
 from app.schemas.data.workspace.tasks.workspace_delete_task_schema import WorkspaceDeleteTaskSchema
@@ -30,9 +31,11 @@ security = HTTPBearer()
 # Route for getting all tasks
 @router.get(
     "/all", 
-    response_model=list[WorkspaceTaskSchema]
+    response_model=WorkspaceTaskListSchema
 )
 async def get_all_tasks_route(
+    project_id: str,
+    stage_id: str,
     credentials: HTTPAuthorizationCredentials = Depends(security)
 ):
     """
@@ -47,12 +50,15 @@ async def get_all_tasks_route(
     access_token = credentials.credentials
     user_id = await check_access_token(access_token)
 
-    return await get_all_tasks()
+    return await get_all_tasks(
+        projectId=project_id,
+        stageId=stage_id
+    )
 
 # ===== Task POST ==========================================================
 # Route for creating a task
 @router.post(
-    "/", 
+    "/create", 
     response_model=WorkspaceTaskSchema
 )
 async def create_task_route(

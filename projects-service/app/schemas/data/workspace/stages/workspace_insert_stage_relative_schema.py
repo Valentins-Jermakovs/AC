@@ -8,7 +8,7 @@ from typing import Optional
 class WorkspaceInsertStageRelativeSchema(BaseModel):
     project_id: str
     title: str
-    description: Optional[str]
+    description: Optional[str] = None
     reference_stage_id: str
     position: str
 

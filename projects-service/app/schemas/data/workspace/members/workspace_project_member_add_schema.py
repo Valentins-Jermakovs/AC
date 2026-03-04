@@ -15,7 +15,7 @@ class WorkspaceProjectMemberAddSchema(BaseModel):
                 {
                     "project_id": "project_id",
                     "user_id": "user_id",
-                    "role": "role"
+                    "role": "viewer | editor | admin"
                 }
             ]
         }

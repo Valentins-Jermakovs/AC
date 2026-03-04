@@ -29,9 +29,14 @@ async def create_project(
     # Check title uniuqe
     if await WorkspaceProjectModel.find_one({"title": title}):
         raise HTTPException(status_code=400, detail="Title must be unique")
-    # If description not exist
-    if description is None:
-        description = ""
+    
+    if description is not None:
+        # Raise if description is too long
+        if len(description) > 1000:
+            raise HTTPException(status_code=400, detail="Description is too long")
+        # Raise if description is too short
+        if len(description) < 3:
+            raise HTTPException(status_code=400, detail="Description is too short")
 
     # Create new project
     new_project = WorkspaceProjectModel(

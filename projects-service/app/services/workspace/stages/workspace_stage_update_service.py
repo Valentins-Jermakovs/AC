@@ -31,10 +31,41 @@ async def update_stage(
     if not stage:
         raise HTTPException(status_code=404, detail="Stage not found")
 
-    # Update stage
-    stage.title = title
+    if title is not None:
+
+        # check title uniqness
+        if await WorkspaceStageModel.find_one({
+            "title": title,
+            "projectId": stage.projectId,
+            "_id": {"$ne": stage.id}
+        }):
+            raise HTTPException(status_code=400, detail="Title must be unique")
+
+        # Raise if title is empty
+        if not title.strip():
+            raise HTTPException(status_code=400, detail="Title cannot be empty")
+        
+        # Raise if title is too long
+        if len(title) > 100:
+            raise HTTPException(status_code=400, detail="Title is too long")
+        
+        # Raise if title is too short
+        if len(title) < 3:
+            raise HTTPException(status_code=400, detail="Title is too short")
+
+        stage.title = title
 
     if description is not None:
+
+        if not description.strip():
+            raise HTTPException(status_code=400, detail="Description cannot be empty")
+
+        if len(description) > 1000:
+            raise HTTPException(status_code=400, detail="Description is too long")
+        
+        if len(description) < 3:
+            raise HTTPException(status_code=400, detail="Description is too short")
+        
         stage.description = description
 
     await stage.save()
@@ -43,5 +74,6 @@ async def update_stage(
         id=str(stage.id),
         title=stage.title,
         description=stage.description,
-        project_id=str(stage.projectId)
+        project_id=str(stage.projectId),
+        order=stage.order
     )

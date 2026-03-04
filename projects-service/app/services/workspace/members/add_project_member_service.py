@@ -28,6 +28,13 @@ async def add_project_member(
     if not ObjectId.is_valid(projectId):
         raise HTTPException(status_code=400, detail="Invalid project ID")
     
+    # check existing users
+    if await WorkspaceProjectMemberModel.find_one({
+        "projectId": projectId, 
+        "userId": userId
+    }):
+        raise HTTPException(status_code=400, detail="Project member already exists")
+
     project_member = WorkspaceProjectMemberModel(
         projectId=projectId,
         userId=userId,

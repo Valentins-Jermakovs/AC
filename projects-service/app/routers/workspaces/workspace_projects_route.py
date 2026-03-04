@@ -1,6 +1,7 @@
 # Imports
 from fastapi import Depends, APIRouter
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from typing import Optional
 # Utils
 from app.utils.check_access_token import check_access_token
 # Schemas
@@ -20,7 +21,7 @@ from app.services.workspace.projects.get_all_projects_service import get_all_pro
 from app.services.workspace.projects.get_project_by_title_service import get_project_by_title_or_description
 # Router
 router = APIRouter(
-    prefix="/projects",
+    prefix="/worskpace/projects",
     tags=["Workspace project management service"]
 )
 
@@ -59,11 +60,14 @@ async def get_all_projects_endpoint(
 
 # Route for getting a project by title or description
 @router.get(
-    "/get/{title_or_description}",
+    "/get-title-or-description",
     response_model=WorkspaceProjectsPaginatedSchema
 )
 async def get_project_by_title_or_description_endpoint(
-    data: WorkspaceProjectTitleOrDescription,
+    page: int = 1,
+    limit: int = 10,
+    title: Optional[str] = None,
+    description: Optional[str] = None,
     credantials: HTTPAuthorizationCredentials = Depends(security)
 ):
     """
@@ -79,10 +83,10 @@ async def get_project_by_title_or_description_endpoint(
     user_id = await check_access_token(access_token)
 
     return await get_project_by_title_or_description(
-        title=data.title, 
-        description=data.description,
-        limit=data.limit,
-        page=data.page
+        title=title, 
+        description=description,
+        limit=limit,
+        page=page
     )
 
 # ==== Project POST ==========================================================
@@ -135,9 +139,10 @@ async def update_project_endpoint(
     user_id = await check_access_token(access_token)
 
     return await update_project(
-        data.project_id, 
-        data.title, 
-        data.description
+        user_id=user_id,
+        project_id=data.project_id, 
+        title=data.title, 
+        description=data.description
     )
 
 # ===== Project DELETE =======================================================

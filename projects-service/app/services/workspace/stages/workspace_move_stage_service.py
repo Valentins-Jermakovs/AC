@@ -30,7 +30,7 @@ async def move_stage(
 
     # Get all stages sorted
     stages = await WorkspaceStageModel.find(
-        WorkspaceStageModel.boardId == project_id
+        WorkspaceStageModel.projectId == project_id
     ).sort("order").to_list()
 
     if not stages:

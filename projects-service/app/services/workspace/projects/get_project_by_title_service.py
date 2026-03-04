@@ -37,34 +37,43 @@ async def get_project_by_title_or_description(
     # Pagination offset
     offset = (page - 1) * limit
 
-    # Count total projects - filter by title and description in lowercase
-    total_projects = await WorkspaceProjectModel.find({
-        "$or": [
-            {"title": {"$regex": re.escape(title), "$options": "i"}},
-            {"description": {"$regex": re.escape(description), "$options": "i"}}
-        ]
-    }).count()
+    query_conditions = []
 
-    # Find projects
-    projects = await WorkspaceProjectModel.find({
-        "$or": [
-            {"title": {"$regex": re.escape(title), "$options": "i"}},
-            {"description": {"$regex": re.escape(description), "$options": "i"}}
-        ]
-    })
+    if title:
+        query_conditions.append(
+            {"title": {"$regex": re.escape(title), "$options": "i"}}
+        )
 
-    # Return projects
-    return WorkspaceProjectsPaginatedSchema(
-        data=[WorkspaceProjectSchema(
+    if description:
+        query_conditions.append(
+            {"description": {"$regex": re.escape(description), "$options": "i"}}
+        )
+
+    query = {"$or": query_conditions}
+
+    total_projects = await WorkspaceProjectModel.find(query).count()
+    projects = await WorkspaceProjectModel.find(query).skip(offset).limit(limit).to_list()
+
+    total_pages = (total_projects + limit - 1) // limit
+
+    if page > total_pages:
+        raise HTTPException(status_code=404, detail="Page not found")
+
+    meta=PaginationMetaSchema(
+        page=page,
+        limit=limit,
+        total_pages=total_pages,
+        total_items=total_projects
+    )
+
+    items = [
+        WorkspaceProjectSchema(
             id=str(project.id),
-            userId=project.userId,
             title=project.title,
             description=project.description,
-            createdAt=project.createdAt,
-        ) for project in projects],
-        meta=PaginationMetaSchema(
-            total=total_projects,
-            page=page,
-            limit=limit
-        )
-    )
+            userId=project.userId,
+            createdAt=project.createdAt
+        ) for project in projects
+    ]
+
+    return WorkspaceProjectsPaginatedSchema(items=items, meta=meta)

@@ -23,7 +23,7 @@ from app.services.workspace.stages.workspace_move_stage_service import move_stag
 from app.services.workspace.stages.workspace_insert_stage_reative_service import insert_stage_relative
 # Router
 router = APIRouter(
-    prefix="/stages",
+    prefix="/workspace/stages",
     tags=["Workspace stage management service"]
 )
 
@@ -37,7 +37,7 @@ security = HTTPBearer()
     response_model=WorkspaceGetAllStagesResponse
 )
 async def get_all_stages_endpoint(
-    data: WorkspaceGetAllStagesSchema,
+    project_id: str,
     credantials: HTTPAuthorizationCredentials = Depends(security)
 ):
     """
@@ -53,7 +53,7 @@ async def get_all_stages_endpoint(
     user_id = await check_access_token(access_token)
 
     return await get_all_stages(
-        project_id=data.project_id
+        project_id=project_id
     )
 
 # ===== Stage POST ==========================================================
@@ -143,8 +143,7 @@ async def update_stage_endpoint(
 
 # Route for moving a kanban stage
 @router.put(
-    "/move",
-    response_model=WorkspaceStageSchema
+    "/move"
 )
 async def move_stage_endpoint(
     data: WorkspaceMoveStageSchema,
@@ -163,7 +162,7 @@ async def move_stage_endpoint(
     user_id = await check_access_token(access_token)
 
     return await move_stage(
-        board_id=data.board_id, 
+        project_id=data.project_id, 
         stage_id=data.stage_id, 
         direction=data.direction
     )
@@ -171,7 +170,7 @@ async def move_stage_endpoint(
 # ===== Stage DELETE ==========================================================
 # Route for deleting a kanban stage
 @router.delete(
-    "/delete/{stage_id}",
+    "/delete",
 )
 async def delete_stage_endpoint(
     data: WorkspaceStageDelete,

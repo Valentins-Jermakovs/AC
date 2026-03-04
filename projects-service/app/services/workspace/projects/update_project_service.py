@@ -10,7 +10,8 @@ from app.models import WorkspaceProjectModel
 
 async def update_project (
     project_id: str,
-    title: str,
+    user_id: str,
+    title: Optional[str] = None,
     description: Optional[str] = None
 ) -> WorkspaceProjectSchema:
     
@@ -29,31 +30,39 @@ async def update_project (
         raise HTTPException(status_code=404, detail="Project not found")
 
     # Raise if title is empty
-    if not title:
-        raise HTTPException(status_code=400, detail="Title is required")
+    if not title and not description:
+        raise HTTPException(status_code=400, detail="No data to update")
     
-    # Raise if title is too long
-    if len(title) > 100:
-        raise HTTPException(status_code=400, detail="Title is too long")
-    
-    # Raise if title is too short
-    if len(title) < 3:
-        raise HTTPException(status_code=400, detail="Title is too short")
-    
-    # Raise if desrciption or title are the same
-    if title == project.title and description == project.description:
-        raise HTTPException(status_code=400, detail="Title and description are the same")
-
-    # Raise if title not uniqe
-    if await WorkspaceProjectModel.find_one({"title": title}):
+    # Title uniqness check
+    if await WorkspaceProjectModel.find_one({
+        "title": title,
+        "userId": user_id,
+        "_id": {"$ne": project.id}
+    }):
         raise HTTPException(status_code=400, detail="Title must be unique")
 
-    # If description not exist
-    if description is None:
-        description = ""
+    # Decription check
+    if description is not None:
+        description = description.strip()
+        # Raise if description is too long
+        if len(description) > 1000:
+            raise HTTPException(status_code=400, detail="Description is too long")
+        # Raise if description is too short
+        if len(description) < 3:
+            raise HTTPException(status_code=400, detail="Description is too short")
+        # Raise if desrciption or title are the same
+        if description == project.description:
+            raise HTTPException(status_code=400, detail="Description is the same")
 
-    # Update project
-    await project.set({"title": title, "description": description})
+    update_data = {}
+
+    if title is not None:
+        update_data["title"] = title
+
+    if description is not None:
+        update_data["description"] = description
+
+    await project.set(update_data)
 
     return WorkspaceProjectSchema(
         id=str(project.id),              # ObjectId -> str

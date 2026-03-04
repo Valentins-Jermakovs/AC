@@ -8,7 +8,7 @@ from typing import Optional
 class WorkspaceStageCreateSchema(BaseModel):
     project_id: str
     title: str
-    description: Optional[str]
+    description: Optional[str] = None
     model_config = {
         "json_schema_extra": {
             "examples": [

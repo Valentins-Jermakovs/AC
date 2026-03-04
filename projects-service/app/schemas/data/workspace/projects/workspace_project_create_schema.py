@@ -7,7 +7,7 @@ from typing import Optional
 # =============================================================
 class WorkspaceProjectCreateSchema(BaseModel):
     title: str
-    description: Optional[str]
+    description: Optional[str] = None
     # userId would be fetched from token
 
     model_config = {

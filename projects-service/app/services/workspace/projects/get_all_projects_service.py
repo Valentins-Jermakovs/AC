@@ -60,11 +60,18 @@ async def get_all_projects(
         for project in projects
     ]
 
+    total_pages = (total_projects + limit - 1) // limit
+
+    if page > total_pages:
+        raise HTTPException(status_code=404, detail="Page not found")
+
     return {
         "items": items,
         "meta": PaginationMetaSchema(
             page=page,
             limit=limit,
-            total=total_projects
+            total_items=total_projects,
+            total_pages=total_pages
+
         )
     }

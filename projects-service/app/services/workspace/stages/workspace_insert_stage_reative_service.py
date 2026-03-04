@@ -101,6 +101,7 @@ async def insert_stage_relative(
 
     return WorkspaceStageSchema(
         id=str(stage.id),
+        project_id=stage.projectId,
         title=stage.title,
         order=stage.order,
         description=stage.description,

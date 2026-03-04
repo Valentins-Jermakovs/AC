@@ -26,13 +26,18 @@ async def create_stage(
     if len(title) < 3:
         raise HTTPException(status_code=400, detail="Title is too short")
     
-    # Raise if description is too long
-    if len(description) > 1000:
-        raise HTTPException(status_code=400, detail="Description is too long")
+    if description is not None:
+        # Raise if description is empty
+        if not description.strip():
+            raise HTTPException(status_code=400, detail="Description cannot be empty")
+
+        # Raise if description is too long
+        if len(description) > 1000:
+            raise HTTPException(status_code=400, detail="Description is too long")
     
-    # Raise if description is too short
-    if len(description) < 3:
-        raise HTTPException(status_code=400, detail="Description is too short")
+        # Raise if description is too short
+        if len(description) < 3:
+            raise HTTPException(status_code=400, detail="Description is too short")
     
     # Check title uniuqe
     if await WorkspaceStageModel.find_one({"title": title}):
@@ -54,9 +59,6 @@ async def create_stage(
         order = 1000.0
     else:
         order = last_stage.order + 1000.0
-
-    if await WorkspaceStageModel.find_one({"projectId": project_id}):
-        raise HTTPException(status_code=400, detail="Project already has stages")
     
     # Create new stage
     new_stage = WorkspaceStageModel(
@@ -72,6 +74,6 @@ async def create_stage(
         id=str(new_stage.id),
         title=new_stage.title,
         description=new_stage.description,
-        projectId=new_stage.projectId,
+        project_id=new_stage.projectId,
         order=new_stage.order
     )

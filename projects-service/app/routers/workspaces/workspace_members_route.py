@@ -20,7 +20,7 @@ from app.services.workspace.members.update_project_member_role_service import up
 
 # Router
 router = APIRouter(
-    prefix="/members",
+    prefix="/workspace/members",
     tags=["Workspace project member management service"]
 )
 
@@ -33,7 +33,7 @@ security = HTTPBearer()
     "/all",
 )
 async def get_all_project_members_endpoint(
-    data: WorkspaceProjectMembersGetSchema, 
+    project_id: str, 
     credantials: HTTPAuthorizationCredentials = Depends(security)
 ):
     '''
@@ -48,7 +48,9 @@ async def get_all_project_members_endpoint(
     access_token = credantials.credentials
     user_id = await check_access_token(access_token)
     
-    return await get_all_project_members(data.projectId)
+    return await get_all_project_members(
+        projectId=project_id
+    )
 
 # ==== Project POST ==========================================================
 # Route for adding a new member to a project
@@ -107,7 +109,7 @@ async def update_project_member_role_endpoint(
 # ==== Project DELETE ==========================================================
 # Route for deleting a member from a project
 @router.delete(
-    "/delete/{project_id}/{user_id}",
+    "/delete",
 )
 async def delete_project_member_endpoint(
     data: WorkspaceProjectMemberDeleteSchema, 

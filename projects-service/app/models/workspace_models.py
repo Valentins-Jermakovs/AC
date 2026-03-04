@@ -73,6 +73,7 @@ class WorkspaceTaskModel(Document):
     storyPoints: Optional[int] = None   # Optional story points
     priority: Optional[int] = None      # Optional priority
     status: Optional[str] = None        # Optional status
+    order: float                        # Task order
     createdAt: datetime = Field(default_factory=get_current_date)    # Creation date
 
     class Settings:

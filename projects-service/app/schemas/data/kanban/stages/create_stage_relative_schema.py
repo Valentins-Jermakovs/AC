@@ -17,7 +17,7 @@ class KanbanStageCreateRelativeSchema(BaseModel):
                     "reference_stage_id": "stage_id",
                     "board_id": "board_id",
                     "title": "Kanban stage title",
-                    "position": "before"
+                    "position": "before | after"
                 }
             ]
         }

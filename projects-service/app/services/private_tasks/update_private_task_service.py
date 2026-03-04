@@ -77,7 +77,7 @@ async def update_private_task(
             raise HTTPException(status_code=400, detail="Description must be unique")
 
     if dueDate is not None:
-        updated_data["dueDate"] = dueDate
+        updated_data["dueDate"] = await convert_to_datetime(dueDate)
 
         # Check dueDate
         try:

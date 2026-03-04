@@ -5,7 +5,7 @@ from pydantic import BaseModel
 # KanbanStageCreate schema - request
 # =============================
 class CreateKanbanStageSchema(BaseModel):
-    tilte: str      # Title of the stage
+    title: str      # Title of the stage
     board_id: str   # ID of the board
 
     model_config = {

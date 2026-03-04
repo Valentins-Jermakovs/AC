@@ -45,6 +45,9 @@ async def add_board_member(
     
     if not role:
         raise HTTPException(status_code=400, detail="Role is required")
+    
+    if role not in ["viewer", "editor", "admin"]:
+        raise HTTPException(status_code=400, detail="Invalid role")
 
     if not ObjectId.is_valid(board_id):
         raise HTTPException(status_code=400, detail="Invalid board ID")

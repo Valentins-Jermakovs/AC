@@ -12,9 +12,9 @@ async def update_board(board_id: str, title: str) -> KanbanBoardSchema:
     if not board_id:
         raise HTTPException(status_code=400, detail="Board ID is required")
 
-    # Raise if task_id is not valid
+    # Raise if board_id is not valid
     if not ObjectId.is_valid(board_id):
-        raise HTTPException(status_code=400, detail="Invalid task ID")
+        raise HTTPException(status_code=400, detail="Invalid board ID")
     
     # Check title
     title = title.strip()

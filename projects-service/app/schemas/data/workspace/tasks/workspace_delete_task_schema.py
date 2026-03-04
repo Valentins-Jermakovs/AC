@@ -2,19 +2,17 @@
 from pydantic import BaseModel
 
 # =============================
-# RemoveKanbanBoardMember schema - request
+# WorkspaceDeleteTask schema - request
 # =============================
+class WorkspaceDeleteTaskSchema(BaseModel):
+    task_id: str    # Task ID
 
-class RemoveKanbanBoardMemberSchema(BaseModel):
-    user_id: str      # Member ID
-    board_id: str       # Board ID
-
+    # Examples
     model_config = {
         "json_schema_extra": {
             "examples": [
                 {
-                    "user_id": "user_id",
-                    "board_id": "board_id"
+                    "task_id": "task_id"
                 }
             ]
         }

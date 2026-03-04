@@ -5,7 +5,7 @@ from pydantic import BaseModel
 # UpdateKanbanBoardMember schema - request
 # =============================
 class UpdateKanbanBoardMemberSchema(BaseModel):
-    member_id: str        # User ID
+    user_id: str        # User ID
     board_id: str       # Board ID
     role: str           # Role
 

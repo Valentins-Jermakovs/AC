@@ -71,5 +71,7 @@ async def update_task(
     return KanbanTaskSchema(
         id=str(task.id),
         title=task.title,
-        description=task.description
+        description=task.description,
+        stageId=task.stageId,
+        order=task.order
     )

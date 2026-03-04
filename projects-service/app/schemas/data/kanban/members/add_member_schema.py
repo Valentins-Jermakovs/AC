@@ -15,7 +15,7 @@ class AddMemberSchema(BaseModel):
                 {
                     "user_id": "user_id",
                     "board_id": "board_id",
-                    "role": "role"
+                    "role": "viewer | editor | admin"
                 }
             ]
         }

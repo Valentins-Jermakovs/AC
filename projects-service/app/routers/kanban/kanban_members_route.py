@@ -98,14 +98,14 @@ async def update_kanban_board_member_endpoint(
     1. Extract access token
     2. Verify token and get user ID
     3. Call service to update board member in DB
-    4. Return updated board member
+    4. Return message
     """
     access_token = credantials.credentials
     user_id = await check_access_token(access_token)
 
     return await update_board_member(
         board_id=data.board_id,
-        user_id=data.member_id, 
+        user_id=data.user_id, 
         role=data.role
     )
 
@@ -130,6 +130,6 @@ async def delete_kanban_board_member_endpoint(
     current_user_id = await check_access_token(access_token)
 
     return await delete_board_member(
-        user_id=data.member_id, 
+        user_id=data.user_id, 
         board_id=data.board_id
     )

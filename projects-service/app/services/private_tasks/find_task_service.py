@@ -127,7 +127,7 @@ async def find_task_by_description(
     meta = PaginationMetaSchema(
         page=page,
         limit=limit,
-        totaPages=(total_tasks + limit - 1) // limit,
+        totalPages=(total_tasks + limit - 1) // limit,
         totalItems=total_tasks
     )
 

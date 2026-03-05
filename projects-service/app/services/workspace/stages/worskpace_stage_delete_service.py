@@ -2,7 +2,7 @@
 from fastapi import HTTPException
 from bson import ObjectId
 # Models
-from app.models import WorkspaceStageModel
+from app.models import WorkspaceStageModel, WorkspaceTaskModel
 
 # =========================
 # Delete a workspace stage
@@ -23,6 +23,11 @@ async def delete_stage(stage_id: str) -> dict:
     # Raise if stage not found
     if not stage:
         raise HTTPException(status_code=404, detail="Stage not found")
+
+    # Delete tasks
+    await WorkspaceTaskModel.find({
+        "stageId": stage_id
+    }).delete()
 
     # Delete stage
     await stage.delete()

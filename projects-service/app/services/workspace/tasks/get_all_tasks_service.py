@@ -12,27 +12,28 @@ async def get_all_tasks(
     stageId: str
 ) -> WorkspaceTaskListSchema:
 
+    # ===== Validation and error handling =====
     # Raise if project_id is not valid
     if not projectId:
         raise HTTPException(status_code=400, detail="Project ID is required")
-
     # Raise if stage_id is not valid
     if not stageId:
         raise HTTPException(status_code=400, detail="Stage ID is required")
-
     # Raise if project_id is not valid
     if not ObjectId.is_valid(projectId):
         raise HTTPException(status_code=400, detail="Invalid project ID")
-    
     # Raise if stage_id is not valid
     if not ObjectId.is_valid(stageId):
         raise HTTPException(status_code=400, detail="Invalid stage ID")
 
+    # ===== Business logic =====
+    # Get all tasks
     tasks = await WorkspaceTaskModel.find({
         "projectId": projectId,
         "stageId": stageId
     }).sort("order").to_list()
 
+    # Build response
     items = [
         WorkspaceTaskSchema(
             id=str(task.id),
@@ -46,4 +47,7 @@ async def get_all_tasks(
         ) for task in tasks
     ]
 
-    return WorkspaceTaskListSchema(items=items)
+    # Return response
+    return WorkspaceTaskListSchema(
+        items=items
+    )

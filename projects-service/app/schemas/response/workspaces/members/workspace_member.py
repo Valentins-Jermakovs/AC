@@ -1,7 +1,10 @@
+# Imports
 from pydantic import BaseModel
 
-
+# ============================
+# WorkspaceMember schema - response
+# ============================
 class WorkspaceProjectMemberSchema(BaseModel):
-    project_id: str
-    user_id: str
+    projectId: str
+    userId: str
     role: str

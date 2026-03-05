@@ -14,7 +14,7 @@ class WorkspaceStageCreateSchema(BaseModel):
         "json_schema_extra": {
             "examples": [
                 {
-                    "project_id": "project_id",
+                    "projectId": "project_id",
                     "title": "New stage",
                     "description": "New stage description - optional"
                 }

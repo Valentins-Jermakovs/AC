@@ -12,13 +12,15 @@ async def delete_task(
     task_id: str
 ) -> dict:
 
+    # ===== Validation and error handling =====
+    # Raise if task_id is not provided
     if not task_id:
         raise HTTPException(status_code=400, detail="Task ID is required")
-
     # Raise if task_id is not valid
     if not ObjectId.is_valid(task_id):
         raise HTTPException(status_code=400, detail="Invalid task ID")
     
+    # ===== Business logic =====
     # Get task
     task = await WorkspaceTaskModel.find_one({"_id": ObjectId(task_id)})
 

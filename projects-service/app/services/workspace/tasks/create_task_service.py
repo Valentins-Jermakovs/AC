@@ -17,18 +17,18 @@ async def create_task(
 ) -> WorkspaceTaskSchema:
     
     # Raise if project_id is not valid
-    if not ObjectId.is_valid(task_data.project_id):
+    if not ObjectId.is_valid(task_data.projectId):
         raise HTTPException(status_code=400, detail="Invalid project ID")
     
     # Raise if stage_id is not valid
-    if not ObjectId.is_valid(task_data.stage_id):
+    if not ObjectId.is_valid(task_data.stageId):
         raise HTTPException(status_code=400, detail="Invalid stage ID")
 
     # if title not unique
     # Find task with user_id and title
     task = await WorkspaceTaskModel.find_one({
-        "projectId": task_data.project_id,
-        "stageId": task_data.stage_id,
+        "projectId": task_data.projectId,
+        "stageId": task_data.stageId,
         "title": task_data.title
     })
     if task:
@@ -44,7 +44,7 @@ async def create_task(
 
     # Last task in stage
     last_task = await WorkspaceTaskModel.find({
-        "stageId": task_data.stage_id}
+        "stageId": task_data.stageId}
     ).sort("-order").first_or_none()
 
     if not last_task:
@@ -58,7 +58,7 @@ async def create_task(
     if task_data.priority not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]:
         raise HTTPException(status_code=400, detail="Invalid priority")
     
-    if task_data.story_points not in [1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144]:
+    if task_data.storyPoints not in [1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144]:
         raise HTTPException(status_code=400, detail="Invalid story points")
     
     if task_data.description is not None:
@@ -71,25 +71,27 @@ async def create_task(
 
     # save new task in DB
     new_task = WorkspaceTaskModel(
-        projectId=task_data.project_id,
-        stageId=task_data.stage_id,
+        projectId=task_data.projectId,
+        stageId=task_data.stageId,
         title=task_data.title,
         description=task_data.description,
-        storyPoints=task_data.story_points,
+        storyPoints=task_data.storyPoints,
         priority=task_data.priority,
         status=task_data.status,
         order=task_order
     )
 
+    # insert new task
     await new_task.insert()
 
+    # return created task
     return WorkspaceTaskSchema(
         id=str(ObjectId()),
-        projectId=task_data.project_id,
-        stageId=task_data.stage_id,
+        projectId=task_data.projectId,
+        stageId=task_data.stageId,
         title=task_data.title,
         description=task_data.description,
-        storyPoints=task_data.story_points,
+        storyPoints=task_data.storyPoints,
         priority=task_data.priority,
         status=task_data.status
     )

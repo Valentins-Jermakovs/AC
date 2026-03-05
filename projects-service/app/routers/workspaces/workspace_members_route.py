@@ -30,7 +30,7 @@ security = HTTPBearer()
 # ==== Project GET ==========================================================
 # Route for getting all members of a project
 @router.get(
-    "/all",
+    "/get-all-members",
 )
 async def get_all_project_members_endpoint(
     project_id: str, 
@@ -55,7 +55,7 @@ async def get_all_project_members_endpoint(
 # ==== Project POST ==========================================================
 # Route for adding a new member to a project
 @router.post(
-    "/add",
+    "/add-member",
 )
 async def add_project_member_endpoint(
     data: WorkspaceProjectMemberAddSchema,
@@ -73,8 +73,8 @@ async def add_project_member_endpoint(
     user_id = await check_access_token(access_token)
 
     return await add_project_member(
-        projectId=data.project_id,
-        userId=data.user_id,
+        projectId=data.projectId,
+        userId=data.userId,
         role=data.role
     )
 
@@ -101,15 +101,15 @@ async def update_project_member_role_endpoint(
     user_id_from_token = await check_access_token(access_token)
     
     return await update_project_member_role(
-        projectId=data.project_id,
-        userId=data.user_id,
+        projectId=data.projectId,
+        userId=data.userId,
         role=data.role
     )
 
 # ==== Project DELETE ==========================================================
 # Route for deleting a member from a project
 @router.delete(
-    "/delete",
+    "/delete-member",
 )
 async def delete_project_member_endpoint(
     data: WorkspaceProjectMemberDeleteSchema, 
@@ -120,8 +120,8 @@ async def delete_project_member_endpoint(
     user_id_from_token = await check_access_token(access_token)
     
     return await delete_project_member(
-        projectId=data.project_id,
-        userId=data.user_id
+        projectId=data.projectId,
+        userId=data.userId
     )
 
 

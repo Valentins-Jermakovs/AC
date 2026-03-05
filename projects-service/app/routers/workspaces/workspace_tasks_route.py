@@ -30,7 +30,7 @@ security = HTTPBearer()
 # ===== Task GET ==========================================================
 # Route for getting all tasks
 @router.get(
-    "/all", 
+    "/get-all-tasks", 
     response_model=WorkspaceTaskListSchema
 )
 async def get_all_tasks_route(
@@ -58,7 +58,7 @@ async def get_all_tasks_route(
 # ===== Task POST ==========================================================
 # Route for creating a task
 @router.post(
-    "/create", 
+    "/create-task", 
     response_model=WorkspaceTaskSchema
 )
 async def create_task_route(
@@ -85,7 +85,7 @@ async def create_task_route(
 # ===== Task PUT ==========================================================
 # Route for updating a task
 @router.put(
-    "/update", 
+    "/update-task", 
     response_model=WorkspaceTaskSchema
 )
 async def update_task_route(
@@ -111,7 +111,7 @@ async def update_task_route(
 # ===== Task DELETE ==========================================================
 # Route for deleting a task
 @router.delete(
-    "/remove", 
+    "/delete-task", 
 )
 async def remove_task_route(
     data: WorkspaceDeleteTaskSchema, 
@@ -128,5 +128,7 @@ async def remove_task_route(
     access_token = credantials.credentials
     user_id = await check_access_token(access_token)
 
-    return await delete_task(task_id=data.task_id)
+    return await delete_task(
+        task_id=data.taskId
+    )
 

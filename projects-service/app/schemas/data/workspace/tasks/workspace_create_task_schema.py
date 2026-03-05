@@ -6,11 +6,11 @@ from typing import Optional
 # WorkspaceCreateTask schema - request
 # =============================
 class WorkspaceCreateTaskSchema(BaseModel):
-    project_id: str                       # Project ID
-    stage_id: str                         # Stage ID
+    projectId: str                       # Project ID
+    stageId: str                         # Stage ID
     title: str                            # Task title
     description: Optional[str] = None     # Task description
-    story_points: int                     # Story points
+    storyPoints: int                     # Story points
     priority: int                         # Priority
     status: str                           # Status
 
@@ -19,11 +19,11 @@ class WorkspaceCreateTaskSchema(BaseModel):
         "json_schema_extra": {
             "examples": [
                 {
-                    "project_id": "project_id",
-                    "stage_id": "stage_id",
+                    "projectId": "projectId",
+                    "stageId": "stageId",
                     "title": "New task",
                     "description": "New task description - optional",
-                    "story_points": 1,
+                    "storyPoints": 1,
                     "priority": 1,
                     "status": "todo"
                 }

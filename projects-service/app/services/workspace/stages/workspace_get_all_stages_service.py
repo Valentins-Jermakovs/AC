@@ -33,7 +33,7 @@ async def get_all_stages(
         id=str(stage.id),
         title=stage.title,
         description=stage.description,
-        project_id=stage.projectId,
+        projectId=stage.projectId,
         order=stage.order
     ) for stage in stages]
 

@@ -15,7 +15,7 @@ class UpdateKanbanBoardMemberSchema(BaseModel):
                 {
                     "userId": "userId",
                     "boardId": "boardId",
-                    "role": "role"
+                    "role": "viewer | editor | admin"
                 }
             ]
         }

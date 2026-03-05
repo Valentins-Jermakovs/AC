@@ -16,12 +16,13 @@ from app.schemas.data.workspace.tasks.workspace_update_task_schema import Worksp
 async def update_task(
     data: WorkspaceUpdateTaskSchema
 ) -> WorkspaceTaskSchema:
+    
     # Raise if task_id is not valid
-    if not ObjectId.is_valid(data.task_id):
+    if not ObjectId.is_valid(data.taskId):
         raise HTTPException(status_code=400, detail="Invalid task ID")
     
     # Get task
-    task = await WorkspaceTaskModel.find_one({"_id": ObjectId(data.task_id)})
+    task = await WorkspaceTaskModel.find_one({"_id": ObjectId(data.taskId)})
 
     # Raise if task not found
     if not task:
@@ -55,12 +56,12 @@ async def update_task(
         
         task.description = data.description
 
-    if data.story_points is not None:
+    if data.storyPoints is not None:
 
-        if data.story_points not in [1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144]:
+        if data.storyPoints not in [1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144]:
             raise HTTPException(status_code=400, detail="Story points must be between 1 and 9")
         
-        task.storyPoints = data.story_points
+        task.storyPoints = data.storyPoints
 
     if data.priority is not None:
 

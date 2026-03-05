@@ -24,8 +24,8 @@ async def get_all_members(
     page: int = 1,
     limit: int = 10,
 ) -> KanbanBoardMembersPaginatedSchema:
-    # Raise if limit is not a positive integer
-
+    
+    # ===== Validation and error handling =====
     if limit <= 0:
         raise HTTPException(status_code=400, detail="Limit must be a positive integer")
     
@@ -60,6 +60,7 @@ async def get_all_members(
         "boardId": board_id
     }).skip(offset).limit(limit).to_list()
 
+    # ===== Data handling =====
     items = [
         KanbanBoardMemberSchema(
             id=str(member.id),
@@ -73,8 +74,8 @@ async def get_all_members(
     meta = PaginationMetaSchema(
         page=page,
         limit=limit,
-        total_pages=(total_members + limit - 1),
-        total_items=total_members
+        totalPages=(total_members + limit - 1),
+        totalItems=total_members
     )
 
     return KanbanBoardMembersPaginatedSchema(

@@ -4,7 +4,7 @@ from datetime import datetime
 from pydantic import Field
 from typing import Optional
 # Utilities
-from ..utils.current_date import get_current_date
+from app.utils.current_date import get_current_date
 
 '''
 Kanban models

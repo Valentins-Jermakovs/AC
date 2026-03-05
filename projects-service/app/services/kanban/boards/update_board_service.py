@@ -4,10 +4,16 @@ from fastapi import HTTPException
 # Models
 from app.models import KanbanBoardModel
 # Schemas
+# ===== response:
 from app.schemas.response.kanban.boards.kanban_board_schema import KanbanBoardSchema
 
-async def update_board(board_id: str, title: str) -> KanbanBoardSchema:
+async def update_board(
+    board_id: str, 
+    title: str,
+    user_id: str
+) -> KanbanBoardSchema:
     
+    # ===== Validation and error handling =====
     # Raise if id not exist
     if not board_id:
         raise HTTPException(status_code=400, detail="Board ID is required")
@@ -29,10 +35,11 @@ async def update_board(board_id: str, title: str) -> KanbanBoardSchema:
         raise HTTPException(status_code=400, detail="Title is too short")
 
     # Raise, if title not unique
-    # Find board with user_id and title
+    # Find board with equal title except this board
     board = await KanbanBoardModel.find_one({
         "title": title,
-        "userId": board_id
+        "userId": user_id,
+        "_id": {"$ne": ObjectId(board_id)}
     })
     if board:
         raise HTTPException(status_code=400, detail="Title must be unique")

@@ -6,21 +6,21 @@ from typing import Optional
 # WorkspaceInsertStageRelative schema - request
 # =============================
 class WorkspaceInsertStageRelativeSchema(BaseModel):
-    project_id: str
+    projectId: str
     title: str
     description: Optional[str] = None
-    reference_stage_id: str
+    referenceStageId: str
     position: str
 
     model_config = {
         "json_schema_extra": {
             "examples": [
                 {
-                    "project_id": "project_id",
+                    "projectId": "projectId",
                     "title": "New stage",
                     "description": "New stage description - optional",
-                    "reference_stage_id": "stage_id",
-                    "position": "before"
+                    "referenceStageId": "stageId",
+                    "position": "before | after"
                 }
             ]
         }

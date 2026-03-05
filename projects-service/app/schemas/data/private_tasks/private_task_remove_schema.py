@@ -5,7 +5,7 @@ from pydantic import BaseModel
 # PrivateTaskRemove schema for removing a private task
 # ============================================================
 class PrivateTaskRemoveSchema(BaseModel):
-    task_id: str # The ID of the task to remove
+    taskId: str # The ID of the task to remove
 
     model_config = {
         "json_schema_extra": {

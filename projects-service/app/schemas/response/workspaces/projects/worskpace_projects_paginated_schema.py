@@ -10,16 +10,16 @@ from app.schemas.response.workspaces.projects.workspace_project import Workspace
 class PaginationMetaSchema(BaseModel):
     page: int
     limit: int
-    total_pages: int
-    total_items: int
+    totalPages: int
+    totalItems: int
 
     model_config = {
         "json_schema_extra": {
             "example": {
                 "page": 1,
                 "limit": 10,
-                "total_pages": 1,
-                "total_items": 1
+                "totalPages": 1,
+                "totalItems": 1
             }
         }
     }
@@ -46,8 +46,8 @@ class WorkspaceProjectsPaginatedSchema(BaseModel):
                 "meta": {
                     "page": 1,
                     "limit": 10,
-                    "total_pages": 1,
-                    "total_items": 1
+                    "totalPages": 1,
+                    "totalItems": 1
                 }
             }
         }

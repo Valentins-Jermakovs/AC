@@ -1,16 +1,16 @@
 from pydantic import BaseModel
 
 class KanbanTaskMoveSchema(BaseModel):
-    task_id: str
-    stage_id: str
+    taskId: str
+    stageId: str
     direction: str
 
     model_config = {
         "json_schema_extra": {
             "examples": [
                 {
-                    "task_id": "task_id",
-                    "stage_id": "stage_id",
+                    "taskId": "taskId",
+                    "stageId": "stageId",
                     "direction": "up"
                 }
             ]

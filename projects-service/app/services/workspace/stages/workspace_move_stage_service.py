@@ -13,18 +13,20 @@ async def move_stage(
     direction: str  # "up" or "down"
 ) -> dict:
 
+    # ===== Validation and error handling =====
+    # Raise if project_id is not provided
     if not project_id:
         raise HTTPException(status_code=400, detail="Project ID is required")
-
+    # Raise if stage_id is not provided
     if not stage_id:
         raise HTTPException(status_code=400, detail="Stage ID is required")
-    
+    # Raise if direction is not provided
     if direction not in ["up", "down"]:
         raise HTTPException(status_code=400, detail="Direction must be 'up' or 'down'")
-
+    # Raise if project_id is not valid
     if not ObjectId.is_valid(project_id):
         raise HTTPException(status_code=400, detail="Invalid board ID")
-
+    # Raise if stage_id is not valid
     if not ObjectId.is_valid(stage_id):
         raise HTTPException(status_code=400, detail="Invalid stage ID")
 
@@ -48,11 +50,13 @@ async def move_stage(
 
     # Determine target index
     if direction == "up":
+        # Check if already at top
         if stage_index == 0:
             return {"message": "Already at top"}
         target_index = stage_index - 1
 
     elif direction == "down":
+        # Check if already at bottom
         if stage_index == len(stages) - 1:
             return {"message": "Already at bottom"}
         target_index = stage_index + 1
@@ -60,13 +64,16 @@ async def move_stage(
     else:
         raise HTTPException(status_code=400, detail="Invalid direction")
 
+    # Swap stages
     stage = stages[stage_index]
     target_stage = stages[target_index]
 
     # Proper swap
     stage.order, target_stage.order = target_stage.order, stage.order
 
+    # Save
     await stage.save()
     await target_stage.save()
 
+    # Return success message
     return {"message": "Stage moved successfully"}

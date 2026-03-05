@@ -44,36 +44,38 @@ async def update_stage(
         # Raise if title is empty
         if not title.strip():
             raise HTTPException(status_code=400, detail="Title cannot be empty")
-        
         # Raise if title is too long
         if len(title) > 100:
             raise HTTPException(status_code=400, detail="Title is too long")
-        
         # Raise if title is too short
         if len(title) < 3:
             raise HTTPException(status_code=400, detail="Title is too short")
 
+        # Update title
         stage.title = title
 
     if description is not None:
 
+        # Raise if description is empty
         if not description.strip():
             raise HTTPException(status_code=400, detail="Description cannot be empty")
-
+        # Raise if description is too long
         if len(description) > 1000:
             raise HTTPException(status_code=400, detail="Description is too long")
-        
+        # Raise if description is too short
         if len(description) < 3:
             raise HTTPException(status_code=400, detail="Description is too short")
         
+        # Update description
         stage.description = description
 
+    # Update stage
     await stage.save()
 
     return WorkspaceStageSchema(
         id=str(stage.id),
         title=stage.title,
         description=stage.description,
-        project_id=str(stage.projectId),
+        projectId=str(stage.projectId),
         order=stage.order
     )

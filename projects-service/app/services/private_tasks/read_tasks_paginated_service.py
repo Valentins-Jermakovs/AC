@@ -3,6 +3,7 @@ from fastapi import HTTPException
 # Models
 from app.models import PrivateTaskModel
 # Schemas
+#===== response:
 from app.schemas.response.private_tasks.private_tasks_paginated import (
     PaginationMetaSchema,
     PaginatedPrivateTasksSchema
@@ -25,6 +26,7 @@ async def get_all_private_tasks_paginated(
     limit: int = 10,
     user_id: str = None
 ):
+    # ===== Validation and error handling =====
     # Raise if user id not provided
     if not user_id:
         raise HTTPException(status_code=400, detail="User ID is required")
@@ -41,10 +43,11 @@ async def get_all_private_tasks_paginated(
     if limit > 100:
         raise HTTPException(status_code=400, detail="Limit must be less than 100")
 
+    # ===== Data handling =====
     # Pagination offset
     offset = (page - 1) * limit
 
-    query = {}
+    query = {}      # Query for database
 
     if user_id:
         query['userId'] = user_id
@@ -72,6 +75,7 @@ async def get_all_private_tasks_paginated(
         .to_list(length=limit)
     )
 
+    # Convert to schema
     items = [
         PrivateTaskSchema(
             id=str(task.id),
@@ -84,13 +88,15 @@ async def get_all_private_tasks_paginated(
         for task in tasks
     ]
 
+    # Pagination meta
     meta = PaginationMetaSchema(
         page=page,
         limit=limit,
-        total_pages=(total_tasks + limit - 1) // limit,
-        total_items=total_tasks,
+        totalPages=(total_tasks + limit - 1) // limit,
+        totalItems=total_tasks,
     )
 
+    # Return an object
     return PaginatedPrivateTasksSchema(
         items=items,
         meta=meta

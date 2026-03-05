@@ -31,7 +31,7 @@ security = HTTPBearer()
 # ===== Tasks GET ==========================================================
 # Route for getting all tasks
 @router.get(
-    "/all",
+    "/get-all-tasks",
 )
 async def get_all_tasks_endpoint(
     stage_id: str,
@@ -56,7 +56,7 @@ async def get_all_tasks_endpoint(
 # ===== Tasks POST ==========================================================
 # Route for creating a new kanban task
 @router.post(
-    "/create",
+    "/create-task",
     response_model=KanbanTaskSchema
 )
 async def create_task_endpoint(
@@ -77,15 +77,15 @@ async def create_task_endpoint(
 
     return await create_task(
         title=data.title, 
-        stage_id=data.stage_id, 
-        board_id=data.board_id, 
+        stage_id=data.stageId, 
+        board_id=data.boardId, 
         description=data.description
     )
 
 # ===== Tasks PUT ==========================================================
 # Route for update task
 @router.put(
-    "/update/{task_id}",
+    "/update-task",
     response_model=KanbanTaskSchema
 )
 async def update_task_endpoint(
@@ -105,14 +105,14 @@ async def update_task_endpoint(
     user_id = await check_access_token(access_token)
 
     return await update_task(
-        task_id=data.task_id, 
+        task_id=data.taskId, 
         title=data.title, 
         description=data.description
     )
 
 # Route for move task in stage
 @router.put(
-    "/move-in-stage",
+    "/move-task-in-stage",
 )
 async def move_task_endpoint(
     data: KanbanTaskMoveSchema,
@@ -132,14 +132,14 @@ async def move_task_endpoint(
     user_id = await check_access_token(access_token)
 
     return await move_task_in_stage(
-        task_id=data.task_id, 
+        task_id=data.taskId, 
         direction=data.direction, 
-        stage_id=data.stage_id
+        stage_id=data.stageId
     )
 
 # Route for move task between stages
 @router.put(
-    "/move-between-stages",
+    "/move-task-between-stages",
 )
 async def move_task_between_stages_endpoint(
     data: KanbanTaskMoveBtwStagesSchema,
@@ -159,14 +159,14 @@ async def move_task_between_stages_endpoint(
     user_id = await check_access_token(access_token)
 
     return await move_task_between_stages(
-        task_id=data.task_id, 
-        target_stage_id=data.target_stage_id
+        task_id=data.taskId, 
+        target_stage_id=data.targetStageId
     )
 
 # ===== Tasks DELETE ==========================================================
 # Route for delete task
 @router.delete(
-    "/remove/{task_id}",
+    "/delete-task",
 )
 async def remove_task_endpoint(
     data: KanbanTaskRemoveSchema,
@@ -183,4 +183,6 @@ async def remove_task_endpoint(
     access_token = credantials.credentials
     user_id = await check_access_token(access_token)
 
-    return await delete_task(task_id=data.task_id)
+    return await delete_task(
+        task_id=data.taskId
+    )

@@ -10,8 +10,8 @@ from app.schemas.response.kanban.boards.kanban_board_schema import KanbanBoardSc
 class PaginationMetaSchema(BaseModel):
     page: int
     limit: int
-    total_pages: int
-    total_items: int
+    totalPages: int
+    totalItems: int
 
 # ============================
 # KanbanBoardsPaginated schema

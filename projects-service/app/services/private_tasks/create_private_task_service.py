@@ -15,6 +15,7 @@ async def create_private_task(
     data: PrivateTaskCreateSchema, user_id: str
 ) -> PrivateTaskSchema:
     
+    # ===== Validations =====
     # Raise if user_id is not provided
     if not user_id:
         raise HTTPException(status_code=400, detail="User ID is required")
@@ -55,6 +56,7 @@ async def create_private_task(
     # Save new document in MongoDb
     await new_private_task.save()
 
+    # Return new private task
     return PrivateTaskSchema(
         id=str(new_private_task.id),              # ObjectId -> str
         title=new_private_task.title,

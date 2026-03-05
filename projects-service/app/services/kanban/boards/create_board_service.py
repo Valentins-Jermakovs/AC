@@ -3,6 +3,7 @@ from fastapi import HTTPException
 # Models
 from app.models import KanbanBoardModel
 # Schemas
+# ===== response:
 from app.schemas.response.kanban.boards.kanban_board_schema import KanbanBoardSchema
 
 # ===================================================
@@ -13,8 +14,12 @@ from app.schemas.response.kanban.boards.kanban_board_schema import KanbanBoardSc
 # Returns:
 # - The created board
 # ===================================================
-async def create_board(title: str, user_id: str) -> KanbanBoardSchema:
+async def create_board(
+    title: str, 
+    user_id: str
+) -> KanbanBoardSchema:
 
+    # ===== Validation and error handling =====
     # Raise if user_id is not provided
     if not user_id:
         raise HTTPException(status_code=400, detail="User ID is required")
@@ -31,10 +36,10 @@ async def create_board(title: str, user_id: str) -> KanbanBoardSchema:
     if len(title) < 3:
         raise HTTPException(status_code=400, detail="Title is too short")
     
-    # Find board with title
+    # Find board with the same title
     board = await KanbanBoardModel.find_one({
         "userId": user_id,
-        "title": title
+        "title": title,
     })
 
     if board:

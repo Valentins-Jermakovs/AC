@@ -14,22 +14,24 @@ async def move_task_in_stage(
     direction: str  # "up" or "down"
 ) -> dict:
     
+    # ===== Validation and error handling =====
+    # Raise if task_id is not provided
     if not task_id:
         raise HTTPException(status_code=400, detail="Task ID is required")
-
+    # Raise if stage_id is not provided
     if not stage_id:
         raise HTTPException(status_code=400, detail="Stage ID is required")
-    
+    # Raise if direction is not provided
     if direction not in ["up", "down"]:
         raise HTTPException(status_code=400, detail="Direction must be 'up' or 'down'")
-
+    # Raise if task_id is not valid
     if not ObjectId.is_valid(task_id):
         raise HTTPException(status_code=400, detail="Invalid task ID")
-
+    # Raise if stage_id is not valid
     if not ObjectId.is_valid(stage_id):
         raise HTTPException(status_code=400, detail="Invalid stage ID")
 
-
+    # ===== Business logic =====
     # Get all tasks sorted
     tasks = await KanbanTaskModel.find(
         KanbanTaskModel.stageId == stage_id
@@ -60,6 +62,7 @@ async def move_task_in_stage(
     else:
         raise HTTPException(status_code=400, detail="Invalid direction")
 
+    # Swap tasks
     task = tasks[task_index]
     target_task = tasks[target_index]
 
@@ -80,20 +83,21 @@ async def move_task_between_stages(
     target_stage_id: str,
 ) -> dict:
     
+    # ===== Validation and error handling =====
+    # Raise if task_id is not provided
     if not task_id:
         raise HTTPException(status_code=400, detail="Task ID is required")
-
+    # Raise if target_stage_id is not provided
     if not target_stage_id:
         raise HTTPException(status_code=400, detail="Target stage ID is required")
-
     # Validate task_id
     if not ObjectId.is_valid(task_id):
         raise HTTPException(status_code=400, detail="Invalid task ID")
-
     # Validate target_stage_id
     if not ObjectId.is_valid(target_stage_id):
         raise HTTPException(status_code=400, detail="Invalid target stage ID")
 
+    # ===== Business logic =====
     # Get task
     task = await KanbanTaskModel.find_one({"_id": ObjectId(task_id)})
 
@@ -108,6 +112,7 @@ async def move_task_between_stages(
 
     min_order = 0
 
+    # Get min order
     if target_tasks:
         min_order = target_tasks[0].order
 
@@ -115,9 +120,12 @@ async def move_task_between_stages(
             t.order += 1
             await t.save()
     
+    # Move task
     task.stageId = target_stage_id
     task.order = min_order
 
+    # Save changes
     await task.save()
 
+    # Return response
     return {"message": "Task moved between stages successfully"}

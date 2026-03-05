@@ -39,8 +39,7 @@ async def update_private_task(
 
     # ===== Update data =====
     if title is not None:
-        updated_data["title"] = title
-
+        
         # Check title
         title = title.strip()
 
@@ -54,8 +53,18 @@ async def update_private_task(
             raise HTTPException(status_code=400, detail="Title is too short")
         
         # if title not unique
-        if task.title == title:
+        if await PrivateTaskModel.find_one({
+            "title": title,
+            "userId": task.userId,
+            "_id": {"$ne": task.id}
+        }):
             raise HTTPException(status_code=400, detail="Title must be unique")
+        
+        updated_data["title"] = title
+
+        # if the same title
+        if task.title == title:
+            raise HTTPException(status_code=400, detail="Title must be different")
 
     if description is not None:
         updated_data["description"] = description
@@ -77,13 +86,14 @@ async def update_private_task(
             raise HTTPException(status_code=400, detail="Description must be unique")
 
     if dueDate is not None:
-        updated_data["dueDate"] = await convert_to_datetime(dueDate)
 
         # Check dueDate
         try:
             dueDate = await convert_to_datetime(dueDate)
         except ValueError:
             raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD.")
+        
+        updated_data["dueDate"] = dueDate
 
     if completed is not None:
         updated_data["completed"] = completed
@@ -96,10 +106,10 @@ async def update_private_task(
             raise HTTPException(status_code=400, detail="Status must be different")
 
     # ===== Update task =====
-    
     if updated_data:
         await task.set(updated_data)
 
+    # ===== Return task =====
     return PrivateTaskSchema(
         id=str(task.id),              # ObjectId -> str
         title=task.title,

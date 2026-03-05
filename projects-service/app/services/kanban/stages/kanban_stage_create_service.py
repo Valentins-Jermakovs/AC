@@ -14,6 +14,7 @@ async def create_stage(
     title: str,
 ) -> KanbanStageSchema:
     
+    # ===== Validation and error handling =====
     # Raise if title is empty
     if not title.strip():
         raise HTTPException(status_code=400, detail="Title cannot be empty")
@@ -29,15 +30,6 @@ async def create_stage(
     if len(title) < 3:
         raise HTTPException(status_code=400, detail="Title is too short")
     
-    # if title not unique
-    # Find stage with user_id and title
-    stage = await KanbanStageModel.find_one({
-        "boardId": board_id,
-        "title": title
-    })
-    if stage:
-        raise HTTPException(status_code=400, detail="Title must be unique")
-    
     # Raise if board_id is not provided
     if not board_id:
         raise HTTPException(status_code=400, detail="Board ID is required")
@@ -45,6 +37,16 @@ async def create_stage(
     # Raise if board_id is not valid
     if not ObjectId.is_valid(board_id):
         raise HTTPException(status_code=400, detail="Invalid board ID")
+    
+    # if title not unique
+    # Find stage with equial title except current
+    stage = await KanbanStageModel.find_one({
+        "boardId": board_id,
+        "title": title
+    })
+
+    if stage:
+        raise HTTPException(status_code=400, detail="Title must be unique")
 
     # Find last stage in board
     last_stage = await KanbanStageModel.find({
@@ -64,8 +66,10 @@ async def create_stage(
         order=new_order
     )
 
+    # Insert into DB
     await stage.insert()
 
+    # Return stage
     return KanbanStageSchema(
         id=str(stage.id),
         title=stage.title,

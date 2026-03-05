@@ -6,15 +6,15 @@ from pydantic import BaseModel
 # =============================
 
 class RemoveKanbanBoardMemberSchema(BaseModel):
-    user_id: str      # Member ID
-    board_id: str       # Board ID
+    userId: str      # Member ID
+    boardId: str       # Board ID
 
     model_config = {
         "json_schema_extra": {
             "examples": [
                 {
-                    "user_id": "user_id",
-                    "board_id": "board_id"
+                    "userId": "userId",
+                    "boardId": "boardId"
                 }
             ]
         }

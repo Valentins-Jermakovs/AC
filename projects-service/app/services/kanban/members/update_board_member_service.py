@@ -19,6 +19,7 @@ async def update_board_member(
     role: str
 ) -> dict:
 
+    # ===== Validation and error handling =====
     # Raise if user_id is not provided
     if not user_id:
         raise HTTPException(status_code=400, detail="User ID is required")
@@ -30,6 +31,9 @@ async def update_board_member(
     role = role.lower().strip()
     if not role:
         raise HTTPException(status_code=400, detail="Role is required")
+    
+    if role not in ["viewer", "editor", "admin"]:
+        raise HTTPException(status_code=400, detail="Invalid role")
 
     # try to find board by user_id and board_id
     board_member = await KanbanBoardMemberModel.find_one({

@@ -13,6 +13,7 @@ async def move_stage(
     direction: str  # "up" or "down"
 ) -> dict:
 
+    # ===== Validation and error handling =====
     if not board_id:
         raise HTTPException(status_code=400, detail="Board ID is required")
 

@@ -16,27 +16,29 @@ async def insert_stage_relative(
     description: Optional[str] = None,
 ) -> WorkspaceStageSchema:
     
+    # ===== Validation and error handling =====
+    # Raise if project_id is not provided
     if project_id is None:
         raise HTTPException(status_code=400, detail="Board ID is required")
-    
+    # Raise if project_id is not valid
     if title is None:
         raise HTTPException(status_code=400, detail="Title is required")
-    
+    # Raise if title is empty
     if title.strip() == "":
         raise HTTPException(status_code=400, detail="Title cannot be empty")
-    
+    # Raise if title is too long
     if len(title) > 100:
         raise HTTPException(status_code=400, detail="Title is too long")
-    
+    # Raise if title is too short
     if len(title) < 3:
         raise HTTPException(status_code=400, detail="Title is too short")
-
+    # Raise if reference_stage_id is not provided
     if reference_stage_id is None:
         raise HTTPException(status_code=400, detail="Reference stage ID is required")
-    
+    # Raise if reference_stage_id is not valid
     if not ObjectId.is_valid(reference_stage_id):
         raise HTTPException(status_code=400, detail="Invalid reference stage ID")
-
+    # Raise if position is not valid
     if position not in ["before", "after"]:
         raise HTTPException(status_code=400, detail="Position must be 'before' or 'after'")
 
@@ -61,11 +63,14 @@ async def insert_stage_relative(
 
     # Find neighbour depending on position
     if position == "after":
+
+        # Find next stage
         next_stage = await WorkspaceStageModel.find({
             "projectId": project_id,
             "order": {"$gt": reference_stage.order}
         }).sort("order").first_or_none()
 
+        # Calculate new order
         if next_stage:
             new_order = (next_stage.order + reference_stage.order) / 2
         else:
@@ -77,6 +82,7 @@ async def insert_stage_relative(
             "order": {"$lt": reference_stage.order}
         }).sort("-order").first_or_none()
 
+        # Calculate new order
         if prev_stage:
             new_order = (prev_stage.order + reference_stage.order) / 2
         else:
@@ -85,8 +91,6 @@ async def insert_stage_relative(
     else:
         raise HTTPException(status_code=400, detail="Invalid position")
 
-    
-
     # Create new stage
     stage = WorkspaceStageModel(
         projectId=project_id,
@@ -94,14 +98,17 @@ async def insert_stage_relative(
         order=new_order
     )
 
+    # Add description
     if description is not None:
         stage.description = description
 
+    # Insert stage
     await stage.insert()
 
+    # Return stage
     return WorkspaceStageSchema(
         id=str(stage.id),
-        project_id=stage.projectId,
+        projectId=stage.projectId,
         title=stage.title,
         order=stage.order,
         description=stage.description,

@@ -33,7 +33,7 @@ security = HTTPBearer()
 # ===== Stage GET ==========================================================
 # Route for getting all kanban stages
 @router.get(
-    "/all",
+    "/get-all-stages",
     response_model=AllKanbanStagesSchema
 )
 async def get_all_stages_endpoint(
@@ -57,7 +57,7 @@ async def get_all_stages_endpoint(
 # ===== Stage POST ==========================================================
 # Route for creating a new kanban stage
 @router.post(
-    "/create",
+    "/create-stage",
     response_model=KanbanStageSchema
 )
 async def create_stage_endpoint(
@@ -77,13 +77,13 @@ async def create_stage_endpoint(
     user_id = await check_access_token(access_token)
 
     return await create_stage(
-        board_id=data.board_id, 
+        board_id=data.boardId, 
         title=data.title
     )
 
 # Create a new kanban stage relative
 @router.post(
-    "/create-relative",
+    "/create-relative-stage",
     response_model=KanbanStageSchema
 )
 async def create_stage_relative_endpoint(
@@ -103,16 +103,16 @@ async def create_stage_relative_endpoint(
     user_id = await check_access_token(access_token)
 
     return await insert_stage_relative(
-        board_id=data.board_id, 
+        board_id=data.boardId, 
         title=data.title, 
-        reference_stage_id=data.reference_stage_id, 
+        reference_stage_id=data.referenceStageId, 
         position=data.position
     )
 
 # ===== Stage PUT ==========================================================
 # Route for move a kanban stage
 @router.put(
-    "/move",
+    "/move-stage",
 )
 async def move_stage_endpoint(
     data: MoveKanbanStageSchema,
@@ -132,13 +132,13 @@ async def move_stage_endpoint(
     user_id = await check_access_token(access_token)
 
     return await move_stage(
-        board_id=data.board_id, 
-        stage_id=data.stage_id, 
+        board_id=data.boardId, 
+        stage_id=data.stageId, 
         direction=data.direction)
 
 # Route for updating a kanban stage
 @router.put(
-    "/update",
+    "/update-stage",
     response_model=KanbanStageSchema
 )
 async def update_stage_endpoint(
@@ -158,15 +158,15 @@ async def update_stage_endpoint(
     user_id = await check_access_token(access_token)
 
     return await update_stage(
-        board_id=data.board_id, 
-        stage_id=data.stage_id, 
+        board_id=data.boardId, 
+        stage_id=data.stageId, 
         title=data.title
     )
 
 # ===== Stage DELETE ==========================================================
 # Route for deleting a kanban stage
 @router.delete(
-    "/delete/{stage_id}",
+    "/delete-stage",
 )
 async def delete_stage_endpoint(
     data: RemoveKanbanStage,
@@ -184,5 +184,5 @@ async def delete_stage_endpoint(
     user_id = await check_access_token(access_token)
 
     return await delete_stage(
-        stage_id=data.stage_id
+        stage_id=data.stageId
     )

@@ -4,6 +4,7 @@ import re
 # Models
 from app.models import KanbanBoardModel
 # Schemas
+# ===== response:
 from app.schemas.response.kanban.boards.kanban_board_schema import KanbanBoardSchema
 from app.schemas.response.kanban.boards.kanban_boards_paginated_schema import KanbanBoardsPaginatedSchema, PaginationMetaSchema
 
@@ -17,6 +18,7 @@ async def find_board_by_title(
     page: int = 1
 ) -> KanbanBoardsPaginatedSchema:
 
+    # ===== Validation and error handling =====
     # Raise if user_id is not provided
     if not user_id:
         raise HTTPException(status_code=400, detail="User ID is required")
@@ -41,6 +43,7 @@ async def find_board_by_title(
     if page <= 0:
         raise HTTPException(status_code=400, detail="Page must be a positive integer")
 
+    # ===== Data handling =====
     # Pagination offset
     offset = (page - 1) * limit
 
@@ -66,10 +69,11 @@ async def find_board_by_title(
     meta = PaginationMetaSchema(
         page=page,
         limit=limit,
-        total_pages=(total_boards + limit - 1) // limit,
-        total_items=total_boards
+        totalPages=(total_boards + limit - 1) // limit,
+        totalItems=total_boards
     )
 
+    # Build response
     items = [
         KanbanBoardSchema(
             id=str(board.id),
@@ -78,6 +82,7 @@ async def find_board_by_title(
         ) for board in boards
     ]
 
+    # Return response
     return KanbanBoardsPaginatedSchema(
         items=items,
         meta=meta

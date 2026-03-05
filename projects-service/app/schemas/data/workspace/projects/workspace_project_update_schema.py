@@ -6,7 +6,7 @@ from typing import Optional
 # WorkspaceProjectUpdate schema for updating a workspace project
 # ============================================================
 class WorkspaceProjectUpdateSchema(BaseModel):
-    project_id: str
+    projectId: str
     title: Optional[str] = None
     description: Optional[str] = None
 
@@ -14,7 +14,7 @@ class WorkspaceProjectUpdateSchema(BaseModel):
         "json_schema_extra": {
             "examples": [
                 {
-                    "project_id": "project_id",
+                    "projectId": "projectId",
                     "title": "New project",
                     "description": "New project description - optional"
                 }

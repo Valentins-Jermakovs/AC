@@ -6,6 +6,7 @@ import calendar
 # Models
 from app.models import PrivateTaskModel
 # Schemas
+# =====:response
 from app.schemas.response.private_tasks.private_task import PrivateTaskSchema
 from app.schemas.response.private_tasks.private_tasks_paginated import (
     PaginatedPrivateTasksSchema,
@@ -43,6 +44,15 @@ async def find_task_by_title(
     # Raise 404 if requested page exceeds total tasks
     if offset >= total_tasks:
         raise HTTPException(status_code=404, detail="Page not found")
+    # Raise if limit > 100
+    if limit > 100:
+        raise HTTPException(status_code=400, detail="Limit must be less than 100")
+    # Raise if page <= 0
+    if page <= 0:
+        raise HTTPException(status_code=400, detail="Page must be a positive integer")
+    # Raise if limit <= 0
+    if limit <= 0:
+        raise HTTPException(status_code=400, detail="Limit must be a positive integer")
 
     # Try to find task by title and user_id
     tasks = await PrivateTaskModel.find({
@@ -54,10 +64,11 @@ async def find_task_by_title(
     meta = PaginationMetaSchema(
         page=page,
         limit=limit,
-        total_pages=(total_tasks + limit - 1) // limit,
-        total_items=total_tasks
+        totalPages=(total_tasks + limit - 1) // limit,
+        totalItems=total_tasks
     )
 
+    # Build response
     items = [
         PrivateTaskSchema(
             id=str(task.id),
@@ -70,6 +81,7 @@ async def find_task_by_title(
         for task in tasks
     ]
 
+    # Return response object
     return PaginatedPrivateTasksSchema(
         items=items,
         meta=meta
@@ -115,10 +127,11 @@ async def find_task_by_description(
     meta = PaginationMetaSchema(
         page=page,
         limit=limit,
-        total_pages=(total_tasks + limit - 1) // limit,
-        total_items=total_tasks
+        totaPages=(total_tasks + limit - 1) // limit,
+        totalItems=total_tasks
     )
 
+    # Build response
     items = [
         PrivateTaskSchema(
             id=str(task.id),
@@ -131,6 +144,7 @@ async def find_task_by_description(
         for task in tasks
     ]
 
+    # Return response object
     return PaginatedPrivateTasksSchema(
         items=items,
         meta=meta
@@ -180,10 +194,11 @@ async def find_task_by_duedate(
     meta = PaginationMetaSchema(
         page=page,
         limit=limit,
-        total_pages=(total_tasks + limit - 1) // limit,
-        total_items=total_tasks
+        totalPages=(total_tasks + limit - 1) // limit,
+        totalItems=total_tasks
     )
 
+    # Build response
     items = [
         PrivateTaskSchema(
             id=str(task.id),
@@ -196,6 +211,7 @@ async def find_task_by_duedate(
         for task in tasks
     ]
 
+    # Return response object
     return PaginatedPrivateTasksSchema(
         items=items,
         meta=meta
@@ -212,6 +228,7 @@ async def find_task_by_month(
     page: int = 1
 ) -> PaginatedPrivateTasksSchema:
 
+    # ===== Validation and error handling =====
     # Raise if limit or page not provided
     if not limit or not page:
         raise HTTPException(status_code=400, detail="Limit and page are required")
@@ -269,10 +286,11 @@ async def find_task_by_month(
     meta = PaginationMetaSchema(
         page=page,
         limit=limit,
-        total_pages=(total_tasks + limit - 1) // limit,
-        total_items=total_tasks
+        totalPages=(total_tasks + limit - 1) // limit,
+        totalItems=total_tasks
     )
 
+    # Build response
     items = [
         PrivateTaskSchema(
             id=str(task.id),
@@ -285,6 +303,7 @@ async def find_task_by_month(
         for task in tasks
     ]
 
+    # Return response object
     return PaginatedPrivateTasksSchema(
         items=items,
         meta=meta

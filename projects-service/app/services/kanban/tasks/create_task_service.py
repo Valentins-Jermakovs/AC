@@ -17,29 +17,28 @@ async def create_task(
     description: Optional[str] = None, 
 ) -> KanbanTaskSchema:
     
+    # ===== Validation and error handling =====
+    # Raise if stage_id is not provided
     if not stage_id:
         raise HTTPException(status_code=400, detail="Stage ID is required")
-
+    # Raise if board_id is not provided
     if not board_id:
         raise HTTPException(status_code=400, detail="Board ID is required")
-
     # Raise if stage_id is not valid
     if not ObjectId.is_valid(stage_id):
         raise HTTPException(status_code=400, detail="Invalid stage ID")
-    
     # Raise if board_id is not valid
     if not ObjectId.is_valid(board_id):
         raise HTTPException(status_code=400, detail="Invalid board ID")
-    
     # Check title
     title = title.strip()
-
+    # Raise if title is empty
     if not title:
         raise HTTPException(status_code=400, detail="Title is required")
-    
+    # Raise if title is too long
     if len(title) > 100:
         raise HTTPException(status_code=400, detail="Title is too long")
-    
+    # Raise if title is too short
     if len(title) < 3:
         raise HTTPException(status_code=400, detail="Title is too short")
     
@@ -50,6 +49,8 @@ async def create_task(
     })
     if task:
         raise HTTPException(status_code=400, detail="Title must be unique")
+    
+    # ===== Business logic =====
 
     # Find last task in stage
     last_task = await KanbanTaskModel.find({
@@ -71,6 +72,7 @@ async def create_task(
         order=new_order
     )
 
+    # Insert task
     await task.insert()
 
     # Return task

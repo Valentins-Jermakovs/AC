@@ -16,6 +16,7 @@ async def insert_stage_relative(
     position: str  # "before" or "after"
 ) -> KanbanStageSchema:
     
+    # ===== Validation and error handling =====
     if board_id is None:
         raise HTTPException(status_code=400, detail="Board ID is required")
     
@@ -41,10 +42,10 @@ async def insert_stage_relative(
         raise HTTPException(status_code=400, detail="Position must be 'before' or 'after'")
 
     # if title not unique
-    # Find stage with user_id and title
+    # Find stage with the same title except this one
     stage = await KanbanStageModel.find_one({
         "title": title,
-        "boardId": board_id
+        "boardId": board_id,
     })
     if stage:
         raise HTTPException(status_code=400, detail="Title must be unique")

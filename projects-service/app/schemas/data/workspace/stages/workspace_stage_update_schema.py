@@ -6,7 +6,7 @@ from typing import Optional
 # WorkspaceStageUpdate schema - request
 # =============================
 class WorkspaceStageUpdateSchema(BaseModel):
-    stage_id: str
+    stageId: str
     title: Optional[str] = None
     description: Optional[str] = None
 
@@ -14,7 +14,7 @@ class WorkspaceStageUpdateSchema(BaseModel):
         "json_schema_extra": {
             "examples": [
                 {
-                    "stage_id": "stage_id",
+                    "stageId": "stageId",
                     "title": "New stage",
                     "description": "New stage description"
                 }

@@ -10,8 +10,8 @@ from .private_task import PrivateTaskSchema
 class PaginationMetaSchema(BaseModel):
     page: int           # Current page number
     limit: int          # Number of items per page
-    total_pages: int    # Total number of pages
-    total_items: int    # Total number of results
+    totalPages: int    # Total number of pages
+    totalItems: int    # Total number of results
 
     model_config = {
         "json_schema_extra": {

@@ -5,16 +5,16 @@ from pydantic import BaseModel
 # UpdateKanbanBoardMember schema - request
 # =============================
 class UpdateKanbanBoardMemberSchema(BaseModel):
-    user_id: str        # User ID
-    board_id: str       # Board ID
+    userId: str        # User ID
+    boardId: str       # Board ID
     role: str           # Role
 
     model_config = {
         "json_schema_extra": {
             "examples": [
                 {
-                    "user_id": "user_id",
-                    "board_id": "board_id",
+                    "userId": "userId",
+                    "boardId": "boardId",
                     "role": "role"
                 }
             ]

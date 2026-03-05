@@ -13,16 +13,19 @@ async def get_all_tasks(
     stage_id: str
 ) -> dict:
     
+    # ===== Validation and error handling =====
     if not stage_id:
         raise HTTPException(status_code=400, detail="Stage ID is required")
 
     if not ObjectId.is_valid(stage_id):
         raise HTTPException(status_code=400, detail="Invalid stage ID")
 
+    # ===== Business logic =====
     tasks = await KanbanTaskModel.find({
         "stageId": stage_id
     }).sort("order").to_list()
 
+    # Build response
     items = [
         KanbanTaskSchema(
             id=str(task.id),
@@ -33,6 +36,7 @@ async def get_all_tasks(
         ) for task in tasks
     ]
 
+    # Return response
     return {
         "items": items
     }

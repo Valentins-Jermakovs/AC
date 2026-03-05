@@ -15,6 +15,8 @@ async def create_project(
     description: Optional[str] = None
 ) -> WorkspaceProjectSchema:
     
+    # ===== Validation and error handling =====
+    # Raise if user_id is not provided
     if not user_id:
         raise HTTPException(status_code=400, detail="User ID is required")
     # Raise if title is empty
@@ -38,6 +40,7 @@ async def create_project(
         if len(description) < 3:
             raise HTTPException(status_code=400, detail="Description is too short")
 
+    # ===== Business logic =====
     # Create new project
     new_project = WorkspaceProjectModel(
         userId=user_id,
@@ -48,6 +51,7 @@ async def create_project(
     # Save new document in MongoDb
     await new_project.save()
 
+    # ===== Response =====
     return WorkspaceProjectSchema(
         id=str(new_project.id),              # ObjectId -> str
         userId=new_project.userId,

@@ -18,54 +18,60 @@ async def get_project_by_title_or_description(
     page: int = 1
 ) -> WorkspaceProjectsPaginatedSchema:
     
+    # ===== Validation and error handling =====
+    # Raise if title or description not provided
     if not title and not description:
         raise HTTPException(status_code=400, detail="Title or description required")
-    
+    # Raise if limit or page not provided
     if not limit or not page:
         raise HTTPException(status_code=400, detail="Limit and page are required")
-    
+    # Raise if limit is not a positive integer
     if limit <= 0:
         raise HTTPException(status_code=400, detail="Limit must be a positive integer")
-    
+    # Raise if page is not a positive integer
     if page <= 0:
         raise HTTPException(status_code=400, detail="Page must be a positive integer")
-    
+    # Raise if limit is greater than 100
     if limit > 100:
         raise HTTPException(status_code=400, detail="Limit must be less than 100")
     
-
+    # ===== Business logic =====
     # Pagination offset
     offset = (page - 1) * limit
 
-    query_conditions = []
+    query_conditions = []   # Query for database
 
     if title:
         query_conditions.append(
             {"title": {"$regex": re.escape(title), "$options": "i"}}
         )
-
     if description:
         query_conditions.append(
             {"description": {"$regex": re.escape(description), "$options": "i"}}
         )
 
+    # Create query
     query = {"$or": query_conditions}
 
+    # Try to find project by title or description
     total_projects = await WorkspaceProjectModel.find(query).count()
     projects = await WorkspaceProjectModel.find(query).skip(offset).limit(limit).to_list()
-
+    # Calculate total pages
     total_pages = (total_projects + limit - 1) // limit
 
+    # Raise 404 if requested page exceeds total projects
     if page > total_pages:
         raise HTTPException(status_code=404, detail="Page not found")
 
+    # Create response
     meta=PaginationMetaSchema(
         page=page,
         limit=limit,
-        total_pages=total_pages,
-        total_items=total_projects
+        totalPages=total_pages,
+        totalItems=total_projects
     )
 
+    # Create response
     items = [
         WorkspaceProjectSchema(
             id=str(project.id),
@@ -76,4 +82,8 @@ async def get_project_by_title_or_description(
         ) for project in projects
     ]
 
-    return WorkspaceProjectsPaginatedSchema(items=items, meta=meta)
+    # Return response
+    return WorkspaceProjectsPaginatedSchema(
+        items=items, 
+        meta=meta
+    )

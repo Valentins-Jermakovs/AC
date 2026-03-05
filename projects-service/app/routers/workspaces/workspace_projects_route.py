@@ -31,7 +31,7 @@ security = HTTPBearer()
 # ==== Project GET ==========================================================
 # Route for getting all projects
 @router.get(
-    "/all",
+    "/get-all-projects",
     response_model=WorkspaceProjectsPaginatedSchema
 )
 async def get_all_projects_endpoint(
@@ -60,7 +60,7 @@ async def get_all_projects_endpoint(
 
 # Route for getting a project by title or description
 @router.get(
-    "/get-title-or-description",
+    "/get-project-by-title-or-description",
     response_model=WorkspaceProjectsPaginatedSchema
 )
 async def get_project_by_title_or_description_endpoint(
@@ -92,7 +92,7 @@ async def get_project_by_title_or_description_endpoint(
 # ==== Project POST ==========================================================
 # Route for creating a new project
 @router.post(
-    "/create",
+    "/create-project",
     response_model=WorkspaceProjectSchema
 )
 async def create_project_endpoint(
@@ -119,7 +119,7 @@ async def create_project_endpoint(
 # ==== Project PUT ===========================================================
 # Route for updating a project
 @router.put(
-    "/update",
+    "/update-project",
     response_model=WorkspaceProjectSchema
 )
 async def update_project_endpoint(
@@ -140,7 +140,7 @@ async def update_project_endpoint(
 
     return await update_project(
         user_id=user_id,
-        project_id=data.project_id, 
+        project_id=data.projectId, 
         title=data.title, 
         description=data.description
     )
@@ -148,7 +148,7 @@ async def update_project_endpoint(
 # ===== Project DELETE =======================================================
 # Route for deleting a project
 @router.delete(
-    "/delete/{project_id}",
+    "/delete-project",
 )
 async def delete_project_endpoint(
     data: WorkspaceProjectDeleteSchema, 
@@ -166,4 +166,6 @@ async def delete_project_endpoint(
     access_token = credantials.credentials
     user_id = await check_access_token(access_token)
 
-    return await delete_project(project_id=data.project_id)
+    return await delete_project(
+        project_id=data.projectId
+    )

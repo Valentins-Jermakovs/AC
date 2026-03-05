@@ -1,7 +1,6 @@
 # Imports
 from fastapi import Depends, APIRouter
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-
 # Schemas
 # ===== Tasks Schemas =====
 # ===== data:
@@ -12,10 +11,8 @@ from app.schemas.data.private_tasks.private_task_remove_schema import PrivateTas
 from app.schemas.response.private_tasks.private_task import PrivateTaskSchema
 from app.schemas.response.private_tasks.private_tasks_paginated import PaginatedPrivateTasksSchema
 # =========================
-
 # Utils
 from app.utils.check_access_token import check_access_token
-
 # Services
 # ====== Tasks Services ======
 from app.services.private_tasks.create_private_task_service import create_private_task
@@ -32,7 +29,7 @@ from app.services.private_tasks.remove_private_task_service import remove_privat
 
 # Router
 router = APIRouter(
-    prefix="/tasks",
+    prefix="/private-tasks",
     tags=["Private tasks management service"]
 )
 
@@ -41,10 +38,9 @@ security = HTTPBearer()
 
 
 # ===== Tasks GET ==========================================================
-
 # Route for all tasks (paginated)
 @router.get(
-    "/all",
+    "/get-all-tasks",
     response_model=PaginatedPrivateTasksSchema,
 )
 async def get_all_private_tasks_endpoint(
@@ -72,7 +68,7 @@ async def get_all_private_tasks_endpoint(
 
 # Route for find tasks by title
 @router.get(
-    "/title",
+    "/get-tasks-by-title",
     response_model=PaginatedPrivateTasksSchema,
 )
 async def find_tasks_by_title_endpoint(
@@ -102,7 +98,7 @@ async def find_tasks_by_title_endpoint(
 
 # Rote for find task by description
 @router.get(
-    "/description",
+    "/get-tasks-by-description",
     response_model=PaginatedPrivateTasksSchema,
 )
 async def find_tasks_by_description_endpoint(
@@ -132,7 +128,7 @@ async def find_tasks_by_description_endpoint(
 
 # Find task by due date
 @router.get(
-    "/duedate",
+    "/get-tasks-by-duedate",
     response_model=PaginatedPrivateTasksSchema,
 )
 async def find_tasks_by_duedate_endpoint(
@@ -162,7 +158,7 @@ async def find_tasks_by_duedate_endpoint(
 
 # Find task by month
 @router.get(
-    "/month",
+    "/get-tasks-by-month",
     response_model=PaginatedPrivateTasksSchema,
 )
 async def find_tasks_by_month_endpoint(
@@ -193,10 +189,9 @@ async def find_tasks_by_month_endpoint(
     )
 
 # ===== Tasks POST ==========================================================
-
 # Route for creating a new private task
 @router.post(
-    "/create",
+    "/create-task",
     response_model=PrivateTaskSchema
 )
 async def create_private_task_endpoint(
@@ -221,10 +216,9 @@ async def create_private_task_endpoint(
     )
 
 # ===== Tasks PUT ==========================================================
-
 # Route for update a task by _id
 @router.put(
-    "/update/{task_id}",
+    "/update-task",
     response_model=PrivateTaskSchema
 )
 async def update_private_task_endpoint(
@@ -244,7 +238,7 @@ async def update_private_task_endpoint(
     user_id = await check_access_token(access_token)
 
     return await update_private_task(
-        task_id=data.task_id, 
+        task_id=data.taskId, 
         title=data.title, 
         description=data.description, 
         dueDate=data.dueDate, 
@@ -252,10 +246,9 @@ async def update_private_task_endpoint(
     )
 
 # ===== Tasks DELETE ==========================================================
-
 # Route for remove a task by _id
 @router.delete(
-    "/remove/{task_id}",
+    "/delete-task",
 )
 async def remove_private_task_endpoint(
     data: PrivateTaskRemoveSchema,
@@ -273,6 +266,6 @@ async def remove_private_task_endpoint(
     user_id = await check_access_token(access_token)
 
     return await remove_private_task(
-        task_id=data.task_id, 
+        task_id=data.taskId, 
         user_id=user_id
     )

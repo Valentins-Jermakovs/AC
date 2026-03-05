@@ -29,9 +29,9 @@ security = HTTPBearer()
 
 # ===== Boards GET ================================
 
-# Route fro find all kanban boards paginated
+# Route for find all kanban boards paginated
 @router.get(
-    "/all-boards",
+    "/get-all-boards",
     response_model=KanbanBoardsPaginatedSchema
 )
 async def get_all_boards_endpoint(
@@ -59,7 +59,7 @@ async def get_all_boards_endpoint(
 
 # Route for find kanban board by title
 @router.get(
-    "/find-board-by-title",
+    "/get-board-by-title",
     summary="Find a kanban board",
     description="Find a kanban board in the database",
     response_model=KanbanBoardsPaginatedSchema
@@ -140,13 +140,14 @@ async def update_kanban_board_endpoint(
     user_id = await check_access_token(access_token)
 
     return await update_board(
-        board_id=data.board_id, 
-        title=data.title
+        board_id=data.boardId, 
+        title=data.title,
+        user_id=user_id
     )
 
 # Route for remove kanban board by _id
 @router.delete(
-    "/remove-board/{board_id}",
+    "/delete-board",
 )
 async def remove_kanban_board_endpoint(
     data: KanbanBoardRemoveSchema,
@@ -164,6 +165,6 @@ async def remove_kanban_board_endpoint(
     user_id = await check_access_token(access_token)
 
     return await remove_board(
-        board_id=data.board_id, 
+        board_id=data.boardId, 
         user_id=user_id
     )

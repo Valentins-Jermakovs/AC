@@ -33,7 +33,7 @@ security = HTTPBearer()
 # ===== Stage GET ==========================================================
 # Route for getting all kanban stages
 @router.get(
-    "/all",
+    "/get-all-stages",
     response_model=WorkspaceGetAllStagesResponse
 )
 async def get_all_stages_endpoint(
@@ -59,7 +59,7 @@ async def get_all_stages_endpoint(
 # ===== Stage POST ==========================================================
 # Route for creating a new project stage
 @router.post(
-    "/create",
+    "/create-stage",
     response_model=WorkspaceStageSchema
 )
 async def create_stage_endpoint(
@@ -81,12 +81,12 @@ async def create_stage_endpoint(
     return await create_stage(
         title=data.title,
         description=data.description,
-        project_id=data.project_id
+        project_id=data.projectId
     )
 
 # Route for creating new stage relative to another stage
 @router.post(
-    "/insert-relative",
+    "/insert-relative-stage",
     response_model=WorkspaceStageSchema
 )
 async def insert_stage_relative_endpoint(
@@ -106,9 +106,9 @@ async def insert_stage_relative_endpoint(
     user_id = await check_access_token(access_token)
 
     return await insert_stage_relative(
-        project_id=data.project_id,
+        project_id=data.projectId,
         title=data.title,
-        reference_stage_id=data.reference_stage_id,
+        reference_stage_id=data.referenceStageId,
         position=data.position,
         description=data.description
     )
@@ -116,7 +116,7 @@ async def insert_stage_relative_endpoint(
 # ===== Stage PUT ==========================================================
 # Route for updating a kanban stage
 @router.put(
-    "/update",
+    "/update-stage",
     response_model=WorkspaceStageSchema
 )
 async def update_stage_endpoint(
@@ -136,14 +136,14 @@ async def update_stage_endpoint(
     user_id = await check_access_token(access_token)
 
     return await update_stage(
-        stage_id=data.stage_id,
+        stage_id=data.stageId,
         title=data.title,
         description=data.description
     )
 
 # Route for moving a kanban stage
 @router.put(
-    "/move"
+    "/move-stage"
 )
 async def move_stage_endpoint(
     data: WorkspaceMoveStageSchema,
@@ -162,15 +162,15 @@ async def move_stage_endpoint(
     user_id = await check_access_token(access_token)
 
     return await move_stage(
-        project_id=data.project_id, 
-        stage_id=data.stage_id, 
+        project_id=data.projectId, 
+        stage_id=data.stageId, 
         direction=data.direction
     )
 
 # ===== Stage DELETE ==========================================================
 # Route for deleting a kanban stage
 @router.delete(
-    "/delete",
+    "/delete-stage",
 )
 async def delete_stage_endpoint(
     data: WorkspaceStageDelete,
@@ -188,5 +188,5 @@ async def delete_stage_endpoint(
     user_id = await check_access_token(access_token)
 
     return await delete_stage(
-        stage_id=data.stage_id
+        stage_id=data.stageId
     )

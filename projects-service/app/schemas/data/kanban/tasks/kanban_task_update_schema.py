@@ -6,7 +6,7 @@ from pydantic import BaseModel
 # KanbanTaskUpdate schema for updating a kanban task
 # ============================================================
 class KanbanTaskUpdateSchema(BaseModel):
-    task_id: str
+    taskId: str
     title: Optional[str] = None
     description: Optional[str] = None
 
@@ -14,7 +14,7 @@ class KanbanTaskUpdateSchema(BaseModel):
         "json_schema_extra": {
             "examples": [
                 {
-                    "task_id": "task_id",
+                    "taskId": "task_id",
                     "title": "Kanban task title",
                     "description": "Kanban task description"
                 }

@@ -4,6 +4,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 # Schemas
 # ===== response:
 from app.schemas.response.kanban.members.kanban_board_member_schema import KanbanBoardMemberSchema
+from app.schemas.response.kanban.members.kanban_board_members_paginated_schema import KanbanBoardMembersPaginatedSchema
 # ===== data:
 from app.schemas.data.kanban.members.add_member_schema import AddMemberSchema
 from app.schemas.data.kanban.members.update_member_schema import UpdateKanbanBoardMemberSchema
@@ -29,6 +30,7 @@ security = HTTPBearer()
 # Route for getting all members of a kanban board
 @router.get(
     "/get-all-members",
+    response_model=KanbanBoardMembersPaginatedSchema
 )
 async def get_all_kanban_board_members_endpoint(
     board_id: str,
@@ -77,15 +79,15 @@ async def add_kanban_board_member_endpoint(
     user_id = await check_access_token(access_token)
 
     return await add_board_member(
-        board_id=data.board_id, 
-        user_id=data.user_id, 
+        board_id=data.boardId, 
+        user_id=data.userId, 
         role=data.role
     )
 
 # ===== Kanban board member PUT ==========================================================
 # Route for updating a member of a kanban board
 @router.put(
-    "/update-member",
+    "/update-member"
 )
 async def update_kanban_board_member_endpoint(
     data: UpdateKanbanBoardMemberSchema,
@@ -104,8 +106,8 @@ async def update_kanban_board_member_endpoint(
     user_id = await check_access_token(access_token)
 
     return await update_board_member(
-        board_id=data.board_id,
-        user_id=data.user_id, 
+        board_id=data.boardId,
+        user_id=data.userId, 
         role=data.role
     )
 
@@ -130,6 +132,6 @@ async def delete_kanban_board_member_endpoint(
     current_user_id = await check_access_token(access_token)
 
     return await delete_board_member(
-        user_id=data.user_id, 
-        board_id=data.board_id
+        user_id=data.userId, 
+        board_id=data.boardId
     )

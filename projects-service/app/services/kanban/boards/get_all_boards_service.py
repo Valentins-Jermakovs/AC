@@ -3,9 +3,11 @@ from fastapi import HTTPException
 # Models
 from app.models import KanbanBoardModel
 # Schemas
+# ===== :response
 from app.schemas.response.kanban.boards.kanban_board_schema import KanbanBoardSchema
 from app.schemas.response.kanban.boards.kanban_boards_paginated_schema import (
-    PaginationMetaSchema, KanbanBoardsPaginatedSchema
+    PaginationMetaSchema, 
+    KanbanBoardsPaginatedSchema
 )
 
 async def get_all_boards_paginated(
@@ -13,6 +15,7 @@ async def get_all_boards_paginated(
     limit: int = 10,
     user_id: str = None
 ):
+    # ===== Validation and error handling =====
     # Raise if limit is not a positive integer
     if limit <= 0:
         raise HTTPException(status_code=400, detail="Limit must be a positive integer")
@@ -28,6 +31,7 @@ async def get_all_boards_paginated(
     if not user_id:
         raise HTTPException(status_code=400, detail="User ID is required")
 
+    # ===== Data handling =====
     # Pagination offset
     offset = (page - 1) * limit
 
@@ -58,10 +62,11 @@ async def get_all_boards_paginated(
     meta = PaginationMetaSchema(
         page=page,
         limit=limit,
-        total_pages=total_boards // limit,
-        total_items=total_boards
+        totalPages=total_boards // limit,
+        totalItems=total_boards
     )
 
+    # Build response
     items = [
         KanbanBoardSchema(
             id=str(board.id),
@@ -71,6 +76,7 @@ async def get_all_boards_paginated(
         for board in boards
     ]
 
+    # Return response
     return KanbanBoardsPaginatedSchema(
         items=items,
         meta=meta

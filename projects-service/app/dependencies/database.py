@@ -3,6 +3,7 @@ from pymongo import AsyncMongoClient, monitoring
 from beanie import init_beanie
 import os
 from dotenv import load_dotenv
+# Models
 from ..models import (
     PrivateTaskModel, 
     KanbanBoardModel, 
@@ -36,7 +37,8 @@ load_dotenv()
 # - succeeded
 # - failed
 #
-# This function is global. It will be called for every command
+# This function is global. 
+# It will be called for every command
 # executed on the database.
 # =========================
 class MongoLogger(monitoring.CommandListener):

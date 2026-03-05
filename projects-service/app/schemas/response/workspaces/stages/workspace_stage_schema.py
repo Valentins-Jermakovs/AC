@@ -9,7 +9,7 @@ class WorkspaceStageSchema(BaseModel):
     id: str
     title: str
     description: Optional[str]
-    project_id: str
+    projectId: str
     order: float
 
     model_config = {
@@ -19,7 +19,7 @@ class WorkspaceStageSchema(BaseModel):
                     "id": "stage_id",
                     "title": "Stage title",
                     "description": "Stage description - optional",
-                    "project_id": "project_id",
+                    "projectId": "projectId",
                     "order": 1000
                 }
             ]

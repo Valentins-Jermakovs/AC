@@ -35,6 +35,8 @@ async def add_board_member(
     :return: The board member
     :raises HTTPException: 404 if board or user not found
     """
+
+    # ===== Validation and error handling =====
     role = role.lower().strip()
     
     if not board_id:
@@ -51,13 +53,23 @@ async def add_board_member(
 
     if not ObjectId.is_valid(board_id):
         raise HTTPException(status_code=400, detail="Invalid board ID")
+    
+    # if user already exists
+    if await KanbanBoardMemberModel.find_one({
+        "boardId": board_id,
+        "userId": user_id
+    }):
+        raise HTTPException(status_code=400, detail="Board member already exists")
 
+    # Create board member
     board_member = KanbanBoardMemberModel(
         boardId=board_id,
         userId=user_id,
         role=role
     )
 
+    # Save board member
     await board_member.save()
 
+    # Return board member
     return board_member

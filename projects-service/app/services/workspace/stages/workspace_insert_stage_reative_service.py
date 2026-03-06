@@ -3,7 +3,7 @@ from fastapi import HTTPException
 from bson import ObjectId
 from typing import Optional
 # Models
-from app.models import WorkspaceStageModel
+from app.models import WorkspaceStageModel, WorkspaceProjectMemberModel
 # Schemas
 from app.schemas.response.workspaces.stages.workspace_stage_schema import WorkspaceStageSchema
 
@@ -11,9 +11,11 @@ from app.schemas.response.workspaces.stages.workspace_stage_schema import Worksp
 async def insert_stage_relative(
     project_id: str,
     title: str,
+    user_id: str,
     reference_stage_id: str, # stage which will be used as reference
     position: str,  # "before" or "after"
     description: Optional[str] = None,
+    
 ) -> WorkspaceStageSchema:
     
     # ===== Validation and error handling =====
@@ -41,6 +43,20 @@ async def insert_stage_relative(
     # Raise if position is not valid
     if position not in ["before", "after"]:
         raise HTTPException(status_code=400, detail="Position must be 'before' or 'after'")
+
+
+    # Check current user
+    user =  await WorkspaceProjectMemberModel.find_one({
+        "projectId": project_id,
+        "userId": user_id,
+    })
+
+    if not user:
+        raise HTTPException(status_code=403, detail="You are not member of this project")
+    
+    # Check if user is viewer
+    if user.role == "viewer":
+        raise HTTPException(status_code=403, detail="You cannot work in this project")
 
     # if title not unique
     # Find stage with user_id and title

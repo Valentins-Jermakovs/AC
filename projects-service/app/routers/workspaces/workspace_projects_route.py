@@ -168,5 +168,6 @@ async def delete_project_endpoint(
     user_id = await check_access_token(access_token)
 
     return await delete_project(
-        project_id=data.projectId
+        project_id=data.projectId,
+        user_id=user_id
     )

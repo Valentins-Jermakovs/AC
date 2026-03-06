@@ -51,8 +51,9 @@ async def get_all_tasks_route(
     user_id = await check_access_token(access_token)
 
     return await get_all_tasks(
-        projectId=project_id,
-        stageId=stage_id
+        project_id=project_id,
+        stage_id=stage_id,
+        user_id=user_id
     )
 
 # ===== Task POST ==========================================================
@@ -78,7 +79,8 @@ async def create_task_route(
     user_id = await check_access_token(access_token)
 
     return await create_task(
-        task_data=workspace_task
+        task_data=workspace_task,
+        user_id=user_id
     )
 
 
@@ -105,7 +107,8 @@ async def update_task_route(
     user_id = await check_access_token(access_token)
 
     return await update_task(
-        data=workspace_task
+        data=workspace_task,
+        user_id=user_id
     )
 
 # ===== Task DELETE ==========================================================
@@ -129,6 +132,8 @@ async def remove_task_route(
     user_id = await check_access_token(access_token)
 
     return await delete_task(
-        task_id=data.taskId
+        task_id=data.taskId,
+        project_id=data.projectId,
+        user_id=user_id
     )
 

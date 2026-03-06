@@ -9,7 +9,15 @@ from app.models import (
     WorkspaceTaskModel
 )
 
-async def delete_project(project_id: str) -> dict:
+async def delete_project(project_id: str, user_id: str) -> dict:
+
+    # Check if current user is owner of this project
+    if not await WorkspaceProjectMemberModel.find_one({
+        "projectId": project_id,
+        "userId": user_id,
+        "role": "owner"
+    }):
+        raise HTTPException(status_code=403, detail="You are not owner of this project or this project does not exist")
     
     if not project_id:
         raise HTTPException(status_code=400, detail="Project ID is required")

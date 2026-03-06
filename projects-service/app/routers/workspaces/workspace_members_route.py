@@ -33,7 +33,9 @@ security = HTTPBearer()
     "/get-all-members",
 )
 async def get_all_project_members_endpoint(
-    project_id: str, 
+    project_id: str,
+    limit: int = 10,
+    page: int = 1, 
     credantials: HTTPAuthorizationCredentials = Depends(security)
 ):
     '''
@@ -49,7 +51,10 @@ async def get_all_project_members_endpoint(
     user_id = await check_access_token(access_token)
     
     return await get_all_project_members(
-        projectId=project_id
+        project_id=project_id,
+        user_id=user_id,
+        page=page,
+        limit=limit
     )
 
 # ==== Project POST ==========================================================
@@ -73,9 +78,10 @@ async def add_project_member_endpoint(
     user_id = await check_access_token(access_token)
 
     return await add_project_member(
-        projectId=data.projectId,
-        userId=data.userId,
-        role=data.role
+        project_id=data.projectId,
+        user_id=data.userId,
+        role=data.role,
+        user_id_creator=user_id
     )
 
 # ==== Project PUT ==========================================================
@@ -101,9 +107,10 @@ async def update_project_member_role_endpoint(
     user_id_from_token = await check_access_token(access_token)
     
     return await update_project_member_role(
-        projectId=data.projectId,
-        userId=data.userId,
-        role=data.role
+        project_id=data.projectId,
+        user_id=data.userId,
+        role=data.role,
+        user_id_creator=user_id_from_token
     )
 
 # ==== Project DELETE ==========================================================
@@ -120,8 +127,9 @@ async def delete_project_member_endpoint(
     user_id_from_token = await check_access_token(access_token)
     
     return await delete_project_member(
-        projectId=data.projectId,
-        userId=data.userId
+        project_id=data.projectId,
+        user_id=data.userId,
+        user_id_creator=user_id_from_token
     )
 
 

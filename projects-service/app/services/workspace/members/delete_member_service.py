@@ -1,38 +1,79 @@
 # Imports
 from fastapi import HTTPException
 from bson import ObjectId
+
 # Models
 from app.models import WorkspaceProjectMemberModel
 
-# ===============================
+
+# =================================================
 # Delete project member
-# ===============================
+# =================================================
 async def delete_project_member(
-    projectId: str, 
-    userId: str
+    project_id: str,
+    user_id: str,
+    user_id_creator: str
 ) -> dict:
-    
-    # ====== Validation and error handling =====
-    # Raise if project_id is not provided
-    if not projectId:
+
+    # ================= VALIDATION =================
+
+    if not project_id:
         raise HTTPException(status_code=400, detail="Project ID is required")
-    # Raise if user_id is not provided
-    if not userId:
+
+    if not user_id:
         raise HTTPException(status_code=400, detail="User ID is required")
-    # Raise if project_id is not valid
-    if not ObjectId.is_valid(projectId):
+
+    if not ObjectId.is_valid(project_id):
         raise HTTPException(status_code=400, detail="Invalid project ID")
 
-    # Try to find project member
-    project_member = await WorkspaceProjectMemberModel.find_one({
-        "projectId": projectId, "userId": userId
-    })
-    
-    if not project_member:
-        raise HTTPException(status_code=404, detail="Project member not found")
+    # ================= VERIFY CREATOR =================
 
-    # Delete project member
+    creator = await WorkspaceProjectMemberModel.find_one({
+        "projectId": project_id,
+        "userId": user_id_creator
+    })
+
+    if not creator:
+        raise HTTPException(status_code=403, detail="You are not a member of this project")
+
+    if creator.role not in ["admin", "owner"]:
+        raise HTTPException(
+            status_code=403,
+            detail="Only admin or owner can remove members"
+        )
+
+    # ================= BLOCK SELF REMOVAL =================
+
+    if user_id_creator == user_id:
+        raise HTTPException(
+            status_code=400,
+            detail="You cannot remove yourself"
+        )
+
+    # ================= FIND MEMBER TO DELETE =================
+
+    project_member = await WorkspaceProjectMemberModel.find_one({
+        "projectId": project_id,
+        "userId": user_id
+    })
+
+    if not project_member:
+        raise HTTPException(
+            status_code=404,
+            detail="Project member not found"
+        )
+
+    # ================= ROLE PROTECTION =================
+
+    # Admin cannot remove owner
+    if creator.role == "admin" and project_member.role == "owner":
+        raise HTTPException(
+            status_code=403,
+            detail="Admin cannot remove owner"
+        )
+
+    # ================= DELETE =================
+
     await project_member.delete()
 
-    # Return success message
-    return {"message": "Project member deleted successfully"}
+    return {"message": "Project member removed successfully"}

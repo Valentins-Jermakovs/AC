@@ -3,7 +3,7 @@ from fastapi import HTTPException
 from bson import ObjectId
 from typing import Optional
 # Models
-from app.models import WorkspaceStageModel
+from app.models import WorkspaceStageModel, WorkspaceProjectMemberModel
 # Schemas
 from app.schemas.response.workspaces.stages.workspace_stage_schema import WorkspaceStageSchema
 
@@ -13,8 +13,23 @@ from app.schemas.response.workspaces.stages.workspace_stage_schema import Worksp
 async def update_stage(
     stage_id: str,
     title: str,
+    user_id: str,
+    project_id: str,
     description: Optional[str] = None,
 ) -> WorkspaceStageSchema:
+    
+    # Check current user
+    user =  await WorkspaceProjectMemberModel.find_one({
+        "projectId": project_id,
+        "userId": user_id,
+    })
+
+    if not user:
+        raise HTTPException(status_code=403, detail="You are not member of this project")
+    
+    # Check if user is viewer
+    if user.role == "viewer":
+        raise HTTPException(status_code=403, detail="You cannot work in this project")
     
     if not stage_id:
         raise HTTPException(status_code=400, detail="Stage ID is required")

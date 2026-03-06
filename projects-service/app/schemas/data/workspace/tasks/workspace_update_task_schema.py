@@ -7,6 +7,7 @@ from typing import Optional
 # =============================
 class WorkspaceUpdateTaskSchema(BaseModel):
     taskId: str
+    projectId: str
     title: Optional[str] = None            # Task title
     description: Optional[str] = None      # Task description
     storyPoints: Optional[int] = None     # Story points
@@ -18,6 +19,7 @@ class WorkspaceUpdateTaskSchema(BaseModel):
         "json_schema_extra": {
             "examples": [
                 {
+                    "projectId": "project_id",
                     "taskId": "task_id",
                     "title": "New task",
                     "description": "New task description - optional",

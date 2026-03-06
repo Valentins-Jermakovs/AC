@@ -7,6 +7,7 @@ from typing import Optional
 # =============================
 class WorkspaceStageUpdateSchema(BaseModel):
     stageId: str
+    projectId: str
     title: Optional[str] = None
     description: Optional[str] = None
 
@@ -15,6 +16,7 @@ class WorkspaceStageUpdateSchema(BaseModel):
             "examples": [
                 {
                     "stageId": "stageId",
+                    "projectId": "projectId",
                     "title": "New stage",
                     "description": "New stage description"
                 }

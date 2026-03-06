@@ -2,7 +2,7 @@
 from fastapi import HTTPException
 from bson import ObjectId
 # Models
-from app.models import WorkspaceTaskModel
+from app.models import WorkspaceTaskModel, WorkspaceProjectMemberModel
 # Schemas
 # ===== response:
 from app.schemas.response.workspaces.tasks.workspace_task_schema import WorkspaceTaskSchema
@@ -13,8 +13,22 @@ from app.schemas.data.workspace.tasks.workspace_create_task_schema import Worksp
 # Function create task
 # ================================
 async def create_task(
-    task_data: WorkspaceCreateTaskSchema
+    task_data: WorkspaceCreateTaskSchema,
+    user_id: str
 ) -> WorkspaceTaskSchema:
+    
+    # Check current user
+    user =  await WorkspaceProjectMemberModel.find_one({
+        "projectId": task_data.projectId,
+        "userId": user_id,
+    })
+
+    if not user:
+        raise HTTPException(status_code=403, detail="You are not member of this project")
+    
+    # Check if user is viewer
+    if user.role == "viewer":
+        raise HTTPException(status_code=403, detail="You cannot work in this project")
     
     # Raise if project_id is not valid
     if not ObjectId.is_valid(task_data.projectId):

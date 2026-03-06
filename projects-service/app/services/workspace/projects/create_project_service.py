@@ -6,6 +6,9 @@ from app.models import WorkspaceProjectModel
 # Schemas
 from app.schemas.response.workspaces.projects.workspace_project import WorkspaceProjectSchema
 
+# Secondary services
+from app.services.workspace.members.add_project_member_service import add_project_member
+
 # ================================
 # Function create project
 # =================================
@@ -22,6 +25,9 @@ async def create_project(
     # Raise if title is empty
     if not title:
         raise HTTPException(status_code=400, detail="Title is required")
+    
+    title = title.strip()
+
     # Raise if title is too long
     if len(title) > 100:
         raise HTTPException(status_code=400, detail="Title is too long")
@@ -50,6 +56,14 @@ async def create_project(
 
     # Save new document in MongoDb
     await new_project.save()
+
+    # Add owner of board to members collection
+    await add_project_member(
+        project_id=str(new_project.id),
+        user_id=user_id,
+        user_id_creator=user_id,
+        role="owner"
+    )
 
     # ===== Response =====
     return WorkspaceProjectSchema(

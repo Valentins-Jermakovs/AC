@@ -1,12 +1,11 @@
 # Imports
 from fastapi import HTTPException
-from app.models import WorkspaceProjectModel
 from typing import Optional
 from bson import ObjectId
 # Schemas
 from app.schemas.response.workspaces.projects.workspace_project import WorkspaceProjectSchema
 # Models
-from app.models import WorkspaceProjectModel
+from app.models import WorkspaceProjectModel, WorkspaceProjectMemberModel
 
 async def update_project (
     project_id: str,
@@ -15,6 +14,15 @@ async def update_project (
     description: Optional[str] = None
 ) -> WorkspaceProjectSchema:
     
+    # Check if current user is owner of this project
+    if not await WorkspaceProjectMemberModel.find_one({
+        "projectId": project_id,
+        "userId": user_id,
+        "role": "owner"
+    }):
+        raise HTTPException(status_code=403, detail="You are not owner of this project or this project does not exist")
+
+
     # ===== Validation and error handling =====
     # Raise if project_id is not provided
     if not project_id:
@@ -45,7 +53,7 @@ async def update_project (
         raise HTTPException(status_code=400, detail="Title must be unique")
 
     # ===== Validation and error handling =====
-    # Decription check
+    # Description check
     if description is not None:
         description = description.strip()
         # Raise if description is too long

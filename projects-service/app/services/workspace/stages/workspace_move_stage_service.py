@@ -2,7 +2,7 @@
 from fastapi import HTTPException
 from bson import ObjectId
 # Models
-from app.models import WorkspaceStageModel
+from app.models import WorkspaceStageModel, WorkspaceProjectMemberModel
 
 # ===================================
 # Move a workspace stage in the DB
@@ -10,6 +10,7 @@ from app.models import WorkspaceStageModel
 async def move_stage(
     project_id: str,
     stage_id: str,
+    user_id: str,
     direction: str  # "up" or "down"
 ) -> dict:
 
@@ -29,6 +30,19 @@ async def move_stage(
     # Raise if stage_id is not valid
     if not ObjectId.is_valid(stage_id):
         raise HTTPException(status_code=400, detail="Invalid stage ID")
+
+    # Check current user
+    user =  await WorkspaceProjectMemberModel.find_one({
+        "projectId": project_id,
+        "userId": user_id,
+    })
+
+    if not user:
+        raise HTTPException(status_code=403, detail="You are not member of this project")
+    
+    # Check if user is viewer
+    if user.role == "viewer":
+        raise HTTPException(status_code=403, detail="You cannot work in this project")
 
     # Get all stages sorted
     stages = await WorkspaceStageModel.find(

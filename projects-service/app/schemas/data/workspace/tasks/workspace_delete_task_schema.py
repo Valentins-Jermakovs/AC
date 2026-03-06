@@ -6,13 +6,15 @@ from pydantic import BaseModel
 # =============================
 class WorkspaceDeleteTaskSchema(BaseModel):
     taskId: str    # Task ID
+    projectId: str
 
     # Examples
     model_config = {
         "json_schema_extra": {
             "examples": [
                 {
-                    "taskId": "taskId"
+                    "taskId": "taskId",
+                    "projectId": "projectId"
                 }
             ]
         }

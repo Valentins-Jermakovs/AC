@@ -2,7 +2,7 @@
 from fastapi import HTTPException
 from bson import ObjectId
 # Models
-from app.models import WorkspaceStageModel
+from app.models import WorkspaceStageModel, WorkspaceProjectMemberModel
 # Schemas
 from app.schemas.response.workspaces.stages.workspace_stage_schema import WorkspaceStageSchema
 
@@ -13,7 +13,21 @@ async def create_stage(
     title: str,
     description: str,
     project_id: str,
+    user_id: str
 ) -> WorkspaceStageSchema:
+    
+    # Check current user
+    user =  await WorkspaceProjectMemberModel.find_one({
+        "projectId": project_id,
+        "userId": user_id,
+    })
+
+    if not user:
+        raise HTTPException(status_code=403, detail="You are not member of this project")
+    
+    # Check if user is viewer
+    if user.role == "viewer":
+        raise HTTPException(status_code=403, detail="You cannot work in this project")
     
     # ===== Validation and error handling =====
     # Raise if title is empty

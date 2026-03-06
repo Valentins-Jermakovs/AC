@@ -34,7 +34,7 @@ async def delete_stage(
     
     
     if user.role == "viewer":
-        raise HTTPException(status_code=403, detail="You cannot create stage in this board")
+        raise HTTPException(status_code=403, detail="You cannot work with stage in this board")
 
     # Find stage
     stage = await KanbanStageModel.find_one({

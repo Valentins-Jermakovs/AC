@@ -11,3 +11,4 @@ class KanbanTaskSchema(BaseModel):
     title: str
     description: Optional[str] = None
     order: Optional[float] = None
+    boardId: str

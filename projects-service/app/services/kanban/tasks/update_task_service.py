@@ -3,7 +3,7 @@ from fastapi import HTTPException
 from bson import ObjectId
 from typing import Optional
 # Models
-from app.models import KanbanTaskModel
+from app.models import KanbanTaskModel, KanbanBoardMemberModel
 # Schemas
 from app.schemas.response.kanban.tasks.kanban_task_schema import KanbanTaskSchema
 
@@ -16,7 +16,9 @@ from app.schemas.response.kanban.tasks.kanban_task_schema import KanbanTaskSchem
 # Returns:
 # - The updated task
 async def update_task(
-    task_id: str, 
+    task_id: str,
+    user_id: str,
+    board_id: str,
     title: Optional[str] = None, 
     description: Optional[str] = None,
 ) -> KanbanTaskSchema:
@@ -30,6 +32,23 @@ async def update_task(
     # Raise if task not found
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
+    
+
+    if not user_id:
+        raise HTTPException(status_code=400, detail="User ID is required")
+    
+    # ===== Current user handling =====
+    # Check role of current user
+    user = await KanbanBoardMemberModel.find_one({
+        "boardId": board_id,
+        "userId": user_id,
+    })
+
+    if not user:
+        raise HTTPException(status_code=403, detail="You are not member of this board or this board does not exist")
+    
+    if user.role == "viewer":
+        raise HTTPException(status_code=403, detail="You cannot create tasks in this board")
     
     updated_data = {}
 

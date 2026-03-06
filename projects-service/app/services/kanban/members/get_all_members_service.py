@@ -21,8 +21,9 @@ from app.schemas.response.kanban.members.kanban_board_members_paginated_schema i
 # ==========================================
 async def get_all_members(
     board_id: str,
+    user_id: str,
     page: int = 1,
-    limit: int = 10,
+    limit: int = 10
 ) -> KanbanBoardMembersPaginatedSchema:
     
     # ===== Validation and error handling =====
@@ -41,6 +42,24 @@ async def get_all_members(
     if not ObjectId.is_valid(board_id):
         raise HTTPException(status_code=400, detail="Invalid board ID")
 
+    if not user_id:
+        raise HTTPException(status_code=400, detail="User ID is required")
+
+    # ===== Current user handling =====
+    # Check role of current user
+    user = await KanbanBoardMemberModel.find_one({
+        "boardId": board_id,
+        "userId": user_id
+    })
+
+    if not user:
+        raise HTTPException(status_code=403, detail="You are not a member of this board")
+
+    if user.role not in ["owner", "admin"]:
+        raise HTTPException(status_code=403, detail="Only owner or admin can view members")
+
+
+    # ===== Data handling =====
     # Pagination offset
     offset = (page - 1) * limit
 
@@ -74,7 +93,7 @@ async def get_all_members(
     meta = PaginationMetaSchema(
         page=page,
         limit=limit,
-        totalPages=(total_members + limit - 1),
+        totalPages=(total_members + limit - 1) // limit,
         totalItems=total_members
     )
 

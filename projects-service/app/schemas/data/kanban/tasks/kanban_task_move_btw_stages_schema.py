@@ -7,13 +7,15 @@ from pydantic import BaseModel
 class KanbanTaskMoveBtwStagesSchema(BaseModel):
     taskId: str
     targetStageId: str
+    boardId: str
 
     model_config = {
         "json_schema_extra": {
             "examples": [
                 {
                     "taskId": "taskId",
-                    "targetStageId": "targetStageId"
+                    "targetStageId": "targetStageId",
+                    "boardId": "boardId"
                 }
             ]
         }

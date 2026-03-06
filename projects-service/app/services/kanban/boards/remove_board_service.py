@@ -6,7 +6,7 @@ from app.models import (
     KanbanBoardModel, 
     KanbanStageModel, 
     KanbanTaskModel, 
-    KanbanBoardMemberModel
+    KanbanBoardMemberModel,
 )
 
 # ========================================================
@@ -17,6 +17,14 @@ from app.models import (
 # - Removes all board members associated with the board
 # ========================================================
 async def remove_board(board_id: str, user_id: str) -> dict:
+
+    # Check if current user is owner of this board
+    if not await KanbanBoardMemberModel.find_one({
+        "boardId": board_id,
+        "userId": user_id,
+        "role": "owner"
+    }):
+        raise HTTPException(status_code=403, detail="You are not owner of this board or this board does not exist")
 
     # Raise if user_id is not provided
     if not user_id:

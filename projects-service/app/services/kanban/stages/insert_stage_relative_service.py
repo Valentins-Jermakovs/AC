@@ -2,7 +2,7 @@
 from fastapi import HTTPException
 from bson import ObjectId
 # Models
-from app.models import KanbanStageModel
+from app.models import KanbanStageModel, KanbanBoardMemberModel
 # Schemas
 from app.schemas.response.kanban.stages.kanban_stage_schema import KanbanStageSchema
 
@@ -13,7 +13,8 @@ async def insert_stage_relative(
     board_id: str,
     title: str,
     reference_stage_id: str, # stage which will be used as reference
-    position: str  # "before" or "after"
+    position: str,  # "before" or "after"
+    user_id: str
 ) -> KanbanStageSchema:
     
     # ===== Validation and error handling =====
@@ -40,6 +41,23 @@ async def insert_stage_relative(
 
     if position not in ["before", "after"]:
         raise HTTPException(status_code=400, detail="Position must be 'before' or 'after'")
+
+    if user_id is None:
+        raise HTTPException(status_code=400, detail="User ID is required")
+
+    # ===== Current user handling =====
+    # Check role of current user
+    user = await KanbanBoardMemberModel.find_one({
+        "boardId": board_id,
+        "userId": user_id,
+    })
+
+    if not user:
+        raise HTTPException(status_code=403, detail="You are not member of this board or this board does not exist")
+    
+    if user.role == "viewer":
+        raise HTTPException(status_code=403, detail="You cannot create stage in this board")
+
 
     # if title not unique
     # Find stage with the same title except this one

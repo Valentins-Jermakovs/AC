@@ -18,42 +18,80 @@ from app.schemas.response.kanban.members.kanban_board_member_schema import Kanba
 async def add_board_member(
     board_id: str,
     user_id: str,
+    user_id_creator: int,
+    mode: str,
     role: str,
 ) -> KanbanBoardMemberSchema:
-    """
-    Adds a board member to a kanban board.
 
-    Steps:
-    1. Create a new board member object
-    2. Add the board member to the database
-    3. Return the board member
 
-    :param board_id: The ID of the board
-    :param user_id: The ID of the user
-    :param role: The role of the user
-    :param db: The database session
-    :return: The board member
-    :raises HTTPException: 404 if board or user not found
-    """
+    # ===== Validation =====
 
-    # ===== Validation and error handling =====
-    role = role.lower().strip()
-    
     if not board_id:
-        raise HTTPException(status_code=400, detail="Board ID is required")
+        raise HTTPException(400, "Board ID is required")
 
     if not user_id:
-        raise HTTPException(status_code=400, detail="User ID is required")
-    
+        raise HTTPException(400, "User ID is required")
+
     if not role:
-        raise HTTPException(status_code=400, detail="Role is required")
-    
-    if role not in ["viewer", "editor", "admin"]:
-        raise HTTPException(status_code=400, detail="Invalid role")
+        raise HTTPException(400, "Role is required")
+
+    if mode not in ["create_owner", "add"]:
+        raise HTTPException(400, "Invalid mode")
+
+    role = role.lower().strip()
+
+    if role not in ["viewer", "editor", "admin", "owner"]:
+        raise HTTPException(400, "Invalid role")
 
     if not ObjectId.is_valid(board_id):
-        raise HTTPException(status_code=400, detail="Invalid board ID")
+        raise HTTPException(400, "Invalid board ID")
     
+    # ===== Create an owner (mode == create_owner) =====
+    if mode == "create_owner":
+        # Create board member
+        board_member = KanbanBoardMemberModel(
+            boardId=board_id,
+            userId=user_id,
+            role="owner"
+        )
+
+        # Save board member
+        await board_member.save()
+
+        # Return board member
+        return board_member
+    
+    # ===== Verify creator =====
+
+    creator = await KanbanBoardMemberModel.find_one({
+        "boardId": board_id,
+        "userId": str(user_id_creator)
+    })
+
+    if not creator:
+        raise HTTPException(403, "You are not a member of this board")
+
+    if creator.role not in ["admin", "owner"]:
+        raise HTTPException(403, "You are not admin or owner of this board")
+    
+
+    # ===== Block self modification =====
+
+    if str(user_id_creator) == user_id:
+        raise HTTPException(400, "You cannot modify yourself")
+
+
+    # ===== Block owner creation =====
+
+    if role == "owner":
+        raise HTTPException(403, "Owner cannot be added")
+    
+    # ===== Admin restrictions =====
+
+    if creator.role == "admin" and role in ["admin", "owner"]:
+        raise HTTPException(403, "Admin cannot assign this role")
+
+
     # if user already exists
     if await KanbanBoardMemberModel.find_one({
         "boardId": board_id,

@@ -9,6 +9,7 @@ class KanbanTaskUpdateSchema(BaseModel):
     taskId: str
     title: Optional[str] = None
     description: Optional[str] = None
+    boardId: str
 
     model_config = {
         "json_schema_extra": {
@@ -16,7 +17,8 @@ class KanbanTaskUpdateSchema(BaseModel):
                 {
                     "taskId": "task_id",
                     "title": "Kanban task title",
-                    "description": "Kanban task description"
+                    "description": "Kanban task description",
+                    "boardId": "board_id"
                 }
             ]
         }

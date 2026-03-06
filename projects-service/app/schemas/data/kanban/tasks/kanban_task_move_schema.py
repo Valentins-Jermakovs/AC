@@ -4,6 +4,7 @@ class KanbanTaskMoveSchema(BaseModel):
     taskId: str
     stageId: str
     direction: str
+    boardId: str
 
     model_config = {
         "json_schema_extra": {
@@ -11,7 +12,8 @@ class KanbanTaskMoveSchema(BaseModel):
                 {
                     "taskId": "taskId",
                     "stageId": "stageId",
-                    "direction": "up"
+                    "direction": "up",
+                    "boardId": "boardId"
                 }
             ]
         }

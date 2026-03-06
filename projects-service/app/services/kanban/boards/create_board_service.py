@@ -6,6 +6,9 @@ from app.models import KanbanBoardModel
 # ===== response:
 from app.schemas.response.kanban.boards.kanban_board_schema import KanbanBoardSchema
 
+# Helper services
+from app.services.kanban.members.add_board_member_service import add_board_member
+
 # ===================================================
 # Function create a kanban board
 # Parameters:
@@ -53,6 +56,15 @@ async def create_board(
 
     # Save new document in MongoDb
     await new_board.save()
+
+    # Add user as board member
+    await add_board_member(
+        board_id=str(new_board.id),
+        user_id=user_id,
+        role="owner",
+        mode="create_owner",
+        user_id_creator=user_id
+    )
 
     # Return new board
     return KanbanBoardSchema(

@@ -2,7 +2,7 @@
 from fastapi import HTTPException
 from bson import ObjectId
 # Models
-from app.models import KanbanStageModel
+from app.models import KanbanStageModel, KanbanBoardMemberModel
 
 # ====================================
 # Move a kanban stage in the database
@@ -10,7 +10,8 @@ from app.models import KanbanStageModel
 async def move_stage(
     board_id: str,
     stage_id: str,
-    direction: str  # "up" or "down"
+    direction: str,  # "up" or "down"
+    user_id: str
 ) -> dict:
 
     # ===== Validation and error handling =====
@@ -28,6 +29,22 @@ async def move_stage(
 
     if not ObjectId.is_valid(stage_id):
         raise HTTPException(status_code=400, detail="Invalid stage ID")
+
+    if not user_id:
+        raise HTTPException(status_code=400, detail="User ID is required")
+    
+    # ===== Current user handling =====
+    # Check role of current user
+    user = await KanbanBoardMemberModel.find_one({
+        "boardId": board_id,
+        "userId": user_id,
+    })
+
+    if not user:
+        raise HTTPException(status_code=403, detail="You are not member of this board or this board does not exist")
+    
+    if user.role == "viewer":
+        raise HTTPException(status_code=403, detail="You cannot create stage in this board")
 
     # Get all stages sorted
     stages = await KanbanStageModel.find(

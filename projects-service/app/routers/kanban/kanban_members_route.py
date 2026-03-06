@@ -53,7 +53,8 @@ async def get_all_kanban_board_members_endpoint(
     return await get_all_members(
         board_id=board_id, 
         page=page, 
-        limit=limit
+        limit=limit,
+        user_id=user_id
     )
 
 # ===== Kanban board member POST ==========================================================
@@ -80,7 +81,9 @@ async def add_kanban_board_member_endpoint(
 
     return await add_board_member(
         board_id=data.boardId, 
-        user_id=data.userId, 
+        user_id=data.userId,
+        user_id_creator=user_id,
+        mode="add",
         role=data.role
     )
 

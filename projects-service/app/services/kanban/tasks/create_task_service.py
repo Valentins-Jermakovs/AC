@@ -3,7 +3,7 @@ from fastapi import HTTPException
 from bson import ObjectId
 from typing import Optional
 # Models
-from app.models import KanbanTaskModel
+from app.models import KanbanTaskModel, KanbanBoardMemberModel
 # Schemas
 from app.schemas.response.kanban.tasks.kanban_task_schema import KanbanTaskSchema
 
@@ -13,8 +13,9 @@ from app.schemas.response.kanban.tasks.kanban_task_schema import KanbanTaskSchem
 async def create_task(
     title: str, 
     stage_id: str,
-    board_id: str, 
-    description: Optional[str] = None, 
+    board_id: str,
+    user_id: str,
+    description: Optional[str] = None,
 ) -> KanbanTaskSchema:
     
     # ===== Validation and error handling =====
@@ -42,6 +43,24 @@ async def create_task(
     if len(title) < 3:
         raise HTTPException(status_code=400, detail="Title is too short")
     
+
+    if not user_id:
+        raise HTTPException(status_code=400, detail="User ID is required")
+    
+    # ===== Current user handling =====
+    # Check role of current user
+    user = await KanbanBoardMemberModel.find_one({
+        "boardId": board_id,
+        "userId": user_id,
+    })
+
+    if not user:
+        raise HTTPException(status_code=403, detail="You are not member of this board or this board does not exist")
+    
+    if user.role == "viewer":
+        raise HTTPException(status_code=403, detail="You cannot create stage in this board")
+
+
     # Find task with user_id and title
     task = await KanbanTaskModel.find_one({
         "stageId": stage_id,

@@ -1,7 +1,8 @@
 # Imports
 from fastapi import HTTPException
+from bson import ObjectId
 # Models
-from app.models import KanbanBoardModel
+from app.models import KanbanBoardModel, KanbanBoardMemberModel
 # Schemas
 # ===== :response
 from app.schemas.response.kanban.boards.kanban_board_schema import KanbanBoardSchema
@@ -15,68 +16,65 @@ async def get_all_boards_paginated(
     limit: int = 10,
     user_id: str = None
 ):
+
     # ===== Validation and error handling =====
-    # Raise if limit is not a positive integer
     if limit <= 0:
         raise HTTPException(status_code=400, detail="Limit must be a positive integer")
-    
-    # Raise if page is not a positive integer
+
     if page <= 0:
         raise HTTPException(status_code=400, detail="Page must be a positive integer")
-    
-    # Raise if limit is greater than 100
+
     if limit > 100:
         raise HTTPException(status_code=400, detail="Limit must be less than 100")
-    
+
     if not user_id:
         raise HTTPException(status_code=400, detail="User ID is required")
 
-    # ===== Data handling =====
-    # Pagination offset
+
+    # ===== Business logic =====
+
+    # set pagination
     offset = (page - 1) * limit
 
-    query = {}
+    # Get members
+    members = await KanbanBoardMemberModel.find({
+        "userId": user_id
+    }).to_list()
 
-    if user_id:
-        query['userId'] = user_id
+    # Get total boards
+    total_boards = len(members)
 
-    # Raise if user_id is not provided
-    if not user_id:
-        raise HTTPException(status_code=400, detail="User ID is required")
-
-    # Total boards count
-    total_boards = await KanbanBoardModel.find(query).count()
-
-    # Raise 404 if requested page exceeds total boards
-    if offset >= total_boards:
-        raise HTTPException(status_code=404, detail="Page not found")
-
-    # Raise 404 if dont find any boards
+    # ===== Boards validation =====
     if total_boards == 0:
         raise HTTPException(status_code=404, detail="Boards not found")
 
-    # Fetch boards for current page using limit & offset
-    boards = await KanbanBoardModel.find(query).skip(offset).limit(limit).to_list()
+    if offset >= total_boards:
+        raise HTTPException(status_code=404, detail="Page not found")
 
-    # Build pagination metadata
+    # get ids
+    board_ids = [ObjectId(member.boardId) for member in members]
+
+    # Get boards
+    boards = await KanbanBoardModel.find({
+        "_id": {"$in": board_ids}
+    }).skip(offset).limit(limit).to_list()
+
     meta = PaginationMetaSchema(
         page=page,
         limit=limit,
-        totalPages=total_boards // limit,
+        totalPages=(total_boards + limit - 1) // limit,
         totalItems=total_boards
     )
 
-    # Build response
     items = [
         KanbanBoardSchema(
             id=str(board.id),
             title=board.title,
             createdAt=board.createdAt
-        ) 
+        )
         for board in boards
     ]
 
-    # Return response
     return KanbanBoardsPaginatedSchema(
         items=items,
         meta=meta

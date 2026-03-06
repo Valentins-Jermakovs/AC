@@ -2,7 +2,7 @@
 from fastapi import HTTPException
 from bson import ObjectId
 # Models
-from app.models import KanbanTaskModel
+from app.models import KanbanTaskModel, KanbanBoardMemberModel
 
 
 # ==================================
@@ -11,7 +11,9 @@ from app.models import KanbanTaskModel
 async def move_task_in_stage(
     task_id: str,
     stage_id: str,
-    direction: str  # "up" or "down"
+    direction: str,  # "up" or "down"
+    user_id: str,
+    board_id: str
 ) -> dict:
     
     # ===== Validation and error handling =====
@@ -30,6 +32,22 @@ async def move_task_in_stage(
     # Raise if stage_id is not valid
     if not ObjectId.is_valid(stage_id):
         raise HTTPException(status_code=400, detail="Invalid stage ID")
+    
+    if not user_id:
+        raise HTTPException(status_code=400, detail="User ID is required")
+    
+    # ===== Current user handling =====
+    # Check role of current user
+    user = await KanbanBoardMemberModel.find_one({
+        "boardId": board_id,
+        "userId": user_id,
+    })
+
+    if not user:
+        raise HTTPException(status_code=403, detail="You are not member of this board or this board does not exist")
+    
+    if user.role == "viewer":
+        raise HTTPException(status_code=403, detail="You cannot work in this board")
 
     # ===== Business logic =====
     # Get all tasks sorted
@@ -81,6 +99,8 @@ async def move_task_in_stage(
 async def move_task_between_stages(
     task_id: str,
     target_stage_id: str,
+    user_id: str,
+    board_id: str
 ) -> dict:
     
     # ===== Validation and error handling =====
@@ -96,6 +116,22 @@ async def move_task_between_stages(
     # Validate target_stage_id
     if not ObjectId.is_valid(target_stage_id):
         raise HTTPException(status_code=400, detail="Invalid target stage ID")
+    
+    if not user_id:
+        raise HTTPException(status_code=400, detail="User ID is required")
+    
+    # ===== Current user handling =====
+    # Check role of current user
+    user = await KanbanBoardMemberModel.find_one({
+        "boardId": board_id,
+        "userId": user_id,
+    })
+
+    if not user:
+        raise HTTPException(status_code=403, detail="You are not member of this board or this board does not exist")
+    
+    if user.role == "viewer":
+        raise HTTPException(status_code=403, detail="You cannot work in this board")
 
     # ===== Business logic =====
     # Get task

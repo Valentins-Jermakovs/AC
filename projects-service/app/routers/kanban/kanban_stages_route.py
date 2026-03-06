@@ -52,7 +52,10 @@ async def get_all_stages_endpoint(
     access_token = credantials.credentials
     user_id = await check_access_token(access_token)
 
-    return await get_all_stages(board_id)
+    return await get_all_stages(
+        board_id=board_id,
+        user_id=user_id
+    )
 
 # ===== Stage POST ==========================================================
 # Route for creating a new kanban stage
@@ -78,7 +81,8 @@ async def create_stage_endpoint(
 
     return await create_stage(
         board_id=data.boardId, 
-        title=data.title
+        title=data.title,
+        user_id=user_id
     )
 
 # Create a new kanban stage relative
@@ -106,7 +110,8 @@ async def create_stage_relative_endpoint(
         board_id=data.boardId, 
         title=data.title, 
         reference_stage_id=data.referenceStageId, 
-        position=data.position
+        position=data.position,
+        user_id=user_id
     )
 
 # ===== Stage PUT ==========================================================
@@ -134,7 +139,9 @@ async def move_stage_endpoint(
     return await move_stage(
         board_id=data.boardId, 
         stage_id=data.stageId, 
-        direction=data.direction)
+        direction=data.direction,
+        user_id=user_id
+    )
 
 # Route for updating a kanban stage
 @router.put(
@@ -160,7 +167,8 @@ async def update_stage_endpoint(
     return await update_stage(
         board_id=data.boardId, 
         stage_id=data.stageId, 
-        title=data.title
+        title=data.title,
+        user_id=user_id
     )
 
 # ===== Stage DELETE ==========================================================
@@ -184,5 +192,7 @@ async def delete_stage_endpoint(
     user_id = await check_access_token(access_token)
 
     return await delete_stage(
-        stage_id=data.stageId
+        stage_id=data.stageId,
+        board_id=data.boardId,
+        user_id=user_id
     )

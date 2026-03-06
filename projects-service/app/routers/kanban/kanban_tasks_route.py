@@ -35,6 +35,7 @@ security = HTTPBearer()
 )
 async def get_all_tasks_endpoint(
     stage_id: str,
+    board_id: str,
     credantials: HTTPAuthorizationCredentials = Depends(security)
 ):
     """
@@ -50,7 +51,9 @@ async def get_all_tasks_endpoint(
     user_id = await check_access_token(access_token)
 
     return await get_all_tasks(
-        stage_id=stage_id
+        stage_id=stage_id,
+        board_id=board_id,
+        user_id=user_id
     )
 
 # ===== Tasks POST ==========================================================
@@ -79,7 +82,8 @@ async def create_task_endpoint(
         title=data.title, 
         stage_id=data.stageId, 
         board_id=data.boardId, 
-        description=data.description
+        description=data.description,
+        user_id=user_id
     )
 
 # ===== Tasks PUT ==========================================================
@@ -107,7 +111,9 @@ async def update_task_endpoint(
     return await update_task(
         task_id=data.taskId, 
         title=data.title, 
-        description=data.description
+        description=data.description,
+        board_id=data.boardId,
+        user_id=user_id
     )
 
 # Route for move task in stage
@@ -134,7 +140,9 @@ async def move_task_endpoint(
     return await move_task_in_stage(
         task_id=data.taskId, 
         direction=data.direction, 
-        stage_id=data.stageId
+        stage_id=data.stageId,
+        user_id=user_id,
+        board_id=data.boardId
     )
 
 # Route for move task between stages
@@ -160,7 +168,9 @@ async def move_task_between_stages_endpoint(
 
     return await move_task_between_stages(
         task_id=data.taskId, 
-        target_stage_id=data.targetStageId
+        target_stage_id=data.targetStageId,
+        board_id=data.boardId,
+        user_id=user_id
     )
 
 # ===== Tasks DELETE ==========================================================
@@ -184,5 +194,7 @@ async def remove_task_endpoint(
     user_id = await check_access_token(access_token)
 
     return await delete_task(
-        task_id=data.taskId
+        task_id=data.taskId,
+        board_id=data.boardId,
+        user_id=user_id
     )

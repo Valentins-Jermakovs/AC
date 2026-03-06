@@ -2,7 +2,7 @@
 from fastapi import HTTPException
 from bson import ObjectId
 # Models
-from app.models import KanbanStageModel
+from app.models import KanbanStageModel, KanbanBoardMemberModel
 # Schemas
 from app.schemas.response.kanban.stages.kanban_stage_schema import KanbanStageSchema
 
@@ -12,6 +12,7 @@ from app.schemas.response.kanban.stages.kanban_stage_schema import KanbanStageSc
 async def create_stage(
     board_id: str,
     title: str,
+    user_id: str
 ) -> KanbanStageSchema:
     
     # ===== Validation and error handling =====
@@ -37,6 +38,22 @@ async def create_stage(
     # Raise if board_id is not valid
     if not ObjectId.is_valid(board_id):
         raise HTTPException(status_code=400, detail="Invalid board ID")
+    
+    if not user_id:
+        raise HTTPException(status_code=400, detail="User ID is required")
+
+    # ===== Current user handling =====
+    # Check role of current user
+    user = await KanbanBoardMemberModel.find_one({
+        "boardId": board_id,
+        "userId": user_id,
+    })
+
+    if not user:
+        raise HTTPException(status_code=403, detail="You are not member of this board or this board does not exist")
+    
+    if user.role == "viewer":
+        raise HTTPException(status_code=403, detail="You cannot create stage in this board")
     
     # if title not unique
     # Find stage with equial title except current

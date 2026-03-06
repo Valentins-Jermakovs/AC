@@ -6,12 +6,14 @@ from pydantic import BaseModel
 # =============================
 class RemoveKanbanStage(BaseModel):
     stageId: str
+    boardId: str
 
     model_config = {
         "json_schema_extra": {
             "examples": [
                 {
-                    "stageId": "stageId"
+                    "stageId": "stageId",
+                    "boardId": "boardId"
                 }
             ]
         }

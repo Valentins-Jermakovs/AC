@@ -2,7 +2,7 @@
 from bson import ObjectId
 from fastapi import HTTPException
 # Models
-from app.models import KanbanBoardModel
+from app.models import KanbanBoardModel, KanbanBoardMemberModel
 # Schemas
 # ===== response:
 from app.schemas.response.kanban.boards.kanban_board_schema import KanbanBoardSchema
@@ -12,6 +12,14 @@ async def update_board(
     title: str,
     user_id: str
 ) -> KanbanBoardSchema:
+    
+    # Check, if current user is owner of this board
+    if not await KanbanBoardMemberModel.find_one({
+        "boardId": board_id,
+        "userId": user_id,
+        "role": "owner"
+    }):
+        raise HTTPException(status_code=403, detail="You are not owner of this board or this board does not exist")
     
     # ===== Validation and error handling =====
     # Raise if id not exist

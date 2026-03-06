@@ -86,7 +86,8 @@ async def get_project_by_title_or_description_endpoint(
         title=title, 
         description=description,
         limit=limit,
-        page=page
+        page=page,
+        user_id=user_id
     )
 
 # ==== Project POST ==========================================================

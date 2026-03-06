@@ -2,8 +2,9 @@
 from fastapi import HTTPException
 import re
 from typing import Optional
+from bson import ObjectId
 # Models
-from app.models import WorkspaceProjectModel
+from app.models import WorkspaceProjectModel, WorkspaceProjectMemberModel
 # Schemas
 from app.schemas.response.workspaces.projects.workspace_project import WorkspaceProjectSchema
 from app.schemas.response.workspaces.projects.worskpace_projects_paginated_schema import WorkspaceProjectsPaginatedSchema, PaginationMetaSchema
@@ -12,66 +13,93 @@ from app.schemas.response.workspaces.projects.worskpace_projects_paginated_schem
 # Function get project by title or description
 # ===============================
 async def get_project_by_title_or_description(
+    user_id: str,
     title: Optional[str] = None,
     description: Optional[str] = None,
     limit: int = 10,
     page: int = 1
 ) -> WorkspaceProjectsPaginatedSchema:
-    
-    # ===== Validation and error handling =====
-    # Raise if title or description not provided
+
+    # ================= VALIDATION =================
+
+    if not user_id:
+        raise HTTPException(status_code=400, detail="User ID is required")
+
     if not title and not description:
         raise HTTPException(status_code=400, detail="Title or description required")
-    # Raise if limit or page not provided
-    if not limit or not page:
-        raise HTTPException(status_code=400, detail="Limit and page are required")
-    # Raise if limit is not a positive integer
+
     if limit <= 0:
-        raise HTTPException(status_code=400, detail="Limit must be a positive integer")
-    # Raise if page is not a positive integer
+        raise HTTPException(status_code=400, detail="Limit must be positive")
+
     if page <= 0:
-        raise HTTPException(status_code=400, detail="Page must be a positive integer")
-    # Raise if limit is greater than 100
+        raise HTTPException(status_code=400, detail="Page must be positive")
+
     if limit > 100:
-        raise HTTPException(status_code=400, detail="Limit must be less than 100")
-    
-    # ===== Business logic =====
-    # Pagination offset
+        raise HTTPException(status_code=400, detail="Limit must be <= 100")
+
     offset = (page - 1) * limit
 
-    query_conditions = []   # Query for database
+    # ================= CHECK USER EXISTS =================
+
+    user_memberships = await WorkspaceProjectMemberModel.find({
+        "userId": user_id
+    }).to_list()
+
+    if not user_memberships:
+        raise HTTPException(
+            status_code=403,
+            detail="User is not member of any project"
+        )
+
+    # Get project ids where user is member
+    project_ids = [ObjectId(member.projectId) for member in user_memberships]
+
+    # ================= BUILD SEARCH QUERY =================
+
+    query_conditions = []
 
     if title:
-        query_conditions.append(
-            {"title": {"$regex": re.escape(title), "$options": "i"}}
-        )
+        query_conditions.append({
+            "title": {
+                "$regex": re.escape(title),
+                "$options": "i"
+            }
+        })
+
     if description:
-        query_conditions.append(
-            {"description": {"$regex": re.escape(description), "$options": "i"}}
-        )
+        query_conditions.append({
+            "description": {
+                "$regex": re.escape(description),
+                "$options": "i"
+            }
+        })
 
-    # Create query
-    query = {"$or": query_conditions}
+    if not query_conditions:
+        raise HTTPException(status_code=400, detail="Invalid search parameters")
 
-    # Try to find project by title or description
+    # Search ONLY inside user's projects
+    query = {
+        "_id": {"$in": project_ids},
+        "$or": query_conditions
+    }
+
+    # ================= COUNT =================
+
     total_projects = await WorkspaceProjectModel.find(query).count()
-    projects = await WorkspaceProjectModel.find(query).skip(offset).limit(limit).to_list()
-    # Calculate total pages
+
+    if total_projects == 0:
+        raise HTTPException(status_code=404, detail="No projects found")
+
     total_pages = (total_projects + limit - 1) // limit
 
-    # Raise 404 if requested page exceeds total projects
-    if page > total_pages:
+    if offset >= total_projects:
         raise HTTPException(status_code=404, detail="Page not found")
 
-    # Create response
-    meta=PaginationMetaSchema(
-        page=page,
-        limit=limit,
-        totalPages=total_pages,
-        totalItems=total_projects
-    )
+    # ================= FETCH =================
+    projects = await WorkspaceProjectModel.find(query).skip(offset).limit(limit).to_list()
 
-    # Create response
+    # ================= RESPONSE =================
+
     items = [
         WorkspaceProjectSchema(
             id=str(project.id),
@@ -79,11 +107,18 @@ async def get_project_by_title_or_description(
             description=project.description,
             userId=project.userId,
             createdAt=project.createdAt
-        ) for project in projects
+        )
+        for project in projects
     ]
 
-    # Return response
+    meta = PaginationMetaSchema(
+        page=page,
+        limit=limit,
+        totalPages=total_pages,
+        totalItems=total_projects
+    )
+
     return WorkspaceProjectsPaginatedSchema(
-        items=items, 
+        items=items,
         meta=meta
     )

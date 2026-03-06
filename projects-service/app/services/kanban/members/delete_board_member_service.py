@@ -16,7 +16,7 @@ from app.models import KanbanBoardMemberModel
 async def delete_board_member(
     board_id: str, 
     user_id: str,
-    user_id_creator: int
+    user_id_creator: str
 ) -> dict:
     
     if not user_id:
@@ -28,7 +28,7 @@ async def delete_board_member(
     if not ObjectId.is_valid(board_id):
         raise HTTPException(status_code=400, detail="Invalid board ID")
     
-    if user_id == str(user_id_creator):
+    if user_id == user_id_creator:
         raise HTTPException(status_code=400, detail="You cannot remove yourself")
 
     # try to find board by user_id and board_id

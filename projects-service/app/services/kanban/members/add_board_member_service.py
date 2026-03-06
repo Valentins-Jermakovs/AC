@@ -18,7 +18,7 @@ from app.schemas.response.kanban.members.kanban_board_member_schema import Kanba
 async def add_board_member(
     board_id: str,
     user_id: str,
-    user_id_creator: int,
+    user_id_creator: str,
     mode: str,
     role: str,
 ) -> KanbanBoardMemberSchema:
@@ -65,7 +65,7 @@ async def add_board_member(
 
     creator = await KanbanBoardMemberModel.find_one({
         "boardId": board_id,
-        "userId": str(user_id_creator)
+        "userId": user_id_creator
     })
 
     if not creator:
@@ -77,7 +77,7 @@ async def add_board_member(
 
     # ===== Block self modification =====
 
-    if str(user_id_creator) == user_id:
+    if user_id_creator == user_id:
         raise HTTPException(400, "You cannot modify yourself")
 
 

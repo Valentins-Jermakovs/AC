@@ -16,7 +16,7 @@ from app.models import KanbanBoardMemberModel
 async def update_board_member(
     board_id: str, 
     user_id: str, 
-    user_id_creator: int,
+    user_id_creator: str,
     role: str
 ) -> dict:
 
@@ -35,14 +35,14 @@ async def update_board_member(
     if role == "owner":
         raise HTTPException(status_code=400, detail="Cannot assign owner role")
 
-    if user_id == str(user_id_creator):
+    if user_id == user_id_creator:
         raise HTTPException(status_code=400, detail="You cannot update yourself")
 
 
     # ===== Get current user (who performs update) =====
     current_user = await KanbanBoardMemberModel.find_one({
         "boardId": board_id,
-        "userId": str(user_id_creator)
+        "userId": user_id_creator
     })
 
     if not current_user:

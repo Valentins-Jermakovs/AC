@@ -62,7 +62,8 @@ async def create_project(
         project_id=str(new_project.id),
         user_id=user_id,
         user_id_creator=user_id,
-        role="owner"
+        role="owner",
+        mode="create_owner"
     )
 
     # ===== Response =====

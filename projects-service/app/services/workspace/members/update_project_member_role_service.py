@@ -27,8 +27,6 @@ async def update_project_member_role(
     if not ObjectId.is_valid(project_id):
         raise HTTPException(status_code=400, detail="Invalid project ID")
 
-    project_id = ObjectId(project_id)
-
     role = role.lower().strip()
 
     if role not in ["viewer", "editor", "admin"]:

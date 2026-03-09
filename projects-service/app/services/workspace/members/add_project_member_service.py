@@ -38,8 +38,6 @@ async def add_project_member(
     if not ObjectId.is_valid(project_id):
         raise HTTPException(400, "Invalid project ID")
 
-    project_id = ObjectId(project_id)
-
     # ================= CREATE OWNER MODE =================
 
     if mode == "create_owner":

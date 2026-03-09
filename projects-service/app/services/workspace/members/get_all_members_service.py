@@ -43,8 +43,6 @@ async def get_all_project_members(
     if limit > 100:
         raise HTTPException(status_code=400, detail="Limit must be less than 100")
 
-    project_id = ObjectId(project_id)
-
     # ================= PERMISSION CHECK =================
 
     current_user = await WorkspaceProjectMemberModel.find_one({

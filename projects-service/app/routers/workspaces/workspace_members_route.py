@@ -81,7 +81,8 @@ async def add_project_member_endpoint(
         project_id=data.projectId,
         user_id=data.userId,
         role=data.role,
-        user_id_creator=user_id
+        user_id_creator=user_id,
+        mode="add"
     )
 
 # ==== Project PUT ==========================================================

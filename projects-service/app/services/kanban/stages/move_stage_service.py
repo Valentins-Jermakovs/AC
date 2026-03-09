@@ -44,7 +44,7 @@ async def move_stage(
         raise HTTPException(status_code=403, detail="You are not member of this board or this board does not exist")
     
     if user.role == "viewer":
-        raise HTTPException(status_code=403, detail="You cannot create stage in this board")
+        raise HTTPException(status_code=403, detail="You cannot move stage in this board")
 
     # Get all stages sorted
     stages = await KanbanStageModel.find(

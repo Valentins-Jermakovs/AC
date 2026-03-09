@@ -54,7 +54,7 @@ async def update_stage(
         raise HTTPException(status_code=403, detail="You are not member of this board or this board does not exist")
     
     if user.role == "viewer":
-        raise HTTPException(status_code=403, detail="You cannot create stage in this board")
+        raise HTTPException(status_code=403, detail="You cannot update stage in this board")
     
     # if title not unique
     # Find stage with equal title except this stage

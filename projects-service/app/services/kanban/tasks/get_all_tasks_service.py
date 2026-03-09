@@ -48,7 +48,8 @@ async def get_all_tasks(
             title=task.title,
             description=task.description,
             order=task.order,
-            stageId=task.stageId
+            stageId=task.stageId,
+            boardId=task.boardId
         ) for task in tasks
     ]
 

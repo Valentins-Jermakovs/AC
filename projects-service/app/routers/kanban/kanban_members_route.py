@@ -106,12 +106,13 @@ async def update_kanban_board_member_endpoint(
     4. Return message
     """
     access_token = credantials.credentials
-    user_id = await check_access_token(access_token)
+    user_id_creator = await check_access_token(access_token)
 
     return await update_board_member(
         board_id=data.boardId,
         user_id=data.userId, 
-        role=data.role
+        role=data.role,
+        user_id_creator=user_id_creator
     )
 
 # ===== Kanban board member DELETE ==========================================================
@@ -136,5 +137,6 @@ async def delete_kanban_board_member_endpoint(
 
     return await delete_board_member(
         user_id=data.userId, 
-        board_id=data.boardId
+        board_id=data.boardId,
+        user_id_creator=current_user_id
     )

@@ -26,8 +26,6 @@ async def delete_board_member(
     if not ObjectId.is_valid(board_id):
         raise HTTPException(status_code=400, detail="Invalid board ID")
 
-    board_id = ObjectId(board_id)
-
     # ================= VERIFY CREATOR =================
 
     creator = await KanbanBoardMemberModel.find_one({

@@ -76,6 +76,9 @@ async def update_board_member(
     if not board_member:
         raise HTTPException(status_code=404, detail="Board member not found")
 
+    # Cant modify owner role
+    if board_member.role == "owner":
+        raise HTTPException(status_code=400, detail="Cannot modify owner role")
 
     # ===== Update role =====
     board_member.role = role

@@ -48,7 +48,7 @@ async def update_task(
         raise HTTPException(status_code=403, detail="You are not member of this board or this board does not exist")
     
     if user.role == "viewer":
-        raise HTTPException(status_code=403, detail="You cannot create tasks in this board")
+        raise HTTPException(status_code=403, detail="You cant update tasks in this board")
     
     updated_data = {}
 
@@ -93,5 +93,6 @@ async def update_task(
         title=task.title,
         description=task.description,
         stageId=task.stageId,
-        order=task.order
+        order=task.order,
+        boardId=task.boardId
     )

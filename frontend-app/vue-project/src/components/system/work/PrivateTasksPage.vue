@@ -50,13 +50,25 @@ import SearchBar from './tasks/SearchBar.vue';
 import TaskList from './tasks/TaskList.vue';
 import TaskDetails from './tasks/TaskDetails.vue';
 
+// Import store
+import { usePrivateTasksStore } from '@/stores/privateTasks';
+
 export default {
     name: 'PrivateTasksPage',
     components: {
         SearchBar,
         TaskList,
         TaskDetails
-    }
+    },
+    data() {
+        const privateTasksStore = usePrivateTasksStore();
+        return {
+            privateTasksStore,
+        };
+    },
+    mounted() {
+        this.privateTasksStore.fetchPrivateTasks();
+    },
 };
 
 </script>

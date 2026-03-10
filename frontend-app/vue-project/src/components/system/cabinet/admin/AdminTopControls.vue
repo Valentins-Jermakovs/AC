@@ -23,7 +23,6 @@
           @change="$emit('clear-error')"
         >
           <option value="all">{{ $t('cabinet.admin.admin_top.filters[0]') }}</option>
-          <option value="id">{{ $t('cabinet.admin.admin_top.filters[1]') }}</option>
           <option value="username">{{ $t('cabinet.admin.admin_top.filters[2]') }}</option>
           <option value="role">{{ $t('cabinet.admin.admin_top.filters[3]') }}</option>
         </select>

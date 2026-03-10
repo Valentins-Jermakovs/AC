@@ -21,7 +21,7 @@ from app.services.workspace.projects.get_all_projects_service import get_all_pro
 from app.services.workspace.projects.get_project_by_title_service import get_project_by_title_or_description
 # Router
 router = APIRouter(
-    prefix="/worskpace/projects",
+    prefix="/workspace/projects",
     tags=["Workspace project management service"]
 )
 

@@ -24,7 +24,7 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
         meta: {
             page: 1,
             limit: 10,
-            total_users: 0,
+            total_items: 0,
             total_pages: 0,
         },
 
@@ -81,6 +81,14 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
                 this.lastRequest = { type: 'all' }
             } catch (err) {
                 this.error = err.response?.data?.message
+
+                // reset pagination
+                this.meta = {
+                    page: 1,
+                    limit: 10,
+                    total_items: 0,
+                    total_pages: 0,
+                }
             }
             finally {
                 this.loading = false
@@ -101,7 +109,7 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
             try {
                 const response = await api.get(API_ENDPOINTS.GET_TASKS_BY_TITLE,
                     {
-                        params: { 
+                        params: {
                             page,
                             limit,
                             title: searchQuery,
@@ -121,6 +129,14 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
             }
             catch (err) {
                 this.error = err.response?.data?.message
+
+                // reset pagination
+                this.meta = {
+                    page: 1,
+                    limit: 10,
+                    total_items: 0,
+                    total_pages: 0,
+                }
             }
             finally {
                 this.loading = false
@@ -140,8 +156,8 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
             try {
                 const response = await api.get(API_ENDPOINTS.GET_TASKS_BY_DESCRIPTION,
                     {
-                        params: { 
-                            page, 
+                        params: {
+                            page,
                             limit,
                             description: searchQuery,
                         },
@@ -160,6 +176,14 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
             }
             catch (err) {
                 this.error = err.response?.data?.message
+
+                // reset pagination
+                this.meta = {
+                    page: 1,
+                    limit: 10,
+                    total_items: 0,
+                    total_pages: 0,
+                }
             }
             finally {
                 this.loading = false
@@ -179,8 +203,8 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
             try {
                 const response = await api.get(API_ENDPOINTS.GET_TASKS_BY_DUEDATE,
                     {
-                        params: { 
-                            page, 
+                        params: {
+                            page,
                             limit,
                             duedate: searchQuery,
                         },
@@ -198,8 +222,15 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
                 this.lastRequest = { type: 'duedate', payload: searchQuery }
             }
             catch (error) {
-                console.error('Error fetching tasks:', error)
                 this.error = error.message
+
+                // reset pagination
+                this.meta = {
+                    page: 1,
+                    limit: 10,
+                    total_items: 0,
+                    total_pages: 0,
+                }
             }
             finally {
                 this.loading = false
@@ -222,8 +253,8 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
             try {
                 const response = await api.get(API_ENDPOINTS.GET_TASKS_BY_MONTH,
                     {
-                        params: { 
-                            page, 
+                        params: {
+                            page,
                             limit,
                             year: currentYear,
                             month: searchQuery,
@@ -242,8 +273,15 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
                 this.lastRequest = { type: 'month', payload: searchQuery }
             }
             catch (error) {
-                console.error('Error fetching tasks:', error)
                 this.error = error.message
+
+                // reset pagination
+                this.meta = {
+                    page: 1,
+                    limit: 10,
+                    total_items: 0,
+                    total_pages: 0,
+                }
             }
             finally {
                 this.loading = false
@@ -332,6 +370,59 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
             finally {
                 this.loading = false
             }
+        },
+
+        // ==========================
+        // OTHER
+        // ==========================
+
+        // Pagination helpers
+        async setPage(page) {
+            this.meta.page = page
+            await this.fetchUsers(page, this.meta.limit)
+        },
+
+        async setLimit(limit) {
+            this.meta.limit = limit
+            this.meta.page = 1
+        },
+
+        async nextPage() {
+            if (this.meta.page < this.meta.total_pages) {
+                this.meta.page++
+                await this.fetchUsers(this.meta.page, this.meta.limit)
+            }
+        },
+
+        async prevPage() {
+            if (this.meta.page > 1) {
+                this.meta.page--
+                await this.fetchUsers(this.meta.page, this.meta.limit)
+            }
+        },
+
+        // Repeat last request
+        async repeatLastRequest() {
+            if (this.lastRequest.type === 'all') {
+                await this.fetchPrivateTasks(this.meta.page, this.meta.limit)
+            }
+            else if (this.lastRequest.type === 'title') {
+                await this.findPrivateTasksByTitle(this.lastRequest.payload, this.meta.page, this.meta.limit)
+            }
+            else if (this.lastRequest.type === 'description') {
+                await this.findPrivateTasksByDescription(this.lastRequest.payload, this.meta.page, this.meta.limit)
+            }
+            else if (this.lastRequest.type === 'duedate') {
+                await this.findPrivateTasksByDueDate(this.lastRequest.payload, this.meta.page, this.meta.limit)
+            }
+            else if (this.lastRequest.type === 'month') {
+                await this.findPrivateTasksByMonth(this.lastRequest.payload, this.meta.page, this.meta.limit)
+            }
+        },
+
+        // Clear search input field
+        clearSearch() {
+            this.searchQuery = ''
         },
     }
 })

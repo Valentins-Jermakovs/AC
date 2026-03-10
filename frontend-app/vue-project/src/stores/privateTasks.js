@@ -59,15 +59,17 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
         // ==========================
 
         // Get all tasks paginated
-        async fetchPrivateTasks(page = this.meta.page, limit = this.meta.limit) {
+        async fetchPrivateTasks() {
             const authStore = useAuthStore()
-
             this.loading = true
             this.error = null
 
             try {
                 const response = await api.get(API_ENDPOINTS.GET_ALL_PRIVATE_TASKS, {
-                    params: { page, limit },
+                    params: { 
+                        page: this.meta.page,
+                        limit: this.meta.limit 
+                    },
                     headers: {
                         Authorization: `Bearer ${authStore.accessToken}`,
                     },
@@ -79,8 +81,9 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
 
                 // Remember request type
                 this.lastRequest = { type: 'all' }
+                this.searchQuery = ''
             } catch (err) {
-                this.error = err.response?.data?.message
+                this.error = err.response?.data?.message || err.message || 'Something went wrong';
 
                 // reset pagination
                 this.meta = {
@@ -97,11 +100,7 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
 
         // Get tasks by title
         async findPrivateTasksByTitle(
-            searchQuery = this.searchQuery,
-            page = this.meta.page,
-            limit = this.meta.limit
         ) {
-
             this.loading = true
             this.error = null
             const authStore = useAuthStore()
@@ -110,9 +109,9 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
                 const response = await api.get(API_ENDPOINTS.GET_TASKS_BY_TITLE,
                     {
                         params: {
-                            page,
-                            limit,
-                            title: searchQuery,
+                            page: this.meta.page,
+                            limit: this.meta.limit,
+                            title: this.searchQuery,
                         },
                         headers: {
                             Authorization: `Bearer ${authStore.accessToken}`,
@@ -125,10 +124,10 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
                 this.meta = response.data.meta
 
                 // Remember request type
-                this.lastRequest = { type: 'title', payload: searchQuery }
+                this.lastRequest = { type: 'title' }
             }
             catch (err) {
-                this.error = err.response?.data?.message
+                this.error = err.response?.data?.message || err.message || 'Something went wrong';
 
                 // reset pagination
                 this.meta = {
@@ -145,9 +144,6 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
 
         // Get tasks by description
         async findPrivateTasksByDescription(
-            searchQuery = this.searchQuery,
-            page = this.meta.page,
-            limit = this.meta.limit
         ) {
             this.loading = true
             this.error = null
@@ -157,9 +153,9 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
                 const response = await api.get(API_ENDPOINTS.GET_TASKS_BY_DESCRIPTION,
                     {
                         params: {
-                            page,
-                            limit,
-                            description: searchQuery,
+                            page: this.meta.page,
+                            limit: this.meta.limit,
+                            description: this.searchQuery,
                         },
                         headers: {
                             Authorization: `Bearer ${authStore.accessToken}`,
@@ -172,10 +168,10 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
                 this.meta = response.data.meta
 
                 // Remember request type
-                this.lastRequest = { type: 'description', payload: searchQuery }
+                this.lastRequest = { type: 'description' }
             }
             catch (err) {
-                this.error = err.response?.data?.message
+                this.error = err.response?.data?.message || err.message || 'Something went wrong';
 
                 // reset pagination
                 this.meta = {
@@ -192,10 +188,8 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
 
         // Get tasks by duedate
         async findPrivateTasksByDueDate(
-            searchQuery = this.searchQuery,
-            page = this.meta.page,
-            limit = this.meta.limit
         ) {
+
             this.loading = true
             this.error = null
             const authStore = useAuthStore()
@@ -204,9 +198,9 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
                 const response = await api.get(API_ENDPOINTS.GET_TASKS_BY_DUEDATE,
                     {
                         params: {
-                            page,
-                            limit,
-                            duedate: searchQuery,
+                            page: this.meta.page,
+                            limit: this.meta.limit,
+                            duedate: this.searchQuery,
                         },
                         headers: {
                             Authorization: `Bearer ${authStore.accessToken}`,
@@ -219,10 +213,10 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
                 this.meta = response.data.meta
 
                 // Remember request type
-                this.lastRequest = { type: 'duedate', payload: searchQuery }
+                this.lastRequest = { type: 'duedate' }
             }
-            catch (error) {
-                this.error = error.message
+            catch (err) {
+                this.error = err.response?.data?.message || err.message || 'Something went wrong';
 
                 // reset pagination
                 this.meta = {
@@ -239,9 +233,6 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
 
         // Get tasks by month
         async findPrivateTasksByMonth(
-            searchQuery = this.searchQuery,
-            page = this.meta.page,
-            limit = this.meta.limit
         ) {
 
             const currentYear = new Date().getFullYear()
@@ -254,10 +245,10 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
                 const response = await api.get(API_ENDPOINTS.GET_TASKS_BY_MONTH,
                     {
                         params: {
-                            page,
-                            limit,
+                            page: this.meta.page,
+                            limit: this.meta.limit,
                             year: currentYear,
-                            month: searchQuery,
+                            month: this.searchQuery,
                         },
                         headers: {
                             Authorization: `Bearer ${authStore.accessToken}`,
@@ -270,10 +261,10 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
                 this.meta = response.data.meta
 
                 // Remember request type
-                this.lastRequest = { type: 'month', payload: searchQuery }
+                this.lastRequest = { type: 'month' }
             }
-            catch (error) {
-                this.error = error.message
+            catch (err) {
+                this.error = err.response?.data?.message || err.message || 'Something went wrong';
 
                 // reset pagination
                 this.meta = {
@@ -306,10 +297,11 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
                     },
                 })
 
+                await this.repeatLastRequest()
                 return response.data
             }
             catch (err) {
-                this.error = err.response?.data?.message
+                this.error = err.response?.data?.message || err.message || 'Something went wrong';
             }
             finally {
                 this.loading = false
@@ -334,10 +326,11 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
                     },
                 })
 
+                await this.repeatLastRequest()
                 return response.data
             }
             catch (err) {
-                this.error = err.response?.data?.message
+                this.error = err.response?.data?.message || err.message || 'Something went wrong';
             }
             finally {
                 this.loading = false
@@ -362,10 +355,11 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
                     },
                 })
 
+                await this.repeatLastRequest()
                 return response.data
             }
             catch (err) {
-                this.error = err.response?.data?.message
+                this.error = err.response?.data?.message || err.message || 'Something went wrong';
             }
             finally {
                 this.loading = false
@@ -378,51 +372,63 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
 
         // Pagination helpers
         async setPage(page) {
-            this.meta.page = page
-            await this.fetchUsers(page, this.meta.limit)
+            this.meta.page = page;
+            await this.repeatLastRequest();
         },
 
         async setLimit(limit) {
-            this.meta.limit = limit
-            this.meta.page = 1
+            this.meta.limit = limit;
+            this.meta.page = 1;
+            await this.repeatLastRequest();
         },
 
         async nextPage() {
             if (this.meta.page < this.meta.total_pages) {
-                this.meta.page++
-                await this.fetchUsers(this.meta.page, this.meta.limit)
+                this.meta.page++;
+                await this.repeatLastRequest();
             }
         },
 
         async prevPage() {
             if (this.meta.page > 1) {
-                this.meta.page--
-                await this.fetchUsers(this.meta.page, this.meta.limit)
+                this.meta.page--;
+                await this.repeatLastRequest();
             }
         },
 
         // Repeat last request
         async repeatLastRequest() {
-            if (this.lastRequest.type === 'all') {
-                await this.fetchPrivateTasks(this.meta.page, this.meta.limit)
-            }
-            else if (this.lastRequest.type === 'title') {
-                await this.findPrivateTasksByTitle(this.lastRequest.payload, this.meta.page, this.meta.limit)
-            }
-            else if (this.lastRequest.type === 'description') {
-                await this.findPrivateTasksByDescription(this.lastRequest.payload, this.meta.page, this.meta.limit)
-            }
-            else if (this.lastRequest.type === 'duedate') {
-                await this.findPrivateTasksByDueDate(this.lastRequest.payload, this.meta.page, this.meta.limit)
-            }
-            else if (this.lastRequest.type === 'month') {
-                await this.findPrivateTasksByMonth(this.lastRequest.payload, this.meta.page, this.meta.limit)
+            if (!this.lastRequest)
+            {
+                await this.fetchPrivateTasks();
+                return;
+            };
+
+            const { type } = this.lastRequest;
+
+            switch (type) {
+                case 'all':
+                    await this.fetchPrivateTasks();
+                    break;
+                case 'title':
+                    await this.findPrivateTasksByTitle();
+                    break;
+                case 'description':
+                    await this.findPrivateTasksByDescription();
+                    break;
+                case 'duedate':
+                    await this.findPrivateTasksByDueDate();
+                    break;
+                case 'month':
+                    await this.findPrivateTasksByMonth();
+                    break;
             }
         },
 
         // Clear search input field
-        clearSearch() {
-            this.searchQuery = ''
+        async clearSearch() {
+            this.searchQuery = '';
+            this.meta.page = 1;
         },
     }
 })

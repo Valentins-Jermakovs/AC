@@ -24,7 +24,7 @@
                     </div>
                     <div class="text-sm opacity-80 whitespace-nowrap">Page Current:
                         <span class="font-semibold">{{ page }}</span> / <span class="font-semibold">{{ totalPages
-                            }}</span>
+                        }}</span>
                     </div>
                 </div>
 
@@ -54,8 +54,7 @@
             </div>
 
             <!-- Saraksts tukšs -->
-            <div v-else
-                class="flex flex-col items-center justify-center h-full gap-4 bg-base-300 rounded p-4">
+            <div v-else class="flex flex-col items-center justify-center h-full gap-4 bg-base-300 rounded p-4">
                 <div class="flex items-center gap-2 font-semibold text-2xl text-error">
                     <font-awesome-icon icon="fa-solid fa-triangle-exclamation" />
                     No tasks found or your task list is empty
@@ -67,8 +66,14 @@
 
                 <!-- CREATE dialog -->
                 <BaseDialog v-model="showCreate" title="Create task" confirmText="Create" cancelText="Cancel"
-                    @confirm="createTask">
+                    @confirm="createTask" @cancel="closeCreate">
                     <div class="flex flex-col gap-2 w-full">
+                        <!-- Error message transition -->
+                        <Transition name="error-slide">
+                            <div v-if="error">
+                                <h1 class="text-error mb-2">{{ error }}</h1>
+                            </div>
+                        </Transition>
                         <!-- Title -->
                         <div>
                             <label class="label">
@@ -130,10 +135,19 @@ export default {
         },
         total() { return this.privateTasksStore.meta.totalItems; },
         totalPages() { return this.privateTasksStore.meta.totalPages; },
+
+        error() {
+            return this.privateTasksStore.error
+        }
+
     },
     methods: {
         nextPage() { this.privateTasksStore.nextPage(); },
         prevPage() { this.privateTasksStore.prevPage(); },
+        closeCreate() {
+            this.showCreate = false
+            this.privateTasksStore.clearError()
+        },
         async handleSearch({ query, filter }) {
             this.privateTasksStore.searchQuery = query;
             this.privateTasksStore.meta.page = 1;

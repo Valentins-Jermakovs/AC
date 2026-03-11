@@ -1,8 +1,8 @@
 <template>
-    <div class="h-full bg-base-100 p-1 flex">
+    <div class="h-full bg-base-100 p-1 flex flex-col lg:flex-row">
 
         <!-- Left screen: task list with search bar and pagination -->
-        <div class="w-1/2 bg-base-200 border border-base-300 flex flex-col gap-1 p-1">
+        <div class="w-full lg:w-1/2 bg-base-200 border border-base-300 flex flex-col gap-1 p-1">
             <SearchBar @search="handleSearch" />
             <TaskList :tasks="privateTasksStore.privateTasks" @select-task="selectTask" />
 
@@ -42,7 +42,7 @@
         </div>
 
         <!-- Right screen: task details / empty states -->
-        <div class="w-1/2 bg-base-200 border border-base-300 flex flex-col gap-1 p-1">
+        <div class="w-full lg:w-1/2 bg-base-200 border border-base-300 flex flex-col gap-1 p-1">
 
             <!-- Atlasīts uzdevums -->
             <TaskDetails v-if="selectedTask" :task="selectedTask" @delete-task="handleDelete" />

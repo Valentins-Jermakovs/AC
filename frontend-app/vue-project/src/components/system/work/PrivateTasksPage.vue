@@ -55,10 +55,10 @@
 
             <!-- Saraksts tukšs -->
             <div v-else
-                class="flex flex-col items-center justify-center h-full gap-4 bg-yellow-100 text-yellow-900 rounded p-4">
-                <div class="flex items-center gap-2 text-lg font-semibold">
+                class="flex flex-col items-center justify-center h-full gap-4 bg-base-300 rounded p-4">
+                <div class="flex items-center gap-2 font-semibold text-2xl text-error">
                     <font-awesome-icon icon="fa-solid fa-triangle-exclamation" />
-                    No tasks found
+                    No tasks found or your task list is empty
                 </div>
 
                 <button class="btn btn-primary" @click="showCreate = true">

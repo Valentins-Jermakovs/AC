@@ -1,9 +1,9 @@
 <template>
-  <div class="border border-base-300 rounded-box p-4 bg-base-100 flex flex-col gap-5 h-full">
+  <div class="border border-base-300 rounded-box p-4 bg-base-100 flex flex-col gap-5 h-full overflow-y-auto">
 
     <!-- Title & Metadata -->
     <div class="flex flex-col gap-5">
-      <h1 class="font-semibold text-2xl">{{ task.title }}</h1>
+      <h1 class="font-semibold text-2xl wrap-break-word whitespace-pre-line">{{ task.title }}</h1>
       <div class="flex flex-wrap gap-4 text-sm text-base-content/70">
         <div class="flex gap-1 items-center">
           <span class="font-medium">Status:</span>
@@ -24,7 +24,9 @@
 
     <!-- Description -->
     <div>
-      <p class="text-base text-base-content/70">{{ task.description }}</p>
+      <p class="text-base text-base-content/70 wrap-break-word whitespace-pre-line">
+        {{ task.description }}
+      </p>
       <div class="divider"></div>
     </div>
 
@@ -51,22 +53,21 @@
 
     <!-- DELETE -->
     <BaseDialog v-model="showDelete" title="Delete task" confirmText="Delete" cancelText="Cancel"
-      @confirm="$emit('delete-task', task.id)"
-      @cancel="closeDelete">
+      @confirm="$emit('delete-task', task.id)" @cancel="closeDelete">
       Are you sure you want to delete this task?
     </BaseDialog>
 
 
     <!-- COMPLETE -->
     <BaseDialog v-model="showComplete" title="Complete task" confirmText="Complete" cancelText="Cancel"
-      @confirm="completeTask"
-      @cancel="closeComplete">
+      @confirm="completeTask" @cancel="closeComplete">
       Mark task as completed?
     </BaseDialog>
 
 
     <!-- EDIT -->
-    <BaseDialog v-model="showEdit" title="Edit task" confirmText="Save" cancelText="Cancel" @cancel="closeEdit" @confirm="editTask">
+    <BaseDialog v-model="showEdit" title="Edit task" confirmText="Save" cancelText="Cancel" @cancel="closeEdit"
+      @confirm="editTask">
 
       <div class="w-full flex flex-col gap-2">
         <!-- Error message transition -->
@@ -94,7 +95,8 @@
 
 
     <!-- CREATE -->
-    <BaseDialog v-model="showCreate" title="Create task" confirmText="Create" cancelText="Cancel" @cancel="closeCreate" @confirm="createTask">
+    <BaseDialog v-model="showCreate" title="Create task" confirmText="Create" cancelText="Cancel" @cancel="closeCreate"
+      @confirm="createTask">
 
       <div class="flex flex-col gap-2 w-full">
         <!-- Error message transition -->

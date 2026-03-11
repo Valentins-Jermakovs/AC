@@ -33,8 +33,8 @@
     <!-- Action Buttons -->
     <div class="flex flex-wrap justify-end gap-2 mt-2">
       <button class="btn btn-md btn-error" @click="showDelete = true">
-        Delete
-      </button>
+  Delete
+</button>
 
       <button class="btn btn-md btn-success" @click="openComplete">
         Complete
@@ -50,9 +50,10 @@
     </div>
 
     <!-- DELETE -->
-    <BaseDialog v-model="showDelete" title="Delete task" confirmText="Delete" cancelText="Cancel" @confirm="deleteTask">
-      Are you sure you want to delete this task?
-    </BaseDialog>
+    <BaseDialog v-model="showDelete" title="Delete task" confirmText="Delete" cancelText="Cancel" 
+  @confirm="$emit('delete-task', task.id)">
+  Are you sure you want to delete this task?
+</BaseDialog>
 
 
     <!-- COMPLETE -->

@@ -1,15 +1,14 @@
 <template>
-    <div class=" h-full bg-base-100 p-1 flex">
-        <!-- Left screen: task list with search bar, filter button, search button -->
-        <!-- and drop down menu and buttons for pagination -->
+    <div class="h-full bg-base-100 p-1 flex">
+
+        <!-- Left screen: task list with search bar and pagination -->
         <div class="w-1/2 bg-base-200 border border-base-300 flex flex-col gap-1 p-1">
-            <SearchBar @search="handleSearch"></SearchBar>
-            <TaskList :tasks="privateTasksStore.privateTasks" @select-task="selectTask"></TaskList>
+            <SearchBar @search="handleSearch" />
+            <TaskList :tasks="privateTasksStore.privateTasks" @select-task="selectTask" />
 
             <!-- Pagination -->
             <div
                 class="w-full p-4 rounded-box border border-base-300 bg-base-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <!-- Left section: Limit, total, page -->
                 <div class="flex flex-col sm:flex-row sm:items-center sm:gap-6 w-full sm:w-auto">
                     <div class="flex flex-col sm:flex-row sm:items-center gap-2">
                         <label class="text-sm opacity-70">limit</label>
@@ -21,16 +20,14 @@
                         </select>
                     </div>
                     <div class="text-sm opacity-80 whitespace-nowrap">Total:
-                        <span class="font-semibold">
-                            {{ total }}
-                        </span>
+                        <span class="font-semibold">{{ total }}</span>
                     </div>
                     <div class="text-sm opacity-80 whitespace-nowrap">Page Current:
-                        <span class="font-semibold">{{ page }}</span> / <span class="font-semibold">{{
-                            totalPages }}</span>
+                        <span class="font-semibold">{{ page }}</span> / <span class="font-semibold">{{ totalPages
+                            }}</span>
                     </div>
                 </div>
-                <!-- Pagination buttons -->
+
                 <div class="flex flex-col sm:flex-row sm:gap-3 gap-2 w-full sm:w-auto">
                     <button class="btn btn-neutral hover:btn-primary flex-1 p-2" @click="prevPage"
                         :disabled="page <= 1">
@@ -44,113 +41,126 @@
             </div>
         </div>
 
-        <!-- Right screen: task details -->
+        <!-- Right screen: task details / empty states -->
         <div class="w-1/2 bg-base-200 border border-base-300 flex flex-col gap-1 p-1">
-            <TaskDetails v-if="selectedTask" :task="selectedTask" />
 
-            <div v-else class="flex items-center justify-center h-full text-base-content/50">
+            <!-- Atlasīts uzdevums -->
+            <TaskDetails v-if="selectedTask" :task="selectedTask" @delete-task="handleDelete" />
+
+            <!-- Saraksts nav tukšs, bet nav atlasīts uzdevums -->
+            <div v-else-if="privateTasksStore.privateTasks.length > 0"
+                class="flex items-center justify-center h-full text-base-content/50">
                 Select a task
             </div>
+
+            <!-- Saraksts tukšs -->
+            <div v-else
+                class="flex flex-col items-center justify-center h-full gap-4 bg-yellow-100 text-yellow-900 rounded p-4">
+                <div class="flex items-center gap-2 text-lg font-semibold">
+                    <font-awesome-icon icon="fa-solid fa-triangle-exclamation" />
+                    No tasks found
+                </div>
+
+                <button class="btn btn-primary" @click="showCreate = true">
+                    Create new task
+                </button>
+
+                <!-- CREATE dialog -->
+                <BaseDialog v-model="showCreate" title="Create task" confirmText="Create" cancelText="Cancel"
+                    @confirm="createTask">
+                    <div class="flex flex-col gap-2 w-full">
+                        <!-- Title -->
+                        <div>
+                            <label class="label">
+                                <span class="label-text">Title:</span>
+                            </label>
+                            <input class="input input-bordered w-full" placeholder="Title" v-model="createForm.title" />
+                        </div>
+                        <!-- Description -->
+                        <div>
+                            <label class="label">
+                                <span class="label-text">Description:</span>
+                            </label>
+                            <textarea class="textarea textarea-bordered w-full h-40 resize-none"
+                                placeholder="Description" v-model="createForm.description"></textarea>
+                        </div>
+                        <!-- Due date -->
+                        <div>
+                            <label class="label">
+                                <span class="label-text">Due date:</span>
+                            </label>
+                            <input class="input input-bordered w-full" type="date" v-model="createForm.dueDate" />
+                        </div>
+                    </div>
+                </BaseDialog>
+
+            </div>
         </div>
+
     </div>
 </template>
 
 <script>
-// Import UI components
 import SearchBar from './tasks/SearchBar.vue';
 import TaskList from './tasks/TaskList.vue';
 import TaskDetails from './tasks/TaskDetails.vue';
-
-// Import store
+import BaseDialog from '@/components/common/BaseDialog.vue';
 import { usePrivateTasksStore } from '@/stores/privateTasks';
 
 export default {
     name: 'PrivateTasksPage',
-    components: {
-        SearchBar,
-        TaskList,
-        TaskDetails
-    },
+    components: { SearchBar, TaskList, TaskDetails, BaseDialog },
     data() {
         const privateTasksStore = usePrivateTasksStore();
         return {
             privateTasksStore,
-            selectedTask: null
+            selectedTask: null,
+            showCreate: false,
+            createForm: { title: '', description: '', dueDate: '' }
         };
     },
     mounted() {
         this.privateTasksStore.fetchPrivateTasks();
     },
-
     computed: {
-        page() {
-            return this.privateTasksStore.meta.page;
-        },
-
+        page() { return this.privateTasksStore.meta.page; },
         limit: {
-            get() {
-                return this.privateTasksStore.meta.limit;
-            },
-            set(value) {
-                this.privateTasksStore.setLimit(value);
-            }
+            get() { return this.privateTasksStore.meta.limit; },
+            set(value) { this.privateTasksStore.setLimit(value); }
         },
-
-        total() {
-            return this.privateTasksStore.meta.totalItems;
-        },
-
-        totalPages() {
-            return this.privateTasksStore.meta.totalPages;
-        },
+        total() { return this.privateTasksStore.meta.totalItems; },
+        totalPages() { return this.privateTasksStore.meta.totalPages; },
     },
-
     methods: {
-        nextPage() {
-            this.privateTasksStore.nextPage();
-        },
-
-        prevPage() {
-            this.privateTasksStore.prevPage();
-        },
+        nextPage() { this.privateTasksStore.nextPage(); },
+        prevPage() { this.privateTasksStore.prevPage(); },
         async handleSearch({ query, filter }) {
-
-            this.privateTasksStore.searchQuery = query
-            this.privateTasksStore.meta.page = 1
-
+            this.privateTasksStore.searchQuery = query;
+            this.privateTasksStore.meta.page = 1;
             switch (filter) {
-
-                case 'all':
-                    await this.privateTasksStore.fetchPrivateTasks()
-                    break
-
-                case 'title':
-                    await this.privateTasksStore.findPrivateTasksByTitle()
-                    break
-
-                case 'description':
-                    await this.privateTasksStore.findPrivateTasksByDescription()
-                    break
-
-                case 'duedate':
-                    await this.privateTasksStore.findPrivateTasksByDueDate()
-                    break
-
-                case 'monthyear':
-                    await this.privateTasksStore.findPrivateTasksByMonth()
-                    break
-
-                default:
-                    await this.privateTasksStore.fetchPrivateTasks()
+                case 'all': await this.privateTasksStore.fetchPrivateTasks(); break;
+                case 'title': await this.privateTasksStore.findPrivateTasksByTitle(); break;
+                case 'description': await this.privateTasksStore.findPrivateTasksByDescription(); break;
+                case 'duedate': await this.privateTasksStore.findPrivateTasksByDueDate(); break;
+                case 'monthyear': await this.privateTasksStore.findPrivateTasksByMonth(); break;
+                default: await this.privateTasksStore.fetchPrivateTasks();
             }
         },
-        selectTask(task) {
-            this.selectedTask = task
+        selectTask(task) { this.selectedTask = task; },
+        async createTask() {
+            await this.privateTasksStore.createPrivateTask(this.createForm);
+            this.showCreate = false;
+            this.createForm = { title: '', description: '', dueDate: '' };
         },
-
-    },
+        async handleDelete(taskId) {
+            await this.privateTasksStore.removePrivateTask(taskId)
+            // ja dzēstais task bija atlasīts, atiestatām
+            if (this.selectedTask?.id === taskId) {
+                this.selectedTask = null
+            }
+        }
+    }
 };
-
 </script>
 
 <style scoped></style>

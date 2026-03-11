@@ -24,7 +24,7 @@
                     </div>
                     <div class="text-sm opacity-80 whitespace-nowrap">Page Current:
                         <span class="font-semibold">{{ page }}</span> / <span class="font-semibold">{{ totalPages
-                        }}</span>
+                            }}</span>
                     </div>
                 </div>
 
@@ -162,6 +162,10 @@ export default {
         },
         selectTask(task) { this.selectedTask = task; },
         async createTask() {
+            if (!this.createForm.dueDate) {
+                this.privateTasksStore.error = "Due date is required"
+                return
+            }
             await this.privateTasksStore.createPrivateTask(this.createForm);
             this.showCreate = false;
             this.createForm = { title: '', description: '', dueDate: '' };

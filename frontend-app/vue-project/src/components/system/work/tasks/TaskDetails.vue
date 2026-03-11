@@ -261,6 +261,11 @@ export default {
 
     async createTask() {
 
+      if (!this.createForm.dueDate) {
+        this.privateTasksStore.error = "Due date is required"
+        return
+      }
+
       await this.privateTasksStore.createPrivateTask(
         this.createForm
       )

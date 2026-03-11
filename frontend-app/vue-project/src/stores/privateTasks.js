@@ -66,9 +66,9 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
 
             try {
                 const response = await api.get(API_ENDPOINTS.GET_ALL_PRIVATE_TASKS, {
-                    params: { 
+                    params: {
                         page: this.meta.page,
-                        limit: this.meta.limit 
+                        limit: this.meta.limit
                     },
                     headers: {
                         Authorization: `Bearer ${authStore.accessToken}`,
@@ -292,17 +292,19 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
 
             try {
                 const response = await api.post(API_ENDPOINTS.CREATE_PRIVATE_TASK, data,
-                {
-                    headers: {
-                        Authorization: `Bearer ${authStore.accessToken}`,
-                    },
-                })
+                    {
+                        headers: {
+                            Authorization: `Bearer ${authStore.accessToken}`,
+                        },
+                    })
 
                 await this.repeatLastRequest()
                 return response.data
             }
             catch (err) {
-                this.error = err.response?.data?.message || err.message || 'Something went wrong';
+                this.error = err.response?.data?.detail || err.message || 'Something went wrong';
+
+                throw err
             }
             finally {
                 this.loading = false
@@ -321,19 +323,21 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
             this.error = null
 
             try {
-                const response = await api.put(API_ENDPOINTS.UPDATE_PRIVATE_TASK, 
-                data, 
-                {
-                    headers: {
-                        Authorization: `Bearer ${authStore.accessToken}`,
-                    },
-                })
+                const response = await api.put(API_ENDPOINTS.UPDATE_PRIVATE_TASK,
+                    data,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${authStore.accessToken}`,
+                        },
+                    })
 
                 await this.repeatLastRequest()
                 return response.data
             }
             catch (err) {
-                this.error = err.response?.data?.message || err.message || 'Something went wrong';
+                this.error = err.response?.data?.detail || err.message || 'Something went wrong';
+
+                throw err
             }
             finally {
                 this.loading = false
@@ -352,21 +356,23 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
             this.error = null
 
             try {
-                const response = await api.delete(API_ENDPOINTS.DELETE_PRIVATE_TASK, 
-                {
-                    headers: {
-                        Authorization: `Bearer ${authStore.accessToken}`,
-                    },
-                    data: {
-                        taskId: taskId
-                    }
-                })
+                const response = await api.delete(API_ENDPOINTS.DELETE_PRIVATE_TASK,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${authStore.accessToken}`,
+                        },
+                        data: {
+                            taskId: taskId
+                        }
+                    })
 
                 await this.repeatLastRequest()
                 return response.data
             }
             catch (err) {
-                this.error = err.response?.data?.message || err.message || 'Something went wrong';
+                this.error = err.response?.data?.detail || err.message || 'Something went wrong';
+
+                throw err
             }
             finally {
                 this.loading = false
@@ -405,8 +411,7 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
 
         // Repeat last request
         async repeatLastRequest() {
-            if (!this.lastRequest)
-            {
+            if (!this.lastRequest) {
                 await this.fetchPrivateTasks();
                 return;
             };
@@ -437,5 +442,8 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
             this.searchQuery = '';
             this.meta.page = 1;
         },
+        async clearError() {
+            this.error = null
+        }
     }
 })

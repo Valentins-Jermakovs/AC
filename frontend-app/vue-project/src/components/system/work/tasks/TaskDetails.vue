@@ -33,8 +33,8 @@
     <!-- Action Buttons -->
     <div class="flex flex-wrap justify-end gap-2 mt-2">
       <button class="btn btn-md btn-error" @click="showDelete = true">
-  Delete
-</button>
+        Delete
+      </button>
 
       <button class="btn btn-md btn-success" @click="openComplete">
         Complete
@@ -50,23 +50,32 @@
     </div>
 
     <!-- DELETE -->
-    <BaseDialog v-model="showDelete" title="Delete task" confirmText="Delete" cancelText="Cancel" 
-  @confirm="$emit('delete-task', task.id)">
-  Are you sure you want to delete this task?
-</BaseDialog>
+    <BaseDialog v-model="showDelete" title="Delete task" confirmText="Delete" cancelText="Cancel"
+      @confirm="$emit('delete-task', task.id)"
+      @cancel="closeDelete">
+      Are you sure you want to delete this task?
+    </BaseDialog>
 
 
     <!-- COMPLETE -->
     <BaseDialog v-model="showComplete" title="Complete task" confirmText="Complete" cancelText="Cancel"
-      @confirm="completeTask">
+      @confirm="completeTask"
+      @cancel="closeComplete">
       Mark task as completed?
     </BaseDialog>
 
 
     <!-- EDIT -->
-    <BaseDialog v-model="showEdit" title="Edit task" confirmText="Save" cancelText="Cancel" @confirm="editTask">
+    <BaseDialog v-model="showEdit" title="Edit task" confirmText="Save" cancelText="Cancel" @cancel="closeEdit" @confirm="editTask">
 
-      <div class="w-full flex flex-col gap-2"> <!-- Title -->
+      <div class="w-full flex flex-col gap-2">
+        <!-- Error message transition -->
+        <Transition name="error-slide">
+          <div v-if="error">
+            <h1 class="text-error mb-2">{{ error }}</h1>
+          </div>
+        </Transition>
+        <!-- Title -->
         <div> <label class="label"> <span class="label-text">Title:</span> </label> <input
             class="input input-bordered w-full" v-model="editForm.title" /> </div> <!-- Description -->
         <div> <label class="label"><span class="label-text">Description:</span></label> <textarea
@@ -85,9 +94,15 @@
 
 
     <!-- CREATE -->
-    <BaseDialog v-model="showCreate" title="Create task" confirmText="Create" cancelText="Cancel" @confirm="createTask">
+    <BaseDialog v-model="showCreate" title="Create task" confirmText="Create" cancelText="Cancel" @cancel="closeCreate" @confirm="createTask">
 
       <div class="flex flex-col gap-2 w-full">
+        <!-- Error message transition -->
+        <Transition name="error-slide">
+          <div v-if="error">
+            <h1 class="text-error mb-2">{{ error }}</h1>
+          </div>
+        </Transition>
         <!-- Title -->
         <div>
           <label class="label">
@@ -155,11 +170,36 @@ export default {
       required: true
     }
   },
+  computed: {
+    error() {
+      return this.privateTasksStore.error
+    }
+  },
   methods: {
     statusClass(completed) {
       return completed
         ? 'px-2 py-0.5 rounded-full bg-green-100 text-green-800 text-xs'
         : 'px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 text-xs';
+    },
+
+    closeEdit() {
+      this.showEdit = false
+      this.privateTasksStore.clearError()
+    },
+
+    closeCreate() {
+      this.showCreate = false
+      this.privateTasksStore.clearError()
+    },
+
+    closeDelete() {
+      this.showDelete = false
+      this.privateTasksStore.clearError()
+    },
+
+    closeComplete() {
+      this.showComplete = false
+      this.privateTasksStore.clearError()
     },
 
     async deleteTask() {
@@ -240,3 +280,24 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.error-slide-enter-active,
+.error-slide-leave-active {
+  transition: all 0.4s ease;
+}
+
+.error-slide-enter-from,
+.error-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+  max-height: 0;
+}
+
+.error-slide-enter-to,
+.error-slide-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+  max-height: 100px;
+}
+</style>

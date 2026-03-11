@@ -25,67 +25,45 @@ async def find_task_by_title(
     page: int = 1
 ) -> PaginatedPrivateTasksSchema:
 
-    # Raise if title is not provided
     if not title:
         raise HTTPException(status_code=400, detail="Title is required")
-    
-    # Pagination offset
+
     offset = (page - 1) * limit
 
-    # Count total tasks
-    total_tasks = await PrivateTaskModel.find({
+    # Find tasks matching title
+    tasks_query = {
         "title": {"$regex": re.escape(title), "$options": "i"},
         "userId": user_id
-    }).count()
+    }
 
-    # Raise 404 if dont find any tasks
-    if total_tasks == 0:
-        raise HTTPException(status_code=404, detail="Tasks not found")
-    # Raise 404 if requested page exceeds total tasks
+    total_tasks = await PrivateTaskModel.find(tasks_query).count()
+
+    # Atsakāmies no 404 — ja nav atrasts, vienkārši items = []
     if offset >= total_tasks:
-        raise HTTPException(status_code=404, detail="Page not found")
-    # Raise if limit > 100
-    if limit > 100:
-        raise HTTPException(status_code=400, detail="Limit must be less than 100")
-    # Raise if page <= 0
-    if page <= 0:
-        raise HTTPException(status_code=400, detail="Page must be a positive integer")
-    # Raise if limit <= 0
-    if limit <= 0:
-        raise HTTPException(status_code=400, detail="Limit must be a positive integer")
+        # Ja page pārsniedz, return tukšu sarakstu
+        items = []
+    else:
+        tasks = await PrivateTaskModel.find(tasks_query).skip(offset).limit(limit).to_list()
+        items = [
+            PrivateTaskSchema(
+                id=str(task.id),
+                title=task.title,
+                description=task.description,
+                createdAt=task.createdAt,
+                dueDate=task.dueDate,
+                completed=task.completed
+            )
+            for task in tasks
+        ]
 
-    # Try to find task by title and user_id
-    tasks = await PrivateTaskModel.find({
-        "title": {"$regex": re.escape(title), "$options": "i"},
-        "userId": user_id
-    }).skip(offset).limit(limit).to_list()
-
-    # Build pagination metadata
     meta = PaginationMetaSchema(
         page=page,
         limit=limit,
-        totalPages=(total_tasks + limit - 1) // limit,
+        totalPages=(total_tasks + limit - 1) // limit if total_tasks > 0 else 1,
         totalItems=total_tasks
     )
 
-    # Build response
-    items = [
-        PrivateTaskSchema(
-            id=str(task.id),
-            title=task.title,
-            description=task.description,
-            createdAt=task.createdAt,
-            dueDate=task.dueDate,
-            completed=task.completed
-        )
-        for task in tasks
-    ]
-
-    # Return response object
-    return PaginatedPrivateTasksSchema(
-        items=items,
-        meta=meta
-    )
+    return PaginatedPrivateTasksSchema(items=items, meta=meta)
 
 
 # ========================
@@ -97,7 +75,7 @@ async def find_task_by_description(
     limit: int = 10,
     page: int = 1
 ) -> PaginatedPrivateTasksSchema:
-    
+
     # Raise if description is not provided
     if not description:
         raise HTTPException(status_code=400, detail="Description is required")
@@ -105,46 +83,40 @@ async def find_task_by_description(
     # Pagination offset
     offset = (page - 1) * limit
 
+    # Query
+    query = {
+        "description": {"$regex": re.escape(description), "$options": "i"},
+        "userId": user_id
+    }
+
     # Count total tasks
-    total_tasks = await PrivateTaskModel.find({
-        "description": {"$regex": re.escape(description), "$options": "i"},
-        "userId": user_id
-    }).count()
+    total_tasks = await PrivateTaskModel.find(query).count()
 
-    if total_tasks == 0:
-        raise HTTPException(status_code=404, detail="Tasks not found")
-    
-    if offset >= total_tasks:
-        raise HTTPException(status_code=404, detail="Page not found")
+    # Fetch tasks only if offset < total_tasks
+    if offset >= total_tasks or total_tasks == 0:
+        items = []  # tukšs saraksts, ja nav atrasts vai page pārsniedz
+    else:
+        tasks = await PrivateTaskModel.find(query).skip(offset).limit(limit).to_list()
+        items = [
+            PrivateTaskSchema(
+                id=str(task.id),
+                title=task.title,
+                description=task.description,
+                createdAt=task.createdAt,
+                dueDate=task.dueDate,
+                completed=task.completed
+            )
+            for task in tasks
+        ]
 
-    # Try to find task by description and user_id
-    tasks = await PrivateTaskModel.find({
-        "description": {"$regex": re.escape(description), "$options": "i"},
-        "userId": user_id
-    }).skip(offset).limit(limit).to_list()
-
-    # Build pagination metadata
+    # Pagination metadata
     meta = PaginationMetaSchema(
         page=page,
         limit=limit,
-        totalPages=(total_tasks + limit - 1) // limit,
+        totalPages=(total_tasks + limit - 1) // limit if total_tasks > 0 else 1,
         totalItems=total_tasks
     )
 
-    # Build response
-    items = [
-        PrivateTaskSchema(
-            id=str(task.id),
-            title=task.title,
-            description=task.description,
-            createdAt=task.createdAt,
-            dueDate=task.dueDate,
-            completed=task.completed
-        )
-        for task in tasks
-    ]
-
-    # Return response object
     return PaginatedPrivateTasksSchema(
         items=items,
         meta=meta
@@ -181,37 +153,32 @@ async def find_task_by_duedate(
 
     # Count total tasks
     total_tasks = await PrivateTaskModel.find(query).count()
-    if total_tasks == 0:
-        raise HTTPException(status_code=404, detail="Tasks not found")
 
-    if offset >= total_tasks:
-        raise HTTPException(status_code=404, detail="Page not found")
-    
-    # Fetch tasks for current page
-    tasks = await PrivateTaskModel.find(query).skip(offset).limit(limit).to_list()
+    # Fetch tasks only if offset < total_tasks
+    if total_tasks == 0 or offset >= total_tasks:
+        items = []  # tukšs saraksts
+    else:
+        tasks = await PrivateTaskModel.find(query).skip(offset).limit(limit).to_list()
+        items = [
+            PrivateTaskSchema(
+                id=str(task.id),
+                title=task.title,
+                description=task.description,
+                createdAt=task.createdAt,
+                dueDate=task.dueDate,
+                completed=task.completed
+            )
+            for task in tasks
+        ]
 
     # Build pagination metadata
     meta = PaginationMetaSchema(
         page=page,
         limit=limit,
-        totalPages=(total_tasks + limit - 1) // limit,
+        totalPages=(total_tasks + limit - 1) // limit if total_tasks > 0 else 1,
         totalItems=total_tasks
     )
 
-    # Build response
-    items = [
-        PrivateTaskSchema(
-            id=str(task.id),
-            title=task.title,
-            description=task.description,
-            createdAt=task.createdAt,
-            dueDate=task.dueDate,
-            completed=task.completed
-        )
-        for task in tasks
-    ]
-
-    # Return response object
     return PaginatedPrivateTasksSchema(
         items=items,
         meta=meta
@@ -227,14 +194,13 @@ async def find_task_by_month(
     page: int = 1
 ) -> PaginatedPrivateTasksSchema:
 
+    # Validācija
     if not month:
         raise HTTPException(status_code=400, detail="Month is required")
     if month < 1 or month > 12:
         raise HTTPException(status_code=400, detail="Invalid month. Must be 1-12.")
-
     if not user_id:
         raise HTTPException(status_code=400, detail="User ID is required")
-
     if limit <= 0 or limit > 100:
         raise HTTPException(status_code=400, detail="Limit must be 1-100")
     if page <= 0:
@@ -242,38 +208,37 @@ async def find_task_by_month(
 
     offset = (page - 1) * limit
 
-    # Query by month only
+    # Query by month
     query = {
         "userId": user_id,
         "$expr": { "$eq": [{ "$month": "$dueDate" }, month] }
     }
 
     total_tasks = await PrivateTaskModel.find(query).count()
-    if total_tasks == 0:
-        raise HTTPException(status_code=404, detail="Tasks not found")
-    if offset >= total_tasks:
-        raise HTTPException(status_code=404, detail="Page not found")
 
-    tasks = await PrivateTaskModel.find(query).skip(offset).limit(limit).to_list()
+    # Ja nav atrasts neviens uzdevums vai page > total_tasks
+    if total_tasks == 0 or offset >= total_tasks:
+        items = []
+    else:
+        tasks = await PrivateTaskModel.find(query).skip(offset).limit(limit).to_list()
+        items = [
+            PrivateTaskSchema(
+                id=str(task.id),
+                title=task.title,
+                description=task.description,
+                createdAt=task.createdAt,
+                dueDate=task.dueDate,
+                completed=task.completed
+            )
+            for task in tasks
+        ]
 
     meta = PaginationMetaSchema(
         page=page,
         limit=limit,
-        totalPages=(total_tasks + limit - 1) // limit,
+        totalPages=(total_tasks + limit - 1) // limit if total_tasks > 0 else 1,
         totalItems=total_tasks
     )
-
-    items = [
-        PrivateTaskSchema(
-            id=str(task.id),
-            title=task.title,
-            description=task.description,
-            createdAt=task.createdAt,
-            dueDate=task.dueDate,
-            completed=task.completed
-        )
-        for task in tasks
-    ]
 
     return PaginatedPrivateTasksSchema(
         items=items,

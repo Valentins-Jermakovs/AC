@@ -32,18 +32,122 @@
 
     <!-- Action Buttons -->
     <div class="flex flex-wrap justify-end gap-2 mt-2">
-      <button class="btn btn-md btn-error">Delete</button>
-      <button class="btn btn-md btn-success">Complete</button>
-      <button class="btn btn-md btn-secondary">Edit</button>
-      <button class="btn btn-md btn-primary">Create new</button>
+      <button class="btn btn-md btn-error" @click="showDelete = true">
+        Delete
+      </button>
+
+      <button class="btn btn-md btn-success" @click="openComplete">
+        Complete
+      </button>
+
+      <button class="btn btn-md btn-secondary" @click="openEdit">
+        Edit
+      </button>
+
+      <button class="btn btn-md btn-primary" @click="showCreate = true">
+        Create new
+      </button>
     </div>
+
+    <!-- DELETE -->
+    <BaseDialog v-model="showDelete" title="Delete task" confirmText="Delete" cancelText="Cancel" @confirm="deleteTask">
+      Are you sure you want to delete this task?
+    </BaseDialog>
+
+
+    <!-- COMPLETE -->
+    <BaseDialog v-model="showComplete" title="Complete task" confirmText="Complete" cancelText="Cancel"
+      @confirm="completeTask">
+      Mark task as completed?
+    </BaseDialog>
+
+
+    <!-- EDIT -->
+    <BaseDialog v-model="showEdit" title="Edit task" confirmText="Save" cancelText="Cancel" @confirm="editTask">
+
+      <div class="w-full flex flex-col gap-2"> <!-- Title -->
+        <div> <label class="label"> <span class="label-text">Title:</span> </label> <input
+            class="input input-bordered w-full" v-model="editForm.title" /> </div> <!-- Description -->
+        <div> <label class="label"><span class="label-text">Description:</span></label> <textarea
+            class="textarea textarea-bordered w-full h-40 resize-none" v-model="editForm.description"></textarea> </div>
+        <!-- Due date -->
+        <div> <label class="label"><span class="label-text">Due date:</span></label> <input
+            class="input input-bordered w-full" type="date" v-model="editForm.dueDate" /> </div> <!-- Status -->
+        <div> <label class="label"><span class="label-text">Status:</span></label> <select
+            class="select select-bordered w-full" v-model="editForm.completed">
+            <option :value="true">Completed</option>
+            <option :value="false">Pending</option>
+          </select> </div>
+      </div>
+
+    </BaseDialog>
+
+
+    <!-- CREATE -->
+    <BaseDialog v-model="showCreate" title="Create task" confirmText="Create" cancelText="Cancel" @confirm="createTask">
+
+      <div class="flex flex-col gap-2 w-full">
+        <!-- Title -->
+        <div>
+          <label class="label">
+            <span class="label-text">Title:</span>
+          </label>
+          <input class="input input-bordered w-full" placeholder="Title" v-model="createForm.title" />
+        </div>
+        <!-- Description -->
+        <div>
+          <label class="label">
+            <span class="label-text">Description:</span>
+          </label>
+          <textarea class="textarea textarea-bordered w-full h-40 resize-none" placeholder="Description"
+            v-model="createForm.description"></textarea>
+        </div>
+        <!-- Due date -->
+        <div>
+          <label class="label">
+            <span class="label-text">Due date:</span>
+          </label>
+          <input class="input input-bordered w-full" type="date" v-model="createForm.dueDate" />
+        </div>
+      </div>
+
+    </BaseDialog>
 
   </div>
 </template>
 
 <script>
+import BaseDialog from '@/components/common/BaseDialog.vue';
+import { usePrivateTasksStore } from '@/stores/privateTasks';
+
 export default {
+  components: { BaseDialog },
   name: 'TaskCard',
+  data() {
+
+    const privateTasksStore = usePrivateTasksStore()
+
+    return {
+      privateTasksStore,
+
+      showDelete: false,
+      showComplete: false,
+      showEdit: false,
+      showCreate: false,
+
+
+      editForm: {
+        title: '',
+        description: ''
+      },
+
+      createForm: {
+        title: '',
+        description: '',
+        dueDate: ''
+      }
+    }
+  },
   props: {
     task: {
       type: Object,
@@ -55,7 +159,83 @@ export default {
       return completed
         ? 'px-2 py-0.5 rounded-full bg-green-100 text-green-800 text-xs'
         : 'px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 text-xs';
-    }
-  }
+    },
+
+    async deleteTask() {
+
+      await this.privateTasksStore.removePrivateTask(this.task.id)
+
+      this.showDelete = false
+
+    },
+
+    async completeTask() {
+      try {
+        await this.privateTasksStore.updatePrivateTask({
+          taskId: this.task.id,
+          completed: true
+        });
+
+        this.showComplete = false
+        this.task.completed = true
+      }
+      catch (err) {
+        console.error('Failed to complete task:', err);
+      }
+    },
+
+    async openComplete() {
+      this.editForm = {
+        title: this.task.title,
+        description: this.task.description,
+        dueDate: this.task.dueDate,
+        completed: this.task.completed
+      };
+
+      this.showComplete = true
+    },
+
+    async editTask() {
+      try {
+        await this.privateTasksStore.updatePrivateTask({
+          taskId: this.task.id,
+          title: this.editForm.title,
+          description: this.editForm.description,
+          dueDate: this.editForm.dueDate,
+          completed: this.editForm.completed
+        });
+        // atjaunojam vietējo task objektu, lai UI uzreiz atspoguļojas
+        this.task.title = this.editForm.title;
+        this.task.description = this.editForm.description;
+        this.task.dueDate = this.editForm.dueDate;
+        this.task.completed = this.editForm.completed;
+
+        this.showEdit = false;
+      } catch (err) {
+        console.error('Failed to update task:', err);
+      }
+    },
+
+    async createTask() {
+
+      await this.privateTasksStore.createPrivateTask(
+        this.createForm
+      )
+
+      this.showCreate = false
+
+    },
+
+    openEdit() {
+      this.editForm = {
+        title: this.task.title,
+        description: this.task.description,
+        dueDate: this.task.dueDate,
+        completed: this.task.completed
+      };
+      this.showEdit = true;
+    },
+
+  },
 };
 </script>

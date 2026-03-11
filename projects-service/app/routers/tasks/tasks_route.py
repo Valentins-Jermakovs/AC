@@ -162,7 +162,6 @@ async def find_tasks_by_duedate_endpoint(
     response_model=PaginatedPrivateTasksSchema,
 )
 async def find_tasks_by_month_endpoint(
-    year: int,
     month: int,
     page: int = 1,
     limit: int = 10,
@@ -180,8 +179,7 @@ async def find_tasks_by_month_endpoint(
     access_token = credantials.credentials
     user_id = await check_access_token(access_token)
 
-    return await find_task_by_month(
-        year=year, 
+    return await find_task_by_month( 
         month=month, 
         user_id=user_id, 
         page=page, 

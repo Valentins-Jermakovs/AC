@@ -24,8 +24,8 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
         meta: {
             page: 1,
             limit: 10,
-            total_items: 0,
-            total_pages: 0,
+            totalItems: 0,
+            totalPages: 0,
         },
 
         loading: false, // Indicates request is in progress
@@ -89,8 +89,8 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
                 this.meta = {
                     page: 1,
                     limit: 10,
-                    total_items: 0,
-                    total_pages: 0,
+                    totalItems: 0,
+                    totalPages: 0,
                 }
             }
             finally {
@@ -133,8 +133,8 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
                 this.meta = {
                     page: 1,
                     limit: 10,
-                    total_items: 0,
-                    total_pages: 0,
+                    totalItems: 0,
+                    totalPages: 0,
                 }
             }
             finally {
@@ -177,8 +177,8 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
                 this.meta = {
                     page: 1,
                     limit: 10,
-                    total_items: 0,
-                    total_pages: 0,
+                    totalItems: 0,
+                    totalPages: 0,
                 }
             }
             finally {
@@ -195,12 +195,12 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
             const authStore = useAuthStore()
 
             try {
-                const response = await api.get(API_ENDPOINTS.GET_TASKS_BY_DUEDATE,
+                const response = await api.get(API_ENDPOINTS.GET_TASKS_BY_DUE_DATE,
                     {
                         params: {
                             page: this.meta.page,
                             limit: this.meta.limit,
-                            duedate: this.searchQuery,
+                            due_date: this.searchQuery,
                         },
                         headers: {
                             Authorization: `Bearer ${authStore.accessToken}`,
@@ -222,8 +222,8 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
                 this.meta = {
                     page: 1,
                     limit: 10,
-                    total_items: 0,
-                    total_pages: 0,
+                    totalItems: 0,
+                    totalPages: 0,
                 }
             }
             finally {
@@ -270,8 +270,8 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
                 this.meta = {
                     page: 1,
                     limit: 10,
-                    total_items: 0,
-                    total_pages: 0,
+                    totalItems: 0,
+                    totalPages: 0,
                 }
             }
             finally {
@@ -291,7 +291,8 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
             this.error = null
 
             try {
-                const response = await api.post(API_ENDPOINTS.CREATE_PRIVATE_TASK, data, {
+                const response = await api.post(API_ENDPOINTS.CREATE_PRIVATE_TASK, data,
+                {
                     headers: {
                         Authorization: `Bearer ${authStore.accessToken}`,
                     },
@@ -313,14 +314,16 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
         // ==========================
 
         // Update private task
-        async updatePrivateTask(taskId, data) {
+        async updatePrivateTask(data) {
             const authStore = useAuthStore()
 
             this.loading = true
             this.error = null
 
             try {
-                const response = await api.put(API_ENDPOINTS.UPDATE_PRIVATE_TASK(taskId), data, {
+                const response = await api.put(API_ENDPOINTS.UPDATE_PRIVATE_TASK, 
+                data, 
+                {
                     headers: {
                         Authorization: `Bearer ${authStore.accessToken}`,
                     },
@@ -349,10 +352,14 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
             this.error = null
 
             try {
-                const response = await api.delete(API_ENDPOINTS.REMOVE_PRIVATE_TASK(taskId), {
+                const response = await api.delete(API_ENDPOINTS.DELETE_PRIVATE_TASK, 
+                {
                     headers: {
                         Authorization: `Bearer ${authStore.accessToken}`,
                     },
+                    data: {
+                        taskId: taskId
+                    }
                 })
 
                 await this.repeatLastRequest()
@@ -383,7 +390,7 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
         },
 
         async nextPage() {
-            if (this.meta.page < this.meta.total_pages) {
+            if (this.meta.page < this.meta.totalPages) {
                 this.meta.page++;
                 await this.repeatLastRequest();
             }

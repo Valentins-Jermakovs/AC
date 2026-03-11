@@ -3,8 +3,8 @@
         <!-- Left screen: task list with search bar, filter button, search button -->
         <!-- and drop down menu and buttons for pagination -->
         <div class="w-1/2 bg-base-200 border border-base-300 flex flex-col gap-1 p-1">
-            <SearchBar></SearchBar>
-            <TaskList></TaskList>
+            <SearchBar @search="handleSearch"></SearchBar>
+            <TaskList :tasks="privateTasksStore.privateTasks" @select-task="selectTask"></TaskList>
 
             <!-- Pagination -->
             <div
@@ -26,19 +26,30 @@
                         </span>
                     </div>
                     <div class="text-sm opacity-80 whitespace-nowrap">Page Current:
-                        <span class="font-semibold">{{ page }}</span> / <span class="font-semibold">{{ totalPages
-                            }}</span>
+                        <span class="font-semibold">{{ page }}</span> / <span class="font-semibold">{{
+                            totalPages }}</span>
                     </div>
                 </div>
                 <!-- Pagination buttons -->
                 <div class="flex flex-col sm:flex-row sm:gap-3 gap-2 w-full sm:w-auto">
-                    <button class="btn btn-neutral hover:btn-primary flex-1 p-2" 
-                    @click="prevPage"><font-awesome-icon
-                    icon=" fa-solid fa-arrow-left" /></button>
-                    <button class="btn btn-neutral hover:btn-primary flex-1 p-2" 
-                    @click="nextPage"><font-awesome-icon
-                    icon="fa-solid fa-arrow-right" /></button>
+                    <button class="btn btn-neutral hover:btn-primary flex-1 p-2" @click="prevPage"
+                        :disabled="page <= 1">
+                        <font-awesome-icon icon="fa-solid fa-arrow-left" />
+                    </button>
+                    <button class="btn btn-neutral hover:btn-primary flex-1 p-2" @click="nextPage"
+                        :disabled="page >= totalPages || totalPages === 0">
+                        <font-awesome-icon icon="fa-solid fa-arrow-right" />
+                    </button>
                 </div>
+            </div>
+        </div>
+
+        <!-- Right screen: task details -->
+        <div class="w-1/2 bg-base-200 border border-base-300 flex flex-col gap-1 p-1">
+            <TaskDetails v-if="selectedTask" :task="selectedTask" />
+
+            <div v-else class="flex items-center justify-center h-full text-base-content/50">
+                Select a task
             </div>
         </div>
     </div>
@@ -64,10 +75,79 @@ export default {
         const privateTasksStore = usePrivateTasksStore();
         return {
             privateTasksStore,
+            selectedTask: null
         };
     },
     mounted() {
         this.privateTasksStore.fetchPrivateTasks();
+    },
+
+    computed: {
+        page() {
+            return this.privateTasksStore.meta.page;
+        },
+
+        limit: {
+            get() {
+                return this.privateTasksStore.meta.limit;
+            },
+            set(value) {
+                this.privateTasksStore.setLimit(value);
+            }
+        },
+
+        total() {
+            return this.privateTasksStore.meta.totalItems;
+        },
+
+        totalPages() {
+            return this.privateTasksStore.meta.totalPages;
+        },
+    },
+
+    methods: {
+        nextPage() {
+            this.privateTasksStore.nextPage();
+        },
+
+        prevPage() {
+            this.privateTasksStore.prevPage();
+        },
+        async handleSearch({ query, filter }) {
+
+            this.privateTasksStore.searchQuery = query
+            this.privateTasksStore.meta.page = 1
+
+            switch (filter) {
+
+                case 'all':
+                    await this.privateTasksStore.fetchPrivateTasks()
+                    break
+
+                case 'title':
+                    await this.privateTasksStore.findPrivateTasksByTitle()
+                    break
+
+                case 'description':
+                    await this.privateTasksStore.findPrivateTasksByDescription()
+                    break
+
+                case 'duedate':
+                    await this.privateTasksStore.findPrivateTasksByDueDate()
+                    break
+
+                case 'monthyear':
+                    await this.privateTasksStore.findPrivateTasksByMonth()
+                    break
+
+                default:
+                    await this.privateTasksStore.fetchPrivateTasks()
+            }
+        },
+        selectTask(task) {
+            this.selectedTask = task
+        },
+
     },
 };
 

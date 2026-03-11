@@ -36,7 +36,7 @@ export const API_ENDPOINTS = {
   GET_ALL_PRIVATE_TASKS: '/private-tasks/get-all-tasks',
   GET_TASKS_BY_TITLE: '/private-tasks/get-tasks-by-title',
   GET_TASKS_BY_DESCRIPTION: '/private-tasks/get-tasks-by-description',
-  GET_TASKS_BY_DUE_DATE: '/private-tasks/get-tasks-by-due-date',
+  GET_TASKS_BY_DUE_DATE: '/private-tasks/get-tasks-by-duedate',
   GET_TASKS_BY_MONTH: '/private-tasks/get-tasks-by-month',
 
   // POST

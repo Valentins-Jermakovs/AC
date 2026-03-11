@@ -62,10 +62,6 @@ async def update_private_task(
         
         updated_data["title"] = title
 
-        # if the same title
-        if task.title == title:
-            raise HTTPException(status_code=400, detail="Title must be different")
-
     if description is not None:
         updated_data["description"] = description
 
@@ -80,10 +76,6 @@ async def update_private_task(
         
         if len(description) < 3:
             raise HTTPException(status_code=400, detail="Description is too short")
-        
-        # if description not unique
-        if task.description == description:
-            raise HTTPException(status_code=400, detail="Description must be unique")
 
     if dueDate is not None:
 
@@ -100,10 +92,6 @@ async def update_private_task(
 
         if not isinstance(completed, bool):
             raise HTTPException(status_code=400, detail="Completed must be a boolean")
-    
-        # if the same status
-        if task.completed == completed:
-            raise HTTPException(status_code=400, detail="Status must be different")
 
     # ===== Update task =====
     if updated_data:

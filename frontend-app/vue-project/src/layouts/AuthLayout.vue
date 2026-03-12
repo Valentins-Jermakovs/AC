@@ -7,7 +7,7 @@
 
     <!-- Right section for an illustration image (hidden on small screens) -->
     <div
-      class="hidden md:block flex-1 bg-[url('@/assets/images/mahdi-naserinejad-JSfGnItLmt8-unsplash.jpg')] bg-cover bg-center"
+      class="hidden md:block flex-1 bg-[url('@/assets/images/mate-szalontay-nzUh6sEtTsU-unsplash.jpg')] bg-cover bg-center"
     ></div>
   </div>
 </template>

@@ -211,6 +211,12 @@
     "404": "Šī vieta eksistē tikai tavos sapņos… vai arī mēs to vienkārši pazaudējām. (404)"
   },
   "work": {
+    "title": "Projekti, uzdevumi...",
+    "nav_bar": {
+      "private": "Privāti uzdevumi",
+      "kanban": "Kanban",
+      "projects": "Projekti"
+    },
     "task_detail": {
       "status": "Statuss",
       "created_at": "Pievienots",

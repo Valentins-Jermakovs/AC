@@ -60,7 +60,7 @@ export default {
 
   computed: {
     title() {
-      return 'Work'
+      return this.$t('work.title')
     },
 
     // Navigation buttons for NavigationPanel
@@ -69,15 +69,15 @@ export default {
       let navButtons = [
         {
           key: 'private-tasks',
-          title: 'Private Tasks',
+          title: this.$t('work.nav_bar.private'),
         },
         {
           key: 'kanban',
-          title: 'Kanban',
+          title: this.$t('work.nav_bar.kanban'),
         },
         {
           key: 'projects',
-          title: 'Projects',
+          title: this.$t('work.nav_bar.projects'),
         },
       ]
 

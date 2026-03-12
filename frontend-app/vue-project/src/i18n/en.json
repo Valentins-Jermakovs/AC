@@ -207,6 +207,12 @@
     "404": "This place exists only in your imagination... or maybe we will forget about it. (404)"
   },
   "work": {
+    "title": "Projects, Tasks...",
+    "nav_bar": {
+      "private": "Private tasks",
+      "kanban": "Kanban",
+      "projects": "Projects"
+    },
     "task_detail": {
       "status": "Status",
       "created_at": "Created at",

@@ -208,7 +208,8 @@
     }
   },
   "errors": {
-    "404": "Šī vieta eksistē tikai tavos sapņos… vai arī mēs to vienkārši pazaudējām. (404)"
+    "404": "Šī vieta eksistē tikai tavos sapņos… vai arī mēs to vienkārši pazaudējām. (404)",
+    "tasks_not_found": "Uzdevumi nav atrasti, vai saraksts ir tukšs. (404)"
   },
   "work": {
     "title": "Projekti, uzdevumi...",

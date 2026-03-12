@@ -65,21 +65,21 @@
       <!-- Saraksts tukšs -->
       <div
         v-else
-        class="flex flex-col items-center justify-center h-full gap-4 bg-base-300 rounded p-4"
+        class="flex flex-col items-center justify-center h-full gap-4 bg-base-100 rounded p-4"
       >
         <div class="flex items-center gap-2 font-semibold text-2xl text-error">
           <font-awesome-icon icon="fa-solid fa-triangle-exclamation" />
-          No tasks found or your task list is empty
+          {{ $t('errors.tasks_not_found') }}
         </div>
 
-        <button class="btn btn-primary" @click="showCreate = true">Create new task</button>
+        <button class="btn btn-primary" @click="showCreate = true">{{ $t('common.create') }}</button>
 
         <!-- CREATE dialog -->
         <BaseDialog
           v-model="showCreate"
-          title="Create task"
-          confirmText="Create"
-          cancelText="Cancel"
+          :title="$t('work.modals.create_task.title')"
+          :confirm-text="$t('common.create')"
+          :cancel-text="$t('common.cancel')"
           @confirm="createTask"
           @cancel="closeCreate"
         >
@@ -93,29 +93,29 @@
             <!-- Title -->
             <div>
               <label class="label">
-                <span class="label-text">Title:</span>
+                <span class="label-text">{{ $t('work.task_form.title') }}:</span>
               </label>
               <input
                 class="input input-bordered w-full"
-                placeholder="Title"
+                :placeholder="$t('work.task_form.title_placeholder')"
                 v-model="createForm.title"
               />
             </div>
             <!-- Description -->
             <div>
               <label class="label">
-                <span class="label-text">Description:</span>
+                <span class="label-text">{{ $t('work.task_form.description') }}:</span>
               </label>
               <textarea
                 class="textarea textarea-bordered w-full h-40 resize-none"
-                placeholder="Description"
+                :placeholder="$t('work.task_form.description_placeholder')"
                 v-model="createForm.description"
               ></textarea>
             </div>
             <!-- Due date -->
             <div>
               <label class="label">
-                <span class="label-text">Due date:</span>
+                <span class="label-text">{{ $t('work.task_form.due_date') }}:</span>
               </label>
               <input class="input input-bordered w-full" type="date" v-model="createForm.dueDate" />
             </div>

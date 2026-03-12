@@ -1,22 +1,23 @@
 <template>
-  <div class="border border-base-300 rounded-box p-4 bg-base-100 flex flex-col gap-5 h-full overflow-y-auto">
-
+  <div
+    class="border border-base-300 rounded-box p-4 bg-base-100 flex flex-col gap-5 h-full overflow-y-auto"
+  >
     <!-- Title & Metadata -->
     <div class="flex flex-col gap-5">
       <h1 class="font-semibold text-2xl wrap-break-word whitespace-pre-line">{{ task.title }}</h1>
       <div class="flex flex-wrap gap-4 text-sm text-base-content/70">
         <div class="flex gap-1 items-center">
-          <span class="font-medium">Status:</span>
+          <span class="font-medium">{{ $t('work.task_detail.status') }}:</span>
           <span :class="statusClass(task.completed)">
-            {{ task.completed ? 'Completed' : 'Pending' }}
+            {{ task.completed ? $t('work.task_detail.complete') : $t('work.task_detail.pending') }}
           </span>
         </div>
         <div class="flex gap-1 items-center">
-          <span class="font-medium">Created:</span>
+          <span class="font-medium">{{ $t('work.task_detail.created_at') }}:</span>
           <span class="text-info">{{ task.createdAt }}</span>
         </div>
         <div class="flex gap-1 items-center">
-          <span class="font-medium">Due date:</span>
+          <span class="font-medium">{{ $t('work.task_detail.due_date') }}:</span>
           <span class="text-warning">{{ task.dueDate }}</span>
         </div>
       </div>
@@ -35,40 +36,55 @@
     <!-- Action Buttons -->
     <div class="flex flex-wrap justify-end gap-2 mt-2">
       <button class="btn btn-md btn-error" @click="showDelete = true">
-        Delete
+        {{ $t('common.delete') }}
       </button>
 
       <button class="btn btn-md btn-success" @click="openComplete">
-        Complete
+        {{ $t('common.complete') }}
       </button>
 
       <button class="btn btn-md btn-secondary" @click="openEdit">
-        Edit
+        {{ $t('common.edit') }}
       </button>
 
       <button class="btn btn-md btn-primary" @click="showCreate = true">
-        Create new
+        {{ $t('common.create') }}
       </button>
     </div>
 
     <!-- DELETE -->
-    <BaseDialog v-model="showDelete" title="Delete task" confirmText="Delete" cancelText="Cancel"
-      @confirm="$emit('delete-task', task.id)" @cancel="closeDelete">
-      Are you sure you want to delete this task?
+    <BaseDialog
+      v-model="showDelete"
+      :title="$t('work.modals.delete_task.title')"
+      :confirm-text="$t('common.delete')"
+      :cancel-text="$t('common.cancel')"
+      @confirm="$emit('delete-task', task.id)"
+      @cancel="closeDelete"
+    >
+      {{ $t('work.modals.delete_task.content') }}
     </BaseDialog>
-
 
     <!-- COMPLETE -->
-    <BaseDialog v-model="showComplete" title="Complete task" confirmText="Complete" cancelText="Cancel"
-      @confirm="completeTask" @cancel="closeComplete">
-      Mark task as completed?
+    <BaseDialog
+      v-model="showComplete"
+      :title="$t('work.modals.complete_task.title')"
+      :confirm-text="$t('common.complete')"
+      :cancel-text="$t('common.cancel')"
+      @confirm="completeTask"
+      @cancel="closeComplete"
+    >
+      {{ $t('work.modals.complete_task.content') }}
     </BaseDialog>
 
-
     <!-- EDIT -->
-    <BaseDialog v-model="showEdit" title="Edit task" confirmText="Save" cancelText="Cancel" @cancel="closeEdit"
-      @confirm="editTask">
-
+    <BaseDialog
+      v-model="showEdit"
+      :title="$t('work.modals.edit_task.title')"
+      :confirm-text="$t('common.edit')"
+      :cancel-text="$t('common.cancel')"
+      @cancel="closeEdit"
+      @confirm="editTask"
+    >
       <div class="w-full flex flex-col gap-2">
         <!-- Error message transition -->
         <Transition name="error-slide">
@@ -77,27 +93,57 @@
           </div>
         </Transition>
         <!-- Title -->
-        <div> <label class="label"> <span class="label-text">Title:</span> </label> <input
-            class="input input-bordered w-full" v-model="editForm.title" /> </div> <!-- Description -->
-        <div> <label class="label"><span class="label-text">Description:</span></label> <textarea
-            class="textarea textarea-bordered w-full h-40 resize-none" v-model="editForm.description"></textarea> </div>
+        <div>
+          <label class="label">
+            <span class="label-text">{{ $t('work.task_form.title') }}:</span>
+          </label>
+          <input
+            class="input input-bordered w-full"
+            v-model="editForm.title"
+            :placeholder="$t('work.task_form.title_placeholder')"
+          />
+        </div>
+        <!-- Description -->
+        <div>
+          <label class="label">
+            <span class="label-text">{{ $t('work.task_form.description') }}:</span>
+          </label>
+          <textarea
+            class="textarea textarea-bordered w-full h-40 resize-none"
+            v-model="editForm.description"
+            :placeholder="$t('work.task_form.description_placeholder')"
+          >
+          </textarea>
+        </div>
         <!-- Due date -->
-        <div> <label class="label"><span class="label-text">Due date:</span></label> <input
-            class="input input-bordered w-full" type="date" v-model="editForm.dueDate" /> </div> <!-- Status -->
-        <div> <label class="label"><span class="label-text">Status:</span></label> <select
-            class="select select-bordered w-full" v-model="editForm.completed">
-            <option :value="true">Completed</option>
-            <option :value="false">Pending</option>
-          </select> </div>
+        <div>
+          <label class="label">
+            <span class="label-text">{{ $t('work.task_form.due_date') }}:</span>
+          </label>
+          <input class="input input-bordered w-full" type="date" v-model="editForm.dueDate" />
+        </div>
+        <!-- Status -->
+        <div>
+          <label class="label">
+            <span class="label-text">{{ $t('work.task_form.status') }}:</span>
+          </label>
+          <select class="select select-bordered w-full" v-model="editForm.completed">
+            <option :value="true">{{ $t('work.task_form.status_complete') }}</option>
+            <option :value="false">{{ $t('work.task_form.status_pending') }}</option>
+          </select>
+        </div>
       </div>
-
     </BaseDialog>
 
-
     <!-- CREATE -->
-    <BaseDialog v-model="showCreate" title="Create task" confirmText="Create" cancelText="Cancel" @cancel="closeCreate"
-      @confirm="createTask">
-
+    <BaseDialog
+      v-model="showCreate"
+      :title="$t('work.modals.create_task.title')"
+      :confirm-text="$t('common.create')"
+      :cancel-text="$t('common.cancel')"
+      @cancel="closeCreate"
+      @confirm="createTask"
+    >
       <div class="flex flex-col gap-2 w-full">
         <!-- Error message transition -->
         <Transition name="error-slide">
@@ -108,41 +154,45 @@
         <!-- Title -->
         <div>
           <label class="label">
-            <span class="label-text">Title:</span>
+            <span class="label-text">{{ $t('work.task_form.title') }}:</span>
           </label>
-          <input class="input input-bordered w-full" placeholder="Title" v-model="createForm.title" />
+          <input
+            class="input input-bordered w-full"
+            :placeholder="$t('work.task_form.title_placeholder')"
+            v-model="createForm.title"
+          />
         </div>
         <!-- Description -->
         <div>
           <label class="label">
-            <span class="label-text">Description:</span>
+            <span class="label-text">{{ $t('work.task_form.description') }}:</span>
           </label>
-          <textarea class="textarea textarea-bordered w-full h-40 resize-none" placeholder="Description"
-            v-model="createForm.description"></textarea>
+          <textarea
+            class="textarea textarea-bordered w-full h-40 resize-none"
+            :placeholder="$t('work.task_form.description_placeholder')"
+            v-model="createForm.description"
+          ></textarea>
         </div>
         <!-- Due date -->
         <div>
           <label class="label">
-            <span class="label-text">Due date:</span>
+            <span class="label-text">{{ $t('work.task_form.due_date') }}:</span>
           </label>
           <input class="input input-bordered w-full" type="date" v-model="createForm.dueDate" />
         </div>
       </div>
-
     </BaseDialog>
-
   </div>
 </template>
 
 <script>
-import BaseDialog from '@/components/common/BaseDialog.vue';
-import { usePrivateTasksStore } from '@/stores/privateTasks';
+import BaseDialog from '@/components/common/BaseDialog.vue'
+import { usePrivateTasksStore } from '@/stores/privateTasks'
 
 export default {
   components: { BaseDialog },
   name: 'TaskCard',
   data() {
-
     const privateTasksStore = usePrivateTasksStore()
 
     return {
@@ -153,35 +203,34 @@ export default {
       showEdit: false,
       showCreate: false,
 
-
       editForm: {
         title: '',
-        description: ''
+        description: '',
       },
 
       createForm: {
         title: '',
         description: '',
-        dueDate: ''
-      }
+        dueDate: '',
+      },
     }
   },
   props: {
     task: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
     error() {
       return this.privateTasksStore.error
-    }
+    },
   },
   methods: {
     statusClass(completed) {
       return completed
         ? 'px-2 py-0.5 rounded-full bg-green-100 text-green-800 text-xs'
-        : 'px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 text-xs';
+        : 'px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 text-xs'
     },
 
     closeEdit() {
@@ -205,25 +254,22 @@ export default {
     },
 
     async deleteTask() {
-
       await this.privateTasksStore.removePrivateTask(this.task.id)
 
       this.showDelete = false
-
     },
 
     async completeTask() {
       try {
         await this.privateTasksStore.updatePrivateTask({
           taskId: this.task.id,
-          completed: true
-        });
+          completed: true,
+        })
 
         this.showComplete = false
         this.task.completed = true
-      }
-      catch (err) {
-        console.error('Failed to complete task:', err);
+      } catch (err) {
+        console.error('Failed to complete task:', err)
       }
     },
 
@@ -232,8 +278,8 @@ export default {
         title: this.task.title,
         description: this.task.description,
         dueDate: this.task.dueDate,
-        completed: this.task.completed
-      };
+        completed: this.task.completed,
+      }
 
       this.showComplete = true
     },
@@ -245,33 +291,29 @@ export default {
           title: this.editForm.title,
           description: this.editForm.description,
           dueDate: this.editForm.dueDate,
-          completed: this.editForm.completed
-        });
+          completed: this.editForm.completed,
+        })
         // atjaunojam vietējo task objektu, lai UI uzreiz atspoguļojas
-        this.task.title = this.editForm.title;
-        this.task.description = this.editForm.description;
-        this.task.dueDate = this.editForm.dueDate;
-        this.task.completed = this.editForm.completed;
+        this.task.title = this.editForm.title
+        this.task.description = this.editForm.description
+        this.task.dueDate = this.editForm.dueDate
+        this.task.completed = this.editForm.completed
 
-        this.showEdit = false;
+        this.showEdit = false
       } catch (err) {
-        console.error('Failed to update task:', err);
+        console.error('Failed to update task:', err)
       }
     },
 
     async createTask() {
-
       if (!this.createForm.dueDate) {
-        this.privateTasksStore.error = "Due date is required"
+        this.privateTasksStore.error = 'Due date is required'
         return
       }
 
-      await this.privateTasksStore.createPrivateTask(
-        this.createForm
-      )
+      await this.privateTasksStore.createPrivateTask(this.createForm)
 
       this.showCreate = false
-
     },
 
     openEdit() {
@@ -279,13 +321,12 @@ export default {
         title: this.task.title,
         description: this.task.description,
         dueDate: this.task.dueDate,
-        completed: this.task.completed
-      };
-      this.showEdit = true;
+        completed: this.task.completed,
+      }
+      this.showEdit = true
     },
-
   },
-};
+}
 </script>
 
 <style scoped>

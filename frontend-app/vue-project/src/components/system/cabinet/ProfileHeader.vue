@@ -1,16 +1,11 @@
 <template>
   <!-- Container for user profile header -->
   <div class="flex items-center gap-5 p-5 bg-base-200 border border-base-300 rounded-box">
-    
     <!-- User avatar icon -->
-    <font-awesome-icon 
-      icon="user-circle" 
-      class="text-6xl" 
-    />
+    <font-awesome-icon icon="user-circle" class="text-6xl" />
 
     <!-- User info: username and creation date -->
     <div class="flex flex-col gap-1">
-      
       <!-- Display username -->
       <h2 class="text-2xl font-semibold">
         {{ user.username }}
@@ -21,7 +16,6 @@
         {{ $t('cabinet.profile.created_at') }}: {{ user.created_at }}
       </p>
     </div>
-
   </div>
 </template>
 

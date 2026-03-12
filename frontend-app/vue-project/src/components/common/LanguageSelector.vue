@@ -45,7 +45,6 @@ export default {
 }
 </script>
 
-
 <style scoped>
 /* Styling is handled via Tailwind CSS, no extra CSS needed */
 </style>

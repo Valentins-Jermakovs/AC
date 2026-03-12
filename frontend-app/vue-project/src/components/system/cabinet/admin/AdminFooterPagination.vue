@@ -4,7 +4,6 @@
   >
     <!-- Left section: Limit selector, total users, current page info -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:gap-6 w-full sm:w-auto">
-      
       <!-- Page size selector -->
       <div class="flex flex-col sm:flex-row sm:items-center gap-2">
         <label class="text-sm opacity-70">

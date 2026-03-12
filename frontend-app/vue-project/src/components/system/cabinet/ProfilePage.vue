@@ -25,22 +25,14 @@
     <LoadingScreen v-else></LoadingScreen>
 
     <!-- Modals for changing username, email, password -->
-    <UsernameModal 
-      v-model="openUsernameModal" 
-      :error="error" 
-      @submit="submitUsernameChange" 
-    />
+    <UsernameModal v-model="openUsernameModal" :error="error" @submit="submitUsernameChange" />
 
-    <EmailChangeModal 
-      v-model="openEmailModal" 
-      :error="error" 
-      @submit="submitEmailChange" 
-    />
+    <EmailChangeModal v-model="openEmailModal" :error="error" @submit="submitEmailChange" />
 
-    <PasswordChangeModal 
-      v-model="openPasswordModal" 
-      :error="error" 
-      @submit="submitPasswordChange" 
+    <PasswordChangeModal
+      v-model="openPasswordModal"
+      :error="error"
+      @submit="submitPasswordChange"
     />
   </div>
 </template>

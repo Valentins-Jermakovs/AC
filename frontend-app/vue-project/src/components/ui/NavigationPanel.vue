@@ -16,8 +16,8 @@
           // Active button styles
           activeKey === item.key
             ? 'border-primary bg-neutral text-neutral-content'
-            // Inactive button styles
-            : 'border-transparent bg-base-200 hover:bg-base-300 hover:cursor-pointer',
+            : // Inactive button styles
+              'border-transparent bg-base-200 hover:bg-base-300 hover:cursor-pointer',
         ]"
       >
         {{ item.title }}

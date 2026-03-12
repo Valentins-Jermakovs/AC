@@ -10,7 +10,11 @@
   >
     <div class="flex flex-col gap-2 w-full">
       <label>{{ $t('modals.add_role.label') }}</label>
-      <select :value="selectedAddRole" @change="onAddRoleChange" class="select select-bordered w-full">
+      <select
+        :value="selectedAddRole"
+        @change="onAddRoleChange"
+        class="select select-bordered w-full"
+      >
         <option value="2">Admin</option>
         <option value="3">Developer</option>
         <option value="4">Manager</option>
@@ -31,7 +35,11 @@
   >
     <div class="flex flex-col gap-2 w-full">
       <label>{{ $t('modals.remove_role.label') }}</label>
-      <select :value="selectedRemoveRole" @change="onRemoveRoleChange" class="select select-bordered w-full">
+      <select
+        :value="selectedRemoveRole"
+        @change="onRemoveRoleChange"
+        class="select select-bordered w-full"
+      >
         <option value="2">Admin</option>
         <option value="3">Developer</option>
         <option value="4">Manager</option>
@@ -52,7 +60,11 @@
   >
     <div class="flex flex-col gap-2 w-full">
       <label>{{ $t('modals.change_activity.label') }}</label>
-      <select :value="selectedActivityStatus" @change="onActivityStatusChange" class="select select-bordered w-full">
+      <select
+        :value="selectedActivityStatus"
+        @change="onActivityStatusChange"
+        class="select select-bordered w-full"
+      >
         <option value="active">{{ $t('modals.change_activity.active') }}</option>
         <option value="blocked">{{ $t('modals.change_activity.blocked') }}</option>
       </select>
@@ -89,7 +101,7 @@ export default {
     'update:change-activity-modal',
     'update:selected-add-role',
     'update:selected-remove-role',
-    'update:selected-activity-status'
+    'update:selected-activity-status',
   ],
 
   methods: {

@@ -2,10 +2,7 @@
   <!-- Sidebar container -->
   <div
     class="h-full bg-base-200 border-base-300 flex transform transition-all duration-500"
-    :class="isSideBarOpen
-      ? 'w-full md:w-16 border-r'
-      : 'w-0 border-0'
-    "
+    :class="isSideBarOpen ? 'w-full md:w-16 border-r' : 'w-0 border-0'"
   >
     <!-- Menu items -->
     <ul class="menu menu-compact w-full overflow-visible items-center">
@@ -52,7 +49,11 @@ export default {
         { titleKey: 'sidebar.work', icon: 'fa-solid fa-check-to-slot', routeName: 'work' },
         { titleKey: 'sidebar.notifications', icon: 'fa-solid fa-bell', routeName: 'notifications' },
         { titleKey: 'sidebar.pomodoro', icon: 'fa-solid fa-clock', routeName: 'pomodoro' },
-        { titleKey: 'sidebar.analytics', icon: 'fa-solid fa-chart-pie', routeName: 'data-analyzer' },
+        {
+          titleKey: 'sidebar.analytics',
+          icon: 'fa-solid fa-chart-pie',
+          routeName: 'data-analyzer',
+        },
       ],
     }
   },

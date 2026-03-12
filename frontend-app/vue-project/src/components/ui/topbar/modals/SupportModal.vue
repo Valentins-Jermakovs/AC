@@ -1,10 +1,6 @@
 <template>
   <!-- Modal dialog for support documents -->
-  <BaseDialog
-    v-model="localModel"
-    :title="$t('common.support')"
-    :cancel-text="$t('common.cancel')"
-  >
+  <BaseDialog v-model="localModel" :title="$t('common.support')" :cancel-text="$t('common.cancel')">
     <div class="flex flex-col gap-2 w-full">
       <!-- List of support documents -->
       <button

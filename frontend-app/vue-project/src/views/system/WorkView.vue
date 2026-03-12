@@ -1,5 +1,5 @@
 <template>
-    <!-- Page header with title and background image -->
+  <!-- Page header with title and background image -->
   <PageHeader :title="title" :imageUrl="image"></PageHeader>
 
   <!-- Navigation panel with buttons.
@@ -29,6 +29,9 @@ import ProjectsPage from '@/components/system/work/ProjectsPage.vue'
 // Import loading component
 import LoadingScreen from '@/components/common/LoadingScreen.vue'
 
+// Import stores
+import { usePrivateTasksStore } from '@/stores/privateTasks'
+
 export default {
   name: 'WorkView',
 
@@ -39,7 +42,7 @@ export default {
     LoadingScreen,
     PrivateTasksPage,
     KanbanPage,
-    ProjectsPage
+    ProjectsPage,
   },
 
   data() {
@@ -49,12 +52,15 @@ export default {
 
       // Currently active page (default is private tasks)
       activePage: 'private-tasks',
+
+      // Private tasks store
+      privateTasksStore: usePrivateTasksStore(),
     }
   },
 
   computed: {
     title() {
-      return "Work"
+      return 'Work'
     },
 
     // Navigation buttons for NavigationPanel
@@ -72,12 +78,12 @@ export default {
         {
           key: 'projects',
           title: 'Projects',
-        }
+        },
       ]
 
       return navButtons
     },
-  }
+  },
 }
 </script>
 

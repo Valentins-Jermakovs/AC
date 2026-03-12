@@ -8,7 +8,6 @@ import { useI18n } from 'vue-i18n'
 // This function automatically updates the browser tab title
 // when the language (locale) changes
 export function useDocumentTitle() {
-
   // Get translation function (t)
   // and current active locale
   const { t, locale } = useI18n()

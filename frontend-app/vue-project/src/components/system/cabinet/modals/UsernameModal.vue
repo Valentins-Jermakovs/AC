@@ -70,9 +70,9 @@ export default {
   methods: {
     // Submit username to parent
     submit() {
-      if (!this.username) return                // Do nothing if empty
-      this.$emit('submit', this.username)      // Emit submit event with username
-      this.username = ''                        // Clear input after submit
+      if (!this.username) return // Do nothing if empty
+      this.$emit('submit', this.username) // Emit submit event with username
+      this.username = '' // Clear input after submit
     },
   },
 }

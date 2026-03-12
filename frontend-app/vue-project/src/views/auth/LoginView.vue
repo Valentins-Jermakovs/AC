@@ -1,7 +1,6 @@
 <template>
   <!-- Main layout for authentication pages (common structure and styling) -->
   <AuthLayout>
-
     <!-- Header section (title, logo, or welcome text) -->
     <AuthHeader></AuthHeader>
 
@@ -10,7 +9,6 @@
 
     <!-- Footer section (links like register, forgot password, etc.) -->
     <AuthFooter></AuthFooter>
-
   </AuthLayout>
 </template>
 

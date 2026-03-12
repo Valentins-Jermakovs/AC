@@ -2,17 +2,16 @@
   <!-- Modal dialog component -->
   <dialog class="modal" :open="modelValue">
     <div class="modal-box flex flex-col gap-3">
-      
       <!-- Title section (optional) -->
       <h3 v-if="title" class="text-lg font-bold text-start">
         {{ title }}
       </h3>
-      
+
       <!-- Main content slot -->
       <div class="modal-content flex justify-start">
         <slot></slot>
       </div>
-      
+
       <!-- Actions section -->
       <div class="modal-action">
         <slot name="actions">
@@ -56,8 +55,8 @@ export default {
   },
   emits: [
     'update:modelValue', // Emits when modal is closed
-    'confirm',           // Emits when confirm button is clicked
-    'cancel',            // Emits when cancel button is clicked
+    'confirm', // Emits when confirm button is clicked
+    'cancel', // Emits when cancel button is clicked
   ],
   methods: {
     // Close the modal and emit cancel event

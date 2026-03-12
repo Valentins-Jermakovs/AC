@@ -15,7 +15,10 @@
 
     <!-- Error message -->
     <Transition name="error-slide">
-      <div v-if="emptyError" class="w-full bg-base-100 p-5 border-x border-base-300 text-center text-error">
+      <div
+        v-if="emptyError"
+        class="w-full bg-base-100 p-5 border-x border-base-300 text-center text-error"
+      >
         {{ emptyError }}
       </div>
     </Transition>
@@ -90,7 +93,7 @@ export default {
     const adminStore = useAdminStore()
 
     return {
-      adminStore,               // Pinia store
+      adminStore, // Pinia store
 
       // Modal states
       addRoleModal: false,
@@ -161,7 +164,10 @@ export default {
 
     // Remove role from selected users
     async removeRole() {
-      await this.adminStore.removeRoleFromSelectedUsers(this.selectedRemoveRole, this.selectedUserIds)
+      await this.adminStore.removeRoleFromSelectedUsers(
+        this.selectedRemoveRole,
+        this.selectedUserIds,
+      )
       this.removeRoleModal = false
       this.adminStore.error = ''
       this.selectedRemoveRole = 5

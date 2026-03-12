@@ -70,9 +70,9 @@ export default {
   methods: {
     // Submit new email to parent
     submit() {
-      if (!this.email) return           // Do nothing if empty
-      this.$emit('submit', this.email)  // Emit submit event with email
-      this.email = ''                   // Clear input after submit
+      if (!this.email) return // Do nothing if empty
+      this.$emit('submit', this.email) // Emit submit event with email
+      this.email = '' // Clear input after submit
     },
   },
 }

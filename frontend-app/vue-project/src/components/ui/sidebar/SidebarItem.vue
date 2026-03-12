@@ -32,8 +32,8 @@ export default {
       type: String,
       required: true, // Translation key for link title
     },
-    icon: String,      // Font Awesome icon
-    toName: String,    // Vue Router route name
+    icon: String, // Font Awesome icon
+    toName: String, // Vue Router route name
   },
 
   data() {
@@ -53,9 +53,7 @@ export default {
   computed: {
     // Check if this route is active
     isActive() {
-      return this.currentRoute.matched.some(
-        (route) => route.name === this.toName
-      )
+      return this.currentRoute.matched.some((route) => route.name === this.toName)
     },
   },
 

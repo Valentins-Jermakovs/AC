@@ -2,13 +2,8 @@
   <!-- Burger button to open/close sidebar -->
   <button
     class="w-12 h-12 border-0 btn"
-
     @click="toggleSideBar"
-
-    :class="isSideBarOpen
-      ? 'btn-neutral hover:btn-secondary'
-      : 'btn-primary'
-    "
+    :class="isSideBarOpen ? 'btn-neutral hover:btn-secondary' : 'btn-primary'"
   >
     <!-- Font Awesome burger icon -->
     <font-awesome-icon icon="bars" />

@@ -1,7 +1,12 @@
 <template>
   <!-- Modal dialog for changing user password -->
-  <BaseDialog v-model="localModel" :title="$t('modals.modify_user.new_password_title')"
-    :confirm-text="$t('common.confirm')" :cancel-text="$t('common.cancel')" @confirm="submit">
+  <BaseDialog
+    v-model="localModel"
+    :title="$t('modals.modify_user.new_password_title')"
+    :confirm-text="$t('common.confirm')"
+    :cancel-text="$t('common.cancel')"
+    @confirm="submit"
+  >
     <div class="flex flex-col w-full gap-5">
       <!-- Error message transition -->
       <Transition name="error-slide">
@@ -52,8 +57,8 @@ export default {
 
   data() {
     return {
-      oldPassword: '',  // Local input for old password
-      newPassword: '',  // Local input for new password
+      oldPassword: '', // Local input for old password
+      newPassword: '', // Local input for new password
     }
   },
 

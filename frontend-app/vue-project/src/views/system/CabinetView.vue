@@ -11,19 +11,13 @@
     1) Active page is "admin"
     2) User has admin rights 
   -->
-  <AdminPage
-    v-if="activePage === 'admin' && userStore.isAdmin">
-  </AdminPage>
+  <AdminPage v-if="activePage === 'admin' && userStore.isAdmin"> </AdminPage>
 
   <!-- Show Profile page if active page is "profile" -->
-  <ProfilePage
-    v-if="activePage === 'profile'">
-  </ProfilePage>
+  <ProfilePage v-if="activePage === 'profile'"> </ProfilePage>
 
   <!-- Show loading screen if user data is not loaded yet -->
-  <LoadingScreen
-    v-if="!userStore.user">
-  </LoadingScreen>
+  <LoadingScreen v-if="!userStore.user"> </LoadingScreen>
 </template>
 
 <script>

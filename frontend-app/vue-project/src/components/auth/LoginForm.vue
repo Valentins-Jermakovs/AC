@@ -20,11 +20,7 @@
           {{ $t('common.username') }}
         </span>
       </label>
-      <input 
-      v-model="username" 
-      placeholder="testuser" 
-      class="input input-bordered w-full" 
-      />
+      <input v-model="username" placeholder="testuser" class="input input-bordered w-full" />
     </div>
 
     <div class="form-control flex flex-col gap-2">
@@ -44,18 +40,14 @@
 
   <!-- Login button -->
   <div class="flex mt-6">
-    <button 
-    class="btn btn-primary flex-1" 
-    @click="login">
+    <button class="btn btn-primary flex-1" @click="login">
       {{ $t('common.login') }}
     </button>
   </div>
 
   <!-- Google login button -->
   <div class="flex mt-6">
-    <button 
-    class="btn btn-neutral flex-1" 
-    @click="loginGoogle">
+    <button class="btn btn-neutral flex-1" @click="loginGoogle">
       <font-awesome-icon icon="fa-brands fa-google" />
       {{ $t('common.login_with_google') }}
     </button>
@@ -74,7 +66,7 @@ export default {
     return {
       username: '', // Username input
       password: '', // Password input
-      error: '',    // Error message to show
+      error: '', // Error message to show
       authStore: null, // Store instance for auth
     }
   },

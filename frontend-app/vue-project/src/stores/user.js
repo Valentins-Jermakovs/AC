@@ -12,21 +12,19 @@ import { useAuthStore } from './auth'
 
 // Create Pinia store for user data
 export const useUserStore = defineStore('user', {
-
   // ==========================
   // STATE
   // ==========================
   state: () => ({
-    user: null,      // Stores current user object
-    loading: false,  // Indicates if request is in progress
-    error: null,     // Stores error message (if any)
+    user: null, // Stores current user object
+    loading: false, // Indicates if request is in progress
+    error: null, // Stores error message (if any)
   }),
 
   // ==========================
   // GETTERS (Computed values)
   // ==========================
   getters: {
-
     // Returns true if user data is loaded
     isLoaded: (state) => !!state.user,
 
@@ -47,7 +45,6 @@ export const useUserStore = defineStore('user', {
   // ACTIONS (Async logic)
   // ==========================
   actions: {
-
     // Fetch current authenticated user from backend
     async fetchMe() {
       const authStore = useAuthStore()
@@ -66,13 +63,11 @@ export const useUserStore = defineStore('user', {
 
         // Save user data in store
         this.user = response.data
-
       } catch (err) {
         console.error('Failed to fetch user:', err)
 
         this.error = err
         this.user = null
-
       } finally {
         this.loading = false
       }
@@ -102,7 +97,6 @@ export const useUserStore = defineStore('user', {
         this.user = response.data
 
         return response.data
-
       } catch (err) {
         console.error('Failed to change username:', err)
 
@@ -110,7 +104,6 @@ export const useUserStore = defineStore('user', {
         this.error = err.response?.data?.detail || err.message || err
 
         throw err
-
       } finally {
         this.loading = false
       }
@@ -139,14 +132,12 @@ export const useUserStore = defineStore('user', {
         this.user = response.data
 
         return response.data
-
       } catch (err) {
         console.error('Failed to change email:', err)
 
         this.error = err.response?.data?.detail || err.message || err
 
         throw err
-
       } finally {
         this.loading = false
       }
@@ -175,14 +166,12 @@ export const useUserStore = defineStore('user', {
         this.user = response.data
 
         return response.data
-
       } catch (err) {
         console.error('Failed to change password:', err)
 
         this.error = err.response?.data?.detail || err.message || err
 
         throw err
-
       } finally {
         this.loading = false
       }

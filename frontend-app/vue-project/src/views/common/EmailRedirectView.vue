@@ -1,7 +1,6 @@
 <template>
   <div
-    class="w-full min-h-screen flex flex-col justify-center items-center 
-    p-5 lg:p-10 bg-linear-to-b from-base-200 via-base-100 to-base-200"
+    class="w-full min-h-screen flex flex-col justify-center items-center p-5 lg:p-10 bg-linear-to-b from-base-200 via-base-100 to-base-200"
   >
     <!-- Main Titles Section -->
     <div class="flex flex-col gap-3 items-center text-center animate-fadeIn">
@@ -26,9 +25,7 @@
 
     <!-- Back Button -->
     <button
-      class="btn btn-primary text-lg 
-      lg:text-xl px-8 py-3 shadow-lg transform 
-      transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
+      class="btn btn-primary text-lg lg:text-xl px-8 py-3 shadow-lg transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
       @click="goBack"
     >
       {{ $t('common.back') }}
@@ -67,7 +64,8 @@ export default {
 
 /* Bounce effect for illustration */
 @keyframes bounce {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {

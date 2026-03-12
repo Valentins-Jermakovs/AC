@@ -58,12 +58,18 @@
           <td class="truncate max-w-50" :title="user.email">{{ user.email }}</td>
           <td>
             <div class="flex gap-2 overflow-x-auto max-w-45">
-              <span v-for="role in user.roles" :key="role" class="badge badge-info">{{ role }}</span>
+              <span v-for="role in user.roles" :key="role" class="badge badge-info">{{
+                role
+              }}</span>
             </div>
           </td>
           <td>{{ user.created_at }}</td>
           <td :class="user.active ? 'text-success' : 'text-error'">
-            {{ user.active ? $t('cabinet.admin.table_body.status_active') : $t('cabinet.admin.table_body.status_inactive') }}
+            {{
+              user.active
+                ? $t('cabinet.admin.table_body.status_active')
+                : $t('cabinet.admin.table_body.status_inactive')
+            }}
           </td>
         </tr>
       </tbody>
@@ -137,7 +143,7 @@ export default {
       if (this.selectAllLocal) {
         this.selectedUserIdsLocal = []
       } else {
-        this.selectedUserIdsLocal = this.store.users.map(u => u.id)
+        this.selectedUserIdsLocal = this.store.users.map((u) => u.id)
       }
       this.selectAllLocal = !this.selectAllLocal
     },

@@ -65,7 +65,18 @@
     "remove_role": "Dzēst lomu",
     "change_activity": "Bloķēt/atbloķēt",
     "no_data": "Nav datu",
-    "try_later": "Veiciet datu pieprasījumu vai pamēģiniet vēlāk!"
+    "try_later": "Veiciet datu pieprasījumu vai pamēģiniet vēlāk!",
+    "delete": "Dzēst",
+    "complete": "Pabeigt",
+    "edit": "Rediģēt",
+    "create": "Izveidot"
+  },
+  "filters": {
+    "all": "Visi",
+    "by_title": "Pēc nosaukuma",
+    "by_description": "Pēc apraksta",
+    "by_due_date": "Pēc izpildes datuma",
+    "by_month": "Pēc mēneša"
   },
   "eyeRest": {
     "title": "Atpūtiniet acis",
@@ -198,5 +209,40 @@
   },
   "errors": {
     "404": "Šī vieta eksistē tikai tavos sapņos… vai arī mēs to vienkārši pazaudējām. (404)"
+  },
+  "work": {
+    "task_detail": {
+      "status": "Statuss",
+      "created_at": "Pievienots",
+      "due_date": "Izpildes datums",
+      "complete": "Pabeigts",
+      "pending": "Nepabeigts"
+    },
+    "task_form": {
+      "title": "Nosaukums",
+      "title_placeholder": "Ievadiet nosaukumu...",
+      "description": "Apraksts",
+      "description_placeholder": "Ievadiet aprakstu...",
+      "due_date": "Izpildes datums",
+      "status": "Statuss",
+      "status_complete": "Pabeigts",
+      "status_pending": "Nepabeigts"
+    },
+    "modals": {
+      "delete_task": {
+        "title": "Dzēst uzdevumu?",
+        "content": "Vai tiešām vēlaties dzēst uzdevumu?"
+      },
+      "complete_task": {
+        "title": "Pabeigt uzdevumu?",
+        "content": "Vai tiešām vēlaties pabeigt uzdevums?"
+      },
+      "edit_task": {
+        "title": "Uzdevuma modifikācija"
+      },
+      "create_task": {
+        "title": "Izveidot uzdevumu"
+      }
+    }
   }
 }

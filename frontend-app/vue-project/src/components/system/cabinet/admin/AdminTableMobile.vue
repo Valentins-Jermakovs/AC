@@ -33,7 +33,11 @@
           <div>
             <div class="opacity-60">{{ $t('cabinet.admin.table_top.status') }}</div>
             <div :class="user.active ? 'text-success' : 'text-error'">
-              {{ user.active ? $t('cabinet.admin.table_body.status_active') : $t('cabinet.admin.table_body.status_inactive') }}
+              {{
+                user.active
+                  ? $t('cabinet.admin.table_body.status_active')
+                  : $t('cabinet.admin.table_body.status_inactive')
+              }}
             </div>
           </div>
 
@@ -56,7 +60,9 @@
       <!-- Empty state -->
       <div v-else>
         <div class="p-4">
-          <div class="alert alert-error flex flex-col items-center justify-center gap-2 p-2 text-center">
+          <div
+            class="alert alert-error flex flex-col items-center justify-center gap-2 p-2 text-center"
+          >
             <div class="flex gap-2 items-center justify-center text-2xl">
               <font-awesome-icon icon="fa-solid fa-info-circle" />
               <span>{{ $t('common.no_data') }}</span>

@@ -6,12 +6,18 @@
   <Transition name="fade" appear>
     <div>
       <!-- Main sections of the landing page -->
-      <HeroSection></HeroSection>           <!-- Top hero banner with main message -->
-      <AboutSection></AboutSection>         <!-- Section describing the product/company -->
-      <FeaturesSection></FeaturesSection>   <!-- List of key features -->
-      <CTASection></CTASection>             <!-- Call-to-action section -->
-      <Footer></Footer>                     <!-- Footer with links and info -->
-      <LanguageSelector></LanguageSelector> <!-- Language switcher component -->
+      <HeroSection></HeroSection>
+      <!-- Top hero banner with main message -->
+      <AboutSection></AboutSection>
+      <!-- Section describing the product/company -->
+      <FeaturesSection></FeaturesSection>
+      <!-- List of key features -->
+      <CTASection></CTASection>
+      <!-- Call-to-action section -->
+      <Footer></Footer>
+      <!-- Footer with links and info -->
+      <LanguageSelector></LanguageSelector>
+      <!-- Language switcher component -->
     </div>
   </Transition>
 </template>

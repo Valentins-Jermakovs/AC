@@ -1,8 +1,7 @@
 <template>
-    <h1>Kanban</h1>
+  <h1>Kanban</h1>
 </template>
 
-<script>
-</script>
+<script></script>
 
 <style scoped></style>

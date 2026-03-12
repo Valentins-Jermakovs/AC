@@ -93,12 +93,12 @@ import { api } from '@/services/axios'
 export default {
   data() {
     return {
-      username: '',         // Username input
-      password: '',         // Password input
-      confirmPassword: '',  // Confirm password input
-      email: '',            // Email input
-      error: '',            // Error message to show
-      authStore: null,      // Store instance for auth
+      username: '', // Username input
+      password: '', // Password input
+      confirmPassword: '', // Confirm password input
+      email: '', // Email input
+      error: '', // Error message to show
+      authStore: null, // Store instance for auth
     }
   },
 

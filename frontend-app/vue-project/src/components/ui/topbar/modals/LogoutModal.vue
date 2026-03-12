@@ -1,11 +1,11 @@
 <template>
   <!-- Modal dialog for confirming logout -->
   <BaseDialog
-    v-model="localModel"                     
-    :title="$t('modals.logout.title')"       
-    :confirm-text="$t('common.confirm')"     
-    :cancel-text="$t('common.cancel')"       
-    @confirm="confirmLogout"                 
+    v-model="localModel"
+    :title="$t('modals.logout.title')"
+    :confirm-text="$t('common.confirm')"
+    :cancel-text="$t('common.cancel')"
+    @confirm="confirmLogout"
   >
     <!-- Modal content / message -->
     {{ $t('modals.logout.content') }}
@@ -44,7 +44,7 @@ export default {
   methods: {
     // Handle user confirming logout
     confirmLogout() {
-      this.$emit('confirm')  // Tell parent to logout
+      this.$emit('confirm') // Tell parent to logout
       this.localModel = false // Close modal
     },
   },

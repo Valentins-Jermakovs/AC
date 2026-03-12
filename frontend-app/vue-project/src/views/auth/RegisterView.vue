@@ -1,7 +1,6 @@
 <template>
   <!-- Main layout for authentication pages (centered content, styling, etc.) -->
   <AuthLayout>
-
     <!-- Header section (usually contains title or logo) -->
     <AuthHeader></AuthHeader>
 
@@ -10,7 +9,6 @@
 
     <!-- Footer section (links, additional info, etc.) -->
     <AuthFooter></AuthFooter>
-
   </AuthLayout>
 </template>
 

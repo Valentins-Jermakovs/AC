@@ -69,7 +69,14 @@ export default {
       default: () => [],
     },
   },
-  emits: ['add-role', 'remove-role', 'change-activity', 'search', 'clear-error', 'update:selectedUserIds'],
+  emits: [
+    'add-role',
+    'remove-role',
+    'change-activity',
+    'search',
+    'clear-error',
+    'update:selectedUserIds',
+  ],
   setup() {
     const store = useAdminStore()
     return { store }

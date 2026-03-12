@@ -6,15 +6,16 @@
   -->
   <section class="py-16 bg-base-200 text-center">
     <div class="container mx-auto">
-      
       <!-- Section title -->
       <h2 class="text-3xl font-bold mb-4">
-        {{ $t('landingPage.CTA.title') }} <!-- Translated CTA title -->
+        {{ $t('landingPage.CTA.title') }}
+        <!-- Translated CTA title -->
       </h2>
 
       <!-- Section description -->
       <p class="mb-8 px-2">
-        {{ $t('landingPage.CTA.description') }} <!-- Translated CTA description -->
+        {{ $t('landingPage.CTA.description') }}
+        <!-- Translated CTA description -->
       </p>
 
       <!-- Action buttons -->
@@ -33,7 +34,6 @@
           </button>
         </RouterLink>
       </div>
-
     </div>
   </section>
 </template>
@@ -41,7 +41,7 @@
 <script>
 /* Empty script section: no reactive state or methods needed */
 export default {
-  name: 'CTASection', /* Component name */
+  name: 'CTASection' /* Component name */,
 }
 </script>
 

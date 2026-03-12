@@ -20,7 +20,7 @@
 
 <script>
 import Sidebar from '@/components/ui/sidebar/Sidebar.vue'
-import TopBar from '@/components/ui/topbar/TopBar.vue';
+import TopBar from '@/components/ui/topbar/TopBar.vue'
 
 export default {
   name: 'SystemLayout',

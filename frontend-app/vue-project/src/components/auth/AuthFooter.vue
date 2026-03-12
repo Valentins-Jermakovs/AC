@@ -1,6 +1,6 @@
 <template>
   <!-- Show navigation link depending on current page -->
-  
+
   <!-- If the user is on login page, show link to register -->
   <div v-if="isLogin">
     <h3>
@@ -47,6 +47,5 @@ export default {
   },
 }
 </script>
-
 
 <style scoped></style>

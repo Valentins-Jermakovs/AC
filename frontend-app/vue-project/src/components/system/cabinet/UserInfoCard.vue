@@ -1,7 +1,6 @@
 <template>
   <!-- Card container for user contact information -->
   <div class="bg-base-200 border border-base-300 rounded-box p-5 flex flex-col gap-2">
-    
     <!-- Section title -->
     <h3 class="text-lg font-semibold">
       {{ $t('cabinet.profile.contact_info') }}

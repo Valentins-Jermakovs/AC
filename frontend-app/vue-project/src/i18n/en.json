@@ -65,7 +65,18 @@
     "remove_role": "Remove role",
     "change_activity": "Block/Unblock",
     "no_data": "No data",
-    "try_later": "Perform a data request or try again later!"
+    "try_later": "Perform a data request or try again later!",
+    "delete": "Delete",
+    "complete": "Comlete",
+    "edit": "Edit",
+    "create": "Create"
+  },
+  "filters": {
+    "all": "All",
+    "by_title": "By title",
+    "by_description": "By description",
+    "by_due_date": "By due date",
+    "by_month": "By month"
   },
   "eyeRest": {
     "title": "Rest Your Eyes",
@@ -194,5 +205,40 @@
   },
   "errors": {
     "404": "This place exists only in your imagination... or maybe we will forget about it. (404)"
+  },
+  "work": {
+    "task_detail": {
+      "status": "Status",
+      "created_at": "Created at",
+      "due_date": "Due date",
+      "complete": "Completed",
+      "pending": "Pending"
+    },
+    "task_form": {
+      "title": "Title",
+      "title_placeholder": "Enter title...",
+      "description": "Description",
+      "description_placeholder": "Enter description...",
+      "due_date": "Due date",
+      "status": "Status",
+      "status_complete": "Completed",
+      "status_pending": "Pending"
+    },
+    "modals": {
+      "delete_task": {
+        "title": "Delete task?",
+        "content": "Are you sure you want to delete this task?"
+      },
+      "complete_task": {
+        "title": "Complete task?",
+        "content": "Are you sure you want to complete this task?"
+      },
+      "edit_task": {
+        "title": "Edit task"
+      },
+      "create_task": {
+        "title": "Create task"
+      }
+    }
   }
 }

@@ -1,7 +1,6 @@
 <template>
   <section class="py-10 bg-base-200">
     <div class="container mx-auto flex flex-col md:flex-row items-stretch gap-8">
-      
       <!-- Image + Skeleton -->
       <div class="md:w-1/2 relative">
         <!-- Skeleton placeholder while image is loading -->
@@ -27,7 +26,6 @@
           {{ $t('landingPage.about_content') }}
         </p>
       </div>
-
     </div>
   </section>
 </template>

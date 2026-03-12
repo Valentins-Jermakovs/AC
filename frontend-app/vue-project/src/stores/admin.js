@@ -13,7 +13,6 @@ import { useUserStore } from './user'
 
 // Create Admin store
 export const useAdminStore = defineStore('admin', {
-
   // ==========================
   // STATE
   // ==========================
@@ -29,7 +28,7 @@ export const useAdminStore = defineStore('admin', {
     },
 
     loading: false, // Indicates request is in progress
-    error: null,    // Stores error message
+    error: null, // Stores error message
 
     // Search configuration
     searchMode: 'all',
@@ -43,7 +42,6 @@ export const useAdminStore = defineStore('admin', {
   // GETTERS
   // ==========================
   getters: {
-
     // Returns true if users array is not empty
     hasUsers: (state) => state.users.length > 0,
   },
@@ -52,7 +50,6 @@ export const useAdminStore = defineStore('admin', {
   // ACTIONS
   // ==========================
   actions: {
-
     // --------------------------
     // Fetch all users (paginated)
     // --------------------------
@@ -83,7 +80,6 @@ export const useAdminStore = defineStore('admin', {
 
         // Remember request type
         this.lastRequest = { type: 'all' }
-
       } catch (err) {
         this.error = err.response?.data?.detail || err.message
         throw err
@@ -126,7 +122,6 @@ export const useAdminStore = defineStore('admin', {
           type: 'id',
           payload: id,
         }
-
       } catch (err) {
         this.users = []
         this.error = err.response?.data?.detail || err.message
@@ -166,7 +161,6 @@ export const useAdminStore = defineStore('admin', {
           type: 'username',
           payload: searchString,
         }
-
       } catch (err) {
         this.error = err.response?.data?.detail || err.message
         this.users = []
@@ -215,7 +209,6 @@ export const useAdminStore = defineStore('admin', {
 
         this.users = response.data.items
         this.meta = response.data.meta
-
       } catch (err) {
         this.error = err.response?.data?.detail || err.message
         this.users = []
@@ -251,13 +244,13 @@ export const useAdminStore = defineStore('admin', {
           API_ENDPOINTS.ADD_ROLES_TO_USER,
           {
             role_id: roleId,
-            user_ids: selectedUserIds
+            user_ids: selectedUserIds,
           },
           {
             headers: {
-              Authorization: `Bearer ${authStore.accessToken}`
-            }
-          }
+              Authorization: `Bearer ${authStore.accessToken}`,
+            },
+          },
         )
 
         return response.data
@@ -289,13 +282,13 @@ export const useAdminStore = defineStore('admin', {
           API_ENDPOINTS.REMOVE_ROLES_FROM_USER,
           {
             role_id: roleId,
-            user_ids: selectedUserIds
+            user_ids: selectedUserIds,
           },
           {
             headers: {
-              Authorization: `Bearer ${authStore.accessToken}`
-            }
-          }
+              Authorization: `Bearer ${authStore.accessToken}`,
+            },
+          },
         )
 
         return response.data
@@ -328,15 +321,14 @@ export const useAdminStore = defineStore('admin', {
           API_ENDPOINTS.CHANGE_USER_ACTIVITY,
           {
             user_ids: userIds,
-            is_active: isActive
+            is_active: isActive,
           },
           {
             headers: {
-              Authorization: `Bearer ${authStore.accessToken}`
-            }
-          }
+              Authorization: `Bearer ${authStore.accessToken}`,
+            },
+          },
         )
-
 
         return response.data
       } catch (err) {

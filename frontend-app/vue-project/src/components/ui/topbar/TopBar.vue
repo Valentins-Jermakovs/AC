@@ -1,9 +1,8 @@
 <template>
   <!-- Top navigation bar -->
-  <div class="flex w-full h-full bg-base-200 
-  items-center justify-between py-2 pr-2 pl-1 
-  border border-base-300">
-    
+  <div
+    class="flex w-full h-full bg-base-200 items-center justify-between py-2 pr-2 pl-1 border border-base-300"
+  >
     <!-- LEFT SECTION: Burger button (toggle sidebar) + logo -->
     <div class="flex items-center gap-4 pl-1">
       <BurgerButton />
@@ -27,27 +26,20 @@
     </div>
 
     <!-- MODALS: Email, Language, Support, Logout -->
-    <EmailModal
-      :modelValue="activeModal === 'email'"
-      @update:modelValue="activeModal = null"
-    />
+    <EmailModal :modelValue="activeModal === 'email'" @update:modelValue="activeModal = null" />
 
     <LanguageModal
       :modelValue="activeModal === 'language'"
       @update:modelValue="activeModal = null"
     />
 
-    <SupportModal
-      :modelValue="activeModal === 'support'"
-      @update:modelValue="activeModal = null"
-    />
+    <SupportModal :modelValue="activeModal === 'support'" @update:modelValue="activeModal = null" />
 
     <LogoutModal
       :modelValue="activeModal === 'logout'"
       @update:modelValue="activeModal = null"
       @confirm="handleLogout"
     />
-
   </div>
 </template>
 
@@ -85,7 +77,7 @@ export default {
     EmailModal,
     LanguageModal,
     SupportModal,
-    LogoutModal
+    LogoutModal,
   },
 
   data() {

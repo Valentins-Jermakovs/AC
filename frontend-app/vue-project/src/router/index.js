@@ -34,7 +34,6 @@ const router = createRouter({
 
   // Application routes
   routes: [
-
     // --------------------------
     // Public Routes
     // --------------------------
@@ -85,7 +84,6 @@ const router = createRouter({
 
       // Nested routes (rendered inside <router-view> of SystemView)
       children: [
-
         {
           path: '',
           name: 'cabinet',
@@ -168,7 +166,6 @@ import { useAuthStore } from '@/stores/auth'
 // Global route guard
 // This runs before every route change
 router.beforeEach((to, from, next) => {
-
   // Get authentication store
   const authStore = useAuthStore()
 

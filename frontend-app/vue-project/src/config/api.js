@@ -32,6 +32,9 @@ export const API_ENDPOINTS = {
 
   // ===== Projects management =====
 
+
+  // ===== Tasks management =====
+
   // GET
   GET_ALL_PRIVATE_TASKS: '/private-tasks/get-all-tasks',
   GET_TASKS_BY_TITLE: '/private-tasks/get-tasks-by-title',
@@ -45,4 +48,53 @@ export const API_ENDPOINTS = {
   UPDATE_PRIVATE_TASK: '/private-tasks/update-task',
   // DELETE
   DELETE_PRIVATE_TASK: '/private-tasks/delete-task',
+
+  // ===== Kanban management =====
+
+  // =====BOARDS:
+  // GET
+  GET_ALL_BOARDS: '/kanban/boards/get-all-boards',
+  GET_BOARDS_BY_TITLE: '/kanban/board/get-boards-by-title',
+  // POST
+  CREATE_BOARD: '/kanban/boards/create-board',
+  // PUT
+  UPDATE_BOARD: '/kanban/boards/update-board',
+  // DELETE
+  DELETE_BOARD: '/kanban/boards/delete-board',
+
+  // =====MEMBERS:
+  // GET
+  GET_KANBAN_MEMBERS: '/kanban/members/get-all-members',
+  // POST
+  ADD_KANBAN_MEMBER: 'kanban/members/add-member',
+  // PUT
+  UPDATE_KANBAN_MEMBER: '/kanban/members/update-member',
+  // DELETE
+  REMOVE_KANBAN_MEMBER: '/kanban/members/delete-member',
+
+  // =====STAGES:
+  // GET
+  GET_ALL_STAGES: '/kanban/stages/get-all-stages',
+  // POST
+  CREATE_STAGE: '/kanban/stages/create-stage',
+  CREATE_STAGE_RELATIVE: '/kanban/stages/create-relative-stage',
+  // PUT
+  MOVE_STAGE: '/kanban/stages/move-stage',
+  UPDATE_STAGE: '/kanban/stages/update-stage',
+  // DELETE
+  DELETE_STAGE: '/kanban/stages/delete-stage',
+
+  // =====TASKS:
+  // GET
+  GET_ALL_TASKS: '/kanban/tasks/get-all-tasks',
+  // POST
+  CREATE_TASK: '/kanban/tasks/create-task',
+  // PUT
+  UPDATE_TASK: '/kanban/tasks/update-task',
+  MOVE_TASK_IN_STAGE: '/kanban/tasks/move-task-in-stage',
+  MOVE_TASK_BETWEEN_STAGES: '/kanban/tasks/move-task-between-stages',
+  // DELETE
+  DELETE_TASK: '/kanban/tasks/delete-task',
+
+
 }

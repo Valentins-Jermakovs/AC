@@ -79,7 +79,7 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
         this.lastRequest = { type: 'all' }
         this.searchQuery = ''
       } catch (err) {
-        this.error = err.response?.data?.message || err.message || 'Something went wrong'
+        this.error = err.response?.data?.detail || err.message || 'Something went wrong'
 
         // reset pagination
         this.meta = {
@@ -118,7 +118,7 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
         // Remember request type
         this.lastRequest = { type: 'title' }
       } catch (err) {
-        this.error = err.response?.data?.message || err.message || 'Something went wrong'
+        this.error = err.response?.data?.detail || err.message || 'Something went wrong'
 
         // reset pagination
         this.meta = {
@@ -157,7 +157,7 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
         // Remember request type
         this.lastRequest = { type: 'description' }
       } catch (err) {
-        this.error = err.response?.data?.message || err.message || 'Something went wrong'
+        this.error = err.response?.data?.detail || err.message || 'Something went wrong'
 
         // reset pagination
         this.meta = {
@@ -196,7 +196,7 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
         // Remember request type
         this.lastRequest = { type: 'duedate' }
       } catch (err) {
-        this.error = err.response?.data?.message || err.message || 'Something went wrong'
+        this.error = err.response?.data?.detail || err.message || 'Something went wrong'
 
         // reset pagination
         this.meta = {
@@ -238,7 +238,7 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
         // Remember request type
         this.lastRequest = { type: 'month' }
       } catch (err) {
-        this.error = err.response?.data?.message || err.message || 'Something went wrong'
+        this.error = err.response?.data?.detail || err.message || 'Something went wrong'
 
         // reset pagination
         this.meta = {

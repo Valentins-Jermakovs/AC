@@ -1,10 +1,10 @@
 <template>
     <div class="flex flex-col w-72">
-        <div class="bg-base-200 border border-base-300
-        w-full h-16 flex items-center gap-3 pl-2">
+        <div class="bg-base-100 border border-base-300
+        w-full h-16 flex items-center gap-3 p-2">
             <!-- Title -->
             <h1 class="flex-1 w-full text-center">ToDo</h1>
-            <!-- left dropdown -->
+            <!-- right dropdown -->
             <div class="dropdown dropdown-right">
                 <div tabindex="0" role="button" class="btn m-1">:</div>
                 <ul tabindex="-1" class="dropdown-content menu bg-base-200 border

@@ -74,27 +74,27 @@ export const API_ENDPOINTS = {
 
   // =====STAGES:
   // GET
-  GET_ALL_STAGES: '/kanban/stages/get-all-stages',
+  GET_KANBAN_STAGES: '/kanban/stages/get-all-stages',
   // POST
-  CREATE_STAGE: '/kanban/stages/create-stage',
-  CREATE_STAGE_RELATIVE: '/kanban/stages/create-relative-stage',
+  CREATE_KANBAN_STAGE: '/kanban/stages/create-stage',
+  CREATE_KANBAN_STAGE_RELATIVE: '/kanban/stages/create-relative-stage',
   // PUT
-  MOVE_STAGE: '/kanban/stages/move-stage',
-  UPDATE_STAGE: '/kanban/stages/update-stage',
+  MOVE_KANBAN_STAGE: '/kanban/stages/move-stage',
+  UPDATE_KANBAN_STAGE: '/kanban/stages/update-stage',
   // DELETE
-  DELETE_STAGE: '/kanban/stages/delete-stage',
+  DELETE_KANBAN_STAGE: '/kanban/stages/delete-stage',
 
   // =====TASKS:
   // GET
-  GET_ALL_TASKS: '/kanban/tasks/get-all-tasks',
+  GET_ALL_KANBAN_TASKS: '/kanban/tasks/get-all-tasks',
   // POST
-  CREATE_TASK: '/kanban/tasks/create-task',
+  CREATE_KANBAN_TASK: '/kanban/tasks/create-task',
   // PUT
-  UPDATE_TASK: '/kanban/tasks/update-task',
-  MOVE_TASK_IN_STAGE: '/kanban/tasks/move-task-in-stage',
-  MOVE_TASK_BETWEEN_STAGES: '/kanban/tasks/move-task-between-stages',
+  UPDATE_KANBAN_TASK: '/kanban/tasks/update-task',
+  MOVE_KANBAN_TASK_IN_STAGE: '/kanban/tasks/move-task-in-stage',
+  MOVE_KANBAN_TASK_BETWEEN_STAGES: '/kanban/tasks/move-task-between-stages',
   // DELETE
-  DELETE_TASK: '/kanban/tasks/delete-task',
+  DELETE_KANBAN_TASK: '/kanban/tasks/delete-task',
 
 
 }

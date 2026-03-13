@@ -86,7 +86,7 @@ export const API_ENDPOINTS = {
 
   // =====TASKS:
   // GET
-  GET_ALL_KANBAN_TASKS: '/kanban/tasks/get-all-tasks',
+  GET_KANBAN_TASKS: '/kanban/tasks/get-all-tasks',
   // POST
   CREATE_KANBAN_TASK: '/kanban/tasks/create-task',
   // PUT

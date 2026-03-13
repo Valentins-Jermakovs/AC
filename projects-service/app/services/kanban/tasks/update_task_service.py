@@ -32,8 +32,7 @@ async def update_task(
     # Raise if task not found
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
-    
-
+    # Raise if title is empty
     if not user_id:
         raise HTTPException(status_code=400, detail="User ID is required")
     
@@ -43,10 +42,10 @@ async def update_task(
         "boardId": board_id,
         "userId": user_id,
     })
-
+    # Raise if user not found
     if not user:
         raise HTTPException(status_code=403, detail="You are not member of this board or this board does not exist")
-    
+    # Raise if user role is viewer
     if user.role == "viewer":
         raise HTTPException(status_code=403, detail="You cant update tasks in this board")
     

@@ -3,7 +3,7 @@ from fastapi import HTTPException
 from bson import ObjectId
 
 # Models
-from app.models import WorkspaceProjectMemberModel
+from app.models import WorkspaceProjectMemberModel, WorkspaceProjectModel
 
 # ==================================================
 # Function add project member
@@ -37,6 +37,14 @@ async def add_project_member(
 
     if not ObjectId.is_valid(project_id):
         raise HTTPException(400, "Invalid project ID")
+    
+    # Find workspace
+    project = await WorkspaceProjectModel.find_one({
+        "_id": ObjectId(project_id)
+    })
+
+    if not project:
+        raise HTTPException(404, "Project not found")
 
     # ================= CREATE OWNER MODE =================
 

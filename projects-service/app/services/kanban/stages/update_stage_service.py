@@ -39,7 +39,7 @@ async def update_stage(
     # Raise if board_id is not valid
     if not ObjectId.is_valid(board_id):
         raise HTTPException(status_code=400, detail="Invalid board ID")
-    
+    # Raise if user_id is not provided
     if not user_id:
         raise HTTPException(status_code=400, detail="User ID is required")
     

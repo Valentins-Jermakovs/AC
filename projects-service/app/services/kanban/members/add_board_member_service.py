@@ -2,7 +2,7 @@
 from fastapi import HTTPException
 from bson import ObjectId
 # Models
-from app.models import KanbanBoardMemberModel
+from app.models import KanbanBoardMemberModel, KanbanBoardModel
 # Schemas
 from app.schemas.response.kanban.members.kanban_board_member_schema import KanbanBoardMemberSchema
 
@@ -45,6 +45,15 @@ async def add_board_member(
 
     if not ObjectId.is_valid(board_id):
         raise HTTPException(400, "Invalid board ID")
+    
+    # try to find board
+    board = await KanbanBoardModel.find_one({
+        "_id": ObjectId(board_id)
+    })
+
+    # Raise if board not found
+    if not board:
+        raise HTTPException(404, "Board not found")
     
     # ===== Create an owner (mode == create_owner) =====
     if mode == "create_owner":

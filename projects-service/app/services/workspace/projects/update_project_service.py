@@ -62,9 +62,6 @@ async def update_project (
         # Raise if description is too short
         if len(description) < 3:
             raise HTTPException(status_code=400, detail="Description is too short")
-        # Raise if desrciption or title are the same
-        if description == project.description:
-            raise HTTPException(status_code=400, detail="Description is the same")
 
     # ===== Business logic =====
     update_data = {}

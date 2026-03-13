@@ -38,19 +38,29 @@ async def delete_board_member(
             status_code=403,
             detail="You are not a member of this board"
         )
+    
+    # Code for removing itself
+    if creator.userId == user_id:
+        
+        # If owner try delete himself
+        if creator.role == "owner":
+            raise HTTPException(
+                status_code=403,
+                detail="You cannot remove yourself, you are the owner"
+            )
+
+        # Remove user from board
+        await KanbanBoardMemberModel.find_one({
+            "boardId": board_id,
+            "userId": user_id
+        }).delete()
+
+        return {"message": "You have been removed from the board successfully"}
 
     if creator.role not in ["admin", "owner"]:
         raise HTTPException(
             status_code=403,
             detail="Only admin or owner can remove members"
-        )
-
-    # ================= BLOCK SELF REMOVAL =================
-
-    if user_id_creator == user_id:
-        raise HTTPException(
-            status_code=400,
-            detail="You cannot remove yourself"
         )
 
     # ================= FIND MEMBER TO DELETE =================
@@ -59,6 +69,13 @@ async def delete_board_member(
         "boardId": board_id,
         "userId": user_id
     })
+
+    # If admin try delete admin
+    if creator.role == "admin" and board_member.role == "admin":
+        raise HTTPException(
+            status_code=403,
+            detail="Admin cannot remove admin"
+        )
 
     if not board_member:
         raise HTTPException(

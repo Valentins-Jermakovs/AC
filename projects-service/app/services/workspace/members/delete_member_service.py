@@ -16,13 +16,13 @@ async def delete_project_member(
 ) -> dict:
 
     # ================= VALIDATION =================
-
+    # Raise if project_id is not provided
     if not project_id:
         raise HTTPException(status_code=400, detail="Project ID is required")
-
+    # Raise if user_id is not provided
     if not user_id:
         raise HTTPException(status_code=400, detail="User ID is required")
-
+    # Raise if project_id is not valid
     if not ObjectId.is_valid(project_id):
         raise HTTPException(status_code=400, detail="Invalid project ID")
 
@@ -35,19 +35,28 @@ async def delete_project_member(
 
     if not creator:
         raise HTTPException(status_code=403, detail="You are not a member of this project")
+    
+    if user_id_creator == user_id:
+        
+        # Raise if owner is trying to remove themselves
+        if creator.role == "owner":
+            raise HTTPException(
+                status_code=403,
+                detail="Owner cannot remove themselves"
+            )
+
+        # Remove user from project
+        await WorkspaceProjectMemberModel.find_one({
+            "projectId": project_id,
+            "userId": user_id
+        }).delete()
+
+        return {"message": "Project member removed successfully"}
 
     if creator.role not in ["admin", "owner"]:
         raise HTTPException(
             status_code=403,
             detail="Only admin or owner can remove members"
-        )
-
-    # ================= BLOCK SELF REMOVAL =================
-
-    if user_id_creator == user_id:
-        raise HTTPException(
-            status_code=400,
-            detail="You cannot remove yourself"
         )
 
     # ================= FIND MEMBER TO DELETE =================
@@ -56,6 +65,13 @@ async def delete_project_member(
         "projectId": project_id,
         "userId": user_id
     })
+
+    # If admin try to delete admin
+    if creator.role == "admin" and project_member.role == "admin":
+        raise HTTPException(
+            status_code=403,
+            detail="Admin cannot remove admin"
+        )
 
     if not project_member:
         raise HTTPException(

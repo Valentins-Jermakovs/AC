@@ -137,7 +137,6 @@ async def fetch_user_by_id_endpoint(
 async def fetch_user_by_username_or_email_endpoint(
     name_or_email: str,
     db: Annotated[AsyncSession, Depends(get_db)],
-    admin_user_id: int = Depends(get_admin_user_id),
     page: int = 1,
     limit: int = 10,
 ):

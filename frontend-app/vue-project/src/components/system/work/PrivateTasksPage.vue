@@ -50,7 +50,7 @@
     </div>
 
     <!-- Right screen: task details / empty states -->
-    <div class="w-full lg:w-1/2 bg-base-200 border border-base-300 flex flex-col gap-1 p-1">
+    <div class="w-full lg:w-1/2 bg-base-100 border border-base-300 flex flex-col gap-1 p-1">
       <!-- Atlasīts uzdevums -->
       <TaskDetails v-if="selectedTask" :task="selectedTask" @delete-task="handleDelete" />
 
@@ -59,7 +59,8 @@
         v-else-if="privateTasksStore.privateTasks.length > 0"
         class="flex items-center justify-center h-full text-base-content/50"
       >
-        Select a task
+        <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2xl" />
+        {{ $t('errors.tasks_not_found') }}
       </div>
 
       <!-- Saraksts tukšs -->

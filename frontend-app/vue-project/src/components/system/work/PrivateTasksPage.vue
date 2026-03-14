@@ -73,7 +73,9 @@
           {{ $t('errors.tasks_not_found') }}
         </div>
 
-        <button class="btn btn-primary" @click="showCreate = true">{{ $t('common.create') }}</button>
+        <button class="btn btn-primary" @click="showCreate = true">
+          {{ $t('common.create') }}
+        </button>
 
         <!-- CREATE dialog -->
         <BaseDialog

@@ -1,7 +1,6 @@
 <template>
   <div
-    class="w-full h-16 flex items-center p-2 border border-base-300 bg-base-200 hover:bg-base-300 hover:cursor-pointer
-    hover:border-2 hover:border-info rounded-box duration-300 transition-all"
+    class="w-full h-16 flex items-center p-2 border border-base-300 bg-base-200 hover:bg-base-300 hover:cursor-pointer hover:border-2 hover:border-info rounded-box duration-300 transition-all"
     @click="selectTask"
   >
     <div class="flex flex-col flex-1 px-4">

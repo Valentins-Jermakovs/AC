@@ -32,7 +32,6 @@ export const API_ENDPOINTS = {
 
   // ===== Projects management =====
 
-
   // ===== Tasks management =====
 
   // GET
@@ -54,7 +53,7 @@ export const API_ENDPOINTS = {
   // =====BOARDS:
   // GET
   GET_ALL_BOARDS: '/kanban/boards/get-all-boards',
-  GET_BOARDS_BY_TITLE: '/kanban/board/get-boards-by-title',
+  GET_BOARDS_BY_TITLE: '/kanban/boards/get-board-by-title',
   // POST
   CREATE_BOARD: '/kanban/boards/create-board',
   // PUT
@@ -95,6 +94,4 @@ export const API_ENDPOINTS = {
   MOVE_KANBAN_TASK_BETWEEN_STAGES: '/kanban/tasks/move-task-between-stages',
   // DELETE
   DELETE_KANBAN_TASK: '/kanban/tasks/delete-task',
-
-
 }

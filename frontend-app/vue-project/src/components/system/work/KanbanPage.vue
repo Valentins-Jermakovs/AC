@@ -2,14 +2,13 @@
   <div class="flex flex-1 w-full h-full">
     <KanbanSideBar></KanbanSideBar>
     <div class="flex flex-col flex-1 w-full h-full">
-
       <!-- Panel: board/members -->
-      <div class="w-full h-12 bg-base-100 border border-base-300 flex ">
+      <div class="w-full h-12 bg-base-100 border border-base-300 flex">
         <button class="btn btn-primary h-full">
           Board View
           <font-awesome-icon icon="fa-solid fa-table-cells" />
         </button>
-        <button class="btn  h-full">
+        <button class="btn h-full">
           Members View
           <font-awesome-icon icon="fa-solid fa-users" />
         </button>
@@ -17,20 +16,11 @@
 
       <!-- ========== BOARD SPACE ========== -->
 
-      <div class="w-full bg-base-200 border border-base-300 h-14 flex gap-2
-      items-center pl-3 p-1">
-        <button class="btn btn-neutral">
-          Change board title
-        </button>
-        <button class="btn btn-secondary">
-          Add Stage
-        </button>
-        <button class="btn btn-warning">
-          Delete board
-        </button>
-        <button class="btn btn-warning">
-          Leave board
-        </button>
+      <div class="w-full bg-base-200 border border-base-300 h-14 flex gap-2 items-center pl-3 p-1">
+        <button class="btn btn-neutral">Change board title</button>
+        <button class="btn btn-secondary">Add Stage</button>
+        <button class="btn btn-warning">Delete board</button>
+        <button class="btn btn-warning">Leave board</button>
       </div>
       <!-- Board space -->
       <div class="flex-1 flex w-full h-full overflow-auto p-5 bg-pattern">
@@ -217,21 +207,31 @@
 
       </div> -->
     </div>
+    <LoadingScreen v-if="kanbanBoardStore.loading"></LoadingScreen>
   </div>
 </template>
 
 <script>
-import KanbanSideBar from './kanban/kanbanSideBar.vue';
-import KanbanStage from './kanban/kanbanStage.vue';
+import LoadingScreen from '@/components/common/LoadingScreen.vue'
+import KanbanSideBar from './kanban/kanbanSideBar.vue'
+import KanbanStage from './kanban/kanbanStage.vue'
+
+import { useKanbanBoardStore } from '@/stores/kanban/kanbanBoards'
 
 export default {
   name: 'KanbanPage',
   components: {
     KanbanSideBar,
     KanbanStage,
+    LoadingScreen,
   },
-};
 
+  data() {
+    return {
+      kanbanBoardStore: useKanbanBoardStore(),
+    }
+  },
+}
 </script>
 
 <style scoped>

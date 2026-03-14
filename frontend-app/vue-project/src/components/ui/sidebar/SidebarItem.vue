@@ -2,9 +2,7 @@
   <!-- Sidebar link button with icon and optional label -->
   <router-link
     :to="{ name: toName }"
-    class="w-full btn h-12 font-bold md:w-12 md:h-12 md:tooltip
-    md:tooltip-right flex items-center justify-center transform transition-all duration-500
-    z-10"
+    class="w-full btn h-12 font-bold md:w-12 md:h-12 md:tooltip md:tooltip-right flex items-center justify-center transform transition-all duration-500 z-10"
     :data-tip="t(titleKey)"
     :class="[
       isActive ? 'btn-primary' : 'btn-neutral hover:btn-secondary transition-all duration-300',

@@ -1,20 +1,23 @@
 <template>
   <div class="flex flex-col gap-2 p-1 bg-base-200 border border-base-300">
-    <kanban-task v-for="task in tasks" :key="task.id" :task="task"></kanban-task>
+    <kanban-task
+  v-for="task in tasks"
+  :key="task.id"
+  :task="task"
+  @task-updated="loadTasks"
+  @task-moved="$emit('task-moved')"
+/>
   </div>
 </template>
 
 <script>
 import { useKanbanTasksStore } from '@/stores/kanban/kanbanTasks'
-import kanbanTask from './kanbanTask.vue'
+import KanbanTask from './kanbanTask.vue'
 
 export default {
   name: 'KanbanTaskList',
-  components: { kanbanTask },
-  props: {
-    stageId: { type: String, required: true },
-    boardId: { type: String, required: true },
-  },
+  components: { KanbanTask },
+  props: { stageId: String, boardId: String },
   data() {
     return {
       tasks: [],
@@ -31,11 +34,8 @@ export default {
     }
   },
   mounted() {
-    this.loadTasks()
-  },
-  watch: {
-    stageId: 'loadTasks',
-    boardId: 'loadTasks',
-  },
+  this.loadTasks()
+},
+  watch: { stageId: 'loadTasks', boardId: 'loadTasks' }
 }
 </script>

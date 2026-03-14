@@ -3,7 +3,8 @@
         <div v-for="stage in stagesStore.stages" :key="stage.id" class="min-w-72 flex flex-col rounded-box">
             <kanban-stage-title :stage="stage"></kanban-stage-title>
             <kanban-task-list :stage-id="stage.id" :board-id="boardStore.selectedBoard?.id"></kanban-task-list>
-            <kanban-create-task></kanban-create-task>
+            <kanban-create-task :stage-id="stage.id" :board-id="boardStore.selectedBoard?.id" 
+            />
         </div>
     </div>
 </template>

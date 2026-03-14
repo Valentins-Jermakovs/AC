@@ -88,6 +88,7 @@ export default {
     },
   },
   methods: {
+    
     // ===== Create Board =====
     openCreateModal() {
       this.newBoardTitle = ''

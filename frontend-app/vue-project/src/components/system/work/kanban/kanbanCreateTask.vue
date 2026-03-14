@@ -11,8 +11,17 @@
       @confirm="confirmCreateTask"
     >
       <div class="w-full flex flex-col gap-2">
-        <input type="text" class="input w-full mb-2" v-model="newTaskTitle" placeholder="Task title" />
-        <textarea class="textarea w-full" v-model="newTaskDescription" placeholder="Task description"></textarea>
+        <input
+          type="text"
+          class="input w-full mb-2"
+          v-model="newTaskTitle"
+          placeholder="Task title"
+        />
+        <textarea
+          class="textarea w-full"
+          v-model="newTaskDescription"
+          placeholder="Task description"
+        ></textarea>
       </div>
     </BaseDialog>
   </div>
@@ -24,7 +33,7 @@ import { useKanbanTasksStore } from '@/stores/kanban/kanbanTasks'
 import { useKanbanBoardStore } from '@/stores/kanban/kanbanBoards'
 
 export default {
-  name: "kanbanCreateTask",
+  name: 'kanbanCreateTask',
   components: { BaseDialog },
   props: {
     stageId: { type: String, required: true },
@@ -36,7 +45,7 @@ export default {
       newTaskTitle: '',
       newTaskDescription: '',
       tasksStore: useKanbanTasksStore(),
-      kanbanStore: useKanbanBoardStore()
+      kanbanStore: useKanbanBoardStore(),
     }
   },
   methods: {
@@ -46,27 +55,27 @@ export default {
       this.createModal = true
     },
     async confirmCreateTask() {
-  if (!this.newTaskTitle.trim()) return
+      if (!this.newTaskTitle.trim()) return
 
-  try {
-    await this.tasksStore.createKanbanTask({
-      boardId: this.boardId,
-      stageId: this.stageId,
-      title: this.newTaskTitle.trim(),
-      description: this.newTaskDescription.trim()
-    })
+      try {
+        await this.tasksStore.createKanbanTask({
+          boardId: this.boardId,
+          stageId: this.stageId,
+          title: this.newTaskTitle.trim(),
+          description: this.newTaskDescription.trim(),
+        })
 
-    // Atsvaidzini UI – izmet eventu vecākai komponentei
-    this.$emit('task-created')
+        // Atsvaidzini UI – izmet eventu vecākai komponentei
+        this.$emit('task-created')
 
-    this.createModal = false
-    this.newTaskTitle = ''
-    this.newTaskDescription = ''
-  } catch (err) {
-    console.error("Failed to create task:", err)
-  }
-}
-  }
+        this.createModal = false
+        this.newTaskTitle = ''
+        this.newTaskDescription = ''
+      } catch (err) {
+        console.error('Failed to create task:', err)
+      }
+    },
+  },
 }
 </script>
 

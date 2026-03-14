@@ -33,26 +33,61 @@
   <!-- Modals -->
 
   <!-- Create board -->
-  <BaseDialog v-model="createModal" title="Create New Board" confirmText="Create" cancelText="Cancel"
-    @confirm="confirmCreateBoard">
-    <input type="text" class="input w-full" v-model="newBoardTitle" placeholder="Enter board title" />
+  <BaseDialog
+    v-model="createModal"
+    title="Create New Board"
+    confirmText="Create"
+    cancelText="Cancel"
+    @confirm="confirmCreateBoard"
+  >
+    <input
+      type="text"
+      class="input w-full"
+      v-model="newBoardTitle"
+      placeholder="Enter board title"
+    />
   </BaseDialog>
 
   <!-- Change board title -->
-  <BaseDialog v-model="changeTitleModal" title="Change Board Title" confirmText="Save" cancelText="Cancel"
-    @confirm="confirmChangeTitle">
-    <input type="text" class="input w-full" v-model="newTitle" placeholder="Enter new board title" />
+  <BaseDialog
+    v-model="changeTitleModal"
+    title="Change Board Title"
+    confirmText="Save"
+    cancelText="Cancel"
+    @confirm="confirmChangeTitle"
+  >
+    <input
+      type="text"
+      class="input w-full"
+      v-model="newTitle"
+      placeholder="Enter new board title"
+    />
   </BaseDialog>
 
   <!-- Add stage -->
-  <BaseDialog v-model="addStageModal" title="Add Stage" confirmText="Add" cancelText="Cancel"
-    @confirm="confirmAddStage">
-    <input type="text" class="input w-full" v-model="newStageTitle" placeholder="Enter stage title" />
+  <BaseDialog
+    v-model="addStageModal"
+    title="Add Stage"
+    confirmText="Add"
+    cancelText="Cancel"
+    @confirm="confirmAddStage"
+  >
+    <input
+      type="text"
+      class="input w-full"
+      v-model="newStageTitle"
+      placeholder="Enter stage title"
+    />
   </BaseDialog>
 
   <!-- Delete board -->
-  <BaseDialog v-model="deleteModal" title="Confirm Delete" confirmText="Delete" cancelText="Cancel"
-    @confirm="confirmDeleteBoard">
+  <BaseDialog
+    v-model="deleteModal"
+    title="Confirm Delete"
+    confirmText="Delete"
+    cancelText="Cancel"
+    @confirm="confirmDeleteBoard"
+  >
     Are you sure you want to delete this board?
   </BaseDialog>
 </template>
@@ -88,7 +123,6 @@ export default {
     },
   },
   methods: {
-    
     // ===== Create Board =====
     openCreateModal() {
       this.newBoardTitle = ''

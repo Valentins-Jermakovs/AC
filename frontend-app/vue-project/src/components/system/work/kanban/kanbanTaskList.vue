@@ -1,12 +1,12 @@
 <template>
   <div class="flex flex-col gap-2 p-1 bg-base-200 border border-base-300">
     <kanban-task
-  v-for="task in tasks"
-  :key="task.id"
-  :task="task"
-  @task-updated="loadTasks"
-  @task-moved="$emit('task-moved')"
-/>
+      v-for="task in tasks"
+      :key="task.id"
+      :task="task"
+      @task-updated="loadTasks"
+      @task-moved="$emit('task-moved')"
+    />
   </div>
 </template>
 
@@ -31,11 +31,11 @@ export default {
       this.tasksStore.boardId = this.boardId
       await this.tasksStore.getKanbanTasks()
       this.tasks = [...this.tasksStore.tasks]
-    }
+    },
   },
   mounted() {
-  this.loadTasks()
-},
-  watch: { stageId: 'loadTasks', boardId: 'loadTasks' }
+    this.loadTasks()
+  },
+  watch: { stageId: 'loadTasks', boardId: 'loadTasks' },
 }
 </script>

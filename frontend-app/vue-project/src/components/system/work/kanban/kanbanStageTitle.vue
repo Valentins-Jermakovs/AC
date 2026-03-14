@@ -6,8 +6,10 @@
     <!-- Stage options dropdown -->
     <div class="dropdown dropdown-right">
       <div tabindex="0" role="button" class="btn btn-sm btn-ghost">⋮</div>
-      <ul tabindex="0"
-          class="dropdown-content menu bg-base-200 border border-base-300 rounded-box w-48 p-2 shadow">
+      <ul
+        tabindex="0"
+        class="dropdown-content menu bg-base-200 border border-base-300 rounded-box w-48 p-2 shadow"
+      >
         <li>
           <button class="flex gap-2 items-center text-blue-500" @click="openUpdateModal">
             <font-awesome-icon icon="fa-solid fa-pencil" />
@@ -86,9 +88,9 @@ import { useKanbanStagesStore } from '@/stores/kanban/kanbanStages'
 import { useKanbanBoardStore } from '@/stores/kanban/kanbanBoards'
 
 export default {
-  name: "kanbanStageTitle",
+  name: 'kanbanStageTitle',
   props: {
-    stage: { type: Object, required: true }
+    stage: { type: Object, required: true },
   },
   components: { BaseDialog },
   data() {
@@ -99,7 +101,7 @@ export default {
       newStageTitle: '',
       insertPosition: 'before',
       stagesStore: useKanbanStagesStore(),
-      kanbanStore: useKanbanBoardStore()
+      kanbanStore: useKanbanBoardStore(),
     }
   },
   methods: {
@@ -113,11 +115,11 @@ export default {
         await this.stagesStore.updateStage({
           boardId: this.kanbanStore.selectedBoard.id,
           stageId: this.stage.id,
-          title: this.newStageTitle.trim()
+          title: this.newStageTitle.trim(),
         })
         this.updateModal = false
       } catch (err) {
-        console.error("Failed to update stage:", err)
+        console.error('Failed to update stage:', err)
       }
     },
 
@@ -133,7 +135,7 @@ export default {
           boardId: this.kanbanStore.selectedBoard.id,
           title: this.newStageTitle.trim(),
           referenceStageId: this.stage.id,
-          position: this.insertPosition
+          position: this.insertPosition,
         })
         this.insertModal = false
       } catch (err) {
@@ -147,10 +149,10 @@ export default {
         await this.stagesStore.moveStage({
           boardId: this.kanbanStore.selectedBoard.id,
           stageId: this.stage.id,
-          direction: direction === 'left' ? 'up' : 'down'
+          direction: direction === 'left' ? 'up' : 'down',
         })
       } catch (err) {
-        console.error("Failed to move stage:", err)
+        console.error('Failed to move stage:', err)
       }
     },
 
@@ -162,13 +164,13 @@ export default {
       try {
         await this.stagesStore.deleteStage({
           boardId: this.kanbanStore.selectedBoard.id,
-          stageId: this.stage.id
+          stageId: this.stage.id,
         })
         this.deleteModal = false
       } catch (err) {
-        console.error("Failed to delete stage:", err)
+        console.error('Failed to delete stage:', err)
       }
-    }
-  }
+    },
+  },
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-1 w-full h-full">
     <KanbanSideBar></KanbanSideBar>
-    <div class="flex flex-col flex-1 w-full h-full">
+    <div class="flex flex-col flex-1 w-full h-full overflow-auto">
       <!-- Panel: board/members -->
       <div class="w-full h-12 bg-base-100 flex">
         <button

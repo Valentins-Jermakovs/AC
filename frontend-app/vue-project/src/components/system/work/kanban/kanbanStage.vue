@@ -1,114 +1,96 @@
 <template>
-  <div class="flex flex-col w-72">
-    <div class="bg-base-100 border border-base-300 w-full h-16 flex items-center gap-3 p-2">
-      <!-- Title -->
-      <h1 class="flex-1 w-full text-center">ToDo</h1>
-      <!-- right dropdown -->
-      <div class="dropdown dropdown-right">
-        <div tabindex="0" role="button" class="btn m-1">:</div>
-        <ul
-          tabindex="-1"
-          class="dropdown-content menu bg-base-200 border border-base-300 rounded-box z-1 w-52 p-2 items-start"
-        >
-          <li class="w-full">
-            <button class="btn btn-sm btn-ghost">
-              <font-awesome-icon icon="fa-solid fa-pencil" /> Update stage
-            </button>
-          </li>
-          <li class="w-full">
-            <button class="btn btn-sm btn-ghost">
-              <font-awesome-icon icon="fa-solid fa-arrow-left" /> Insert stage before
-            </button>
-          </li>
-          <li class="w-full">
-            <button class="btn btn-sm btn-ghost">
-              <font-awesome-icon icon="fa-solid fa-arrow-right" /> Insert stage after
-            </button>
-          </li>
-          <li class="w-full">
-            <button class="btn btn-sm btn-ghost">
-              <font-awesome-icon icon="fa-solid fa-arrow-right" /> Move stage to right
-            </button>
-          </li>
-          <li class="w-full">
-            <button class="btn btn-sm btn-ghost">
-              <font-awesome-icon icon="fa-solid fa-arrow-left" /> Move stage to left
-            </button>
-          </li>
-          <li class="w-full">
-            <button class="btn btn-sm btn-ghost">
-              <font-awesome-icon icon="fa-solid fa-trash" /> Delete stage
-            </button>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <!-- List -->
-    <div class="w-full bg-base-200 border border-base-300 p-1 flex flex-col items-center">
-      <!-- Items -->
-      <div class="w-full flex flex-col bg-base-100 border border-base-300 p-2 gap-2">
-        <!-- Title and options -->
-        <div class="w-full rounded-box flex items-center">
-          <h1 class="flex-1 w-full">Lorem ipsum</h1>
-          <div class="dropdown dropdown-right">
-            <div tabindex="0" role="button" class="btn">:</div>
-            <ul
-              tabindex="-1"
-              class="dropdown-content menu bg-base-200 border border-base-300 rounded-box z-1 w-52 p-2 items-start"
-            >
-              <li class="w-full">
-                <button class="btn btn-sm btn-ghost">
-                  <font-awesome-icon icon="fa-solid fa-pencil" /> Update task
-                </button>
-              </li>
-              <li class="w-full">
-                <button class="btn btn-sm btn-ghost">
-                  <font-awesome-icon icon="fa-solid fa-arrow-up" /> Move up
-                </button>
-              </li>
-              <li class="w-full">
-                <button class="btn btn-sm btn-ghost">
-                  <font-awesome-icon icon="fa-solid fa-arrow-down" /> Move down
-                </button>
-              </li>
-              <li class="w-full">
-                <button class="btn btn-sm btn-ghost">
-                  <font-awesome-icon icon="fa-solid fa-arrow-right" /> Move to right stage
-                </button>
-              </li>
-              <li class="w-full">
-                <button class="btn btn-sm btn-ghost">
-                  <font-awesome-icon icon="fa-solid fa-arrow-left" /> Move to left stage
-                </button>
-              </li>
-              <li class="w-full">
-                <button class="btn btn-sm btn-ghost">
-                  <font-awesome-icon icon="fa-solid fa-trash" /> Delete task
-                </button>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <!-- Description -->
-        <div class="bg-base-200 border border-base-200 w-full rounded-box p-1">
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, blanditiis excepturi
-            debitis facere vitae quam quaerat facilis exercitationem laboriosam numquam a quibusdam
-            corrupti perspiciatis id, quo animi ratione sapiente fuga?
-          </p>
+  <div class="w-full flex gap-4 p-2 overflow-x-auto">
+    <div
+      v-for="stage in stagesStore.stages"
+      :key="stage.id"
+      class="w-72 h-24 bg-base-100 border border-base-300 p-2 gap-2 rounded-box"
+    >
+      <div class="flex items-center justify-between">
+        <h2 class="flex-1">{{ stage.title }}</h2>
+
+        <!-- Stage options dropdown -->
+        <div class="dropdown dropdown-right">
+          <div tabindex="0" role="button" class="btn btn-sm btn-ghost">⋮</div>
+          <ul
+            tabindex="0"
+            class="dropdown-content menu bg-base-200 border border-base-300 rounded-box w-48 p-2 shadow"
+          >
+            <li>
+              <button class="flex gap-2 items-center text-blue-500">
+                <font-awesome-icon icon="fa-solid fa-pencil" />
+                Update stage
+              </button>
+            </li>
+            <li>
+              <button class="flex gap-2 items-center text-green-500">
+                <font-awesome-icon icon="fa-solid fa-arrow-up" />
+                Insert stage before
+              </button>
+            </li>
+            <li>
+              <button class="flex gap-2 items-center text-green-500">
+                <font-awesome-icon icon="fa-solid fa-arrow-down" />
+                Insert stage after
+              </button>
+            </li>
+            <li>
+              <button class="flex gap-2 items-center text-purple-500">
+                <font-awesome-icon icon="fa-solid fa-arrow-right" />
+                Move stage to right
+              </button>
+            </li>
+            <li>
+              <button class="flex gap-2 items-center text-purple-500">
+                <font-awesome-icon icon="fa-solid fa-arrow-left" />
+                Move stage to left
+              </button>
+            </li>
+            <li>
+              <button class="flex gap-2 items-center text-red-500">
+                <font-awesome-icon icon="fa-solid fa-trash" />
+                Delete stage
+              </button>
+            </li>
+          </ul>
         </div>
       </div>
-    </div>
-    <!-- Create task button -->
-    <div class="bg-base-200 p-1 w-full border border-base-300">
-      <button class="btn btn-primary w-full">
-        <font-awesome-icon icon="fa-solid fa-plus" />
-        Create task
-      </button>
+      <!-- Create task button -->
+      <button class="btn btn-primary btn-sm w-full mt-2">+ Create task</button>
     </div>
   </div>
 </template>
 
-<script></script>
+<script>
+import { useKanbanStagesStore } from '@/stores/kanban/kanbanStages';
+import { useKanbanBoardStore } from '@/stores/kanban/kanbanBoards';
+
+export default {
+  name: 'KanbanStage',
+  data() {
+    return {
+      stagesStore: useKanbanStagesStore(),
+      boardStore: useKanbanBoardStore(),
+    }
+  },
+  watch: {
+    // Watch selectedBoard un ielādē stages automātiski
+    'boardStore.selectedBoard'(newBoard) {
+      if (newBoard) {
+        this.stagesStore.boardId = newBoard.id
+        this.stagesStore.getStages()
+      } else {
+        this.stagesStore.stages = []
+      }
+    }
+  },
+  mounted() {
+    // ja jau ir selectedBoard
+    if (this.boardStore.selectedBoard) {
+      this.stagesStore.boardId = this.boardStore.selectedBoard.id
+      this.stagesStore.getStages()
+    }
+  }
+}
+</script>
 
 <style scoped></style>

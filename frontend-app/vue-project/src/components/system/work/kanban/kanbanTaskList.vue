@@ -1,16 +1,41 @@
 <template>
-    <!-- Tasks list (scrollable) -->
-    <div class="w-full flex flex-col gap-2 p-2 bg-base-200">
-        <kanban-task></kanban-task>
-    </div>
+  <div class="flex flex-col gap-2 p-1 bg-base-200 border border-base-300">
+    <kanban-task v-for="task in tasks" :key="task.id" :task="task"></kanban-task>
+  </div>
 </template>
 
 <script>
-import KanbanTask from './kanbanTask.vue';
+import { useKanbanTasksStore } from '@/stores/kanban/kanbanTasks'
+import kanbanTask from './kanbanTask.vue'
 
 export default {
-    components: {
-        KanbanTask
+  name: 'KanbanTaskList',
+  components: { kanbanTask },
+  props: {
+    stageId: { type: String, required: true },
+    boardId: { type: String, required: true },
+  },
+  data() {
+    return {
+      tasks: [],
+      tasksStore: useKanbanTasksStore(),
     }
+  },
+  methods: {
+    async loadTasks() {
+      if (!this.stageId || !this.boardId) return
+      this.tasksStore.stageId = this.stageId
+      this.tasksStore.boardId = this.boardId
+      await this.tasksStore.getKanbanTasks()
+      this.tasks = [...this.tasksStore.tasks]
+    }
+  },
+  mounted() {
+    this.loadTasks()
+  },
+  watch: {
+    stageId: 'loadTasks',
+    boardId: 'loadTasks',
+  },
 }
 </script>

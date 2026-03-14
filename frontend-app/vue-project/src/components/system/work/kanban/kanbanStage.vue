@@ -2,7 +2,7 @@
     <div class="w-full flex gap-4 p-2 overflow-x-auto">
         <div v-for="stage in stagesStore.stages" :key="stage.id" class="w-72 flex flex-col rounded-box">
             <kanban-stage-title :stage="stage"></kanban-stage-title>
-            <kanban-task-list></kanban-task-list>
+            <kanban-task-list :stage-id="stage.id" :board-id="boardStore.selectedBoard?.id"></kanban-task-list>
             <kanban-create-task></kanban-create-task>
         </div>
     </div>

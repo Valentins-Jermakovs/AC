@@ -3,7 +3,7 @@
         <!-- Task title and dropdown menu -->
         <div class="flex flex-col items-center ">
             <div class="w-full flex justify-between items-center p-1">
-                <h2 class="flex-1">Test task</h2>
+                <h2 class="flex-1">{{ task.title }}</h2>
                 <!-- Stage options dropdown -->
                 <div class="dropdown dropdown-right z-10">
                     <div tabindex="0" role="button" class="btn btn-sm btn-ghost">⋮</div>
@@ -50,18 +50,16 @@
             </div>
             <!-- Description -->
             <div class="w-full p-1">
-                <p>
-                Lorem ipsum dolor sit amet consectetur 
-                adipisicing elit. Quo aperiam vitae 
-                a atque quasi enim sequi ab saepe, doloribus eveniet,
-                distinctio consequatur!
-                </p>
+                <p>{{ task.description }}</p>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+export default {
+  props: { task: { type: Object, required: true } },
+}
 </script>
 
 <style scoped></style>

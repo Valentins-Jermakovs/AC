@@ -13,6 +13,7 @@ from app.services.workspace.members.add_project_member_service import add_projec
 # Function create project
 # =================================
 async def create_project(
+    email: str,
     title: str,
     user_id: str,
     description: Optional[str] = None
@@ -60,6 +61,7 @@ async def create_project(
     # Add owner of board to members collection
     await add_project_member(
         project_id=str(new_project.id),
+        email=email,
         user_id=user_id,
         user_id_creator=user_id,
         role="owner",

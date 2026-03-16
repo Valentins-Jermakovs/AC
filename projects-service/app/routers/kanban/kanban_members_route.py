@@ -16,6 +16,8 @@ from app.services.kanban.members.add_board_member_service import add_board_membe
 from app.services.kanban.members.delete_board_member_service import delete_board_member
 from app.services.kanban.members.get_all_members_service import get_all_members
 from app.services.kanban.members.update_board_member_service import update_board_member
+from app.services.kanban.members.get_member_by_email_service import get_member_by_email
+from app.services.kanban.members.get_members_by_role_service import get_members_by_role
 
 # Router
 router = APIRouter(
@@ -57,6 +59,70 @@ async def get_all_kanban_board_members_endpoint(
         user_id=user_id
     )
 
+
+# Route for getting members by email
+@router.get(
+    "/get-member-by-email",
+    response_model=KanbanBoardMembersPaginatedSchema
+)
+async def get_all_kanban_board_members_endpoint(
+    board_id: str,
+    email: str,
+    page: int = 1,
+    limit: int = 10,
+    credantials: HTTPAuthorizationCredentials = Depends(security),
+):
+    """
+    Get all members of a kanban board in the database.
+
+    Steps:
+    1. Extract access token
+    2. Verify token and get user ID
+    3. Call service to get all board members from DB
+    4. Return all board members
+    """
+    access_token = credantials.credentials
+    user_id = await check_access_token(access_token)
+
+    return await get_member_by_email(
+        board_id=board_id, 
+        email=email, 
+        page=page, 
+        limit=limit,
+    )
+
+
+# Route for getting members by role
+@router.get(
+    "/get-members-by-role",
+    response_model=KanbanBoardMembersPaginatedSchema
+)
+async def get_all_kanban_board_members_endpoint(
+    board_id: str,
+    role: str,
+    page: int = 1,
+    limit: int = 10,
+    credantials: HTTPAuthorizationCredentials = Depends(security),
+):
+    """
+    Get all members of a kanban board in the database.
+
+    Steps:
+    1. Extract access token
+    2. Verify token and get user ID
+    3. Call service to get all board members from DB
+    4. Return all board members
+    """
+    access_token = credantials.credentials
+    user_id = await check_access_token(access_token)
+
+    return await get_members_by_role(
+        board_id=board_id, 
+        role=role, 
+        page=page, 
+        limit=limit,
+    )
+
 # ===== Kanban board member POST ==========================================================
 # Route for adding a new member to a kanban board
 @router.post(
@@ -80,6 +146,7 @@ async def add_kanban_board_member_endpoint(
     user_id = await check_access_token(access_token)
 
     return await add_board_member(
+        email=data.email,
         board_id=data.boardId, 
         user_id=data.userId,
         user_id_creator=user_id,

@@ -113,7 +113,8 @@ async def create_kanban_board_endpoint(
     user_id = await check_access_token(access_token)
 
     return await create_board(
-        title=data.title, 
+        title=data.title,
+        email=data.email,
         user_id=user_id
     )
 

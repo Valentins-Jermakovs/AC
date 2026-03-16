@@ -16,6 +16,7 @@ from app.schemas.response.kanban.members.kanban_board_member_schema import Kanba
 # - The board member
 # ==================================================
 async def add_board_member(
+    email: str,
     board_id: str,
     user_id: str,
     user_id_creator: str,
@@ -25,6 +26,8 @@ async def add_board_member(
 
 
     # ===== Validation =====
+    if not email:
+        raise HTTPException(400, "Email is required")
 
     if not board_id:
         raise HTTPException(400, "Board ID is required")
@@ -61,6 +64,7 @@ async def add_board_member(
         board_member = KanbanBoardMemberModel(
             boardId=board_id,
             userId=user_id,
+            email=email,
             role="owner"
         )
 
@@ -110,6 +114,7 @@ async def add_board_member(
 
     # Create board member
     board_member = KanbanBoardMemberModel(
+        email=email,
         boardId=board_id,
         userId=user_id,
         role=role

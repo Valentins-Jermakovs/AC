@@ -7,12 +7,14 @@ from pydantic import BaseModel
 class WorkspaceProjectMemberAddSchema(BaseModel):
     projectId: str
     userId: str
+    email: str
     role: str
 
     model_config = {
         "json_schema_extra": {
             "examples": [
                 {
+                    "email": "email",
                     "projectId": "projectId",
                     "userId": "userId",
                     "role": "viewer | editor | admin"

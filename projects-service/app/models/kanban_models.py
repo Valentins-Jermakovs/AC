@@ -22,6 +22,7 @@ and can be used to validate the data before it is saved.
 # Kanban Board Member Model
 # ===========================
 class KanbanBoardMemberModel(Document):
+    email: str      # Email of the user
     boardId: str    # Reference to the kanban board
     userId: str     # Reference to the user
     role: str       # Role of the user

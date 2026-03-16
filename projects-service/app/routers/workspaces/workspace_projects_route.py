@@ -112,7 +112,8 @@ async def create_project_endpoint(
     user_id = await check_access_token(access_token)
 
     return await create_project(
-        title=data.title, 
+        title=data.title,
+        email=data.email,
         description=data.description, 
         user_id=user_id
     )

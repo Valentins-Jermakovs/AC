@@ -9,6 +9,7 @@ from app.models import WorkspaceProjectMemberModel, WorkspaceProjectModel
 # Function add project member
 # ==================================================
 async def add_project_member(
+    email: str,
     project_id: str,
     user_id: str,
     user_id_creator: str,
@@ -17,6 +18,8 @@ async def add_project_member(
 ) -> dict:
 
     # ================= VALIDATION =================
+    if not email:
+        raise HTTPException(400, "Email is required")
 
     if not project_id:
         raise HTTPException(400, "Project ID is required")
@@ -51,6 +54,7 @@ async def add_project_member(
     if mode == "create_owner":
 
         project_member = WorkspaceProjectMemberModel(
+            email=email,
             projectId=project_id,
             userId=user_id,
             role="owner"
@@ -119,6 +123,7 @@ async def add_project_member(
     # ================= CREATE MEMBER =================
 
     project_member = WorkspaceProjectMemberModel(
+        email=email,
         projectId=project_id,
         userId=user_id,
         role=role

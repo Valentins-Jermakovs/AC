@@ -93,6 +93,7 @@ class WorkspaceTaskModel(Document):
 # WorkspaceProjectMember Model
 # ============================
 class WorkspaceProjectMemberModel(Document):
+    email: str      # User email
     projectId: str  # Project ID
     userId: str     # User ID
     role: str       # Role

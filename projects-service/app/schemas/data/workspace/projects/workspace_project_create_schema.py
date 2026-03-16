@@ -7,6 +7,7 @@ from typing import Optional
 # =============================================================
 class WorkspaceProjectCreateSchema(BaseModel):
     title: str
+    email: str
     description: Optional[str] = None
     # userId would be fetched from token
 
@@ -15,7 +16,8 @@ class WorkspaceProjectCreateSchema(BaseModel):
             "examples": [
                 {
                     "title": "New project",
-                    "description": "New project description"
+                    "description": "New project description",
+                    "email": "email"
                 }
             ]
         }

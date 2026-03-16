@@ -19,7 +19,8 @@ from app.services.kanban.members.add_board_member_service import add_board_membe
 # ===================================================
 async def create_board(
     title: str, 
-    user_id: str
+    user_id: str,
+    email: str
 ) -> KanbanBoardSchema:
 
     # ===== Validation and error handling =====
@@ -61,6 +62,7 @@ async def create_board(
     await add_board_member(
         board_id=str(new_board.id),
         user_id=user_id,
+        email=email,
         role="owner",
         mode="create_owner",
         user_id_creator=user_id

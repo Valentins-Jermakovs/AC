@@ -97,6 +97,7 @@ import BaseDialog from '@/components/common/BaseDialog.vue'
 import kanbanStage from './kanbanStage.vue'
 import { useKanbanBoardStore } from '@/stores/kanban/kanbanBoards'
 import { useKanbanStagesStore } from '@/stores/kanban/kanbanStages'
+import { useUserStore } from '@/stores/user'
 
 export default {
   name: 'BoardSpace',
@@ -112,6 +113,7 @@ export default {
       newStageTitle: '',
       kanbanStore: useKanbanBoardStore(),
       stagesStore: useKanbanStagesStore(),
+      userStore: useUserStore(),
     }
   },
   watch: {
@@ -131,7 +133,7 @@ export default {
     async confirmCreateBoard() {
       if (!this.newBoardTitle.trim()) return
       try {
-        await this.kanbanStore.createBoard({ title: this.newBoardTitle.trim() })
+        await this.kanbanStore.createBoard({ title: this.newBoardTitle.trim(), email: this.userStore.email })
         this.createModal = false
       } catch (err) {
         console.error('Failed to create board:', err)

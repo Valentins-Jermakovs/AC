@@ -1,8 +1,12 @@
 <template>
   <div
-    class="w-full h-16 flex items-center p-2 border border-base-300 bg-base-200 hover:bg-base-300 hover:cursor-pointer hover:border-2 hover:border-info rounded-box duration-300 transition-all"
-    @click="selectTask"
-  >
+    class="w-full h-16 flex items-center p-2 border rounded-box duration-300 transition-all hover:cursor-pointer"
+    :class="[
+    isSelected
+      ? 'bg-info/20 border-info border-2'
+      : 'border-base-300 bg-base-200 hover:bg-base-300 hover:border-info'
+    ]"
+    @click="selectTask">
     <div class="flex flex-col flex-1 px-4">
       <h1 class="font-medium text-md">{{ shortTitle }}</h1>
       <p class="text-xs text-base-content/60">{{ shortDescription }}</p>
@@ -21,6 +25,10 @@ export default {
       type: Object,
       required: true,
     },
+    selectedTask: {
+      type: Object,
+      default: null
+    }
   },
   methods: {
     selectTask() {
@@ -28,6 +36,9 @@ export default {
     },
   },
   computed: {
+    isSelected() {
+      return this.selectedTask?.id === this.task.id
+    },
     shortTitle() {
       if (!this.task.title) return ''
       return this.task.title.length > 20 ? this.task.title.slice(0, 20) + '...' : this.task.title

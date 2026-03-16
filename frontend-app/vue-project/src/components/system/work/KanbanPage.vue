@@ -3,7 +3,8 @@
     <KanbanSideBar></KanbanSideBar>
     <div class="flex flex-col flex-1 w-full h-full overflow-auto">
       <!-- Panel: board/members -->
-      <div class="w-full h-12 bg-base-100 flex">
+      <div class="w-full h-12 bg-base-100 flex"
+      v-if="kanbanBoardStore.selectedBoard">
         <button
           class="btn h-full"
           :class="activeView === 'board' ? 'btn-primary' : 'btn-neutral'"
@@ -23,7 +24,10 @@
       </div>
 
       <!-- ========== BOARD SPACE ========== -->
-      <BoardSpace v-if="activeView === 'board'"></BoardSpace>
+      <BoardSpace v-if="activeView === 'board' && kanbanBoardStore.selectedBoard"></BoardSpace>
+
+      <!-- Screen for creating a new board -->
+      <NullBoards v-if="activeView === 'board' && !kanbanBoardStore.selectedBoard"></NullBoards>
 
       <!-- ========== MEMBERS MANAGEMENT SPACE ========== -->
       <MembersSpace v-if="activeView === 'members'"></MembersSpace>
@@ -40,6 +44,7 @@ import KanbanStage from './kanban/kanbanStage.vue'
 import BoardSpace from './kanban/boardSpace.vue'
 import MembersSpace from './kanban/membersSpace.vue'
 import { useKanbanBoardStore } from '@/stores/kanban/kanbanBoards'
+import NullBoards from './kanban/nullBoards.vue'
 
 export default {
   name: 'KanbanPage',
@@ -49,6 +54,7 @@ export default {
     LoadingScreen,
     BoardSpace,
     MembersSpace,
+    NullBoards,
   },
   data() {
     return {

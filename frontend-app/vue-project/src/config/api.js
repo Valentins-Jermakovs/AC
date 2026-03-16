@@ -17,6 +17,8 @@ export const API_ENDPOINTS = {
   GET_USER_BY_ID: (id) => `/users/${id}`,
   GET_USER_BY_USERNAME_OR_EMAIL: (value) => `/users/search/${value}`,
   GET_USER_BY_ROLE: (role) => `/users/role/${role}`,
+  // For projects service
+  GET_USER_BY_EMAIL: (email) => `/users/email/${email}`,
 
   // Modifications
   CHANGE_USERNAME: '/modifications/username/',
@@ -64,6 +66,8 @@ export const API_ENDPOINTS = {
   // =====MEMBERS:
   // GET
   GET_KANBAN_MEMBERS: '/kanban/members/get-all-members',
+  GET_KANBAN_MEMBER_BY_EMAIL: '/kanban/members/get-member-by-email',
+  GET_KANBAN_MEMBERS_BY_ROLE: '/kanban/members/get-members-by-role',
   // POST
   ADD_KANBAN_MEMBER: 'kanban/members/add-member',
   // PUT

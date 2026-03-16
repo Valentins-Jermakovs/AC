@@ -10,11 +10,13 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 # Schemas
 from ..schemas.users.pagination_schema import PaginatedUsersSchema
 from ..schemas.users.user_schema import UserSchema
+from app.schemas.users.user_by_email_schema import UserByEmailSchema
 # Services
 from ..services.read_users.read_all_users_service import get_users_paginated
 from ..services.read_users.read_user_by_id_service import get_user_by_id
 from ..services.read_users.read_user_by_name_or_email_service import get_user_by_username_or_email
 from ..services.read_users.read_user_by_role_service import get_users_by_role
+from app.services.read_users.read_user_by_email_service import get_by_email
 # Dependencies
 from ..dependencies.data_base_connection import get_db
 from ..dependencies.admin_dependency import get_admin_user_id
@@ -137,6 +139,7 @@ async def fetch_user_by_id_endpoint(
 async def fetch_user_by_username_or_email_endpoint(
     name_or_email: str,
     db: Annotated[AsyncSession, Depends(get_db)],
+    admin_user_id: int = Depends(get_admin_user_id),
     page: int = 1,
     limit: int = 10,
 ):
@@ -193,3 +196,32 @@ async def fetch_users_by_role_endpoint(  # business logic
     )
 
     return users
+
+# ==============================================
+# Get users by email - only for projects service
+# ==============================================
+@router.get(
+    "/email/{email}",
+    response_model=UserByEmailSchema,
+    summary="Get user by email",
+)
+async def fetch_user_by_email_endpoint(
+    email: str,
+    db: Annotated[AsyncSession, Depends(get_db)],
+):
+    """
+    Retrieve one user by email.
+
+    Steps:
+    1. Extract access token
+    2. Verify admin role
+    3. Fetch user by email from DB
+    4. Return as single-item list
+    """
+
+    user = await get_by_email(
+        email=email, 
+        db=db
+    )
+
+    return user

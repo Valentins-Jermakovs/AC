@@ -83,6 +83,7 @@ async def get_all_members(
     items = [
         KanbanBoardMemberSchema(
             id=str(member.id),
+            email=member.email,
             boardId=member.boardId,
             userId=member.userId,
             role=member.role

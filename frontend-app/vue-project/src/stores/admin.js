@@ -36,6 +36,8 @@ export const useAdminStore = defineStore('admin', {
 
     // Stores information about last request (used for refresh)
     lastRequest: null,
+
+    userByEmail: null,
   }),
 
   // ==========================
@@ -85,6 +87,27 @@ export const useAdminStore = defineStore('admin', {
         throw err
       } finally {
         this.loading = false
+      }
+    },
+
+    // --------------------------
+    // Get single user by email - for projectsa server
+    // --------------------------
+    async getUserByEmail(email) {
+      const authStore = useAuthStore()
+
+      this.loading = true
+      this.error = null
+
+      try {
+        const response = await api.get(API_ENDPOINTS.GET_USER_BY_EMAIL(email), {
+          headers: { Authorization: `Bearer ${authStore.accessToken}` },
+        })
+
+        // Store result as single-item array
+        this.userByEmail = response.data
+      } catch (err) {
+
       }
     },
 

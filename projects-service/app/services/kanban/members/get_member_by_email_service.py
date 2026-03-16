@@ -41,6 +41,9 @@ async def get_member_by_email(
     if not email:
         raise HTTPException(status_code=400, detail="Email is required")
     
+    # Normalize
+    email = email.strip().lower()
+
     # Validate email format
     regex = r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,7}"
     if not re.fullmatch(regex, email):

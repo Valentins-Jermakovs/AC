@@ -29,6 +29,9 @@ async def get_by_email(
             detail="Invalid email format"
         )
 
+    # Normalize
+    email = email.strip().lower()
+
     # Proper async query
     result = await db.exec(
         select(UserModel).where(UserModel.email == email)

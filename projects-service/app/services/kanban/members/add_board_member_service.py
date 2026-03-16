@@ -1,6 +1,7 @@
 # Imports
 from fastapi import HTTPException
 from bson import ObjectId
+import re
 # Models
 from app.models import KanbanBoardMemberModel, KanbanBoardModel
 # Schemas
@@ -42,6 +43,17 @@ async def add_board_member(
         raise HTTPException(400, "Invalid mode")
 
     role = role.lower().strip()
+
+    # Normalize
+    email = email.strip().lower()
+
+    # Validate email format
+    regex = r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,7}"
+    if not re.fullmatch(regex, email):
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid email format"
+        )
 
     if role not in ["viewer", "editor", "admin", "owner"]:
         raise HTTPException(400, "Invalid role")

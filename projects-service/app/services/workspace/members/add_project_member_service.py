@@ -48,6 +48,9 @@ async def add_project_member(
 
     if not project:
         raise HTTPException(404, "Project not found")
+    
+    # Normalize
+    email = email.strip().lower()
 
     # ================= CREATE OWNER MODE =================
 

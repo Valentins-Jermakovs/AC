@@ -96,5 +96,6 @@ async def update_project_member_role(
     return WorkspaceProjectMemberSchema(
         projectId=project_member.projectId,
         userId=project_member.userId,
-        role=project_member.role
+        role=project_member.role,
+        email=project_member.email
     )

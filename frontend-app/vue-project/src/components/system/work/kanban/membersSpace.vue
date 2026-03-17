@@ -32,7 +32,7 @@
           <div class="flex items-center gap-3 font-medium flex-1 p-2">
             <div class="flex w-full bg-base-200 p-3 items-center gap-2 rounded-box border border-base-300">
               <font-awesome-icon icon="fa-solid fa-user" />
-              Email: {{ member.email }}
+              {{ member.email }}
             </div>
           </div>
 
@@ -81,7 +81,7 @@
         <div class="flex gap-4 text-sm">
           <p>Total: <span class="font-semibold">{{ kanbanMembersStore.meta.totalItems }}</span></p>
           <p>Page: <span class="font-semibold">{{ kanbanMembersStore.meta.page }}/{{ kanbanMembersStore.meta.totalPages
-          }}</span>
+              }}</span>
           </p>
         </div>
 
@@ -100,6 +100,7 @@
   </div>
 
   <!-- Modals -->
+
   <!-- Add meber modal -->
   <base-dialog v-model="addMemberModal" title="Add Member" confirmText="Add" cancelText="Cancel"
     @confirm="confirmAddMember">
@@ -108,6 +109,19 @@
       <input type="email" class="input w-full" placeholder="Enter member email" v-model="newMemberEmail">
       <!-- Select input - member role -->
       <select class="select select-bordered w-full" v-model="newMemberRole">
+        <option value="admin">Admin</option>
+        <option value="editor">Editor</option>
+        <option value="viewer">Viewer</option>
+      </select>
+    </div>
+  </base-dialog>
+
+  <!-- Update meber role modal -->
+  <base-dialog v-model="updateMemberModal" title="Update Member" confirmText="Update" cancelText="Cancel"
+    @confirm="confirmUpdateMember">
+    <div class="w-full flex flex-col gap-5">
+      <!-- Select input - member role -->
+      <select class="select select-bordered w-full" v-model="updatedRole">
         <option value="admin">Admin</option>
         <option value="editor">Editor</option>
         <option value="viewer">Viewer</option>
@@ -132,8 +146,11 @@ export default {
       kanbanBoardStore: useKanbanBoardStore(),
       adminStore: useAdminStore(),
       addMemberModal: false,
+      updateMemberModal: false,
       newMemberEmail: '',
       newMemberRole: 'viewer',
+      updatedRole: 'viewer',
+      selectedMember: null
     };
   },
 
@@ -172,6 +189,27 @@ export default {
       await this.kanbanMembersStore.setLimit(Number(limit))
     },
 
+    async openUpdateMemberModal(member) {
+      this.updateMemberModal = true
+      this.selectedMember = member
+    },
+
+    async confirmUpdateMember() {
+      try {
+        const payload = {
+          userId: String(this.selectedMember.userId),
+          boardId: this.kanbanMembersStore.boardId,
+          role: this.updatedRole
+        }
+
+        await this.kanbanMembersStore.updateMember(payload)
+
+        this.updateMemberModal = false
+      } catch (err) {
+        console.error('Failed to update member:', err)
+      }
+    },
+
     async openAddMemberModal() {
       this.addMemberModal = true
     },
@@ -196,8 +234,9 @@ export default {
       } catch (err) {
         console.error('Failed to add member:', err)
       }
-    }
-  },
+    },
+  }
+
 };
 </script>
 

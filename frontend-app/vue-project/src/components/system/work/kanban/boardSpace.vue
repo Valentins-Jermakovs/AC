@@ -19,9 +19,17 @@
     </button>
 
     <!-- Delete board -->
-    <button class="btn btn-neutral" @click="openDeleteModal">
+    <button class="btn btn-neutral" @click="openDeleteModal"
+    v-if="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role == 'owner'">
       <font-awesome-icon icon="fa-solid fa-trash" />
       Delete board
+    </button>
+
+    <!-- Leave board button -->
+    <button class="btn btn-neutral" @click="openLeaveBoardModal" 
+    v-if="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role !== 'owner'">
+      <font-awesome-icon icon="fa-solid fa-sign-out" />
+      Leave board
     </button>
   </div>
 
@@ -90,6 +98,17 @@
   >
     Are you sure you want to delete this board?
   </BaseDialog>
+
+  <!-- Leave board -->
+  <BaseDialog
+    v-model="leaveModal"
+    title="Confirm Leave"
+    confirmText="Leave"
+    cancelText="Cancel"
+    @confirm="confirmLeaveBoard"
+  >
+    Are you sure you want to leave this board?
+  </BaseDialog>
 </template>
 
 <script>
@@ -98,6 +117,7 @@ import kanbanStage from './kanbanStage.vue'
 import { useKanbanBoardStore } from '@/stores/kanban/kanbanBoards'
 import { useKanbanStagesStore } from '@/stores/kanban/kanbanStages'
 import { useUserStore } from '@/stores/user'
+import { useKanbanMembersStore } from '@/stores/kanban/kanbanMembers'
 
 export default {
   name: 'BoardSpace',
@@ -108,12 +128,15 @@ export default {
       changeTitleModal: false,
       addStageModal: false,
       deleteModal: false,
+      leaveModal: false,
       newBoardTitle: '',
       newTitle: '',
       newStageTitle: '',
+
       kanbanStore: useKanbanBoardStore(),
       stagesStore: useKanbanStagesStore(),
       userStore: useUserStore(),
+      kanbanMembersStore: useKanbanMembersStore(),
     }
   },
   watch: {
@@ -137,6 +160,28 @@ export default {
         this.createModal = false
       } catch (err) {
         console.error('Failed to create board:', err)
+      }
+    },
+
+    // ===== Leave board =====
+    openLeaveBoardModal() {
+      this.leaveModal = true
+    },
+    async confirmLeaveBoard() {
+      if (!this.kanbanStore.selectedBoard) return
+      try {
+        const payload = {
+          boardId: this.kanbanStore.selectedBoard.id,
+          userId: this.kanbanMembersStore.currentUser.userId
+        }
+        await this.kanbanMembersStore.deleteMember(
+          payload
+        )
+        await this.kanbanStore.repeatLastRequest()
+        this.leaveModal = false
+        this.kanbanStore.selectedBoard = null
+      } catch (err) {
+        console.error('Failed to leave board:', err)
       }
     },
 
@@ -188,6 +233,8 @@ export default {
       try {
         await this.kanbanStore.deleteBoard(this.kanbanStore.selectedBoard.id)
         this.deleteModal = false
+
+        this.kanbanStore.selectedBoard = null
       } catch (err) {
         console.error('Failed to delete board:', err)
       }

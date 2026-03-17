@@ -18,6 +18,7 @@ from app.services.kanban.members.get_all_members_service import get_all_members
 from app.services.kanban.members.update_board_member_service import update_board_member
 from app.services.kanban.members.get_member_by_email_service import get_member_by_email
 from app.services.kanban.members.get_members_by_role_service import get_members_by_role
+from app.services.kanban.members.get_current_user import get_current_user
 
 # Router
 router = APIRouter(
@@ -121,6 +122,32 @@ async def get_all_kanban_board_members_endpoint(
         role=role, 
         page=page, 
         limit=limit,
+    )
+
+# Route for get info about current user
+@router.get(
+    "/get-current-user",
+    response_model=KanbanBoardMemberSchema
+)
+async def get_current_user_endpoint(
+    board_id: str,
+    credantials: HTTPAuthorizationCredentials = Depends(security),
+):
+    """
+    Get info about current user in the database.
+
+    Steps:
+    1. Extract access token
+    2. Verify token and get user ID
+    3. Call service to get current user from DB
+    4. Return current user
+    """
+    access_token = credantials.credentials
+    user_id = await check_access_token(access_token)
+
+    return await get_current_user(
+        user_id=user_id,
+        board_id=board_id, 
     )
 
 # ===== Kanban board member POST ==========================================================

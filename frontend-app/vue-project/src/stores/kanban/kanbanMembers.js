@@ -32,7 +32,8 @@ export const useKanbanMembersStore = defineStore('kanbanMembers', {
     // Stores information about last request (used for refresh)
     lastRequest: null,
     searchQuery: '',
-    searchType: 'all'
+    searchType: 'all',
+    accessDenied:false
   }),
 
   // ===========
@@ -78,9 +79,17 @@ export const useKanbanMembersStore = defineStore('kanbanMembers', {
         // Remember request type
         this.lastRequest = { type: 'all' }
         this.searchQuery = ''
+        this.accessDenied = false
       } catch (err) {
+
+        if (err.response?.status === 403) {
+          this.error = 'forbidden'
+          this.members = []
+          this.accessDenied = true
+          return
+        }
+
         this.error = err.response?.data?.detail || err.message || 'Something went wrong'
-        throw err
       } finally {
         this.loading = false
       }
@@ -117,9 +126,16 @@ export const useKanbanMembersStore = defineStore('kanbanMembers', {
           type: 'email',
           query: this.searchQuery,
         }
+        this.accessDenied = false
       } catch (err) {
+        if (err.response?.status === 403) {
+          this.error = 'forbidden'
+          this.members = []
+          this.accessDenied = true
+          return
+        }
+
         this.error = err.response?.data?.detail || err.message || 'Something went wrong'
-        throw err
       } finally {
         this.loading = false
       }
@@ -156,9 +172,16 @@ export const useKanbanMembersStore = defineStore('kanbanMembers', {
           type: 'role',
           query: this.searchQuery,
         }
+        this.accessDenied = false
       } catch (err) {
+        if (err.response?.status === 403) {
+          this.error = 'forbidden'
+          this.members = []
+          this.accessDenied = true
+          return
+        }
+
         this.error = err.response?.data?.detail || err.message || 'Something went wrong'
-        throw err
       } finally {
         this.loading = false
       }

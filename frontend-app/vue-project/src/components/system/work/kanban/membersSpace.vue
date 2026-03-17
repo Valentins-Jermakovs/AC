@@ -1,6 +1,23 @@
 <template>
+  <div v-if="kanbanMembersStore.accessDenied" class="w-full h-full flex items-center justify-center">
+
+    <div class="bg-base-200 border border-base-300 p-10 rounded-box text-center">
+
+      <font-awesome-icon icon="fa-solid fa-lock" class="text-4xl mb-4 text-error" />
+
+      <h2 class="text-xl font-bold">
+        Access denied
+      </h2>
+
+      <p class="text-base-content/60">
+        You don't have permission to view members
+      </p>
+
+    </div>
+
+  </div>
   <!-- Members space -->
-  <div class="flex-1 flex flex-col w-full h-full overflow-auto p-5 gap-2">
+  <div v-else class="flex-1 flex flex-col w-full h-full overflow-auto p-5 gap-2">
     <div class="w-full h-full flex flex-col items-center gap-4 p-4">
       <div class="w-3/5 flex justify-between items-center gap-2">
         <button class="btn btn-success h-full" @click="openAddMemberModal">
@@ -81,7 +98,7 @@
         <div class="flex gap-4 text-sm">
           <p>Total: <span class="font-semibold">{{ kanbanMembersStore.meta.totalItems }}</span></p>
           <p>Page: <span class="font-semibold">{{ kanbanMembersStore.meta.page }}/{{ kanbanMembersStore.meta.totalPages
-              }}</span>
+          }}</span>
           </p>
         </div>
 

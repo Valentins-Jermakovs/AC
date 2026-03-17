@@ -28,6 +28,11 @@ export const useKanbanMembersStore = defineStore('kanbanMembers', {
       totalItems: 0,
       totalPages: 0,
     },
+
+    // Stores information about last request (used for refresh)
+    lastRequest: null,
+    searchQuery: '',
+    searchType: 'all'
   }),
 
   // ===========
@@ -65,7 +70,14 @@ export const useKanbanMembersStore = defineStore('kanbanMembers', {
 
         // Save tasks and pagination data
         this.members = response.data.items
-        this.meta = response.data.meta
+
+        this.meta.page = response.data.meta.page
+        this.meta.totalItems = response.data.meta.totalItems
+        this.meta.totalPages = response.data.meta.totalPages
+
+        // Remember request type
+        this.lastRequest = { type: 'all' }
+        this.searchQuery = ''
       } catch (err) {
         this.error = err.response?.data?.detail || err.message || 'Something went wrong'
         throw err
@@ -73,6 +85,85 @@ export const useKanbanMembersStore = defineStore('kanbanMembers', {
         this.loading = false
       }
     },
+
+    // Get members by email
+    async getMemberByEmail() {
+      const authStore = useAuthStore()
+      this.loading = true
+      this.error = null
+
+      try {
+        const response = await api.get(API_ENDPOINTS.GET_KANBAN_MEMBER_BY_EMAIL, {
+          params: {
+            board_id: this.boardId,
+            email: this.searchQuery,
+            page: this.meta.page,
+            limit: this.meta.limit,
+          },
+          headers: {
+            Authorization: `Bearer ${authStore.accessToken}`,
+          },
+        })
+
+        // Save tasks and pagination data
+        this.members = response.data.items
+
+        this.meta.page = response.data.meta.page
+        this.meta.totalItems = response.data.meta.totalItems
+        this.meta.totalPages = response.data.meta.totalPages
+
+        // Remember request type
+        this.lastRequest = {
+          type: 'email',
+          query: this.searchQuery,
+        }
+      } catch (err) {
+        this.error = err.response?.data?.detail || err.message || 'Something went wrong'
+        throw err
+      } finally {
+        this.loading = false
+      }
+    },
+
+    // Get members by role
+    async getMemberByRole() {
+      const authStore = useAuthStore()
+      this.loading = true
+      this.error = null
+
+      try {
+        const response = await api.get(API_ENDPOINTS.GET_KANBAN_MEMBERS_BY_ROLE, {
+          params: {
+            board_id: this.boardId,
+            role: this.searchQuery,
+            page: this.meta.page,
+            limit: this.meta.limit,
+          },
+          headers: {
+            Authorization: `Bearer ${authStore.accessToken}`,
+          },
+        })
+
+        // Save tasks and pagination data
+        this.members = response.data.items
+
+        this.meta.page = response.data.meta.page
+        this.meta.totalItems = response.data.meta.totalItems
+        this.meta.totalPages = response.data.meta.totalPages
+
+        // Remember request type
+        this.lastRequest = {
+          type: 'role',
+          query: this.searchQuery,
+        }
+      } catch (err) {
+        this.error = err.response?.data?.detail || err.message || 'Something went wrong'
+        throw err
+      } finally {
+        this.loading = false
+      }
+    },
+
     // ==========================
     // POST
     // ==========================
@@ -88,7 +179,7 @@ export const useKanbanMembersStore = defineStore('kanbanMembers', {
           },
         })
 
-        await this.fetchKanbanMembers()
+        await this.repeatLastRequest()
       } catch (err) {
         this.error = err.response?.data?.detail || err.message || 'Something went wrong'
         throw err
@@ -111,7 +202,7 @@ export const useKanbanMembersStore = defineStore('kanbanMembers', {
           },
         })
 
-        await this.fetchKanbanMembers()
+        await this.repeatLastRequest()
       } catch (err) {
         this.error = err.response?.data?.detail || err.message || 'Something went wrong'
         throw err
@@ -138,7 +229,7 @@ export const useKanbanMembersStore = defineStore('kanbanMembers', {
           },
         })
 
-        await this.fetchKanbanMembers()
+        await this.repeatLastRequest()
       } catch (err) {
         this.error = err.response?.data?.detail || err.message || 'Something went wrong'
         throw err
@@ -150,26 +241,44 @@ export const useKanbanMembersStore = defineStore('kanbanMembers', {
     // Pagination helpers
     async setPage(page) {
       this.meta.page = page
-      await this.fetchKanbanMembers()
+      await this.repeatLastRequest()
     },
 
     async setLimit(limit) {
       this.meta.limit = limit
       this.meta.page = 1
-      await this.fetchKanbanMembers()
+      await this.repeatLastRequest()
     },
 
     async nextPage() {
       if (this.meta.page < this.meta.totalPages) {
         this.meta.page++
-        await this.fetchKanbanMembers()
+        await this.repeatLastRequest()
       }
     },
 
     async prevPage() {
       if (this.meta.page > 1) {
         this.meta.page--
+        await this.repeatLastRequest()
+      }
+    },
+
+    async repeatLastRequest() {
+      if (!this.lastRequest) {
+        return await this.fetchKanbanMembers()
+      }
+
+      if (this.lastRequest.type === 'all') {
         await this.fetchKanbanMembers()
+
+      } else if (this.lastRequest.type === 'email') {
+        this.searchQuery = this.lastRequest.query
+        await this.getMemberByEmail()
+
+      } else if (this.lastRequest.type === 'role') {
+        this.searchQuery = this.lastRequest.query
+        await this.getMemberByRole()
       }
     },
   },

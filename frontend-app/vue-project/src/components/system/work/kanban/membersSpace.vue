@@ -9,13 +9,14 @@
         </button>
 
         <div class="w-full flex items-center gap-2 border border-base-300 bg-base-200 p-1">
-          <input type="text" class="input w-full" placeholder="Search..." v-model="searchQuery"
+          <input type="text" class="input w-full" placeholder="Search..." v-model="kanbanMembersStore.searchQuery"
             @keyup.enter="searchMembers" />
           <!-- Filters -->
-          <select class="select select-bordered bg-neutral text-neutral-content">
-            <option>All</option>
-            <option>By email</option>
-            <option>By role</option>
+          <select class="select select-bordered bg-neutral text-neutral-content"
+            v-model="kanbanMembersStore.searchType">
+            <option value="all">All</option>
+            <option value="email">By email</option>
+            <option value="role">By role</option>
           </select>
           <button class="btn btn-primary btn-square" @click="searchMembers">
             <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
@@ -80,7 +81,7 @@
         <div class="flex gap-4 text-sm">
           <p>Total: <span class="font-semibold">{{ kanbanMembersStore.meta.totalItems }}</span></p>
           <p>Page: <span class="font-semibold">{{ kanbanMembersStore.meta.page }}/{{ kanbanMembersStore.meta.totalPages
-              }}</span>
+          }}</span>
           </p>
         </div>
 
@@ -130,7 +131,6 @@ export default {
       kanbanMembersStore: useKanbanMembersStore(),
       kanbanBoardStore: useKanbanBoardStore(),
       adminStore: useAdminStore(),
-      searchQuery: '',
       addMemberModal: false,
       newMemberEmail: '',
       newMemberRole: 'viewer',
@@ -153,8 +153,19 @@ export default {
   },
   methods: {
     async searchMembers() {
-      this.kanbanMembersStore.meta.page = 1
-      await this.kanbanMembersStore.fetchKanbanMembers()
+
+      const store = this.kanbanMembersStore
+
+      store.meta.page = 1
+
+      if (store.searchType === 'all')
+        return store.fetchKanbanMembers()
+
+      if (store.searchType === 'email')
+        return store.getMemberByEmail()
+
+      if (store.searchType === 'role')
+        return store.getMemberByRole()
     },
 
     async changeLimit(limit) {
@@ -182,8 +193,6 @@ export default {
         await this.kanbanMembersStore.addMember(payload)
 
         this.addMemberModal = false
-        // take last request and repeat it
-        this.kanbanMembersStore.fetchKanbanMembers()
       } catch (err) {
         console.error('Failed to add member:', err)
       }

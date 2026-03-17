@@ -243,12 +243,9 @@ export const useKanbanMembersStore = defineStore('kanbanMembers', {
 
       try {
         const response = await api.delete(API_ENDPOINTS.DELETE_KANBAN_MEMBER, {
+          data: data,
           headers: {
             Authorization: `Bearer ${authStore.accessToken}`,
-          },
-          data: {
-            boardId: data.boardId,
-            userId: data.userId,
           },
         })
 

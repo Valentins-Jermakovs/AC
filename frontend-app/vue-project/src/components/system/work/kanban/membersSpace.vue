@@ -68,7 +68,7 @@
                 </button>
               </li>
               <li>
-                <button class="flex gap-2 text-error" @click="deleteMember(member)">
+                <button class="flex gap-2 text-error" @click="openDeleteMemberModal(member)">
                   <font-awesome-icon icon="fa-solid fa-trash" />
                   Delete
                 </button>
@@ -98,7 +98,7 @@
         <div class="flex gap-4 text-sm">
           <p>Total: <span class="font-semibold">{{ kanbanMembersStore.meta.totalItems }}</span></p>
           <p>Page: <span class="font-semibold">{{ kanbanMembersStore.meta.page }}/{{ kanbanMembersStore.meta.totalPages
-          }}</span>
+              }}</span>
           </p>
         </div>
 
@@ -118,7 +118,7 @@
 
   <!-- Modals -->
 
-  <!-- Add meber modal -->
+  <!-- Add member modal -->
   <base-dialog v-model="addMemberModal" title="Add Member" confirmText="Add" cancelText="Cancel"
     @confirm="confirmAddMember">
     <div class="w-full flex flex-col gap-5">
@@ -133,7 +133,7 @@
     </div>
   </base-dialog>
 
-  <!-- Update meber role modal -->
+  <!-- Update member role modal -->
   <base-dialog v-model="updateMemberModal" title="Update Member" confirmText="Update" cancelText="Cancel"
     @confirm="confirmUpdateMember">
     <div class="w-full flex flex-col gap-5">
@@ -143,6 +143,16 @@
         <option value="editor">Editor</option>
         <option value="viewer">Viewer</option>
       </select>
+    </div>
+  </base-dialog>
+
+  <!-- Delete meber modal -->
+  <base-dialog v-model="deleteMemberModal" title="Delete Member" confirmText="Delete" cancelText="Cancel"
+    @confirm="confirmDeleteMember">
+    <div class="w-full flex flex-col gap-5">
+      <p>
+        Are you sure you want to delete this member?
+      </p>
     </div>
   </base-dialog>
 </template>
@@ -162,8 +172,11 @@ export default {
       kanbanMembersStore: useKanbanMembersStore(),
       kanbanBoardStore: useKanbanBoardStore(),
       adminStore: useAdminStore(),
+
       addMemberModal: false,
       updateMemberModal: false,
+      deleteMemberModal: false,
+
       newMemberEmail: '',
       newMemberRole: 'viewer',
       updatedRole: 'viewer',
@@ -224,6 +237,25 @@ export default {
         this.updateMemberModal = false
       } catch (err) {
         console.error('Failed to update member:', err)
+      }
+    },
+
+    async openDeleteMemberModal(member) {
+      this.deleteMemberModal = true
+      this.selectedMember = member
+    },
+
+    async confirmDeleteMember() {
+      const payload = {
+        userId: String(this.selectedMember.userId),
+        boardId: this.kanbanMembersStore.boardId
+      }
+
+      try {
+        await this.kanbanMembersStore.deleteMember(payload)
+        this.deleteMemberModal = false
+      } catch (err) {
+        console.error('Failed to delete member:', err)
       }
     },
 

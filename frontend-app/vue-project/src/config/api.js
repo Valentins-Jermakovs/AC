@@ -73,7 +73,7 @@ export const API_ENDPOINTS = {
   // PUT
   UPDATE_KANBAN_MEMBER: '/kanban/members/update-member',
   // DELETE
-  REMOVE_KANBAN_MEMBER: '/kanban/members/delete-member',
+  DELETE_KANBAN_MEMBER: '/kanban/members/delete-member',
 
   // =====STAGES:
   // GET

@@ -9,6 +9,7 @@ class WorkspaceStageCreateSchema(BaseModel):
     projectId: str
     title: str
     description: Optional[str] = None
+    dueDate: Optional[str] = None
 
     model_config = {
         "json_schema_extra": {
@@ -16,7 +17,8 @@ class WorkspaceStageCreateSchema(BaseModel):
                 {
                     "projectId": "project_id",
                     "title": "New stage",
-                    "description": "New stage description - optional"
+                    "description": "New stage description - optional",
+                    "dueDate": "2026-01-01"
                 }
             ]
         }

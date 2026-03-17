@@ -87,7 +87,8 @@ async def get_all_project_members(
             id=str(member.id),
             projectId=member.projectId,
             userId=member.userId,
-            role=member.role
+            role=member.role,
+            email=member.email
         )
         for member in members
     ]

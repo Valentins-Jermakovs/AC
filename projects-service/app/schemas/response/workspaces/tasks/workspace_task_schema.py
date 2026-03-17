@@ -14,3 +14,5 @@ class WorkspaceTaskSchema(BaseModel):
     storyPoints: Optional[int] = None
     priority: Optional[int] = None
     status: Optional[str] = None
+    createdAt: str
+    dueDate: Optional[str]

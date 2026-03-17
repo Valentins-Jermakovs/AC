@@ -1,6 +1,8 @@
 # Imports
 from fastapi import HTTPException
 from bson import ObjectId
+# Utils
+from app.utils.time_converter import convert_to_datetime
 # Models
 from app.models import WorkspaceTaskModel, WorkspaceProjectMemberModel
 # Schemas
@@ -91,6 +93,11 @@ async def update_task(
 
         task.status = data.status
 
+    if data.dueDate is not None:
+        data.dueDate = await convert_to_datetime(data.dueDate)
+
+        task.dueDate = data.dueDate
+
     # Save task
     await task.save()
 
@@ -102,5 +109,7 @@ async def update_task(
         description=task.description,
         storyPoints=task.storyPoints,
         priority=task.priority,
-        status=task.status
+        status=task.status,
+        createdAt=task.createdAt.strftime("%Y-%m-%d"),
+        dueDate=task.dueDate.strftime("%Y-%m-%d")
     )

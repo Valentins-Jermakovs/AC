@@ -2,6 +2,8 @@
 from fastapi import HTTPException
 from bson import ObjectId
 from typing import Optional
+# Utils
+from app.utils.time_converter import convert_to_datetime
 # Models
 from app.models import WorkspaceStageModel, WorkspaceProjectMemberModel
 # Schemas
@@ -15,7 +17,7 @@ async def insert_stage_relative(
     reference_stage_id: str, # stage which will be used as reference
     position: str,  # "before" or "after"
     description: Optional[str] = None,
-    
+    due_date: Optional[str] = None
 ) -> WorkspaceStageSchema:
     
     # ===== Validation and error handling =====
@@ -106,6 +108,10 @@ async def insert_stage_relative(
 
     else:
         raise HTTPException(status_code=400, detail="Invalid position")
+    
+    if due_date is not None:
+        str_date = due_date.strip()
+        due_date = await convert_to_datetime(due_date)
 
     # Create new stage
     stage = WorkspaceStageModel(
@@ -128,5 +134,6 @@ async def insert_stage_relative(
         title=stage.title,
         order=stage.order,
         description=stage.description,
-        createdAt=stage.createdAt
+        createdAt=stage.createdAt,
+        dueDate=str_date
     )

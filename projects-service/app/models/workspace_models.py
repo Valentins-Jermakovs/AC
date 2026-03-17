@@ -48,6 +48,7 @@ class WorkspaceStageModel(Document):
     order: int      # Stage order
     description: Optional[str] = None   # Stage description
     createdAt: datetime = Field(default_factory=get_current_date)    # Creation date
+    dueDate: Optional[datetime] = None
 
     class Settings:
         name = "workspace_stages"
@@ -75,6 +76,7 @@ class WorkspaceTaskModel(Document):
     status: Optional[str] = None        # Optional status
     order: float                        # Task order
     createdAt: datetime = Field(default_factory=get_current_date)    # Creation date
+    dueDate: Optional[datetime] = None
 
     class Settings:
         name = "workspace_tasks"

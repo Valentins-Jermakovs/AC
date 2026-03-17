@@ -1,6 +1,8 @@
 # Imports
 from fastapi import HTTPException
 from bson import ObjectId
+# Utils
+from app.utils.time_converter import convert_to_datetime
 # Models
 from app.models import WorkspaceTaskModel, WorkspaceProjectMemberModel
 # Schemas
@@ -82,6 +84,9 @@ async def create_task(
         if len(task_data.description) > 1000:
             raise HTTPException(status_code=400, detail="Description is too long")
 
+    if task_data.dueDate is not None:
+        task_data.dueDate = await convert_to_datetime(task_data.dueDate)
+
 
     # save new task in DB
     new_task = WorkspaceTaskModel(
@@ -92,7 +97,8 @@ async def create_task(
         storyPoints=task_data.storyPoints,
         priority=task_data.priority,
         status=task_data.status,
-        order=task_order
+        order=task_order,
+        dueDate=task_data.dueDate
     )
 
     # insert new task
@@ -107,5 +113,7 @@ async def create_task(
         description=task_data.description,
         storyPoints=task_data.storyPoints,
         priority=task_data.priority,
-        status=task_data.status
+        status=task_data.status,
+        createdAt=new_task.createdAt.strftime("%Y-%m-%d"),
+        dueDate=task_data.dueDate.strftime("%Y-%m-%d")
     )

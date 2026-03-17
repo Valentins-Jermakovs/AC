@@ -8,3 +8,4 @@ class WorkspaceProjectMemberSchema(BaseModel):
     projectId: str
     userId: str
     role: str
+    email: str

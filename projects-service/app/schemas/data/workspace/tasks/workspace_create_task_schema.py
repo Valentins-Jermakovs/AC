@@ -13,6 +13,7 @@ class WorkspaceCreateTaskSchema(BaseModel):
     storyPoints: int                     # Story points
     priority: int                         # Priority
     status: str                           # Status
+    dueDate: Optional[str] = None
 
     # Model config - examples
     model_config = {
@@ -25,7 +26,8 @@ class WorkspaceCreateTaskSchema(BaseModel):
                     "description": "New task description - optional",
                     "storyPoints": 1,
                     "priority": 1,
-                    "status": "todo"
+                    "status": "todo",
+                    "dueDate": "2026-01-01"
                 }
             ]
         }

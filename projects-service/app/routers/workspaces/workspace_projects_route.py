@@ -18,7 +18,7 @@ from app.services.workspace.projects.create_project_service import create_projec
 from app.services.workspace.projects.update_project_service import update_project
 from app.services.workspace.projects.delete_project_service import delete_project
 from app.services.workspace.projects.get_all_projects_service import get_all_projects
-from app.services.workspace.projects.get_project_by_title_service import get_project_by_title_or_description
+from app.services.workspace.projects.get_project_by_title_service import get_project_by_title
 # Router
 router = APIRouter(
     prefix="/workspace/projects",
@@ -60,14 +60,13 @@ async def get_all_projects_endpoint(
 
 # Route for getting a project by title or description
 @router.get(
-    "/get-project-by-title-or-description",
+    "/get-project-by-title",
     response_model=WorkspaceProjectsPaginatedSchema
 )
-async def get_project_by_title_or_description_endpoint(
+async def get_project_by_title_endpoint(
     page: int = 1,
     limit: int = 10,
     title: Optional[str] = None,
-    description: Optional[str] = None,
     credantials: HTTPAuthorizationCredentials = Depends(security)
 ):
     """
@@ -82,9 +81,8 @@ async def get_project_by_title_or_description_endpoint(
     access_token = credantials.credentials
     user_id = await check_access_token(access_token)
 
-    return await get_project_by_title_or_description(
-        title=title, 
-        description=description,
+    return await get_project_by_title(
+        title=title,
         limit=limit,
         page=page,
         user_id=user_id

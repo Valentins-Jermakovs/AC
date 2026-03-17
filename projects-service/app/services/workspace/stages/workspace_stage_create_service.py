@@ -1,19 +1,23 @@
 # Imports
 from fastapi import HTTPException
 from bson import ObjectId
+from typing import Optional
 # Models
 from app.models import WorkspaceStageModel, WorkspaceProjectMemberModel
 # Schemas
 from app.schemas.response.workspaces.stages.workspace_stage_schema import WorkspaceStageSchema
+# Utils
+from app.utils.time_converter import convert_to_datetime
 
 # =========================
 # Create a new workspace stage
 # =========================
 async def create_stage(
     title: str,
-    description: str,
     project_id: str,
-    user_id: str
+    user_id: str,
+    due_date: Optional[str] = None,
+    description: Optional[str] = None,
 ) -> WorkspaceStageSchema:
     
     # Check current user
@@ -57,6 +61,10 @@ async def create_stage(
         if len(description) < 3:
             raise HTTPException(status_code=400, detail="Description is too short")
     
+    if due_date is not None:
+        str_date = due_date.strip()
+        due_date = await convert_to_datetime(due_date)
+
     # Check title uniuqe
     if await WorkspaceStageModel.find_one({"title": title}):
         raise HTTPException(status_code=400, detail="Title must be unique")
@@ -78,7 +86,8 @@ async def create_stage(
         title=title,
         description=description,
         projectId=project_id,
-        order=order
+        order=order,
+        dueDate=due_date
     )
     
     await new_stage.insert()
@@ -88,5 +97,6 @@ async def create_stage(
         title=new_stage.title,
         description=new_stage.description,
         projectId=new_stage.projectId,
-        order=new_stage.order
+        order=new_stage.order,
+        dueDate=str_date
     )

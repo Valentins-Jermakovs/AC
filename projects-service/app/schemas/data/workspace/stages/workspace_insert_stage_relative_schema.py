@@ -11,6 +11,7 @@ class WorkspaceInsertStageRelativeSchema(BaseModel):
     description: Optional[str] = None
     referenceStageId: str
     position: str
+    dueDate: Optional[str]
 
     model_config = {
         "json_schema_extra": {
@@ -20,7 +21,8 @@ class WorkspaceInsertStageRelativeSchema(BaseModel):
                     "title": "New stage",
                     "description": "New stage description - optional",
                     "referenceStageId": "stageId",
-                    "position": "before | after"
+                    "position": "before | after",
+                    "dueDate": "2026-01-01"
                 }
             ]
         }

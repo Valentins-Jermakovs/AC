@@ -84,7 +84,7 @@ async def get_member_by_email(
         email=member.email,
         role=member.role,
         userId=member.userId,
-        projectId=member.projectId
+        projectId=member.projectId,
     )
 
     # ===== Return all members =====

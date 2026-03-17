@@ -6,6 +6,8 @@ from typing import Optional
 from app.models import WorkspaceStageModel, WorkspaceProjectMemberModel
 # Schemas
 from app.schemas.response.workspaces.stages.workspace_stage_schema import WorkspaceStageSchema
+# Utils
+from app.utils.time_converter import convert_to_datetime
 
 # =========================
 # Update a workspace stage
@@ -16,6 +18,7 @@ async def update_stage(
     user_id: str,
     project_id: str,
     description: Optional[str] = None,
+    due_date: Optional[str] = None
 ) -> WorkspaceStageSchema:
     
     # Check current user
@@ -84,6 +87,13 @@ async def update_stage(
         # Update description
         stage.description = description
 
+    if due_date is not None:
+        # Convert due date to datetime
+        due_date = await convert_to_datetime(due_date)
+
+        # Update due date
+        stage.dueDate = due_date
+
     # Update stage
     await stage.save()
 
@@ -92,5 +102,6 @@ async def update_stage(
         title=stage.title,
         description=stage.description,
         projectId=str(stage.projectId),
-        order=stage.order
+        order=stage.order,
+        dueDate=stage.dueDate.strftime("%Y-%m-%d")
     )

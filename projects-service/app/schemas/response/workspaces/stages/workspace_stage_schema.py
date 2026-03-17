@@ -11,6 +11,7 @@ class WorkspaceStageSchema(BaseModel):
     description: Optional[str]
     projectId: str
     order: float
+    dueDate: Optional[str]
 
     model_config = {
         "json_schema_extra": {
@@ -20,7 +21,8 @@ class WorkspaceStageSchema(BaseModel):
                     "title": "Stage title",
                     "description": "Stage description - optional",
                     "projectId": "projectId",
-                    "order": 1000
+                    "order": 1000,
+                    "dueDate": "2026-01-01"
                 }
             ]
         }

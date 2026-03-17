@@ -12,10 +12,9 @@ from app.schemas.response.workspaces.projects.worskpace_projects_paginated_schem
 # ===============================
 # Function get project by title or description
 # ===============================
-async def get_project_by_title_or_description(
+async def get_project_by_title(
     user_id: str,
-    title: Optional[str] = None,
-    description: Optional[str] = None,
+    title: str,
     limit: int = 10,
     page: int = 1
 ) -> WorkspaceProjectsPaginatedSchema:
@@ -25,8 +24,8 @@ async def get_project_by_title_or_description(
     if not user_id:
         raise HTTPException(status_code=400, detail="User ID is required")
 
-    if not title and not description:
-        raise HTTPException(status_code=400, detail="Title or description required")
+    if not title:
+        raise HTTPException(status_code=400, detail="Title required")
 
     if limit <= 0:
         raise HTTPException(status_code=400, detail="Limit must be positive")
@@ -62,14 +61,6 @@ async def get_project_by_title_or_description(
         query_conditions.append({
             "title": {
                 "$regex": re.escape(title),
-                "$options": "i"
-            }
-        })
-
-    if description:
-        query_conditions.append({
-            "description": {
-                "$regex": re.escape(description),
                 "$options": "i"
             }
         })

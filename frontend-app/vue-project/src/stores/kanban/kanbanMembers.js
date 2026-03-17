@@ -35,7 +35,7 @@ export const useKanbanMembersStore = defineStore('kanbanMembers', {
     lastRequest: null,
     searchQuery: '',
     searchType: 'all',
-    accessDenied:false
+    accessDenied: false,
   }),
 
   // ===========
@@ -63,7 +63,7 @@ export const useKanbanMembersStore = defineStore('kanbanMembers', {
         // Send GET request to backend
         const response = await api.get(API_ENDPOINTS.GET_ME_KANBAN_MEMBER, {
           params: {
-            board_id: this.boardId
+            board_id: this.boardId,
           },
           headers: {
             Authorization: `Bearer ${authStore.accessToken}`,
@@ -107,7 +107,6 @@ export const useKanbanMembersStore = defineStore('kanbanMembers', {
         this.searchQuery = ''
         this.accessDenied = false
       } catch (err) {
-
         if (err.response?.status === 403) {
           this.error = 'forbidden'
           this.members = []
@@ -317,11 +316,9 @@ export const useKanbanMembersStore = defineStore('kanbanMembers', {
 
       if (this.lastRequest.type === 'all') {
         await this.fetchKanbanMembers()
-
       } else if (this.lastRequest.type === 'email') {
         this.searchQuery = this.lastRequest.query
         await this.getMemberByEmail()
-
       } else if (this.lastRequest.type === 'role') {
         this.searchQuery = this.lastRequest.query
         await this.getMemberByRole()

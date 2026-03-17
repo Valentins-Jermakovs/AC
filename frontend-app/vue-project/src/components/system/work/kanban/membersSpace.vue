@@ -1,20 +1,15 @@
 <template>
-  <div v-if="kanbanMembersStore.accessDenied" class="w-full h-full flex items-center justify-center">
-
+  <div
+    v-if="kanbanMembersStore.accessDenied"
+    class="w-full h-full flex items-center justify-center"
+  >
     <div class="bg-base-200 border border-base-300 p-10 rounded-box text-center">
-
       <font-awesome-icon icon="fa-solid fa-lock" class="text-4xl mb-4 text-error" />
 
-      <h2 class="text-xl font-bold">
-        Access denied
-      </h2>
+      <h2 class="text-xl font-bold">Access denied</h2>
 
-      <p class="text-base-content/60">
-        You don't have permission to view members
-      </p>
-
+      <p class="text-base-content/60">You don't have permission to view members</p>
     </div>
-
   </div>
   <!-- Members space -->
   <div v-else class="flex-1 flex flex-col w-full h-full overflow-auto p-5 gap-2">
@@ -26,11 +21,18 @@
         </button>
 
         <div class="w-full flex items-center gap-2 border border-base-300 bg-base-200 p-1">
-          <input type="text" class="input w-full" placeholder="Search..." v-model="kanbanMembersStore.searchQuery"
-            @keyup.enter="searchMembers" />
+          <input
+            type="text"
+            class="input w-full"
+            placeholder="Search..."
+            v-model="kanbanMembersStore.searchQuery"
+            @keyup.enter="searchMembers"
+          />
           <!-- Filters -->
-          <select class="select select-bordered bg-neutral text-neutral-content"
-            v-model="kanbanMembersStore.searchType">
+          <select
+            class="select select-bordered bg-neutral text-neutral-content"
+            v-model="kanbanMembersStore.searchType"
+          >
             <option value="all">All</option>
             <option value="email">By email</option>
             <option value="role">By role</option>
@@ -41,13 +43,17 @@
         </div>
       </div>
 
-
       <!-- Members list -->
       <div class="w-3/5 bg-base-200 border border-base-300 flex flex-col gap-3 p-1">
-        <div v-for="member in kanbanMembersStore.members" :key="member.id"
-          class="w-full p-1 bg-base-100 border border-base-300 rounded-box flex items-center justify-between gap-3">
+        <div
+          v-for="member in kanbanMembersStore.members"
+          :key="member.id"
+          class="w-full p-1 bg-base-100 border border-base-300 rounded-box flex items-center justify-between gap-3"
+        >
           <div class="flex items-center gap-3 font-medium flex-1 p-2">
-            <div class="flex w-full bg-base-200 p-3 items-center gap-2 rounded-box border border-base-300">
+            <div
+              class="flex w-full bg-base-200 p-3 items-center gap-2 rounded-box border border-base-300"
+            >
               <font-awesome-icon icon="fa-solid fa-user" />
               {{ member.email }}
             </div>
@@ -59,8 +65,10 @@
 
           <div class="dropdown dropdown-right">
             <div tabindex="0" role="button" class="btn btn-sm btn-ghost">⋮</div>
-            <ul tabindex="0"
-              class="dropdown-content menu bg-base-200 border border-base-300 rounded-box w-48 p-2 shadow">
+            <ul
+              tabindex="0"
+              class="dropdown-content menu bg-base-200 border border-base-300 rounded-box w-48 p-2 shadow"
+            >
               <li>
                 <button class="flex gap-2" @click="openUpdateMemberModal(member)">
                   <font-awesome-icon icon="fa-solid fa-pencil" />
@@ -77,8 +85,10 @@
           </div>
         </div>
 
-        <div v-if="!kanbanMembersStore.loading && kanbanMembersStore.members.length === 0"
-          class="p-4 text-center text-base-content/60">
+        <div
+          v-if="!kanbanMembersStore.loading && kanbanMembersStore.members.length === 0"
+          class="p-4 text-center text-base-content/60"
+        >
           No members found.
         </div>
       </div>
@@ -86,8 +96,11 @@
       <!-- Footer: limit & pagination -->
       <div class="w-3/5 flex bg-base-200 border border-base-300 px-4 py-2 items-center gap-4">
         <div class="flex-1">
-          <select class="select select-bordered" v-model="kanbanMembersStore.meta.limit"
-            @change="changeLimit($event.target.value)">
+          <select
+            class="select select-bordered"
+            v-model="kanbanMembersStore.meta.limit"
+            @change="changeLimit($event.target.value)"
+          >
             <option value="5">5</option>
             <option value="10">10</option>
             <option value="20">20</option>
@@ -96,19 +109,30 @@
         </div>
 
         <div class="flex gap-4 text-sm">
-          <p>Total: <span class="font-semibold">{{ kanbanMembersStore.meta.totalItems }}</span></p>
-          <p>Page: <span class="font-semibold">{{ kanbanMembersStore.meta.page }}/{{ kanbanMembersStore.meta.totalPages
-              }}</span>
+          <p>
+            Total: <span class="font-semibold">{{ kanbanMembersStore.meta.totalItems }}</span>
+          </p>
+          <p>
+            Page:
+            <span class="font-semibold"
+              >{{ kanbanMembersStore.meta.page }}/{{ kanbanMembersStore.meta.totalPages }}</span
+            >
           </p>
         </div>
 
         <div class="flex gap-2 ml-auto">
-          <button class="btn btn-sm btn-neutral" @click="kanbanMembersStore.prevPage"
-            :disabled="kanbanMembersStore.meta.page === 1">
+          <button
+            class="btn btn-sm btn-neutral"
+            @click="kanbanMembersStore.prevPage"
+            :disabled="kanbanMembersStore.meta.page === 1"
+          >
             <font-awesome-icon icon="fa-solid fa-arrow-left" />
           </button>
-          <button class="btn btn-sm btn-neutral" @click="kanbanMembersStore.nextPage"
-            :disabled="kanbanMembersStore.meta.page === kanbanMembersStore.meta.totalPages">
+          <button
+            class="btn btn-sm btn-neutral"
+            @click="kanbanMembersStore.nextPage"
+            :disabled="kanbanMembersStore.meta.page === kanbanMembersStore.meta.totalPages"
+          >
             <font-awesome-icon icon="fa-solid fa-arrow-right" />
           </button>
         </div>
@@ -119,11 +143,21 @@
   <!-- Modals -->
 
   <!-- Add member modal -->
-  <base-dialog v-model="addMemberModal" title="Add Member" confirmText="Add" cancelText="Cancel"
-    @confirm="confirmAddMember">
+  <base-dialog
+    v-model="addMemberModal"
+    title="Add Member"
+    confirmText="Add"
+    cancelText="Cancel"
+    @confirm="confirmAddMember"
+  >
     <div class="w-full flex flex-col gap-5">
       <!-- Text input - member email -->
-      <input type="email" class="input w-full" placeholder="Enter member email" v-model="newMemberEmail">
+      <input
+        type="email"
+        class="input w-full"
+        placeholder="Enter member email"
+        v-model="newMemberEmail"
+      />
       <!-- Select input - member role -->
       <select class="select select-bordered w-full" v-model="newMemberRole">
         <option value="admin">Admin</option>
@@ -134,8 +168,13 @@
   </base-dialog>
 
   <!-- Update member role modal -->
-  <base-dialog v-model="updateMemberModal" title="Update Member" confirmText="Update" cancelText="Cancel"
-    @confirm="confirmUpdateMember">
+  <base-dialog
+    v-model="updateMemberModal"
+    title="Update Member"
+    confirmText="Update"
+    cancelText="Cancel"
+    @confirm="confirmUpdateMember"
+  >
     <div class="w-full flex flex-col gap-5">
       <!-- Select input - member role -->
       <select class="select select-bordered w-full" v-model="updatedRole">
@@ -147,21 +186,24 @@
   </base-dialog>
 
   <!-- Delete meber modal -->
-  <base-dialog v-model="deleteMemberModal" title="Delete Member" confirmText="Delete" cancelText="Cancel"
-    @confirm="confirmDeleteMember">
+  <base-dialog
+    v-model="deleteMemberModal"
+    title="Delete Member"
+    confirmText="Delete"
+    cancelText="Cancel"
+    @confirm="confirmDeleteMember"
+  >
     <div class="w-full flex flex-col gap-5">
-      <p>
-        Are you sure you want to delete this member?
-      </p>
+      <p>Are you sure you want to delete this member?</p>
     </div>
   </base-dialog>
 </template>
 
 <script>
-import BaseDialog from '@/components/common/BaseDialog.vue';
-import { useKanbanMembersStore } from '@/stores/kanban/kanbanMembers';
+import BaseDialog from '@/components/common/BaseDialog.vue'
+import { useKanbanMembersStore } from '@/stores/kanban/kanbanMembers'
 import { useKanbanBoardStore } from '@/stores/kanban/kanbanBoards'
-import { useAdminStore } from '@/stores/admin';
+import { useAdminStore } from '@/stores/admin'
 
 export default {
   name: 'MembersSpace',
@@ -180,8 +222,8 @@ export default {
       newMemberEmail: '',
       newMemberRole: 'viewer',
       updatedRole: 'viewer',
-      selectedMember: null
-    };
+      selectedMember: null,
+    }
   },
 
   watch: {
@@ -200,19 +242,15 @@ export default {
   },
   methods: {
     async searchMembers() {
-
       const store = this.kanbanMembersStore
 
       store.meta.page = 1
 
-      if (store.searchType === 'all')
-        return store.fetchKanbanMembers()
+      if (store.searchType === 'all') return store.fetchKanbanMembers()
 
-      if (store.searchType === 'email')
-        return store.getMemberByEmail()
+      if (store.searchType === 'email') return store.getMemberByEmail()
 
-      if (store.searchType === 'role')
-        return store.getMemberByRole()
+      if (store.searchType === 'role') return store.getMemberByRole()
     },
 
     async changeLimit(limit) {
@@ -229,7 +267,7 @@ export default {
         const payload = {
           userId: String(this.selectedMember.userId),
           boardId: this.kanbanMembersStore.boardId,
-          role: this.updatedRole
+          role: this.updatedRole,
         }
 
         await this.kanbanMembersStore.updateMember(payload)
@@ -248,7 +286,7 @@ export default {
     async confirmDeleteMember() {
       const payload = {
         userId: String(this.selectedMember.userId),
-        boardId: this.kanbanMembersStore.boardId
+        boardId: this.kanbanMembersStore.boardId,
       }
 
       try {
@@ -274,7 +312,7 @@ export default {
           email: addedUser.email,
           userId: String(addedUser.id),
           boardId: this.kanbanMembersStore.boardId,
-          role: this.newMemberRole
+          role: this.newMemberRole,
         }
 
         await this.kanbanMembersStore.addMember(payload)
@@ -284,9 +322,8 @@ export default {
         console.error('Failed to add member:', err)
       }
     },
-  }
-
-};
+  },
+}
 </script>
 
 <style scoped></style>

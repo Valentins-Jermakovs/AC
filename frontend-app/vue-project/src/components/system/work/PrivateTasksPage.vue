@@ -3,7 +3,11 @@
     <!-- Left screen: task list with search bar and pagination -->
     <div class="w-full lg:w-1/2 bg-base-200 border border-base-300 flex flex-col gap-1 p-1">
       <SearchBar @search="handleSearch" />
-      <TaskList :tasks="privateTasksStore.privateTasks" @select-task="selectTask" :selectedTask="selectedTask"/>
+      <TaskList
+        :tasks="privateTasksStore.privateTasks"
+        @select-task="selectTask"
+        :selectedTask="selectedTask"
+      />
 
       <!-- Pagination -->
       <div

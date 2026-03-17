@@ -19,15 +19,21 @@
     </button>
 
     <!-- Delete board -->
-    <button class="btn btn-neutral" @click="openDeleteModal"
-    v-if="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role == 'owner'">
+    <button
+      class="btn btn-neutral"
+      @click="openDeleteModal"
+      v-if="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role == 'owner'"
+    >
       <font-awesome-icon icon="fa-solid fa-trash" />
       Delete board
     </button>
 
     <!-- Leave board button -->
-    <button class="btn btn-neutral" @click="openLeaveBoardModal" 
-    v-if="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role !== 'owner'">
+    <button
+      class="btn btn-neutral"
+      @click="openLeaveBoardModal"
+      v-if="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role !== 'owner'"
+    >
       <font-awesome-icon icon="fa-solid fa-sign-out" />
       Leave board
     </button>
@@ -156,7 +162,10 @@ export default {
     async confirmCreateBoard() {
       if (!this.newBoardTitle.trim()) return
       try {
-        await this.kanbanStore.createBoard({ title: this.newBoardTitle.trim(), email: this.userStore.email })
+        await this.kanbanStore.createBoard({
+          title: this.newBoardTitle.trim(),
+          email: this.userStore.email,
+        })
         this.createModal = false
       } catch (err) {
         console.error('Failed to create board:', err)
@@ -172,11 +181,9 @@ export default {
       try {
         const payload = {
           boardId: this.kanbanStore.selectedBoard.id,
-          userId: this.kanbanMembersStore.currentUser.userId
+          userId: this.kanbanMembersStore.currentUser.userId,
         }
-        await this.kanbanMembersStore.deleteMember(
-          payload
-        )
+        await this.kanbanMembersStore.deleteMember(payload)
         await this.kanbanStore.repeatLastRequest()
         this.leaveModal = false
         this.kanbanStore.selectedBoard = null

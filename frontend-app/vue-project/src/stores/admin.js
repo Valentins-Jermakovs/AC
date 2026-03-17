@@ -106,9 +106,7 @@ export const useAdminStore = defineStore('admin', {
 
         // Store result as single-item array
         this.userByEmail = response.data
-      } catch (err) {
-
-      }
+      } catch (err) {}
     },
 
     // --------------------------

@@ -69,6 +69,7 @@
 <script>
 import { useKanbanBoardStore } from '@/stores/kanban/kanbanBoards'
 import { useKanbanStagesStore } from '@/stores/kanban/kanbanStages'
+import { useKanbanMembersStore } from '@/stores/kanban/kanbanMembers';
 
 export default {
   name: 'KanbanSidebar',
@@ -77,6 +78,7 @@ export default {
     return {
       kanbanBoardStore: useKanbanBoardStore(),
       kanbanStagesStore: useKanbanStagesStore(),
+      kanbanMembersStore: useKanbanMembersStore(),
     }
   },
 
@@ -114,6 +116,9 @@ export default {
 
       this.kanbanStagesStore.boardId = board.id
       this.kanbanStagesStore.getStages()
+
+      this.kanbanMembersStore.boardId = board.id
+      this.kanbanMembersStore.fetchMe()
     },
 
     nextPage() {

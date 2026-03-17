@@ -68,6 +68,7 @@ export const API_ENDPOINTS = {
   GET_KANBAN_MEMBERS: '/kanban/members/get-all-members',
   GET_KANBAN_MEMBER_BY_EMAIL: '/kanban/members/get-member-by-email',
   GET_KANBAN_MEMBERS_BY_ROLE: '/kanban/members/get-members-by-role',
+  GET_ME_KANBAN_MEMBER: '/kanban/members/get-current-user',
   // POST
   ADD_KANBAN_MEMBER: 'kanban/members/add-member',
   // PUT

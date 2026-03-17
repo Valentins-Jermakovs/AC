@@ -21,6 +21,8 @@ export const useKanbanMembersStore = defineStore('kanbanMembers', {
     error: null,
     boardId: null,
 
+    currentUser: null,
+
     // Pagination metadata
     meta: {
       page: 1,
@@ -52,6 +54,30 @@ export const useKanbanMembersStore = defineStore('kanbanMembers', {
     // ==========================
     // GET
     // ==========================
+    async fetchMe() {
+      const authStore = useAuthStore()
+      this.loading = true
+      this.error = null
+      console.log(this.boardId)
+      try {
+        // Send GET request to backend
+        const response = await api.get(API_ENDPOINTS.GET_ME_KANBAN_MEMBER, {
+          params: {
+            board_id: this.boardId
+          },
+          headers: {
+            Authorization: `Bearer ${authStore.accessToken}`,
+          },
+        })
+
+        this.currentUser = response.data
+      } catch (err) {
+        this.error = err.response?.data?.detail || err.message || 'Something went wrong'
+      } finally {
+        this.loading = false
+      }
+    },
+
     async fetchKanbanMembers() {
       const authStore = useAuthStore()
       this.loading = true

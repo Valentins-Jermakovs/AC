@@ -99,4 +99,51 @@ export const API_ENDPOINTS = {
   MOVE_KANBAN_TASK_BETWEEN_STAGES: '/kanban/tasks/move-task-between-stages',
   // DELETE
   DELETE_KANBAN_TASK: '/kanban/tasks/delete-task',
+
+  // ===== Workspace management =====
+
+  // =====PROJECT:
+  // GET
+  GET_ALL_PROJECTS: '/workspace/projects/get-all-projects',
+  GET_PROJECT_BY_TITLE: '/workspace/projects/get-project-by-title',
+  // POST
+  CREATE_PROJECT: '/workspace/projects/create-project',
+  // PUT
+  UPDATE_PROJECT: '/workspace/projects/update-project',
+  // DELETE
+  DELETE_PROJECT: '/workspace/projects/delete-project',
+
+  // =====STAGES:
+  // GET
+  GET_ALL_PROJECT_STAGES: '/workspace/stages/get-all-stages',
+  // POST
+  CREATE_PROJECT_STAGE: '/workspace/stages/create-stage',
+  CREATE_PROJECT_STAGE_RELATIVE: '/workspace/stages/insert-relative-stage',
+  // PUT
+  MOVE_PROJECT_STAGE: '/workspace/stages/move-stage',
+  UPDATE_PROJECT_STAGE: '/workspace/stages/update-stage',
+  // DELETE
+  DELETE_PROJECT_STAGE: '/workspace/stages/delete-stage',
+
+  // =====TASKS:
+  // GET
+  GET_ALL_PROJECT_TASKS: '/workspace/tasks/get-all-tasks',
+  // POST
+  CREATE_PROJECT_TASK: '/workspace/tasks/create-task',
+  // PUT
+  UPDATE_PROJECT_TASK: '/workspace/tasks/update-task',
+  // DELETE
+  DELETE_PROJECT_TASK: '/workspace/tasks/delete-task',
+
+  // =====MEMBERS:
+  // GET
+  GET_PROJETC_ALL_MEMBERS: '/workspace/members/get-all-members',
+  GET_PROJETC_MEMBER_BY_EMAIL: '/workspace/members/get-member-by-email',
+  GET_PROJETC_MEMBERS_BY_ROLE: '/workspace/members/get-members-by-role',
+  // POST
+  ADD_PROJETC_MEMBER: '/workspace/members/add-member',
+  // PUT
+  UPDATE_PROJETC_MEMBER: '/workspace/members/update-member',
+  // DELETE
+  DELETE_PROJETC_MEMBER: '/workspace/members/delete-member',
 }

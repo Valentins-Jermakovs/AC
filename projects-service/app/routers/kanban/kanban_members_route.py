@@ -18,7 +18,7 @@ from app.services.kanban.members.get_all_members_service import get_all_members
 from app.services.kanban.members.update_board_member_service import update_board_member
 from app.services.kanban.members.get_member_by_email_service import get_member_by_email
 from app.services.kanban.members.get_members_by_role_service import get_members_by_role
-from app.services.kanban.members.get_current_user import get_current_user
+from app.services.kanban.members.get_current_user_service import get_current_user
 
 # Router
 router = APIRouter(

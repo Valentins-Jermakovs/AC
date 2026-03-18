@@ -19,6 +19,7 @@ from app.services.workspace.members.delete_member_service import delete_project_
 from app.services.workspace.members.update_project_member_role_service import update_project_member_role
 from app.services.workspace.members.get_member_by_email_service import get_member_by_email
 from app.services.workspace.members.get_members_by_role_service import get_members_by_role
+from app.services.workspace.members.get_current_user_service import get_current_user
 
 
 # Router
@@ -101,6 +102,23 @@ async def get_members_by_role_endpoint(
         project_id=project_id,
         page=page,
         limit=limit
+    )
+
+# Get current user
+@router.get(
+    "/get-current-user",
+    response_model=WorkspaceProjectMemberSchema
+)
+async def get_current_user_endpoint(
+    project_id: str,
+    credantials: HTTPAuthorizationCredentials = Depends(security)
+):
+    access_token = credantials.credentials
+    user_id = await check_access_token(access_token)
+
+    return await get_current_user(
+        project_id=project_id,
+        user_id=user_id
     )
 
 # ==== Project POST ==========================================================

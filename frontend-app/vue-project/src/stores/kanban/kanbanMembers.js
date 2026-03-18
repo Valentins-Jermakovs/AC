@@ -98,9 +98,12 @@ export const useKanbanMembersStore = defineStore('kanbanMembers', {
         // Save tasks and pagination data
         this.members = response.data.items
 
-        this.meta.page = response.data.meta.page
-        this.meta.totalItems = response.data.meta.totalItems
-        this.meta.totalPages = response.data.meta.totalPages
+        this.meta = response.data.meta
+
+        if (this.members.length == 0) {
+          this.meta.totalPages = 1
+          this.meta.page = 1
+        }
 
         // Remember request type
         this.lastRequest = { type: 'all' }
@@ -142,9 +145,12 @@ export const useKanbanMembersStore = defineStore('kanbanMembers', {
         // Save tasks and pagination data
         this.members = response.data.items
 
-        this.meta.page = response.data.meta.page
-        this.meta.totalItems = response.data.meta.totalItems
-        this.meta.totalPages = response.data.meta.totalPages
+        this.meta = response.data.meta
+
+        if (this.members.length == 0) {
+          this.meta.totalPages = 1
+          this.meta.page = 1
+        }
 
         // Remember request type
         this.lastRequest = {
@@ -188,9 +194,12 @@ export const useKanbanMembersStore = defineStore('kanbanMembers', {
         // Save tasks and pagination data
         this.members = response.data.items
 
-        this.meta.page = response.data.meta.page
-        this.meta.totalItems = response.data.meta.totalItems
-        this.meta.totalPages = response.data.meta.totalPages
+        this.meta = response.data.meta
+
+        if (this.members.length == 0) {
+          this.meta.totalPages = 1
+          this.meta.page = 1
+        }
 
         // Remember request type
         this.lastRequest = {

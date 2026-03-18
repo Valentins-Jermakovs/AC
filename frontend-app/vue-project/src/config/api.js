@@ -137,13 +137,13 @@ export const API_ENDPOINTS = {
 
   // =====MEMBERS:
   // GET
-  GET_PROJETC_ALL_MEMBERS: '/workspace/members/get-all-members',
-  GET_PROJETC_MEMBER_BY_EMAIL: '/workspace/members/get-member-by-email',
-  GET_PROJETC_MEMBERS_BY_ROLE: '/workspace/members/get-members-by-role',
+  GET_PROJECT_ALL_MEMBERS: '/workspace/members/get-all-members',
+  GET_PROJECT_MEMBER_BY_EMAIL: '/workspace/members/get-member-by-email',
+  GET_PROJECT_MEMBERS_BY_ROLE: '/workspace/members/get-members-by-role',
   // POST
-  ADD_PROJETC_MEMBER: '/workspace/members/add-member',
+  ADD_PROJECT_MEMBER: '/workspace/members/add-member',
   // PUT
-  UPDATE_PROJETC_MEMBER: '/workspace/members/update-member',
+  UPDATE_PROJECT_MEMBER: '/workspace/members/update-member',
   // DELETE
-  DELETE_PROJETC_MEMBER: '/workspace/members/delete-member',
+  DELETE_PROJECT_MEMBER: '/workspace/members/delete-member',
 }

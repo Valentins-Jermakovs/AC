@@ -58,6 +58,19 @@
                 <font-awesome-icon icon="fa-solid fa-pen" /> Edit stage
               </button>
             </li>
+            <li>
+              <button class="flex gap-3" @click="moveStage('up')">
+                <font-awesome-icon icon="fa-solid fa-arrow-up" />
+                Move up
+              </button>
+            </li>
+
+            <li>
+              <button class="flex gap-3" @click="moveStage('down')">
+                <font-awesome-icon icon="fa-solid fa-arrow-down" />
+                Move down
+              </button>
+            </li>
             <li class="border-t border-base-300 mt-2 pt-2">
               <button class="text-error flex gap-3" @click="showDelete = true">
                 <font-awesome-icon icon="fa-solid fa-trash" /> Delete stage
@@ -277,7 +290,25 @@ export default {
         console.error(err)
         alert('Error creating relative stage: ' + err)
       }
+    },
+    async moveStage(direction) {
+
+      const payload = {
+        projectId: this.stagesStore.projectId,
+        stageId: this.stage.id,
+        direction: direction
+      }
+
+      try {
+        await this.stagesStore.moveStage(payload)
+        this.drawerOpen = false
+      }
+      catch (err) {
+        console.error(err)
+        alert('Error moving stage: ' + err)
+      }
+
     }
-  }
+  },
 }
 </script>

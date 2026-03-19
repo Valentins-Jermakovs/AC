@@ -1,32 +1,88 @@
 <template>
+
     <div class="w-full bg-base-100 border border-base-300 p-2 flex
-      items-center justify-between gap-5">
-        <select class="select select-bordered">
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="30">30</option>
+items-center justify-between gap-5">
+
+        <!-- LIMIT -->
+        <select class="select select-bordered" v-model="store.meta.limit" @change="changeLimit">
+            <option :value="5">5</option>
+            <option :value="10">10</option>
+            <option :value="20">20</option>
+            <option :value="30">30</option>
         </select>
+
+        <!-- META -->
         <div class="flex gap-5 text-sm text-base-content/60">
+
             <p>
-                Total projects: 29
+                Total projects: {{ store.meta.totalItems }}
             </p>
+
             <p>
-                Page 1 / 5
+                Page {{ store.meta.page }} / {{ store.meta.totalPages || 1 }}
             </p>
+
         </div>
+
+        <!-- NAV -->
         <div class="flex gap-2">
-            <button class="btn btn-neutral">
+
+            <button class="btn btn-neutral btn-sm" @click="prevPage" :disabled="store.meta.page <= 1 || store.loading">
                 <font-awesome-icon icon="fa-solid fa-arrow-left" />
             </button>
-            <button class="btn btn-neutral">
+
+            <button class="btn btn-neutral btn-sm" @click="nextPage"
+                :disabled="store.meta.page >= store.meta.totalPages || store.loading">
                 <font-awesome-icon icon="fa-solid fa-arrow-right" />
             </button>
+
         </div>
+
     </div>
+
 </template>
 
 <script>
-</script>
 
-<style scoped></style>
+import { useWorkspaceProjectsStore } from '@/stores/workspace/projects';
+
+export default {
+
+    name: 'ProjectsPagination',
+
+    data() {
+
+        return {
+
+            store: useWorkspaceProjectsStore()
+
+        }
+
+    },
+
+    methods: {
+
+        async changeLimit() {
+
+            await this.store.setLimit(
+                Number(this.store.meta.limit)
+            )
+
+        },
+
+        async nextPage() {
+
+            await this.store.nextPage()
+
+        },
+
+        async prevPage() {
+
+            await this.store.prevPage()
+
+        }
+
+    }
+
+}
+</script>

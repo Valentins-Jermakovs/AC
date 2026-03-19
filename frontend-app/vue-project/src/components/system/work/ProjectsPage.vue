@@ -4,20 +4,24 @@
       <!-- Top bar -->
       <TopBar></TopBar>
       <!-- List -->
-      <ProjectsList></ProjectsList>
+      <ProjectsList v-if="projectsStore.hasProjects"></ProjectsList>
       <!-- Empty list -->
-      <!-- <EmptyProjectsList></EmptyProjectsList> -->
+      <EmptyProjectsList v-else></EmptyProjectsList>
       <!-- Footer -->
       <ProjectsFooter></ProjectsFooter>
+      <LoadingScreen v-if="projectsStore.loading"></LoadingScreen>
     </div>
   </div>
 </template>
 
 <script>
+import LoadingScreen from '@/components/common/LoadingScreen.vue';
 import EmptyProjectsList from './workspace/emptyProjectsList.vue';
 import ProjectsFooter from './workspace/projectsFooter.vue';
 import ProjectsList from './workspace/projectsList.vue';
 import TopBar from './workspace/topBar.vue';
+
+import { useWorkspaceProjectsStore } from '@/stores/workspace/projects';
 
 
 export default {
@@ -26,8 +30,19 @@ export default {
     TopBar, // Top navigation bar
     ProjectsFooter,
     ProjectsList,
-    EmptyProjectsList
+    EmptyProjectsList,
+    LoadingScreen
   },
+
+  data() {
+    return {
+      projectsStore: useWorkspaceProjectsStore(),
+    }
+  },
+
+  mounted() {
+    this.projectsStore.getAllProjects();
+  }
 }
 </script>
 

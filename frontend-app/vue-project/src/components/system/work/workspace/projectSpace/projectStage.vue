@@ -59,7 +59,7 @@
               </button>
             </li>
             <li class="border-t border-base-300 mt-2 pt-2">
-              <button class="text-error flex gap-3">
+              <button class="text-error flex gap-3" @click="showDelete = true">
                 <font-awesome-icon icon="fa-solid fa-trash" /> Delete stage
               </button>
             </li>
@@ -100,12 +100,18 @@
   </div>
 
   <!-- Create stage dialog -->
-  <BaseDialog v-model="showCreateDialog" title="Create new stage" confirmText="Create" cancelText="Cancel" @confirm="handleCreate">
+  <BaseDialog v-model="showCreateDialog" title="Create new stage" confirmText="Create" cancelText="Cancel"
+    @confirm="handleCreate">
     <div class="flex flex-col gap-2 w-full">
       <input v-model="newStage.title" type="text" class="input w-full" placeholder="Stage title" />
       <textarea v-model="newStage.description" class="textarea w-full" placeholder="Stage description"></textarea>
       <input v-model="newStage.dueDate" type="date" class="input w-full" />
     </div>
+  </BaseDialog>
+  <!-- Delete confirmation dialog -->
+  <BaseDialog v-model="showDelete" title="Delete stage" confirmText="Delete" cancelText="Cancel"
+    @confirm="handleDelete">
+    <p>Are you sure you want to delete this stage?</p>
   </BaseDialog>
 </template>
 
@@ -124,6 +130,7 @@ export default {
     return {
       drawerOpen: false,
       showCreateDialog: false,
+      showDelete: false,
       stagesStore: useWorkspaceProjectStagesStore(),
       newStage: {
         title: '',
@@ -155,6 +162,20 @@ export default {
       } catch (err) {
         console.error(err);
         alert('Error creating stage: ' + err);
+      }
+    },
+    async handleDelete() {
+      const payload = {
+        projectId: this.stagesStore.projectId,
+        stageId: this.stage.id
+      }
+      try {
+        await this.stagesStore.deleteStage(payload);
+        this.showDelete = false;
+        this.drawerOpen = false;
+      } catch (err) {
+        console.error(err);
+        alert('Error deleting stage: ' + err);
       }
     }
   }

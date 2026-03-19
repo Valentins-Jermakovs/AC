@@ -41,7 +41,8 @@ hover:border-info hover:bg-base-200 transition-all duration-300">
         <!-- Actions -->
         <div class="flex justify-end">
 
-            <button class="btn btn-primary btn-sm gap-2">
+            <button class="btn btn-primary btn-sm gap-2"
+            @click="openProject">
 
                 <font-awesome-icon icon="fa-solid fa-arrow-right" />
 
@@ -168,6 +169,10 @@ export default {
                 projectId: ''
             }
 
+        },
+
+        openProject() {
+            this.store.selectedProject = this.project
         }
 
     }

@@ -1,5 +1,6 @@
 <template>
-  <div class="w-full h-full flex items-center justify-center p-2">
+  <!-- Projects list -->
+  <div class="w-full h-full flex items-center justify-center p-2" v-if="projectsStore.selectedProject == null">
     <div class="w-4/5 h-full flex flex-col bg-base-200 border border-base-300">
       <!-- Top bar -->
       <TopBar></TopBar>
@@ -12,6 +13,15 @@
       <LoadingScreen v-if="projectsStore.loading"></LoadingScreen>
     </div>
   </div>
+  <!-- The selected project -->
+  <div class="w-full h-full flex flex-col items-center" v-if="projectsStore.selectedProject">
+    <!-- Top bar -->
+    <ProjectTitle></ProjectTitle>
+    <!-- navigation butttons -->
+    <ProjectControls></ProjectControls>
+    <!-- List of stages -->
+    <ProjectStageList></ProjectStageList>
+  </div>
 </template>
 
 <script>
@@ -22,6 +32,9 @@ import ProjectsList from './workspace/projectsList.vue';
 import TopBar from './workspace/topBar.vue';
 
 import { useWorkspaceProjectsStore } from '@/stores/workspace/projects';
+import ProjectTitle from './workspace/projectSpace/projectTitle.vue';
+import ProjectControls from './workspace/projectSpace/projectControls.vue';
+import ProjectStageList from './workspace/projectSpace/projectStageList.vue';
 
 
 export default {
@@ -31,7 +44,10 @@ export default {
     ProjectsFooter,
     ProjectsList,
     EmptyProjectsList,
-    LoadingScreen
+    LoadingScreen,
+    ProjectTitle,
+    ProjectControls,
+    ProjectStageList
   },
 
   data() {

@@ -19,7 +19,9 @@ class WorkspaceGetAllStagesSchema(BaseModel):
                         "title": "Stage 1",
                         "description": "Stage description 1",
                         "project_id": "1",
-                        "order": 1000
+                        "order": 1000,
+                        "due_date": "2026-01-01",
+                        "created_at": "2022-01-01"
                     }
                 ]
             }

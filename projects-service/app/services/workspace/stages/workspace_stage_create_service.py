@@ -87,7 +87,7 @@ async def create_stage(
         description=description,
         projectId=project_id,
         order=order,
-        dueDate=due_date
+        dueDate=due_date,
     )
     
     await new_stage.insert()
@@ -98,5 +98,6 @@ async def create_stage(
         description=new_stage.description,
         projectId=new_stage.projectId,
         order=new_stage.order,
-        dueDate=str_date
+        dueDate=str_date,
+        createdAt=new_stage.createdAt.strftime("%Y-%m-%d")
     )

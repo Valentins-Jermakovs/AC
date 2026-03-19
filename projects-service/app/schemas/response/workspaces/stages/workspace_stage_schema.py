@@ -12,6 +12,7 @@ class WorkspaceStageSchema(BaseModel):
     projectId: str
     order: float
     dueDate: Optional[str]
+    createdAt: str
 
     model_config = {
         "json_schema_extra": {
@@ -22,7 +23,8 @@ class WorkspaceStageSchema(BaseModel):
                     "description": "Stage description - optional",
                     "projectId": "projectId",
                     "order": 1000,
-                    "dueDate": "2026-01-01"
+                    "dueDate": "2026-01-01",
+                    "createdAt": "2022-01-01"
                 }
             ]
         }

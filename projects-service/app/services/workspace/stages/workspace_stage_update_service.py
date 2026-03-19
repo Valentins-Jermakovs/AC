@@ -103,5 +103,6 @@ async def update_stage(
         description=stage.description,
         projectId=str(stage.projectId),
         order=stage.order,
-        dueDate=stage.dueDate.strftime("%Y-%m-%d")
+        dueDate=stage.dueDate.strftime("%Y-%m-%d"),
+        createdAt=stage.createdAt.strftime("%Y-%m-%d")
     )

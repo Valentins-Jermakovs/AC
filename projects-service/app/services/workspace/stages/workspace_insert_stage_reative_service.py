@@ -117,7 +117,8 @@ async def insert_stage_relative(
     stage = WorkspaceStageModel(
         projectId=project_id,
         title=title,
-        order=new_order
+        order=new_order,
+        dueDate=due_date
     )
 
     # Add description
@@ -134,6 +135,6 @@ async def insert_stage_relative(
         title=stage.title,
         order=stage.order,
         description=stage.description,
-        createdAt=stage.createdAt,
+        createdAt=stage.createdAt.strftime("%Y-%m-%d"),
         dueDate=str_date
     )

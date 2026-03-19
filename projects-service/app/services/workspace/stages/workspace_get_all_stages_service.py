@@ -46,7 +46,8 @@ async def get_all_stages(
         description=stage.description,
         projectId=stage.projectId,
         order=stage.order,
-        dueDate=stage.dueDate.strftime("%Y-%m-%d")
+        dueDate=stage.dueDate.strftime("%Y-%m-%d"),
+        createdAt=stage.createdAt.strftime("%Y-%m-%d")
     ) for stage in stages]
 
     # Return response

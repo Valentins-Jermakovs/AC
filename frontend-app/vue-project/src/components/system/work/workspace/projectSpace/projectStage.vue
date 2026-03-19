@@ -54,7 +54,7 @@
               </button>
             </li>
             <li>
-              <button class="flex gap-3">
+              <button class="flex gap-3" @click="openEditDialog">
                 <font-awesome-icon icon="fa-solid fa-pen" /> Edit stage
               </button>
             </li>
@@ -113,6 +113,15 @@
     @confirm="handleDelete">
     <p>Are you sure you want to delete this stage?</p>
   </BaseDialog>
+  <!-- Edit stage dialog -->
+  <BaseDialog v-model="showEditDialog" title="Edit stage" confirmText="Update" cancelText="Cancel"
+    @confirm="handleUpdate">
+    <div class="flex flex-col gap-2 w-full">
+      <input v-model="editStage.title" type="text" class="input w-full" placeholder="Stage title" />
+      <textarea v-model="editStage.description" class="textarea w-full" placeholder="Stage description"></textarea>
+      <input v-model="editStage.dueDate" type="date" class="input w-full" />
+    </div>
+  </BaseDialog>
 </template>
 
 <script>
@@ -131,8 +140,14 @@ export default {
       drawerOpen: false,
       showCreateDialog: false,
       showDelete: false,
+      showEditDialog: false,
       stagesStore: useWorkspaceProjectStagesStore(),
       newStage: {
+        title: '',
+        description: '',
+        dueDate: ''
+      },
+      editStage: {                   // ← form data for editing
         title: '',
         description: '',
         dueDate: ''
@@ -176,6 +191,34 @@ export default {
       } catch (err) {
         console.error(err);
         alert('Error deleting stage: ' + err);
+      }
+    },
+    async openEditDialog() {
+      this.editStage = {
+        title: this.stage.title,
+        description: this.stage.description,
+        dueDate: this.stage.dueDate
+      }
+      this.showEditDialog = true
+    },
+    async handleUpdate() {
+      if (!this.editStage.title) return alert('Title is required');
+
+      const payload = {
+        projectId: this.stagesStore.projectId,
+        stageId: this.stage.id,
+        title: this.editStage.title,
+        description: this.editStage.description,
+        dueDate: this.editStage.dueDate
+      }
+
+      try {
+        await this.stagesStore.updateStage(payload)
+        this.showEditDialog = false
+        this.drawerOpen = false
+      } catch (err) {
+        console.error(err)
+        alert('Error updating stage: ' + err)
       }
     }
   }

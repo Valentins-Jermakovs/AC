@@ -5,6 +5,8 @@
       <TopBar></TopBar>
       <!-- List -->
       <ProjectsList></ProjectsList>
+      <!-- Empty list -->
+      <!-- <EmptyProjectsList></EmptyProjectsList> -->
       <!-- Footer -->
       <ProjectsFooter></ProjectsFooter>
     </div>
@@ -12,6 +14,7 @@
 </template>
 
 <script>
+import EmptyProjectsList from './workspace/emptyProjectsList.vue';
 import ProjectsFooter from './workspace/projectsFooter.vue';
 import ProjectsList from './workspace/projectsList.vue';
 import TopBar from './workspace/topBar.vue';
@@ -22,7 +25,8 @@ export default {
   components: {
     TopBar, // Top navigation bar
     ProjectsFooter,
-    ProjectsList
+    ProjectsList,
+    EmptyProjectsList
   },
 }
 </script>

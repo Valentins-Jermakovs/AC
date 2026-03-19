@@ -5,9 +5,16 @@
 
         <!-- Header -->
         <div class="flex justify-between items-center">
-            <h2 class="text-xl font-semibold">
+            <div class="flex items-center gap-3">
+                <h2 class="text-xl font-semibold">
                 Project 1
             </h2>
+
+            <!-- created at pager -->
+            <p class="text-sm badge badge-neutral rounded-box">
+                2026-12-12
+            </p>
+            </div>
 
             <div class="flex gap-2">
                 <button class="btn btn-ghost btn-sm">
@@ -36,9 +43,30 @@
         </div>
 
     </div>
+
+    <!-- Edit project dialog -->
+    <base-dialog>
+        <div class="flex flex-col w-full">
+            <!-- project title -->
+            <input type="text" class="input input-bordered w-full" placeholder="Project title" />
+            <!-- project description -->
+            <textarea class="textarea textarea-bordered w-full" placeholder="Project description"></textarea>
+        </div>
+    </base-dialog>
+
+    <!-- Delete project dialog -->
+    <base-dialog>
+        <p>Are you sure you want to delete this project?</p>
+    </base-dialog>
 </template>
 
 <script>
+import BaseDialog from '@/components/common/BaseDialog.vue';
+
+export default {
+    name: 'ProjectsListItem',
+    components: { BaseDialog }
+}
 </script>
 
 <style scoped></style>

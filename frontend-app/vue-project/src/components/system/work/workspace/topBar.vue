@@ -17,9 +17,24 @@
             </button>
         </div>
     </div>
+
+    <base-dialog>
+        <div class="flex flex-col w-full">
+            <!-- project title -->
+            <input type="text" class="input input-bordered w-full" placeholder="Project title" />
+            <!-- project description -->
+            <textarea class="textarea textarea-bordered w-full" placeholder="Project description"></textarea>
+        </div>
+    </base-dialog>
 </template>
 
 <script>
+import BaseDialog from '@/components/common/BaseDialog.vue';
+
+export default {
+    name: 'TopBar',
+    components: { BaseDialog }
+}
 </script>
 
 <style scoped></style>

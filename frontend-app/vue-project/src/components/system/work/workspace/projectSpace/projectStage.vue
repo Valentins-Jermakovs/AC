@@ -5,7 +5,7 @@
 
     <!-- CONTENT -->
     <div class="drawer-content">
-      <div class="w-full bg-base-100 border border-base-300 rounded-box p-4 flex flex-col gap-4">
+      <div class="w-full bg-base-100 border border-base-300 rounded-box p-4 flex flex-col gap-4 mt-5">
         <!-- HEADER -->
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-3">
@@ -44,7 +44,7 @@
         <div class="bg-base-100 border border-base-300 rounded-box w-full">
           <ul class="menu w-full">
             <li>
-              <button class="flex gap-3">
+              <button class="flex gap-3" @click="showCreateDialog = true">
                 <font-awesome-icon icon="fa-solid fa-plus" /> Add stage
               </button>
             </li>
@@ -98,21 +98,65 @@
       </div>
     </div>
   </div>
+
+  <!-- Create stage dialog -->
+  <BaseDialog v-model="showCreateDialog" title="Create new stage" confirmText="Create" cancelText="Cancel" @confirm="handleCreate">
+    <div class="flex flex-col gap-2 w-full">
+      <input v-model="newStage.title" type="text" class="input w-full" placeholder="Stage title" />
+      <textarea v-model="newStage.description" class="textarea w-full" placeholder="Stage description"></textarea>
+      <input v-model="newStage.dueDate" type="date" class="input w-full" />
+    </div>
+  </BaseDialog>
 </template>
 
 <script>
+import BaseDialog from '@/components/common/BaseDialog.vue';
 import ProjectTaskList from './projectTaskList.vue'
+import { useWorkspaceProjectStagesStore } from '@/stores/workspace/projectStages';
 
 export default {
   name: 'KanbanStageInfoDrawer',
-  components: { ProjectTaskList },
+  components: { ProjectTaskList, BaseDialog },
   props: {
     stage: { type: Object, required: true },
   },
   data() {
     return {
       drawerOpen: false,
+      showCreateDialog: false,
+      stagesStore: useWorkspaceProjectStagesStore(),
+      newStage: {
+        title: '',
+        description: '',
+        dueDate: ''
+      }
     }
   },
+  methods: {
+    async handleCreate() {
+      if (!this.newStage.title) return alert('Title is required');
+
+      const payload = {
+        title: this.newStage.title,
+        description: this.newStage.description,
+        dueDate: this.newStage.dueDate,
+        projectId: this.stagesStore.projectId
+      }
+
+      try {
+        await this.stagesStore.createStage(
+          payload
+        );
+
+        // Reset form and close dialog
+        this.newStage = { title: '', description: '', dueDate: '' };
+        this.showCreateDialog = false;
+        this.drawerOpen = false;
+      } catch (err) {
+        console.error(err);
+        alert('Error creating stage: ' + err);
+      }
+    }
+  }
 }
 </script>

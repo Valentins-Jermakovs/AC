@@ -59,6 +59,30 @@ export const useWorkspaceProjectMembersStore = defineStore('workspaceProjectMemb
     // ==========================
     // GET
     // ==========================
+    async fetchMe() {
+      const authStore = useAuthStore()
+      this.loading = true
+      this.error = null
+      console.log(this.projectId)
+
+      try {
+        // Send GET request to backend
+        const response = await api.get(API_ENDPOINTS.GET_ME_PROJECT_MEMBER, {
+          params: {
+            project_id: this.projectId,
+          },
+          headers: {
+            Authorization: `Bearer ${authStore.accessToken}`,
+          },
+        })
+
+        this.currentUser = response.data
+      } catch (err) {
+        this.error = err.response?.data?.detail || err.message || 'Something went wrong'
+      } finally {
+        this.loading = false
+      }
+    },
     // Get all project members
     async getAllMembers() {
       const authStore = useAuthStore()

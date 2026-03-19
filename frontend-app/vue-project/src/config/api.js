@@ -140,6 +140,7 @@ export const API_ENDPOINTS = {
   GET_PROJECT_ALL_MEMBERS: '/workspace/members/get-all-members',
   GET_PROJECT_MEMBER_BY_EMAIL: '/workspace/members/get-member-by-email',
   GET_PROJECT_MEMBERS_BY_ROLE: '/workspace/members/get-members-by-role',
+  GET_ME_PROJECT_MEMBER: '/workspace/members/get-current-user',
   // POST
   ADD_PROJECT_MEMBER: '/workspace/members/add-member',
   // PUT

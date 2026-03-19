@@ -1,112 +1,92 @@
 <template>
+  <div class="flex flex-col flex-1 items-center justify-center gap-5">
+    <h2 class="text-2xl flex items-center gap-3">
+      <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2xl" class="text-warning" />
 
-    <div class="flex flex-col flex-1 items-center justify-center gap-5">
+      You don't have any projects
+    </h2>
 
-        <h2 class="text-2xl flex items-center gap-3">
+    <button class="btn btn-primary" @click="showCreateDialog = true">Create project</button>
+  </div>
 
-            <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2xl" class="text-warning" />
+  <base-dialog
+    v-model="showCreateDialog"
+    title="Create project"
+    confirmText="Create"
+    cancelText="Cancel"
+    @confirm="createProject"
+    @cancel="resetForm"
+  >
+    <div class="flex flex-col w-full gap-3">
+      <input
+        v-model="newProject.title"
+        type="text"
+        class="input input-bordered w-full"
+        placeholder="Project title"
+      />
 
-            You don't have any projects
-
-        </h2>
-
-        <button class="btn btn-primary" @click="showCreateDialog = true">
-            Create project
-        </button>
-
+      <textarea
+        v-model="newProject.description"
+        class="textarea textarea-bordered w-full"
+        placeholder="Project description"
+      ></textarea>
     </div>
-
-    <base-dialog v-model="showCreateDialog" title="Create project" confirmText="Create" cancelText="Cancel"
-        @confirm="createProject" @cancel="resetForm">
-
-        <div class="flex flex-col w-full gap-3">
-
-            <input v-model="newProject.title" type="text" class="input input-bordered w-full"
-                placeholder="Project title" />
-
-            <textarea v-model="newProject.description" class="textarea textarea-bordered w-full"
-                placeholder="Project description"></textarea>
-
-        </div>
-
-    </base-dialog>
-
+  </base-dialog>
 </template>
 
 <script>
-
 import { useWorkspaceProjectsStore } from '@/stores/workspace/projects'
 import { useUserStore } from '@/stores/user'
 import BaseDialog from '@/components/common/BaseDialog.vue'
 
 export default {
+  name: 'EmptyProjectsList',
 
-    name: 'EmptyProjectsList',
+  components: {
+    BaseDialog,
+  },
 
-    components: {
-        BaseDialog
-    },
+  data() {
+    return {
+      store: useWorkspaceProjectsStore(),
+      userStore: useUserStore(),
 
-    data() {
+      showCreateDialog: false,
 
-        return {
-
-            store: useWorkspaceProjectsStore(),
-            userStore: useUserStore(),
-
-            showCreateDialog: false,
-
-            newProject: {
-                title: '',
-                description: ''
-            }
-
-        }
-
-    },
-
-    methods: {
-
-        async createProject() {
-
-            if (!this.newProject.title) return
-
-            const payload = {
-
-                title: this.newProject.title,
-                description: this.newProject.description,
-                email: this.userStore.email
-
-            }
-
-            try {
-
-                await this.store.createProject(payload)
-
-                this.showCreateDialog = false
-
-            } catch (err) {
-
-                console.error(err)
-
-            } finally {
-
-                this.resetForm()
-
-            }
-
-        },
-
-        resetForm() {
-
-            this.newProject = {
-                title: '',
-                description: ''
-            }
-
-        }
-
+      newProject: {
+        title: '',
+        description: '',
+      },
     }
+  },
 
+  methods: {
+    async createProject() {
+      if (!this.newProject.title) return
+
+      const payload = {
+        title: this.newProject.title,
+        description: this.newProject.description,
+        email: this.userStore.email,
+      }
+
+      try {
+        await this.store.createProject(payload)
+
+        this.showCreateDialog = false
+      } catch (err) {
+        console.error(err)
+      } finally {
+        this.resetForm()
+      }
+    },
+
+    resetForm() {
+      this.newProject = {
+        title: '',
+        description: '',
+      }
+    },
+  },
 }
 </script>

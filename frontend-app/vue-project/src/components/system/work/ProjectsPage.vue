@@ -1,6 +1,9 @@
 <template>
   <!-- Projects list -->
-  <div class="w-full h-full flex items-center justify-center p-2" v-if="projectsStore.selectedProject == null">
+  <div
+    class="w-full h-full flex items-center justify-center p-2"
+    v-if="projectsStore.selectedProject == null"
+  >
     <div class="w-4/5 h-full flex flex-col bg-base-200 border border-base-300">
       <!-- Top bar -->
       <TopBar></TopBar>
@@ -18,24 +21,33 @@
     <!-- Top bar -->
     <ProjectTitle></ProjectTitle>
     <!-- navigation butttons -->
-    <ProjectControls></ProjectControls>
+    <ProjectControls v-model:activeView="activeView" />
+
+    <!-- project view -->
     <!-- List of stages -->
-    <ProjectStageList></ProjectStageList>
+    <!-- Project view -->
+    <div v-if="this.activeView === 'project'" class="w-full">
+      <ProjectStageList></ProjectStageList>
+    </div>
+
+    <!-- Members view -->
+    <div v-if="this.activeView === 'members'">
+      <h2>Members</h2>
+    </div>
   </div>
 </template>
 
 <script>
-import LoadingScreen from '@/components/common/LoadingScreen.vue';
-import EmptyProjectsList from './workspace/emptyProjectsList.vue';
-import ProjectsFooter from './workspace/projectsFooter.vue';
-import ProjectsList from './workspace/projectsList.vue';
-import TopBar from './workspace/topBar.vue';
+import LoadingScreen from '@/components/common/LoadingScreen.vue'
+import EmptyProjectsList from './workspace/emptyProjectsList.vue'
+import ProjectsFooter from './workspace/projectsFooter.vue'
+import ProjectsList from './workspace/projectsList.vue'
+import TopBar from './workspace/topBar.vue'
 
-import { useWorkspaceProjectsStore } from '@/stores/workspace/projects';
-import ProjectTitle from './workspace/projectSpace/projectTitle.vue';
-import ProjectControls from './workspace/projectSpace/projectControls.vue';
-import ProjectStageList from './workspace/projectSpace/projectStageList.vue';
-
+import { useWorkspaceProjectsStore } from '@/stores/workspace/projects'
+import ProjectTitle from './workspace/projectSpace/projectTitle.vue'
+import ProjectControls from './workspace/projectSpace/projectControls.vue'
+import ProjectStageList from './workspace/projectSpace/projectStageList.vue'
 
 export default {
   name: 'ProjectsPage',
@@ -47,18 +59,19 @@ export default {
     LoadingScreen,
     ProjectTitle,
     ProjectControls,
-    ProjectStageList
+    ProjectStageList,
   },
 
   data() {
     return {
       projectsStore: useWorkspaceProjectsStore(),
+      activeView: 'project',
     }
   },
 
   mounted() {
-    this.projectsStore.getAllProjects();
-  }
+    this.projectsStore.getAllProjects()
+  },
 }
 </script>
 

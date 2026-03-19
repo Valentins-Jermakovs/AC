@@ -49,7 +49,7 @@
               </button>
             </li>
             <li>
-              <button class="flex gap-3">
+              <button class="flex gap-3" @click="openRelativeDialog">
                 <font-awesome-icon icon="fa-solid fa-code-branch" /> Add relative stage
               </button>
             </li>
@@ -122,6 +122,26 @@
       <input v-model="editStage.dueDate" type="date" class="input w-full" />
     </div>
   </BaseDialog>
+
+  <!-- Relative stage dialog -->
+  <BaseDialog v-model="showRelativeDialog" title="Add relative stage" confirmText="Create" cancelText="Cancel"
+    @confirm="handleCreateRelative">
+    <div class="flex flex-col gap-2 w-full">
+      <input v-model="relativeStage.title" type="text" class="input w-full" placeholder="Stage title" />
+      <textarea v-model="relativeStage.description" class="textarea w-full" placeholder="Stage description"></textarea>
+      <input v-model="relativeStage.dueDate" type="date" class="input w-full" />
+      <div class="flex gap-2 items-center mt-2">
+        <label class="flex items-center gap-1">
+          <input type="radio" value="before" v-model="relativeStage.position" />
+          Before
+        </label>
+        <label class="flex items-center gap-1">
+          <input type="radio" value="after" v-model="relativeStage.position" />
+          After
+        </label>
+      </div>
+    </div>
+  </BaseDialog>
 </template>
 
 <script>
@@ -141,6 +161,7 @@ export default {
       showCreateDialog: false,
       showDelete: false,
       showEditDialog: false,
+      showRelativeDialog: false,
       stagesStore: useWorkspaceProjectStagesStore(),
       newStage: {
         title: '',
@@ -151,6 +172,12 @@ export default {
         title: '',
         description: '',
         dueDate: ''
+      },
+      relativeStage: {                  // ← form dati relative stage
+        title: '',
+        description: '',
+        dueDate: '',
+        position: 'after'               // default: after
       }
     }
   },
@@ -219,6 +246,36 @@ export default {
       } catch (err) {
         console.error(err)
         alert('Error updating stage: ' + err)
+      }
+    },
+    openRelativeDialog() {
+      this.relativeStage = {
+        title: '',
+        description: '',
+        dueDate: '',
+        position: 'after'
+      }
+      this.showRelativeDialog = true
+    },
+    async handleCreateRelative() {
+      if (!this.relativeStage.title) return alert('Title is required');
+
+      const payload = {
+        projectId: this.stagesStore.projectId,
+        referenceStageId: this.stage.id,   // esošā stage ID
+        title: this.relativeStage.title,
+        description: this.relativeStage.description,
+        dueDate: this.relativeStage.dueDate,
+        position: this.relativeStage.position
+      }
+
+      try {
+        await this.stagesStore.createStageRelative(payload)
+        this.showRelativeDialog = false
+        this.drawerOpen = false
+      } catch (err) {
+        console.error(err)
+        alert('Error creating relative stage: ' + err)
       }
     }
   }

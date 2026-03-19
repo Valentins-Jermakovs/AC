@@ -13,22 +13,30 @@ import { useAuthStore } from '../auth'
 // Create store
 export const useWorkspaceProjectsTasksStore = defineStore('workspaceProjectsTasks', {
   state: () => ({
-    tasks: [],
+    tasksByStage: {},
     loading: false,
     error: null,
-    stageId: null,
     projectId: null,
   }),
   // ===========
   // GETTERS
   // ===========
   getters: {
-    hasTasks() {
-      return this.tasks.length > 0
+    hasTasks(state) {
+      return Object.values(state.tasksByStage)
+        .flat()
+        .length > 0
     },
-    getTaskById(id) {
-      return this.tasks.find((task) => task.id === id)
+
+    getTaskById: (state) => (id) => {
+      return Object
+        .values(state.tasksByStage)
+        .flat()
+        .find(task => task.id === id)
     },
+    getTasksByStage: (state) => {
+      return (stageId) => state.tasksByStage[stageId] || []
+    }
   },
   // ==========================
   // ACTIONS
@@ -37,26 +45,33 @@ export const useWorkspaceProjectsTasksStore = defineStore('workspaceProjectsTask
     // ==========================
     // GET
     // ==========================
-    async getTasks() {
+    async getTasks(stageId) {
+
       this.loading = true
       this.error = null
+
       const authStore = useAuthStore()
 
       try {
-        const response = await api.get(API_ENDPOINTS.GET_PROJECT_TASKS, {
-          params: {
-            project_id: this.projectId,
-            stage_id: this.stageId,
-          },
-          headers: {
-            Authorization: `Bearer ${authStore.accessToken}`,
-          },
-        })
-        this.tasks = response.data.items
-      } catch (err) {
-        this.error = err.response?.data?.detail || err.message || 'Something went wrong'
-        throw err
-      } finally {
+
+        const response = await api.get(
+          API_ENDPOINTS.GET_ALL_PROJECT_TASKS,
+          {
+            params: {
+              project_id: this.projectId,
+              stage_id: stageId,
+            },
+            headers: {
+              Authorization: `Bearer ${authStore.accessToken}`,
+            },
+          }
+        )
+
+        this.tasksByStage[stageId] =
+          response.data.items
+
+      }
+      finally {
         this.loading = false
       }
     },
@@ -88,7 +103,7 @@ export const useWorkspaceProjectsTasksStore = defineStore('workspaceProjectsTask
           },
         })
 
-        await this.getTasks()
+        await this.getTasks(data.stageId)
         return response.data
       } catch (err) {
         this.error = err.response?.data?.detail || err.message || 'Something went wrong'
@@ -124,7 +139,7 @@ export const useWorkspaceProjectsTasksStore = defineStore('workspaceProjectsTask
             Authorization: `Bearer ${authStore.accessToken}`,
           },
         })
-        await this.getTasks()
+        await this.getTasks(data.stageId)
         return response.data
       } catch (err) {
         this.error = err.response?.data?.detail || err.message || 'Something went wrong'
@@ -154,7 +169,7 @@ export const useWorkspaceProjectsTasksStore = defineStore('workspaceProjectsTask
           },
           data,
         })
-        await this.getTasks()
+        await this.getTasks(data.stageId)
         return response.data
       } catch (err) {
         this.error = err.response?.data?.detail || err.message || 'Something went wrong'

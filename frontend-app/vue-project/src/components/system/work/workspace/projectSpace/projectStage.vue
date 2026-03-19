@@ -25,7 +25,7 @@
         </div>
 
         <!-- TASKS -->
-        <ProjectTaskList :tasks="stage.tasks" />
+        <ProjectTaskList :stage="stage" />
       </div>
     </div>
 

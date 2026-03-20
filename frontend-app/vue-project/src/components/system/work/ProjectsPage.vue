@@ -31,8 +31,8 @@
     </div>
 
     <!-- Members view -->
-    <div v-if="this.activeView === 'members'">
-      <h2>Members</h2>
+    <div v-if="this.activeView === 'members'" class="w-4/5">
+      <MemberSpaceProjects></MemberSpaceProjects>
     </div>
   </div>
 </template>
@@ -48,6 +48,7 @@ import { useWorkspaceProjectsStore } from '@/stores/workspace/projects'
 import ProjectTitle from './workspace/projectSpace/projectTitle.vue'
 import ProjectControls from './workspace/projectSpace/projectControls.vue'
 import ProjectStageList from './workspace/projectSpace/projectStageList.vue'
+import MemberSpaceProjects from './workspace/memberSpaceProjects.vue'
 
 export default {
   name: 'ProjectsPage',
@@ -60,6 +61,7 @@ export default {
     ProjectTitle,
     ProjectControls,
     ProjectStageList,
+    MemberSpaceProjects,
   },
 
   data() {

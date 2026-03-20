@@ -43,19 +43,15 @@ export const useWorkspaceProjectMembersStore = defineStore('workspaceProjectMemb
       return this.projectMembers.length > 0
     },
   },
-  // ===========
-  // SETTERS
-  // ===========
-  setters: {
-    setProjectId(projectId) {
-      this.projectId = projectId
-    },
-  },
 
   // ==========================
   // ACTIONS
   // ==========================
   actions: {
+    // setters
+    setProjectId(projectId) {
+      this.projectId = projectId
+    },
     // ==========================
     // GET
     // ==========================

@@ -25,6 +25,12 @@ from app.services.private_tasks.find_task_service import (
 )
 from app.services.private_tasks.update_private_task_service import update_private_task
 from app.services.private_tasks.remove_private_task_service import remove_private_task
+from app.services.private_tasks.get_all_tasks_service import (
+    get_all_private_tasks_counted, 
+    get_all_private_completed_tasks_counted, 
+    get_all_private_tasks_by_current_month, 
+    get_all_private_completed_tasks_by_current_month
+)
 # ===========================
 
 # Router
@@ -185,6 +191,91 @@ async def find_tasks_by_month_endpoint(
         page=page, 
         limit=limit
     )
+
+# Get all tasks
+@router.get(
+    "/get-all-tasks-counted",
+)
+async def get_all_tasks_counted_endpoint(
+    credantials: HTTPAuthorizationCredentials = Depends(security),
+):
+    """
+    Get all tasks from the database.
+
+    Steps:
+    1. Extract access token
+    2. Verify token and get user ID
+    3. Call service to get all tasks from DB
+    4. Return all tasks
+    """
+    access_token = credantials.credentials
+    user_id = await check_access_token(access_token)
+
+    return await get_all_private_tasks_counted(user_id=user_id)
+
+# Get all tasks completed
+@router.get(
+    "/get-all-tasks-completed-counted",
+)
+async def get_all_tasks_completed_counted_endpoint(
+    credantials: HTTPAuthorizationCredentials = Depends(security),
+):
+    """
+    Get all tasks from the database.
+
+    Steps:
+    1. Extract access token
+    2. Verify token and get user ID
+    3. Call service to get all tasks from DB
+    4. Return all tasks
+    """
+    access_token = credantials.credentials
+    user_id = await check_access_token(access_token)
+
+    return await get_all_private_completed_tasks_counted(user_id=user_id)
+
+# Get all tasks in current month
+@router.get(
+    "/get-all-tasks-current-month-counted",
+)
+async def get_all_tasks_current_month_counted_endpoint(
+    credantials: HTTPAuthorizationCredentials = Depends(security),
+):
+    """
+    Get all tasks from the database.
+
+    Steps:
+    1. Extract access token
+    2. Verify token and get user ID
+    3. Call service to get all tasks from DB
+    4. Return all tasks
+    """
+    access_token = credantials.credentials
+    user_id = await check_access_token(access_token)
+
+    return await get_all_private_tasks_by_current_month(user_id=user_id)
+
+# Get all tasks in current month completed
+@router.get(
+    "/get-all-tasks-current-month-completed-counted",
+)
+async def get_all_tasks_current_month_completed_counted_endpoint(
+    credantials: HTTPAuthorizationCredentials = Depends(security),
+):
+    """
+    Get all tasks from the database.
+
+    Steps:
+    1. Extract access token
+    2. Verify token and get user ID
+    3. Call service to get all tasks from DB
+    4. Return all tasks
+    """
+    access_token = credantials.credentials
+    user_id = await check_access_token(access_token)
+
+    return await get_all_private_completed_tasks_by_current_month(user_id=user_id)
+
 
 # ===== Tasks POST ==========================================================
 # Route for creating a new private task

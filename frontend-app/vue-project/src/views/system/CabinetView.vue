@@ -7,6 +7,8 @@
   -->
   <NavigationPanel :buttons="navButtons" v-model="activePage"></NavigationPanel>
 
+  <DashboardPage v-if="activePage === 'dashboard'"></DashboardPage>
+
   <!-- Show Admin page only if:
     1) Active page is "admin"
     2) User has admin rights 
@@ -35,6 +37,7 @@ import LoadingScreen from '@/components/common/LoadingScreen.vue'
 
 // Import Pinia user store
 import { useUserStore } from '@/stores/user'
+import DashboardPage from '@/components/system/cabinet/DashboardPage.vue'
 
 export default {
   name: 'CabinetView',
@@ -46,6 +49,7 @@ export default {
     ProfilePage,
     LoadingScreen,
     AdminPage,
+    DashboardPage,
   },
 
   data() {

@@ -35,6 +35,13 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
 
     // Stores information about last request (used for refresh)
     lastRequest: null,
+
+    tasksKpi: {
+      totalTasks: 0,
+      totalCompletedTasks: 0,
+      totalInMonth: 0,
+      totalInMonthCompleted: 0,
+    }
   }),
 
   // ==========================
@@ -53,6 +60,93 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
     // ==========================
     // GET
     // ==========================
+
+    async fetchTasksAll() {
+      const authStore = useAuthStore()
+      this.loading = true
+      this.error = null
+
+      try {
+        const response = await api.get(API_ENDPOINTS.GET_ALL_PRIVATE_TASKS_COUNTED, {
+          headers: {
+            Authorization: `Bearer ${authStore.accessToken}`,
+          },
+        })
+
+        // Save tasks and pagination data
+        this.tasksKpi.totalTasks = response.data
+      } catch (err) {
+        this.error = err.response?.data?.detail || err.message || 'Something went wrong'
+      } finally {
+        this.loading = false
+      }
+    },
+
+    async fetchTasksAllCompleted() {
+      const authStore = useAuthStore()
+      this.loading = true
+      this.error = null
+
+      try {
+        const response = await api.get(API_ENDPOINTS.GET_ALL_PRIVATE_COMPLETED_TASKS_COUNTED, {
+          headers: {
+            Authorization: `Bearer ${authStore.accessToken}`,
+          },
+        })
+
+        // Save tasks and pagination data
+        this.tasksKpi.totalCompletedTasks = response.data
+      } catch (err) {
+        this.error = err.response?.data?.detail || err.message || 'Something went wrong'
+      } finally {
+        this.loading = false
+      }
+    },
+
+    async fetchTasksAllInMonth() {
+      const authStore = useAuthStore()
+      this.loading = true
+      this.error = null
+
+      try {
+        const response = await api.get(API_ENDPOINTS.GET_ALL_PRIAVTE_TASKS_IN_CURRENT_MONTH_COUNTED, {
+          headers: {
+            Authorization: `Bearer ${authStore.accessToken}`,
+          },
+        })
+
+        // Save tasks and pagination data
+        this.tasksKpi.totalInMonth = response.data
+      } catch (err) {
+        this.error = err.response?.data?.detail || err.message || 'Something went wrong'
+      } finally {
+        this.loading = false
+      }
+    },
+
+
+    async fetchTasksAllCompletedInMonth() {
+      const authStore = useAuthStore()
+      this.loading = true
+      this.error = null
+
+      try {
+        const response = await api.get(API_ENDPOINTS.GET_ALL_PRIVATE_COMPLETED_TASKS_IN_CURRENT_MONTH_COUNTED, {
+          headers: {
+            Authorization: `Bearer ${authStore.accessToken}`,
+          },
+        })
+
+        // Save tasks and pagination data
+        this.tasksKpi.totalInMonthCompleted = response.data
+      } catch (err) {
+        this.error = err.response?.data?.detail || err.message || 'Something went wrong'
+      } finally {
+        this.loading = false
+      }
+    },
+
+
 
     // Get all tasks paginated
     async fetchPrivateTasks() {

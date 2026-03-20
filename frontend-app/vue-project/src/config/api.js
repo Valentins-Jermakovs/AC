@@ -43,6 +43,12 @@ export const API_ENDPOINTS = {
   GET_TASKS_BY_DUE_DATE: '/private-tasks/get-tasks-by-duedate',
   GET_TASKS_BY_MONTH: '/private-tasks/get-tasks-by-month',
 
+  // GET - KPI CARDS
+  GET_ALL_PRIVATE_TASKS_COUNTED: '/private-tasks/get-all-tasks-counted',
+  GET_ALL_PRIVATE_COMPLETED_TASKS_COUNTED: '/private-tasks/get-all-tasks-completed-counted',
+  GET_ALL_PRIAVTE_TASKS_IN_CURRENT_MONTH_COUNTED: '/private-tasks/get-all-tasks-current-month-counted',
+  GET_ALL_PRIVATE_COMPLETED_TASKS_IN_CURRENT_MONTH_COUNTED: '/private-tasks/get-all-tasks-current-month-completed-counted',
+
   // POST
   CREATE_PRIVATE_TASK: '/private-tasks/create-task',
   // PUT

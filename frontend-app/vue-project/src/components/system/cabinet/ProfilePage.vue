@@ -43,7 +43,9 @@ import UserInfoCard from './UserInfoCard.vue'
 import UserProgressCard from './UserProgressCard.vue'
 import UserModificationCard from './UserModificationCard.vue'
 import LoadingScreen from '@/components/common/LoadingScreen.vue'
+
 import { useUserStore } from '@/stores/user'
+import { usePrivateTasksStore } from '@/stores/privateTasks'
 
 import UsernameModal from './modals/UsernameModal.vue'
 import EmailChangeModal from './modals/EmailChangeModal.vue'
@@ -70,6 +72,8 @@ export default {
       openUsernameModal: false,
       openEmailModal: false,
       openPasswordModal: false,
+
+      taskStore: usePrivateTasksStore(),
     }
   },
 
@@ -94,17 +98,17 @@ export default {
       return [
         {
           title: this.$t('cabinet.profile.kpi.tasks'),
-          value: 78,
-          max: 100,
-          percent: 78,
+          value: this.taskStore.tasksKpi.totalCompletedTasks,
+          max: this.taskStore.tasksKpi.totalTasks,
+          percent: Math.round((this.taskStore.tasksKpi.totalCompletedTasks / this.taskStore.tasksKpi.totalTasks) * 100),
           colorClass: 'text-success',
           progressClass: 'progress-success',
         },
         {
           title: this.$t('cabinet.profile.kpi.month_tasks'),
-          value: 3,
-          max: 5,
-          percent: 60,
+          value: this.taskStore.tasksKpi.totalInMonthCompleted,
+          max: this.taskStore.tasksKpi.totalInMonth,
+          percent: Math.round((this.taskStore.tasksKpi.totalInMonthCompleted / this.taskStore.tasksKpi.totalInMonth) * 100),
           colorClass: 'text-primary',
           progressClass: 'progress-primary',
         },
@@ -201,10 +205,15 @@ export default {
   },
 
   // Fetch current user on mount
-  mounted() {
+  async mounted() {
     if (!this.userStore.user) {
-      this.userStore.fetchMe()
+      await this.userStore.fetchMe()
     }
+
+    await this.taskStore.fetchTasksAll()
+    await this.taskStore.fetchTasksAllCompleted()
+    await this.taskStore.fetchTasksAllInMonth()
+    await this.taskStore.fetchTasksAllCompletedInMonth()
   },
 }
 </script>

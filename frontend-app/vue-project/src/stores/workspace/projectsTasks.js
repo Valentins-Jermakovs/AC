@@ -23,20 +23,17 @@ export const useWorkspaceProjectsTasksStore = defineStore('workspaceProjectsTask
   // ===========
   getters: {
     hasTasks(state) {
-      return Object.values(state.tasksByStage)
-        .flat()
-        .length > 0
+      return Object.values(state.tasksByStage).flat().length > 0
     },
 
     getTaskById: (state) => (id) => {
-      return Object
-        .values(state.tasksByStage)
+      return Object.values(state.tasksByStage)
         .flat()
-        .find(task => task.id === id)
+        .find((task) => task.id === id)
     },
     getTasksByStage: (state) => {
       return (stageId) => state.tasksByStage[stageId] || []
-    }
+    },
   },
   // ==========================
   // ACTIONS
@@ -46,32 +43,24 @@ export const useWorkspaceProjectsTasksStore = defineStore('workspaceProjectsTask
     // GET
     // ==========================
     async getTasks(stageId) {
-
       this.loading = true
       this.error = null
 
       const authStore = useAuthStore()
 
       try {
+        const response = await api.get(API_ENDPOINTS.GET_ALL_PROJECT_TASKS, {
+          params: {
+            project_id: this.projectId,
+            stage_id: stageId,
+          },
+          headers: {
+            Authorization: `Bearer ${authStore.accessToken}`,
+          },
+        })
 
-        const response = await api.get(
-          API_ENDPOINTS.GET_ALL_PROJECT_TASKS,
-          {
-            params: {
-              project_id: this.projectId,
-              stage_id: stageId,
-            },
-            headers: {
-              Authorization: `Bearer ${authStore.accessToken}`,
-            },
-          }
-        )
-
-        this.tasksByStage[stageId] =
-          response.data.items
-
-      }
-      finally {
+        this.tasksByStage[stageId] = response.data.items
+      } finally {
         this.loading = false
       }
     },

@@ -5,7 +5,9 @@
 
     <!-- CONTENT -->
     <div class="drawer-content">
-      <div class="w-full bg-base-100 border border-base-300 rounded-box p-4 flex flex-col gap-4 mt-5">
+      <div
+        class="w-full bg-base-100 border border-base-300 rounded-box p-4 flex flex-col gap-4 mt-5"
+      >
         <!-- HEADER -->
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-3">
@@ -113,35 +115,72 @@
   </div>
 
   <!-- Create stage dialog -->
-  <BaseDialog v-model="showCreateDialog" title="Create new stage" confirmText="Create" cancelText="Cancel"
-    @confirm="handleCreate">
+  <BaseDialog
+    v-model="showCreateDialog"
+    title="Create new stage"
+    confirmText="Create"
+    cancelText="Cancel"
+    @confirm="handleCreate"
+  >
     <div class="flex flex-col gap-2 w-full">
       <input v-model="newStage.title" type="text" class="input w-full" placeholder="Stage title" />
-      <textarea v-model="newStage.description" class="textarea w-full" placeholder="Stage description"></textarea>
+      <textarea
+        v-model="newStage.description"
+        class="textarea w-full"
+        placeholder="Stage description"
+      ></textarea>
       <input v-model="newStage.dueDate" type="date" class="input w-full" />
     </div>
   </BaseDialog>
   <!-- Delete confirmation dialog -->
-  <BaseDialog v-model="showDelete" title="Delete stage" confirmText="Delete" cancelText="Cancel"
-    @confirm="handleDelete">
+  <BaseDialog
+    v-model="showDelete"
+    title="Delete stage"
+    confirmText="Delete"
+    cancelText="Cancel"
+    @confirm="handleDelete"
+  >
     <p>Are you sure you want to delete this stage?</p>
   </BaseDialog>
   <!-- Edit stage dialog -->
-  <BaseDialog v-model="showEditDialog" title="Edit stage" confirmText="Update" cancelText="Cancel"
-    @confirm="handleUpdate">
+  <BaseDialog
+    v-model="showEditDialog"
+    title="Edit stage"
+    confirmText="Update"
+    cancelText="Cancel"
+    @confirm="handleUpdate"
+  >
     <div class="flex flex-col gap-2 w-full">
       <input v-model="editStage.title" type="text" class="input w-full" placeholder="Stage title" />
-      <textarea v-model="editStage.description" class="textarea w-full" placeholder="Stage description"></textarea>
+      <textarea
+        v-model="editStage.description"
+        class="textarea w-full"
+        placeholder="Stage description"
+      ></textarea>
       <input v-model="editStage.dueDate" type="date" class="input w-full" />
     </div>
   </BaseDialog>
 
   <!-- Relative stage dialog -->
-  <BaseDialog v-model="showRelativeDialog" title="Add relative stage" confirmText="Create" cancelText="Cancel"
-    @confirm="handleCreateRelative">
+  <BaseDialog
+    v-model="showRelativeDialog"
+    title="Add relative stage"
+    confirmText="Create"
+    cancelText="Cancel"
+    @confirm="handleCreateRelative"
+  >
     <div class="flex flex-col gap-2 w-full">
-      <input v-model="relativeStage.title" type="text" class="input w-full" placeholder="Stage title" />
-      <textarea v-model="relativeStage.description" class="textarea w-full" placeholder="Stage description"></textarea>
+      <input
+        v-model="relativeStage.title"
+        type="text"
+        class="input w-full"
+        placeholder="Stage title"
+      />
+      <textarea
+        v-model="relativeStage.description"
+        class="textarea w-full"
+        placeholder="Stage description"
+      ></textarea>
       <input v-model="relativeStage.dueDate" type="date" class="input w-full" />
       <div class="flex gap-2 items-center mt-2">
         <label class="flex items-center gap-1">
@@ -158,9 +197,9 @@
 </template>
 
 <script>
-import BaseDialog from '@/components/common/BaseDialog.vue';
+import BaseDialog from '@/components/common/BaseDialog.vue'
 import ProjectTaskList from './projectTaskList.vue'
-import { useWorkspaceProjectStagesStore } from '@/stores/workspace/projectStages';
+import { useWorkspaceProjectStagesStore } from '@/stores/workspace/projectStages'
 
 export default {
   name: 'KanbanStageInfoDrawer',
@@ -179,77 +218,77 @@ export default {
       newStage: {
         title: '',
         description: '',
-        dueDate: ''
+        dueDate: '',
       },
-      editStage: {                   // ← form data for editing
-        title: '',
-        description: '',
-        dueDate: ''
-      },
-      relativeStage: {                  // ← form dati relative stage
+      editStage: {
+        // ← form data for editing
         title: '',
         description: '',
         dueDate: '',
-        position: 'after'               // default: after
-      }
+      },
+      relativeStage: {
+        // ← form dati relative stage
+        title: '',
+        description: '',
+        dueDate: '',
+        position: 'after', // default: after
+      },
     }
   },
   methods: {
     async handleCreate() {
-      if (!this.newStage.title) return alert('Title is required');
+      if (!this.newStage.title) return alert('Title is required')
 
       const payload = {
         title: this.newStage.title,
         description: this.newStage.description,
         dueDate: this.newStage.dueDate,
-        projectId: this.stagesStore.projectId
+        projectId: this.stagesStore.projectId,
       }
 
       try {
-        await this.stagesStore.createStage(
-          payload
-        );
+        await this.stagesStore.createStage(payload)
 
         // Reset form and close dialog
-        this.newStage = { title: '', description: '', dueDate: '' };
-        this.showCreateDialog = false;
-        this.drawerOpen = false;
+        this.newStage = { title: '', description: '', dueDate: '' }
+        this.showCreateDialog = false
+        this.drawerOpen = false
       } catch (err) {
-        console.error(err);
-        alert('Error creating stage: ' + err);
+        console.error(err)
+        alert('Error creating stage: ' + err)
       }
     },
     async handleDelete() {
       const payload = {
         projectId: this.stagesStore.projectId,
-        stageId: this.stage.id
+        stageId: this.stage.id,
       }
       try {
-        await this.stagesStore.deleteStage(payload);
-        this.showDelete = false;
-        this.drawerOpen = false;
+        await this.stagesStore.deleteStage(payload)
+        this.showDelete = false
+        this.drawerOpen = false
       } catch (err) {
-        console.error(err);
-        alert('Error deleting stage: ' + err);
+        console.error(err)
+        alert('Error deleting stage: ' + err)
       }
     },
     async openEditDialog() {
       this.editStage = {
         title: this.stage.title,
         description: this.stage.description,
-        dueDate: this.stage.dueDate
+        dueDate: this.stage.dueDate,
       }
       this.showEditDialog = true
     },
     async handleUpdate() {
-      if (!this.editStage.title) return alert('Title is required');
+      if (!this.editStage.title) return alert('Title is required')
 
       const payload = {
         projectId: this.stagesStore.projectId,
         stageId: this.stage.id,
         title: this.editStage.title,
         description: this.editStage.description,
-        dueDate: this.editStage.dueDate
+        dueDate: this.editStage.dueDate,
       }
 
       try {
@@ -266,20 +305,20 @@ export default {
         title: '',
         description: '',
         dueDate: '',
-        position: 'after'
+        position: 'after',
       }
       this.showRelativeDialog = true
     },
     async handleCreateRelative() {
-      if (!this.relativeStage.title) return alert('Title is required');
+      if (!this.relativeStage.title) return alert('Title is required')
 
       const payload = {
         projectId: this.stagesStore.projectId,
-        referenceStageId: this.stage.id,   // esošā stage ID
+        referenceStageId: this.stage.id, // esošā stage ID
         title: this.relativeStage.title,
         description: this.relativeStage.description,
         dueDate: this.relativeStage.dueDate,
-        position: this.relativeStage.position
+        position: this.relativeStage.position,
       }
 
       try {
@@ -292,23 +331,20 @@ export default {
       }
     },
     async moveStage(direction) {
-
       const payload = {
         projectId: this.stagesStore.projectId,
         stageId: this.stage.id,
-        direction: direction
+        direction: direction,
       }
 
       try {
         await this.stagesStore.moveStage(payload)
         this.drawerOpen = false
-      }
-      catch (err) {
+      } catch (err) {
         console.error(err)
         alert('Error moving stage: ' + err)
       }
-
-    }
+    },
   },
 }
 </script>

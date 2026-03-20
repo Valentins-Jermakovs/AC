@@ -4,14 +4,14 @@
 
     <!-- CONTENT -->
     <div class="drawer-content">
-      <div class="w-full bg-base-100 border border-base-300 rounded-box p-3 flex items-center justify-between">
+      <div
+        class="w-full bg-base-100 border border-base-300 rounded-box p-3 flex items-center justify-between"
+      >
         <!-- LEFT -->
         <div class="flex gap-2 flex-1">
           <div class="flex items-center gap-3">
             <h3 class="font-medium">{{ task.title }}</h3>
-            <div class="badge badge-primary badge-outline">
-              Status: {{ task.status }}
-            </div>
+            <div class="badge badge-primary badge-outline">Status: {{ task.status }}</div>
           </div>
 
           <!-- META -->
@@ -24,9 +24,7 @@
         </div>
 
         <!-- OPEN DRAWER -->
-        <label :for="'task-info-drawer-' + task.id" class="btn btn-primary btn-sm">
-          Info
-        </label>
+        <label :for="'task-info-drawer-' + task.id" class="btn btn-primary btn-sm"> Info </label>
       </div>
     </div>
 
@@ -35,11 +33,12 @@
       <label :for="'task-info-drawer-' + task.id" class="drawer-overlay"></label>
 
       <div class="bg-base-200 min-h-full w-96 p-6 flex flex-col gap-6">
-
         <!-- HEADER -->
         <div class="flex justify-between items-center">
           <h2 class="text-xl font-semibold">{{ task.title }}</h2>
-          <label :for="'task-info-drawer-' + task.id" class="btn btn-ghost btn-sm btn-circle">✕</label>
+          <label :for="'task-info-drawer-' + task.id" class="btn btn-ghost btn-sm btn-circle"
+            >✕</label
+          >
         </div>
 
         <!-- ACTIONS -->
@@ -64,7 +63,11 @@
         </div>
 
         <!-- DETAILS, DATES, DESCRIPTION -->
-        <div class="card bg-base-100 border" v-for="section in detailsSections" :key="section.title">
+        <div
+          class="card bg-base-100 border"
+          v-for="section in detailsSections"
+          :key="section.title"
+        >
           <div class="card-body p-4">
             <h3 class="text-sm font-semibold opacity-70">{{ section.title }}</h3>
             <template v-if="section.type === 'table'">
@@ -84,18 +87,25 @@
         </div>
 
         <!-- CLOSE -->
-        <label :for="'task-info-drawer-' + task.id" class="btn btn-neutral mt-auto">
-          Close
-        </label>
+        <label :for="'task-info-drawer-' + task.id" class="btn btn-neutral mt-auto"> Close </label>
       </div>
     </div>
 
     <!-- CREATE TASK DIALOG -->
-    <BaseDialog v-model="createDialog" title="Create task" confirmText="Create" cancelText="Cancel"
-      @confirm="createTask">
+    <BaseDialog
+      v-model="createDialog"
+      title="Create task"
+      confirmText="Create"
+      cancelText="Cancel"
+      @confirm="createTask"
+    >
       <div class="flex flex-col gap-3 w-full">
         <input v-model="form.title" class="input input-bordered w-full" placeholder="Task title" />
-        <textarea v-model="form.description" class="textarea textarea-bordered" placeholder="Description"></textarea>
+        <textarea
+          v-model="form.description"
+          class="textarea textarea-bordered"
+          placeholder="Description"
+        ></textarea>
         <div class="flex gap-2">
           <select v-model="form.priority" class="select select-bordered flex-1">
             <option :value="1">Priority 1</option>
@@ -113,16 +123,31 @@
     </BaseDialog>
 
     <!-- Delete -->
-    <BaseDialog v-model="deleteDialog" title="Delete Task" confirmText="Delete" cancelText="Cancel"
-      @confirm="confirmDelete">
+    <BaseDialog
+      v-model="deleteDialog"
+      title="Delete Task"
+      confirmText="Delete"
+      cancelText="Cancel"
+      @confirm="confirmDelete"
+    >
       <p>Are you sure you want to delete this task? This action cannot be undone.</p>
     </BaseDialog>
 
     <!-- Edit -->
-    <BaseDialog v-model="editDialog" title="Edit Task" confirmText="Save" cancelText="Cancel" @confirm="updateTask">
+    <BaseDialog
+      v-model="editDialog"
+      title="Edit Task"
+      confirmText="Save"
+      cancelText="Cancel"
+      @confirm="updateTask"
+    >
       <div class="flex flex-col gap-3 w-full">
         <input v-model="form.title" class="input input-bordered w-full" placeholder="Task title" />
-        <textarea v-model="form.description" class="textarea textarea-bordered" placeholder="Description"></textarea>
+        <textarea
+          v-model="form.description"
+          class="textarea textarea-bordered"
+          placeholder="Description"
+        ></textarea>
         <div class="flex gap-2">
           <select v-model="form.priority" class="select select-bordered flex-1">
             <option :value="1">Priority 1</option>
@@ -162,7 +187,14 @@ export default {
       editDialog: false,
       tasksStore: useWorkspaceProjectsTasksStore(),
       projectsStore: useWorkspaceProjectsStore(),
-      form: { title: '', description: '', priority: 1, storyPoints: 1, status: 'todo', dueDate: null },
+      form: {
+        title: '',
+        description: '',
+        priority: 1,
+        storyPoints: 1,
+        status: 'todo',
+        dueDate: null,
+      },
     }
   },
   computed: {
@@ -174,28 +206,35 @@ export default {
           rows: [
             { label: 'Story points', value: this.task.storyPoints },
             { label: 'Priority', value: this.task.priority },
-            { label: 'Status', value: this.task.status }
-          ]
+            { label: 'Status', value: this.task.status },
+          ],
         },
         {
           title: 'Dates',
           type: 'table',
           rows: [
             { label: 'Created', value: this.task.createdAt },
-            { label: 'Due', value: this.task.dueDate }
-          ]
+            { label: 'Due', value: this.task.dueDate },
+          ],
         },
         {
           title: 'Description',
           type: 'text',
-          value: this.task.description
-        }
+          value: this.task.description,
+        },
       ]
-    }
+    },
   },
   methods: {
     openCreateDialog() {
-      this.form = { title: '', description: '', priority: 1, storyPoints: 1, status: 'todo', dueDate: null }
+      this.form = {
+        title: '',
+        description: '',
+        priority: 1,
+        storyPoints: 1,
+        status: 'todo',
+        dueDate: null,
+      }
       this.createDialog = true
     },
     async createTask() {
@@ -209,7 +248,7 @@ export default {
           status: this.form.status,
           dueDate: this.form.dueDate,
           projectId: this.projectsStore.selectedProject.id,
-          stageId: this.task.stageId
+          stageId: this.task.stageId,
         }
         await this.tasksStore.createTask(payload)
         this.createDialog = false
@@ -230,7 +269,7 @@ export default {
         await this.tasksStore.deleteTask({
           projectId: this.projectsStore.selectedProject.id,
           taskId: this.task.id,
-          stageId: this.task.stageId
+          stageId: this.task.stageId,
         })
         this.deleteDialog = false
         // Optional: close drawer after deletion
@@ -248,7 +287,7 @@ export default {
         priority: this.task.priority,
         storyPoints: this.task.storyPoints,
         status: this.task.status,
-        dueDate: this.task.dueDate
+        dueDate: this.task.dueDate,
       }
       this.editDialog = true
     },
@@ -265,14 +304,16 @@ export default {
           status: this.form.status,
           dueDate: this.form.dueDate,
           projectId: this.projectsStore.selectedProject.id,
-          stageId: this.task.stageId
+          stageId: this.task.stageId,
         }
         await this.tasksStore.updateTask(payload)
         this.editDialog = false
         const drawer = document.getElementById('task-info-drawer-' + this.task.id)
         if (drawer) drawer.checked = false
-      } catch (e) { console.error(e) }
+      } catch (e) {
+        console.error(e)
+      }
     },
-  }
+  },
 }
 </script>

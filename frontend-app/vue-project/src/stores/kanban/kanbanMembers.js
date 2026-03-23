@@ -333,5 +333,8 @@ export const useKanbanMembersStore = defineStore('kanbanMembers', {
         await this.getMemberByRole()
       }
     },
+    clearError() {
+      this.error = null
+    },
   },
 })

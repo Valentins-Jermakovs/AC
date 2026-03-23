@@ -1,9 +1,6 @@
 <template>
   <!-- ACCESS DENIED -->
-  <div
-    v-if="kanbanMembersStore.accessDenied"
-    class="w-full h-full flex items-center justify-center p-4"
-  >
+  <div v-if="kanbanMembersStore.accessDenied" class="w-full h-full flex items-center justify-center p-4">
     <div class="bg-base-200 border border-base-300 p-6 md:p-10 rounded-box text-center max-w-md w-full">
       <font-awesome-icon icon="fa-solid fa-lock" class="text-3xl md:text-4xl mb-4 text-error" />
 
@@ -16,71 +13,43 @@
   </div>
 
   <!-- MEMBERS -->
-  <div
-    v-else
-    class="flex-1 flex flex-col w-full h-full overflow-auto p-2 md:p-5 gap-3"
-  >
+  <div v-else class="flex-1 flex flex-col w-full h-full overflow-auto p-2 md:p-5 gap-3">
     <div class="w-full h-full flex flex-col items-center gap-4">
 
       <!-- HEADER -->
-      <div
-        class="w-full md:w-3/5 flex flex-col md:flex-row justify-between items-stretch md:items-center gap-2"
-      >
-        <button
-          class="btn btn-success w-full md:w-auto"
-          @click="openAddMemberModal"
-        >
+      <div class="w-full md:w-3/5 flex flex-col md:flex-row justify-between items-stretch md:items-center gap-2">
+        <button class="btn btn-success w-full md:w-auto" @click="openAddMemberModal">
           <font-awesome-icon icon="fa-solid fa-user-plus" />
           Add member
         </button>
 
         <!-- SEARCH -->
         <div
-          class="w-full flex flex-col md:flex-row items-stretch md:items-center gap-2 border border-base-300 bg-base-200 p-2 rounded-box"
-        >
-          <input
-            type="text"
-            class="input w-full"
-            placeholder="Search..."
-            v-model="kanbanMembersStore.searchQuery"
-            @keyup.enter="searchMembers"
-            :disabled="kanbanMembersStore.searchType === 'all'"
-          />
+          class="w-full flex flex-col md:flex-row items-stretch md:items-center gap-2 border border-base-300 bg-base-200 p-2 rounded-box">
+          <input type="text" class="input w-full" placeholder="Search..." v-model="kanbanMembersStore.searchQuery"
+            @keyup.enter="searchMembers" :disabled="kanbanMembersStore.searchType === 'all'" />
 
-          <select
-            class="select select-bordered w-full md:w-40"
-            v-model="kanbanMembersStore.searchType"
-          >
+          <select class="select select-bordered w-full md:w-40" v-model="kanbanMembersStore.searchType">
             <option value="all">All</option>
             <option value="email">By email</option>
             <option value="role">By role</option>
           </select>
 
-          <button
-            class="btn btn-primary w-full md:w-auto"
-            @click="searchMembers"
-            :disabled="kanbanMembersStore.searchType !== 'all' && !kanbanMembersStore.searchQuery.trim()"
-          >
+          <button class="btn btn-primary w-full md:w-auto" @click="searchMembers"
+            :disabled="kanbanMembersStore.searchType !== 'all' && !kanbanMembersStore.searchQuery.trim()">
             <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
           </button>
         </div>
       </div>
 
       <!-- MEMBERS LIST -->
-      <div
-        class="w-full md:w-3/5 bg-base-200 border border-base-300 flex flex-col gap-2 p-2 rounded-box"
-      >
-        <div
-          v-for="member in kanbanMembersStore.members"
-          :key="member.id"
-          class="w-full p-2 bg-base-100 border border-base-300 rounded-box flex flex-col md:flex-row md:items-center md:justify-between gap-2"
-        >
+      <div class="w-full md:w-3/5 bg-base-200 border border-base-300 flex flex-col gap-2 p-2 rounded-box">
+        <div v-for="member in kanbanMembersStore.members" :key="member.id"
+          class="w-full p-2 bg-base-100 border border-base-300 rounded-box flex flex-col md:flex-row md:items-center md:justify-between gap-2">
           <!-- LEFT -->
           <div class="flex flex-col md:flex-row md:items-center gap-2 w-full">
 
-            <div
-              class="flex w-full bg-base-200 p-2 items-center gap-2 rounded-box border border-base-300"
-            >
+            <div class="flex w-full bg-base-200 p-2 items-center gap-2 rounded-box border border-base-300">
               <font-awesome-icon icon="fa-solid fa-user" />
 
               <span class="break-all">
@@ -96,33 +65,21 @@
 
           <!-- ACTIONS -->
           <div class="dropdown dropdown-end self-end md:self-auto">
-            <div
-              tabindex="0"
-              role="button"
-              class="btn btn-sm btn-ghost"
-            >
+            <div tabindex="0" role="button" class="btn btn-sm btn-ghost">
               ⋮
             </div>
 
-            <ul
-              tabindex="0"
-              class="dropdown-content menu bg-base-200 border border-base-300 rounded-box w-40 p-2 shadow"
-            >
+            <ul tabindex="0"
+              class="dropdown-content menu bg-base-200 border border-base-300 rounded-box w-40 p-2 shadow">
               <li>
-                <button
-                  class="flex gap-2"
-                  @click="openUpdateMemberModal(member)"
-                >
+                <button class="flex gap-2" @click="openUpdateMemberModal(member)">
                   <font-awesome-icon icon="fa-solid fa-pencil" />
                   Update
                 </button>
               </li>
 
               <li>
-                <button
-                  class="flex gap-2 text-error"
-                  @click="openDeleteMemberModal(member)"
-                >
+                <button class="flex gap-2 text-error" @click="openDeleteMemberModal(member)">
                   <font-awesome-icon icon="fa-solid fa-trash" />
                   Delete
                 </button>
@@ -133,10 +90,8 @@
         </div>
 
         <!-- EMPTY -->
-        <div
-          v-if="!kanbanMembersStore.loading && kanbanMembersStore.members.length === 0"
-          class="p-4 text-center text-base-content/60"
-        >
+        <div v-if="!kanbanMembersStore.loading && kanbanMembersStore.members.length === 0"
+          class="p-4 text-center text-base-content/60">
           No members found.
         </div>
 
@@ -144,15 +99,11 @@
 
       <!-- FOOTER -->
       <div
-        class="w-full md:w-3/5 flex flex-col md:flex-row bg-base-200 border border-base-300 px-3 py-3 items-center gap-3 rounded-box"
-      >
+        class="w-full md:w-3/5 flex flex-col md:flex-row bg-base-200 border border-base-300 px-3 py-3 items-center gap-3 rounded-box">
 
         <!-- LIMIT -->
-        <select
-          class="select select-bordered w-full md:w-auto"
-          v-model="kanbanMembersStore.meta.limit"
-          @change="changeLimit($event.target.value)"
-        >
+        <select class="select select-bordered w-full md:w-auto" v-model="kanbanMembersStore.meta.limit"
+          @change="changeLimit($event.target.value)">
           <option value="5">5</option>
           <option value="10">10</option>
           <option value="20">20</option>
@@ -180,22 +131,14 @@
         </div>
 
         <!-- PAGINATION -->
-        <div
-          class="flex gap-2 md:ml-auto w-full md:w-auto justify-center"
-        >
-          <button
-            class="btn btn-sm btn-neutral"
-            @click="kanbanMembersStore.prevPage"
-            :disabled="kanbanMembersStore.meta.page === 1"
-          >
+        <div class="flex gap-2 md:ml-auto w-full md:w-auto justify-center">
+          <button class="btn btn-sm btn-neutral" @click="kanbanMembersStore.prevPage"
+            :disabled="kanbanMembersStore.meta.page === 1">
             <font-awesome-icon icon="fa-solid fa-arrow-left" />
           </button>
 
-          <button
-            class="btn btn-sm btn-neutral"
-            @click="kanbanMembersStore.nextPage"
-            :disabled="kanbanMembersStore.meta.page === kanbanMembersStore.meta.totalPages"
-          >
+          <button class="btn btn-sm btn-neutral" @click="kanbanMembersStore.nextPage"
+            :disabled="kanbanMembersStore.meta.page === kanbanMembersStore.meta.totalPages">
             <font-awesome-icon icon="fa-solid fa-arrow-right" />
           </button>
         </div>
@@ -206,69 +149,47 @@
   </div>
 
   <!-- ADD MODAL -->
-  <base-dialog
-    v-model="addMemberModal"
-    title="Add Member"
-    confirmText="Add"
-    cancelText="Cancel"
-    @confirm="confirmAddMember"
-  >
+  <base-dialog v-model="addMemberModal" title="Add Member" confirmText="Add" cancelText="Cancel"
+    @confirm="confirmAddMember" @cancel="closeAddMemberModal">
     <div class="w-full flex flex-col gap-2">
+      <Transition name="error-slide">
+        <div v-if="error">
+          <h1 class="text-error mb-2">{{ error }}</h1>
+        </div>
+      </Transition>
 
       <label class="label">
         Member Email
       </label>
-
-      <input
-        type="email"
-        class="input w-full"
-        placeholder="Enter member email"
-        v-model="newMemberEmail"
-      />
-
+      <input type="email" class="input w-full" placeholder="Enter member email" v-model="newMemberEmail" />
       <label class="label">
         Member Role
       </label>
-
-      <select
-        class="select select-bordered w-full"
-        v-model="newMemberRole"
-      >
+      <select class="select select-bordered w-full" v-model="newMemberRole">
         <option value="admin">
           Admin
         </option>
-
         <option value="editor">
           Editor
         </option>
-
         <option value="viewer">
           Viewer
         </option>
-
       </select>
 
     </div>
   </base-dialog>
 
   <!-- UPDATE MODAL -->
-  <base-dialog
-    v-model="updateMemberModal"
-    title="Update Member"
-    confirmText="Update"
-    cancelText="Cancel"
-    @confirm="confirmUpdateMember"
-  >
+  <base-dialog v-model="updateMemberModal" title="Update Member" confirmText="Update" cancelText="Cancel"
+    @confirm="confirmUpdateMember">
     <div class="w-full flex flex-col gap-2">
 
       <label class="label">
         Member Role
       </label>
 
-      <select
-        class="select select-bordered w-full"
-        v-model="updatedRole"
-      >
+      <select class="select select-bordered w-full" v-model="updatedRole">
         <option value="admin">
           Admin
         </option>
@@ -287,13 +208,8 @@
   </base-dialog>
 
   <!-- DELETE MODAL -->
-  <base-dialog
-    v-model="deleteMemberModal"
-    title="Delete Member"
-    confirmText="Delete"
-    cancelText="Cancel"
-    @confirm="confirmDeleteMember"
-  >
+  <base-dialog v-model="deleteMemberModal" title="Delete Member" confirmText="Delete" cancelText="Cancel"
+    @confirm="confirmDeleteMember">
     <div class="w-full flex flex-col gap-5">
 
       <p>
@@ -407,6 +323,14 @@ export default {
       this.addMemberModal = true
     },
 
+    closeAddMemberModal() {
+      this.adminStore.clearError()
+      this.addMemberModal = false
+      this.newMemberEmail = ''
+      this.newMemberRole = 'viewer'
+      
+    },
+
     async confirmAddMember() {
       try {
         // send email to auth server - /users/email/{email}
@@ -429,6 +353,11 @@ export default {
       }
     },
   },
+  computed: {
+    error() {
+      return this.adminStore.error
+    }
+  }
 }
 </script>
 

@@ -106,9 +106,13 @@ export const useAdminStore = defineStore('admin', {
 
         // Store result as single-item array
         this.userByEmail = response.data
-      } catch (err) {}
+      } catch (err) {
+        this.userByEmail = null
+        this.error = err.response?.data?.detail || err.message || 'Something went wrong'
+      } finally {
+        this.loading = false
+      }
     },
-
     // --------------------------
     // Get single user by ID
     // --------------------------
@@ -420,9 +424,15 @@ export const useAdminStore = defineStore('admin', {
       }
     },
 
-    // Clear search input field
+    // --------------------------
+    // Clear search
+    // --------------------------
     clearSearch() {
+      this.searchMode = 'all'
       this.searchQuery = ''
+    },
+    clearError() {
+      this.error = null
     },
   },
 })

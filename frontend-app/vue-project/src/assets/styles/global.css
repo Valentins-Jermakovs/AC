@@ -3,30 +3,45 @@
 @plugin "daisyui";
 
 @plugin "daisyui/theme" {
-  name: 'light';
+  name: 'carbon-light';
   default: true;
   prefersdark: false;
   color-scheme: 'light';
-  --color-base-100: oklch(98% 0 0);
-  --color-base-200: oklch(96% 0.001 286.375);
-  --color-base-300: oklch(92% 0.004 286.32);
-  --color-base-content: oklch(21% 0.006 285.885);
+
+  /* ===== Base colors — nedaudz tumšāki foni ===== */
+  --color-base-100: oklch(95% 0 0); /* gaišāks panels, bet ne pārāk balts */
+  --color-base-200: oklch(92% 0.001 286.375);
+  --color-base-300: oklch(88% 0.004 286.32);
+  --color-base-content: oklch(23% 0.006 285.885); /* teksts tumšāks, viegli lasāms */
+
+  /* ===== Brand colors ===== */
   --color-primary: oklch(58% 0.233 277.117);
   --color-primary-content: oklch(96% 0.018 272.314);
+
   --color-secondary: oklch(62% 0.214 259.815);
   --color-secondary-content: oklch(97% 0.014 343.198);
+
   --color-accent: oklch(76% 0.233 130.85);
   --color-accent-content: oklch(98% 0.031 120.757);
-  --color-neutral: oklch(27% 0.006 286.033);
+
+  /* ===== Neutral — nedaudz tumšāks, bet acij tīkams ===== */
+  --color-neutral: oklch(32% 0.006 286.033);
   --color-neutral-content: oklch(98% 0 0);
+
+  /* ===== States ===== */
   --color-info: oklch(54% 0.245 262.881);
   --color-info-content: oklch(97% 0.014 254.604);
+
   --color-success: oklch(62% 0.194 149.214);
   --color-success-content: oklch(98% 0.018 155.826);
+
   --color-warning: oklch(66% 0.179 58.318);
   --color-warning-content: oklch(98% 0.016 73.684);
+
   --color-error: oklch(57% 0.245 27.325);
   --color-error-content: oklch(97% 0.014 343.198);
+
+  /* ===== Shape & layout ===== */
   --radius-selector: 0rem;
   --radius-field: 0rem;
   --radius-box: 0.25rem;
@@ -38,18 +53,18 @@
 }
 
 @plugin "daisyui/theme" {
-  name: 'dark';
+  name: 'carbon-dark';
   default: false;
   prefersdark: true;
   color-scheme: 'dark';
 
-  /* Base colors — apgriezti */
-  --color-base-100: oklch(18% 0.006 286.033);
-  --color-base-200: oklch(22% 0.006 286.033);
-  --color-base-300: oklch(27% 0.006 286.033);
-  --color-base-content: oklch(98% 0 0);
+  /* ===== Base colors — gaišāki, bet saglabā tumšo toni ===== */
+  --color-base-100: oklch(22% 0.006 286.033); /* nedaudz gaišāks */
+  --color-base-200: oklch(26% 0.006 286.033);
+  --color-base-300: oklch(32% 0.006 286.033);
+  --color-base-content: oklch(98% 0 0); /* teksts balts */
 
-  /* Brand colors — tie paši, lai saglabā identitāti */
+  /* ===== Brand colors ===== */
   --color-primary: oklch(58% 0.233 277.117);
   --color-primary-content: oklch(96% 0.018 272.314);
 
@@ -59,11 +74,11 @@
   --color-accent: oklch(76% 0.233 130.85);
   --color-accent-content: oklch(18% 0.031 120.757);
 
-  /* Neutral */
-  --color-neutral: oklch(92% 0.004 286.32);
-  --color-neutral-content: oklch(21% 0.006 285.885);
+  /* ===== Neutral — gaišāks Carbon feel ===== */
+  --color-neutral: oklch(80% 0.004 286.32); /* nedaudz gaišāks */
+  --color-neutral-content: oklch(25% 0.006 285.885); /* teksts tumšāks, redzams */
 
-  /* States */
+  /* ===== States ===== */
   --color-info: oklch(54% 0.245 262.881);
   --color-info-content: oklch(97% 0.014 254.604);
 
@@ -76,7 +91,7 @@
   --color-error: oklch(57% 0.245 27.325);
   --color-error-content: oklch(97% 0.014 343.198);
 
-  /* Shape & layout — identiski */
+  /* ===== Shape & layout ===== */
   --radius-selector: 0rem;
   --radius-field: 0rem;
   --radius-box: 0.25rem;

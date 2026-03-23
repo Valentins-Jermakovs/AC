@@ -219,8 +219,13 @@
 
     <!-- CREATE TASK DIALOG -->
     <BaseDialog v-model="createDialog" title="Create task" confirmText="Create" cancelText="Cancel"
-      @confirm="createTask">
+      @confirm="createTask" @cancel="closeCreate">
       <div class="flex flex-col gap-2 w-full">
+        <Transition name="error-slide">
+        <div v-if="error">
+          <h1 class="text-error mb-2">{{ error }}</h1>
+        </div>
+      </Transition>
         <label class="label" for="title">Title</label>
         <input v-model="form.title" class="input input-bordered w-full" placeholder="Task title" />
         <label class="label" for="description">Description</label>
@@ -256,8 +261,14 @@
     </BaseDialog>
 
     <!-- Edit -->
-    <BaseDialog v-model="editDialog" title="Edit Task" confirmText="Save" cancelText="Cancel" @confirm="updateTask">
+    <BaseDialog v-model="editDialog" title="Edit Task" confirmText="Save" cancelText="Cancel" @confirm="updateTask"
+      @cancel="closeEdit">
       <div class="flex flex-col gap-2 w-full">
+        <Transition name="error-slide">
+        <div v-if="error">
+          <h1 class="text-error mb-2">{{ error }}</h1>
+        </div>
+      </Transition>
         <label class="label" for="title">Title</label>
         <input v-model="form.title" class="input input-bordered w-full" placeholder="Task title" />
         <label class="label" for="description">Description</label>
@@ -321,6 +332,9 @@ export default {
     }
   },
   computed: {
+    error() {
+      return this.tasksStore.error
+    },
     detailsSections() {
       return [
         {
@@ -349,6 +363,14 @@ export default {
     },
   },
   methods: {
+    closeCreate() {
+      this.createDialog = false
+      this.tasksStore.clearError()
+    },
+    closeEdit() {
+      this.editDialog = false
+      this.tasksStore.clearError()
+    },
     openCreateDialog() {
       this.form = {
         title: '',
@@ -361,7 +383,6 @@ export default {
       this.createDialog = true
     },
     async createTask() {
-      if (!this.form.title) return
       try {
         const payload = {
           title: this.form.title,
@@ -416,7 +437,6 @@ export default {
     },
 
     async updateTask() {
-      if (!this.form.title) return
       try {
         const payload = {
           taskId: this.task.id,

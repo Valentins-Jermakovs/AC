@@ -2,7 +2,7 @@
   <!-- Toolbar -->
   <div
     class="w-full bg-base-100 border border-base-300 
-    flex flex-wrap items-center gap-2 p-2"
+    flex flex-wrap items-center gap-2 p-2 flex-1"
   >
     <!-- Create -->
     <button

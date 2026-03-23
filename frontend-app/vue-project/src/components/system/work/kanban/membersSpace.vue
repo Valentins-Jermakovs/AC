@@ -1,6 +1,6 @@
 <template>
   <!-- ACCESS DENIED -->
-  <div v-if="kanbanMembersStore.accessDenied" class="w-full h-full flex items-center justify-center p-4">
+  <div v-if="kanbanMembersStore.accessDenied" class="w-full h-full flex items-center justify-center p-4 flex-1">
     <div class="bg-base-200 border border-base-300 p-6 md:p-10  text-center max-w-md w-full">
       <font-awesome-icon icon="fa-solid fa-lock" class="text-3xl md:text-4xl mb-4 text-error" />
 

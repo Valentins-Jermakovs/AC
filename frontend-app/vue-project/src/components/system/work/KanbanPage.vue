@@ -1,6 +1,6 @@
 <template>
   <!-- Main wrapper -->
-  <div class="flex flex-col md:flex-row flex-1 w-full min-h-full sm:h-full overflow-hidden">
+  <div class="flex flex-col sm:flex-row flex-1 w-full min-h-full sm:h-full overflow-hidden">
 
     <!-- Main content: board + members -->
     <div class="flex flex-col flex-1 w-full h-full overflow-hidden order-1 md:order-1">
@@ -36,28 +36,23 @@
         <!-- BOARD -->
         <BoardSpace
           v-if="activeView === 'board' && kanbanBoardStore.selectedBoard"
-          class="flex-1"
         />
 
         <!-- Empty state -->
         <NullBoards
           v-if="activeView === 'board' && !kanbanBoardStore.selectedBoard"
-          class="flex-1"
         />
 
         <!-- MEMBERS -->
         <MembersSpace
           v-if="activeView === 'members'"
-          class="flex-1"
         />
 
       </div>
     </div>
 
     <!-- Sidebar -->
-    <KanbanSideBar
-      class="w-full h-auto sm:h-full md:w-64 order-2 md:order-2 mt-2 md:mt-0"
-    />
+    <KanbanSideBar/>
 
     <!-- Loading -->
     <LoadingScreen

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full flex items-center justify-center flex-col gap-5 p-1">
+  <div class="w-full h-full flex items-center justify-center flex-col gap-5 p-1 flex-1">
     <div class="flex items-center justify-center gap-2 text-red text-2xl">
       <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2xl" />
       <h1>Boards not found or you don't have selected any board</h1>

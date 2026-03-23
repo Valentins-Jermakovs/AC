@@ -1,5 +1,6 @@
 <template>
-  <div class="h-auto sm:h-full flex flex-col w-full md:w-64 bg-base-200 border border-base-300 p-1 gap-2">
+  <div class="h-auto sm:h-full flex flex-col w-full sm:w-64 bg-base-200 border border-base-300 p-1 gap-2
+  order-2 sm:order-2 mt-2 sm:mt-0">
     <!-- Search bar -->
     <div class="w-full p-1 bg-base-100 border border-base-300 flex flex-col items-center gap-2">
       <div class="w-full">

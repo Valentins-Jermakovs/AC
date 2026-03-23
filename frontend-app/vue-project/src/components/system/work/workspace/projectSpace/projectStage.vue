@@ -5,9 +5,7 @@
 
     <!-- CONTENT -->
     <div class="drawer-content">
-      <div
-        class="w-full bg-base-100 border border-base-300 rounded-box p-4 flex flex-col gap-4 mt-5"
-      >
+      <div class="w-full bg-base-100 border border-base-300 rounded-box p-4 flex flex-col gap-4 mt-5">
         <!-- HEADER -->
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-3">
@@ -21,7 +19,7 @@
               </div>
             </div>
           </div>
-          <button class="btn btn-primary btn-sm gap-2" @click="drawerOpen = true">
+          <button class="btn btn-primary btn-circle gap-2" @click="drawerOpen = true">
             <font-awesome-icon icon="fa-solid fa-code-branch" />
           </button>
         </div>
@@ -121,80 +119,67 @@
   </div>
 
   <!-- Create stage dialog -->
-  <BaseDialog
-    v-model="showCreateDialog"
-    title="Create new stage"
-    confirmText="Create"
-    cancelText="Cancel"
-    @confirm="handleCreate"
-  >
+  <BaseDialog v-model="showCreateDialog" title="Create new stage" confirmText="Create" cancelText="Cancel"
+    @confirm="handleCreate" @cancel="closeCreateDialog">
     <div class="flex flex-col gap-2 w-full">
+      <Transition name="error-slide">
+        <div v-if="error">
+          <h1 class="text-error mb-2">{{ error }}</h1>
+        </div>
+      </Transition>
+      <label for="stageTitle" class="label">Stage Title</label>
       <input v-model="newStage.title" type="text" class="input w-full" placeholder="Stage title" />
-      <textarea
-        v-model="newStage.description"
-        class="textarea w-full"
-        placeholder="Stage description"
-      ></textarea>
+      <label for="stageDescription" class="label">Stage Description</label>
+      <textarea v-model="newStage.description" class="textarea w-full min-h-52" placeholder="Stage description"></textarea>
+      <label for="stageDueDate" class="label">Stage Due Date</label>
       <input v-model="newStage.dueDate" type="date" class="input w-full" />
     </div>
   </BaseDialog>
   <!-- Delete confirmation dialog -->
-  <BaseDialog
-    v-model="showDelete"
-    title="Delete stage"
-    confirmText="Delete"
-    cancelText="Cancel"
-    @confirm="handleDelete"
-  >
+  <BaseDialog v-model="showDelete" title="Delete stage" confirmText="Delete" cancelText="Cancel"
+    @confirm="handleDelete">
     <p>Are you sure you want to delete this stage?</p>
   </BaseDialog>
   <!-- Edit stage dialog -->
-  <BaseDialog
-    v-model="showEditDialog"
-    title="Edit stage"
-    confirmText="Update"
-    cancelText="Cancel"
-    @confirm="handleUpdate"
-  >
+  <BaseDialog v-model="showEditDialog" title="Edit stage" confirmText="Update" cancelText="Cancel"
+    @confirm="handleUpdate" @cancel="closeEditDialog">
     <div class="flex flex-col gap-2 w-full">
+      <Transition name="error-slide">
+        <div v-if="error">
+          <h1 class="text-error mb-2">{{ error }}</h1>
+        </div>
+      </Transition>
+      <label for="stageTitle" class="label">Stage Title</label>
       <input v-model="editStage.title" type="text" class="input w-full" placeholder="Stage title" />
-      <textarea
-        v-model="editStage.description"
-        class="textarea w-full"
-        placeholder="Stage description"
-      ></textarea>
+      <label for="stageDescription" class="label">Stage Description</label>
+      <textarea v-model="editStage.description" class="textarea w-full min-h-52" placeholder="Stage description"></textarea>
+      <label for="stageDueDate" class="label">Stage Due Date</label>
       <input v-model="editStage.dueDate" type="date" class="input w-full" />
     </div>
   </BaseDialog>
 
   <!-- Relative stage dialog -->
-  <BaseDialog
-    v-model="showRelativeDialog"
-    title="Add relative stage"
-    confirmText="Create"
-    cancelText="Cancel"
-    @confirm="handleCreateRelative"
-  >
+  <BaseDialog v-model="showRelativeDialog" title="Add relative stage" confirmText="Create" cancelText="Cancel"
+    @confirm="handleCreateRelative" @cancel="closeRelativeDialog">
     <div class="flex flex-col gap-2 w-full">
-      <input
-        v-model="relativeStage.title"
-        type="text"
-        class="input w-full"
-        placeholder="Stage title"
-      />
-      <textarea
-        v-model="relativeStage.description"
-        class="textarea w-full"
-        placeholder="Stage description"
-      ></textarea>
+      <Transition name="error-slide">
+        <div v-if="error">
+          <h1 class="text-error mb-2">{{ error }}</h1>
+        </div>
+      </Transition>
+      <label for="stageTitle" class="label">Stage Title</label>
+      <input v-model="relativeStage.title" type="text" class="input w-full" placeholder="Stage title" />
+      <label for="stageDescription" class="label">Stage Description</label>
+      <textarea v-model="relativeStage.description" class="textarea w-full min-h-52" placeholder="Stage description"></textarea>
+      <label for="stageDueDate" class="label">Stage Due Date</label>
       <input v-model="relativeStage.dueDate" type="date" class="input w-full" />
       <div class="flex gap-2 items-center mt-2">
         <label class="flex items-center gap-1">
-          <input type="radio" value="before" v-model="relativeStage.position" />
+          <input type="radio" value="before" class="radio" v-model="relativeStage.position" />
           Before
         </label>
         <label class="flex items-center gap-1">
-          <input type="radio" value="after" v-model="relativeStage.position" />
+          <input type="radio" value="after" class="radio" v-model="relativeStage.position" />
           After
         </label>
       </div>
@@ -242,9 +227,35 @@ export default {
     }
   },
   methods: {
+    closeCreateDialog() {
+      this.showCreateDialog = false
+      this.newStage = {
+        title: '',
+        description: '',
+        dueDate: '',
+      }
+      this.stagesStore.clearError()
+    },
+    closeRelativeDialog() {
+      this.showRelativeDialog = false
+      this.relativeStage = {
+        title: '',
+        description: '',
+        dueDate: '',
+        position: 'after', // default: after
+      }
+      this.stagesStore.clearError()
+    },
+    closeEditDialog() {
+      this.showEditDialog = false
+      this.editStage = {
+        title: '',
+        description: '',
+        dueDate: '',
+      }
+      this.stagesStore.clearError()
+    },
     async handleCreate() {
-      if (!this.newStage.title) return alert('Title is required')
-
       const payload = {
         title: this.newStage.title,
         description: this.newStage.description,
@@ -285,7 +296,6 @@ export default {
       this.showEditDialog = true
     },
     async handleUpdate() {
-      if (!this.editStage.title) return alert('Title is required')
 
       const payload = {
         projectId: this.stagesStore.projectId,
@@ -313,7 +323,6 @@ export default {
       this.showRelativeDialog = true
     },
     async handleCreateRelative() {
-      if (!this.relativeStage.title) return alert('Title is required')
 
       const payload = {
         projectId: this.stagesStore.projectId,
@@ -347,5 +356,10 @@ export default {
       }
     },
   },
+  computed: {
+    error() {
+      return this.stagesStore.error
+    }
+  }
 }
 </script>

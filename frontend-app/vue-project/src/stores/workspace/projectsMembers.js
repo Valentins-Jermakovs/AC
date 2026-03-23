@@ -236,7 +236,6 @@ export const useWorkspaceProjectMembersStore = defineStore('workspaceProjectMemb
         await this.repeatLastRequest()
       } catch (err) {
         this.error = err.response?.data?.detail || err.message || 'Something went wrong'
-        throw err
       } finally {
         this.loading = false
       }
@@ -266,7 +265,6 @@ export const useWorkspaceProjectMembersStore = defineStore('workspaceProjectMemb
         await this.repeatLastRequest()
       } catch (err) {
         this.error = err.response?.data?.detail || err.message || 'Something went wrong'
-        throw err
       } finally {
         this.loading = false
       }
@@ -296,7 +294,6 @@ export const useWorkspaceProjectMembersStore = defineStore('workspaceProjectMemb
         await this.repeatLastRequest()
       } catch (err) {
         this.error = err.response?.data?.detail || err.message || 'Something went wrong'
-        throw err
       } finally {
         this.loading = false
       }
@@ -341,5 +338,8 @@ export const useWorkspaceProjectMembersStore = defineStore('workspaceProjectMemb
         await this.getMemberByRole()
       }
     },
+    clearError() {
+      this.error = null
+    }
   },
 })

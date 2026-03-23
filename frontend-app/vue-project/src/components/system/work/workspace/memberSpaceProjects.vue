@@ -158,8 +158,16 @@
     confirmText="Add"
     cancelText="Cancel"
     @confirm="confirmAddMember"
+    @cancel="closeAddMemberModal"
   >
     <div class="w-full flex flex-col gap-5">
+      <Transition name="error-slide">
+        <div v-if="error || adminError">
+          <h1 class="text-error mb-2">{{ error }}</h1>
+          <h1 class="text-error mb-2">{{ adminError }}</h1>
+        </div>
+      </Transition>
+      <label for="memberEmail" class="label">Member Email</label>
       <!-- Text input - member email -->
       <input
         type="email"
@@ -167,6 +175,7 @@
         placeholder="Enter member email"
         v-model="newMemberEmail"
       />
+      <label for="memberRole" class="label">Member Role</label>
       <!-- Select input - member role -->
       <select class="select select-bordered w-full" v-model="newMemberRole">
         <option value="admin">Admin</option>
@@ -238,6 +247,15 @@ export default {
     }
   },
 
+  computed: {
+    error() {
+      return this.workspaceProjectMembersStore.error
+    },
+    adminError() {
+      return this.adminStore.error
+    }
+  },
+
   async mounted() {
     if (!this.workspaceProjectsStore.selectedProject) return
 
@@ -247,6 +265,13 @@ export default {
   },
 
   methods: {
+    closeAddMemberModal() {
+      this.adminStore.clearError()
+      this.workspaceProjectMembersStore.clearError()
+      this.addMemberModal = false
+      this.newMemberEmail = ''
+      this.newMemberRole = 'viewer'
+    },
     async searchMembers() {
       this.workspaceProjectMembersStore.meta.page = 1
 

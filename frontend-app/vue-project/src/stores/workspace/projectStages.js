@@ -217,5 +217,8 @@ export const useWorkspaceProjectStagesStore = defineStore('workspaceProjectStage
         this.loading = false
       }
     },
+    clearError() {
+      this.error = null
+    },
   },
 })

@@ -10,7 +10,10 @@
 
       <!-- Create new stage button -->
       <div class="w-full flex items-center justify-center p-2">
-        <button class="btn btn-primary" @click="showDialog = true">Create new stage</button>
+        <button class="btn btn-primary" @click="showDialog = true">
+          <font-awesome-icon icon="fa-solid fa-plus" /> 
+          Create new stage
+        </button>
       </div>
     </div>
   </div>
@@ -22,14 +25,23 @@
     confirmText="Create"
     cancelText="Cancel"
     @confirm="handleCreate"
+    @cancel="closeCreateDialog"
   >
     <div class="flex flex-col gap-2 w-full">
+      <Transition name="error-slide">
+        <div v-if="error">
+          <h1 class="text-error mb-2">{{ error }}</h1>
+        </div>
+      </Transition>
+      <label for="stageTitle" class="label">Stage Title</label>
       <input v-model="newStage.title" type="text" class="input w-full" placeholder="Stage title" />
+      <label for="stageDescription" class="label">Stage Description</label>
       <textarea
         v-model="newStage.description"
         class="textarea w-full"
         placeholder="Stage description"
       ></textarea>
+      <label for="stageDueDate" class="label">Stage Due Date</label>
       <input v-model="newStage.dueDate" type="date" class="input w-full" />
     </div>
   </BaseDialog>
@@ -67,8 +79,16 @@ export default {
   },
 
   methods: {
+    closeCreateDialog() {
+      this.showDialog = false
+      this.newStage = {
+        title: '',
+        description: '',
+        dueDate: '',
+      }
+      this.stagesStore.clearError()
+    },
     async handleCreate() {
-      if (!this.newStage.title) return alert('Title is required')
 
       const payload = {
         title: this.newStage.title,
@@ -85,8 +105,12 @@ export default {
         this.showDialog = false
       } catch (err) {
         console.error(err)
-        alert('Error creating stage: ' + err)
       }
+    },
+  },
+  computed: {
+    error() {
+      return this.stagesStore.error
     },
   },
 }

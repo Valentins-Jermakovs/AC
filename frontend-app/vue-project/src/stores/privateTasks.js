@@ -41,7 +41,7 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
       totalCompletedTasks: 0,
       totalInMonth: 0,
       totalInMonthCompleted: 0,
-    }
+    },
   }),
 
   // ==========================
@@ -109,11 +109,14 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
       this.error = null
 
       try {
-        const response = await api.get(API_ENDPOINTS.GET_ALL_PRIAVTE_TASKS_IN_CURRENT_MONTH_COUNTED, {
-          headers: {
-            Authorization: `Bearer ${authStore.accessToken}`,
+        const response = await api.get(
+          API_ENDPOINTS.GET_ALL_PRIAVTE_TASKS_IN_CURRENT_MONTH_COUNTED,
+          {
+            headers: {
+              Authorization: `Bearer ${authStore.accessToken}`,
+            },
           },
-        })
+        )
 
         // Save tasks and pagination data
         this.tasksKpi.totalInMonth = response.data
@@ -124,18 +127,20 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
       }
     },
 
-
     async fetchTasksAllCompletedInMonth() {
       const authStore = useAuthStore()
       this.loading = true
       this.error = null
 
       try {
-        const response = await api.get(API_ENDPOINTS.GET_ALL_PRIVATE_COMPLETED_TASKS_IN_CURRENT_MONTH_COUNTED, {
-          headers: {
-            Authorization: `Bearer ${authStore.accessToken}`,
+        const response = await api.get(
+          API_ENDPOINTS.GET_ALL_PRIVATE_COMPLETED_TASKS_IN_CURRENT_MONTH_COUNTED,
+          {
+            headers: {
+              Authorization: `Bearer ${authStore.accessToken}`,
+            },
           },
-        })
+        )
 
         // Save tasks and pagination data
         this.tasksKpi.totalInMonthCompleted = response.data
@@ -145,8 +150,6 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
         this.loading = false
       }
     },
-
-
 
     // Get all tasks paginated
     async fetchPrivateTasks() {

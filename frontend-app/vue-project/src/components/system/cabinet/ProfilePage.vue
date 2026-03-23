@@ -100,7 +100,10 @@ export default {
           title: this.$t('cabinet.profile.kpi.tasks'),
           value: this.taskStore.tasksKpi.totalCompletedTasks,
           max: this.taskStore.tasksKpi.totalTasks,
-          percent: Math.round((this.taskStore.tasksKpi.totalCompletedTasks / this.taskStore.tasksKpi.totalTasks) * 100),
+          percent: Math.round(
+            (this.taskStore.tasksKpi.totalCompletedTasks / this.taskStore.tasksKpi.totalTasks) *
+              100,
+          ),
           colorClass: 'text-success',
           progressClass: 'progress-success',
         },
@@ -108,7 +111,10 @@ export default {
           title: this.$t('cabinet.profile.kpi.month_tasks'),
           value: this.taskStore.tasksKpi.totalInMonthCompleted,
           max: this.taskStore.tasksKpi.totalInMonth,
-          percent: Math.round((this.taskStore.tasksKpi.totalInMonthCompleted / this.taskStore.tasksKpi.totalInMonth) * 100),
+          percent: Math.round(
+            (this.taskStore.tasksKpi.totalInMonthCompleted / this.taskStore.tasksKpi.totalInMonth) *
+              100,
+          ),
           colorClass: 'text-primary',
           progressClass: 'progress-primary',
         },

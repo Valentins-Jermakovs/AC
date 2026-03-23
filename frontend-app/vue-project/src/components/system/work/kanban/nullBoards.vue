@@ -11,8 +11,14 @@
   </div>
 
   <!-- Create board modal -->
-  <base-dialog v-model="createModal" title="Create New Board" confirmText="Create" cancelText="Cancel"
-    @confirm="confirmCreateBoard" @cancel="closeCreateModal">
+  <base-dialog
+    v-model="createModal"
+    title="Create New Board"
+    confirmText="Create"
+    cancelText="Cancel"
+    @confirm="confirmCreateBoard"
+    @cancel="closeCreateModal"
+  >
     <div class="flex flex-col gap-2 w-full">
       <Transition name="error-slide">
         <div v-if="error">
@@ -20,9 +26,13 @@
         </div>
       </Transition>
       <label for="boardTitle" class="label">Board Title</label>
-      <input type="text" class="input w-full" v-model="newBoardTitle" placeholder="Enter board title" />
+      <input
+        type="text"
+        class="input w-full"
+        v-model="newBoardTitle"
+        placeholder="Enter board title"
+      />
     </div>
-
   </base-dialog>
 </template>
 
@@ -74,7 +84,7 @@ export default {
     error() {
       return this.kanbanBoardStore.error
     },
-  }
+  },
 }
 </script>
 

@@ -1,6 +1,7 @@
 <template>
-  <div class="h-auto sm:h-full flex flex-col w-full sm:w-64 bg-base-200 border border-base-300 p-1 gap-2
-  order-2 sm:order-2 mt-2 sm:mt-0">
+  <div
+    class="h-auto sm:h-full flex flex-col w-full sm:w-64 bg-base-200 border border-base-300 p-1 gap-2 order-2 sm:order-2 mt-2 sm:mt-0"
+  >
     <!-- Search bar -->
     <div class="w-full p-1 bg-base-100 border border-base-300 flex flex-col items-center gap-2">
       <div class="w-full">
@@ -46,9 +47,10 @@
         @click="selectBoard(board)"
         class="w-full h-16 flex items-center p-2 border duration-300 transition-all hover:cursor-pointer"
         :class="{
-          'bg-neutral text-neutral-content border-base-300 border-2': kanbanBoardStore.selectedBoard?.id === board.id,
+          'bg-neutral text-neutral-content border-base-300 border-2':
+            kanbanBoardStore.selectedBoard?.id === board.id,
           'border-base-300 bg-base-200 hover:bg-base-300 hover:border-info':
-          kanbanBoardStore.selectedBoard?.id !== board.id,
+            kanbanBoardStore.selectedBoard?.id !== board.id,
         }"
       >
         <h1>{{ board.title }}</h1>

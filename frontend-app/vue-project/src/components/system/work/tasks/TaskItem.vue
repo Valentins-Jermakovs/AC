@@ -12,9 +12,7 @@
       <h1 class="font-medium text-md">{{ shortTitle }}</h1>
       <p class="text-xs">{{ shortDescription }}</p>
     </div>
-    <div class="pr-4 text-xs">
-      {{ $t('work.task_detail.due_date') }}: {{ task.dueDate }}
-    </div>
+    <div class="pr-4 text-xs">{{ $t('work.task_detail.due_date') }}: {{ task.dueDate }}</div>
   </div>
 </template>
 

@@ -1,6 +1,7 @@
 <template>
-  <div class="w-full flex flex-col md:flex-row items-center gap-3 md:gap-5 justify-between p-2 bg-base-100
-  border border-base-300">
+  <div
+    class="w-full flex flex-col md:flex-row items-center gap-3 md:gap-5 justify-between p-2 bg-base-100 border border-base-300"
+  >
     <!-- Create -->
     <button class="btn btn-success w-full md:w-auto" @click="showCreateDialog = true">
       <font-awesome-icon icon="fa-solid fa-plus" />
@@ -11,8 +12,13 @@
 
     <!-- Search -->
     <div class="flex flex-col md:flex-row gap-2 flex-1 w-full">
-      <input v-model="store.searchQuery" type="text" class="input input-bordered w-full md:w-auto"
-        placeholder="Search..." @keyup.enter="search" />
+      <input
+        v-model="store.searchQuery"
+        type="text"
+        class="input input-bordered w-full md:w-auto"
+        placeholder="Search..."
+        @keyup.enter="search"
+      />
       <select v-model="store.searchMode" class="select select-bordered w-full md:w-auto">
         <option value="all">All</option>
         <option value="title">By title</option>
@@ -24,8 +30,14 @@
   </div>
 
   <!-- Create dialog -->
-  <base-dialog v-model="showCreateDialog" title="Create project" confirmText="Create" cancelText="Cancel"
-    @confirm="createProject" @cancel="closeCreateProject">
+  <base-dialog
+    v-model="showCreateDialog"
+    title="Create project"
+    confirmText="Create"
+    cancelText="Cancel"
+    @confirm="createProject"
+    @cancel="closeCreateProject"
+  >
     <div class="flex flex-col w-full gap-3">
       <Transition name="error-slide">
         <div v-if="error">
@@ -35,12 +47,20 @@
       <label class="label">
         <span class="label-text">Title</span>
       </label>
-      <input v-model="newProject.title" type="text" class="input input-bordered w-full" placeholder="Project title" />
+      <input
+        v-model="newProject.title"
+        type="text"
+        class="input input-bordered w-full"
+        placeholder="Project title"
+      />
       <label class="label">
         <span class="label-text">Description</span>
       </label>
-      <textarea v-model="newProject.description" class="textarea textarea-bordered w-full min-h-52"
-        placeholder="Project description"></textarea>
+      <textarea
+        v-model="newProject.description"
+        class="textarea textarea-bordered w-full min-h-52"
+        placeholder="Project description"
+      ></textarea>
     </div>
   </base-dialog>
 </template>

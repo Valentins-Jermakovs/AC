@@ -1,24 +1,15 @@
 <template>
-    <!-- ACCESS DENIED -->
+  <!-- ACCESS DENIED -->
   <div
     v-if="workspaceProjectMembersStore.accessDenied"
     class="w-full h-full flex items-center justify-center p-4"
   >
     <div
-      class="bg-base-200 border border-base-300 
-      p-6 sm:p-10 
-      wrap-break-word 
-      text-center 
-      max-w-md w-full"
+      class="bg-base-200 border border-base-300 p-6 sm:p-10 wrap-break-word text-center max-w-md w-full"
     >
-      <font-awesome-icon
-        icon="fa-solid fa-lock"
-        class="text-3xl sm:text-4xl mb-4 text-error"
-      />
+      <font-awesome-icon icon="fa-solid fa-lock" class="text-3xl sm:text-4xl mb-4 text-error" />
 
-      <h2 class="text-lg sm:text-xl font-bold">
-        Access denied
-      </h2>
+      <h2 class="text-lg sm:text-xl font-bold">Access denied</h2>
 
       <p class="text-sm sm:text-base text-base-content/60">
         You don't have permission to view members
@@ -27,44 +18,19 @@
   </div>
 
   <!-- MEMBERS -->
-  <div
-    v-else
-    class="flex-1 flex flex-col w-full h-full 
-    p-3 sm:p-5 
-    gap-3"
-  >
-
-    <div
-      class="w-full flex flex-col gap-4"
-    >
-
+  <div v-else class="flex-1 flex flex-col w-full h-full p-3 sm:p-5 gap-3">
+    <div class="w-full flex flex-col gap-4">
       <!-- HEADER -->
-      <div
-        class="w-full 
-        flex flex-col lg:flex-row 
-        gap-3 
-        lg:items-center"
-      >
-
-        <button
-          class="btn btn-success w-full lg:h-full lg:w-auto"
-          @click="openAddMemberModal"
-        >
-          <font-awesome-icon icon="fa-solid fa-user-plus"/>
+      <div class="w-full flex flex-col lg:flex-row gap-3 lg:items-center">
+        <button class="btn btn-success w-full lg:h-full lg:w-auto" @click="openAddMemberModal">
+          <font-awesome-icon icon="fa-solid fa-user-plus" />
           Add member
         </button>
 
         <!-- SEARCH -->
         <div
-          class="w-full 
-          flex flex-col sm:flex-row 
-          gap-2 
-          border border-base-300 
-          bg-base-200 
-          p-2 
-          wrap-break-word"
+          class="w-full flex flex-col sm:flex-row gap-2 border border-base-300 bg-base-200 p-2 wrap-break-word"
         >
-
           <input
             type="text"
             class="input w-full"
@@ -82,108 +48,58 @@
             <option value="role">By role</option>
           </select>
 
-          <button
-            class="btn btn-primary w-full sm:w-auto"
-            @click="searchMembers"
-          >
-            <font-awesome-icon icon="fa-solid fa-magnifying-glass"/>
+          <button class="btn btn-primary w-full sm:w-auto" @click="searchMembers">
+            <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
           </button>
-
         </div>
-
       </div>
 
       <!-- MEMBERS LIST -->
-      <div class="w-full bg-base-200 border border-base-300 wrap-break-word p-2 sm:p-3 flex flex-col gap-3">
-
-
+      <div
+        class="w-full bg-base-200 border border-base-300 wrap-break-word p-2 sm:p-3 flex flex-col gap-3"
+      >
         <div
-    v-for="member in workspaceProjectMembersStore.projectMembers"
-    :key="member.id"
-    class="
-      w-full
-      flex flex-col sm:flex-row sm:items-center
-      justify-between
-      gap-3
-      p-3
-      bg-base-100
-      border border-base-300
-      wrap-break-word
-    "
-  >
-
+          v-for="member in workspaceProjectMembersStore.projectMembers"
+          :key="member.id"
+          class="w-full flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 bg-base-100 border border-base-300 wrap-break-word"
+        >
           <!-- EMAIL -->
           <div
-            class="flex items-center gap-2 
-            flex-1 
-            bg-base-200 
-            p-3 
-            border border-base-300 
-            wrap-break-word
-            break-all"
+            class="flex items-center gap-2 flex-1 bg-base-200 p-3 border border-base-300 wrap-break-word break-all"
           >
-            <font-awesome-icon icon="fa-solid fa-user"/>
+            <font-awesome-icon icon="fa-solid fa-user" />
 
             {{ member.email }}
-
           </div>
 
           <!-- ROLE -->
-          <div
-            class="badge badge-primary 
-            self-start sm:self-auto
-            w-full sm:w-auto"
-          >
+          <div class="badge badge-primary self-start sm:self-auto w-full sm:w-auto">
             {{ member.role }}
           </div>
 
           <!-- ACTIONS -->
           <div class="dropdown dropdown-center md:dropdown-end">
-
-            <div
-              tabindex="0"
-              role="button"
-              class="btn w-full btn-neutral"
-            >
-              ⋮
-            </div>
+            <div tabindex="0" role="button" class="btn w-full btn-neutral">⋮</div>
 
             <ul
               tabindex="0"
-              class="dropdown-content 
-              menu 
-              bg-base-200 
-              border border-base-300 
-              wrap-break-word
-              w-44 
-              p-2 
-              shadow"
+              class="dropdown-content menu bg-base-200 border border-base-300 wrap-break-word w-44 p-2 shadow"
             >
-
               <li>
-                <button
-                  class="flex gap-2"
-                  @click="openUpdateMemberModal(member)"
-                >
-                  <font-awesome-icon icon="fa-solid fa-pencil"/>
+                <button class="flex gap-2" @click="openUpdateMemberModal(member)">
+                  <font-awesome-icon icon="fa-solid fa-pencil" />
                   Update
                 </button>
               </li>
 
               <li>
-                <button
-                  class="flex gap-2 text-error"
-                  @click="openDeleteMemberModal(member)"
-                >
-                  <font-awesome-icon icon="fa-solid fa-trash"/>
+                <button class="flex gap-2 text-error" @click="openDeleteMemberModal(member)">
+                  <font-awesome-icon icon="fa-solid fa-trash" />
                   Delete
                 </button>
               </li>
-
             </ul>
-
           </div>
-
         </div>
 
         <!-- EMPTY -->
@@ -196,24 +112,12 @@
         >
           No members found
         </div>
-
       </div>
 
       <!-- FOOTER -->
       <div
-        class="
-        w-full 
-        flex flex-col sm:flex-row 
-        gap-3 
-        sm:items-center
-
-        bg-base-200 
-        border border-base-300 
-        wrap-break-word
-
-        p-3 sm:px-4 sm:py-2"
+        class="w-full flex flex-col sm:flex-row gap-3 sm:items-center bg-base-200 border border-base-300 wrap-break-word p-3 sm:px-4 sm:py-2"
       >
-
         <!-- LIMIT -->
         <div>
           <select
@@ -229,12 +133,7 @@
         </div>
 
         <!-- META -->
-        <div
-          class="flex flex-col sm:flex-row 
-          gap-1 sm:gap-4 items-center md:items-start
-          text-sm"
-        >
-
+        <div class="flex flex-col sm:flex-row gap-1 sm:gap-4 items-center md:items-start text-sm">
           <p>
             Total:
             <span class="font-semibold">
@@ -249,20 +148,16 @@
               {{ workspaceProjectMembersStore.meta.totalPages }}
             </span>
           </p>
-
         </div>
 
         <!-- PAGINATION -->
-        <div
-          class="flex flex-col md:flex-row gap-2 sm:ml-auto"
-        >
-
+        <div class="flex flex-col md:flex-row gap-2 sm:ml-auto">
           <button
             class="btn w-full md:w-auto btn-neutral"
             @click="workspaceProjectMembersStore.prevPage"
             :disabled="workspaceProjectMembersStore.meta.page === 1"
           >
-            <font-awesome-icon icon="fa-solid fa-arrow-left"/>
+            <font-awesome-icon icon="fa-solid fa-arrow-left" />
           </button>
 
           <button
@@ -273,15 +168,11 @@
               workspaceProjectMembersStore.meta.totalPages
             "
           >
-            <font-awesome-icon icon="fa-solid fa-arrow-right"/>
+            <font-awesome-icon icon="fa-solid fa-arrow-right" />
           </button>
-
         </div>
-
       </div>
-
     </div>
-
   </div>
 
   <!-- Modals -->
@@ -388,7 +279,7 @@ export default {
     },
     adminError() {
       return this.adminStore.error
-    }
+    },
   },
 
   async mounted() {

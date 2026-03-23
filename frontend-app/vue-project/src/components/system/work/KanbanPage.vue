@@ -1,15 +1,12 @@
 <template>
   <!-- Main wrapper -->
   <div class="flex flex-col sm:flex-row flex-1 w-full min-h-full sm:h-full overflow-hidden">
-
     <!-- Main content: board + members -->
     <div class="flex flex-col flex-1 w-full h-full overflow-hidden order-1 md:order-1">
-
       <!-- View switch panel -->
       <div
         v-if="kanbanBoardStore.selectedBoard"
-        class="w-full bg-base-100 border border-base-300 
-        flex flex-wrap sm:flex-nowrap p-2 gap-2"
+        class="w-full bg-base-100 border border-base-300 flex flex-wrap sm:flex-nowrap p-2 gap-2"
       >
         <button
           class="btn flex-1 sm:flex-none"
@@ -32,33 +29,22 @@
 
       <!-- Content -->
       <div class="flex flex-col overflow-auto flex-1">
-
         <!-- BOARD -->
-        <BoardSpace
-          v-if="activeView === 'board' && kanbanBoardStore.selectedBoard"
-        />
+        <BoardSpace v-if="activeView === 'board' && kanbanBoardStore.selectedBoard" />
 
         <!-- Empty state -->
-        <NullBoards
-          v-if="activeView === 'board' && !kanbanBoardStore.selectedBoard"
-        />
+        <NullBoards v-if="activeView === 'board' && !kanbanBoardStore.selectedBoard" />
 
         <!-- MEMBERS -->
-        <MembersSpace
-          v-if="activeView === 'members'"
-        />
-
+        <MembersSpace v-if="activeView === 'members'" />
       </div>
     </div>
 
     <!-- Sidebar -->
-    <KanbanSideBar/>
+    <KanbanSideBar />
 
     <!-- Loading -->
-    <LoadingScreen
-      v-if="kanbanBoardStore.loading"
-    />
-
+    <LoadingScreen v-if="kanbanBoardStore.loading" />
   </div>
 </template>
 

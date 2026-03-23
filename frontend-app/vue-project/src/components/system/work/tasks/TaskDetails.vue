@@ -1,6 +1,5 @@
 <template>
-  <div class="border border-base-300  p-4 bg-base-100 flex flex-col gap-5 
-  h-full overflow-y-auto">
+  <div class="border border-base-300 p-4 bg-base-100 flex flex-col gap-5 h-full overflow-y-auto">
     <!-- Title & Metadata -->
     <div class="flex flex-col gap-5">
       <h1 class="font-semibold text-2xl wrap-break-word whitespace-pre-line">{{ task.title }}</h1>
@@ -56,21 +55,38 @@
     </div>
 
     <!-- DELETE -->
-    <BaseDialog v-model="showDelete" :title="$t('work.modals.delete_task.title')" :confirm-text="$t('common.delete')"
-      :cancel-text="$t('common.cancel')" @confirm="$emit('delete-task', task.id)" @cancel="closeDelete">
+    <BaseDialog
+      v-model="showDelete"
+      :title="$t('work.modals.delete_task.title')"
+      :confirm-text="$t('common.delete')"
+      :cancel-text="$t('common.cancel')"
+      @confirm="$emit('delete-task', task.id)"
+      @cancel="closeDelete"
+    >
       {{ $t('work.modals.delete_task.content') }}
     </BaseDialog>
 
     <!-- COMPLETE -->
-    <BaseDialog v-model="showComplete" :title="$t('work.modals.complete_task.title')"
-      :confirm-text="$t('common.complete')" :cancel-text="$t('common.cancel')" @confirm="completeTask"
-      @cancel="closeComplete">
+    <BaseDialog
+      v-model="showComplete"
+      :title="$t('work.modals.complete_task.title')"
+      :confirm-text="$t('common.complete')"
+      :cancel-text="$t('common.cancel')"
+      @confirm="completeTask"
+      @cancel="closeComplete"
+    >
       {{ $t('work.modals.complete_task.content') }}
     </BaseDialog>
 
     <!-- EDIT -->
-    <BaseDialog v-model="showEdit" :title="$t('work.modals.edit_task.title')" :confirm-text="$t('common.edit')"
-      :cancel-text="$t('common.cancel')" @cancel="closeEdit" @confirm="editTask">
+    <BaseDialog
+      v-model="showEdit"
+      :title="$t('work.modals.edit_task.title')"
+      :confirm-text="$t('common.edit')"
+      :cancel-text="$t('common.cancel')"
+      @cancel="closeEdit"
+      @confirm="editTask"
+    >
       <div class="w-full flex flex-col gap-2">
         <!-- Error message transition -->
         <Transition name="error-slide">
@@ -83,16 +99,22 @@
           <label class="label">
             <span class="label-text">{{ $t('work.task_form.title') }}:</span>
           </label>
-          <input class="input input-bordered w-full" v-model="editForm.title"
-            :placeholder="$t('work.task_form.title_placeholder')" />
+          <input
+            class="input input-bordered w-full"
+            v-model="editForm.title"
+            :placeholder="$t('work.task_form.title_placeholder')"
+          />
         </div>
         <!-- Description -->
         <div>
           <label class="label">
             <span class="label-text">{{ $t('work.task_form.description') }}:</span>
           </label>
-          <textarea class="textarea textarea-bordered w-full min-h-52" v-model="editForm.description"
-            :placeholder="$t('work.task_form.description_placeholder')">
+          <textarea
+            class="textarea textarea-bordered w-full min-h-52"
+            v-model="editForm.description"
+            :placeholder="$t('work.task_form.description_placeholder')"
+          >
           </textarea>
         </div>
         <!-- Due date -->
@@ -116,8 +138,14 @@
     </BaseDialog>
 
     <!-- CREATE -->
-    <BaseDialog v-model="showCreate" :title="$t('work.modals.create_task.title')" :confirm-text="$t('common.create')"
-      :cancel-text="$t('common.cancel')" @cancel="closeCreate" @confirm="createTask">
+    <BaseDialog
+      v-model="showCreate"
+      :title="$t('work.modals.create_task.title')"
+      :confirm-text="$t('common.create')"
+      :cancel-text="$t('common.cancel')"
+      @cancel="closeCreate"
+      @confirm="createTask"
+    >
       <div class="flex flex-col gap-2 w-full">
         <!-- Error message transition -->
         <Transition name="error-slide">
@@ -130,16 +158,22 @@
           <label class="label">
             <span class="label-text">{{ $t('work.task_form.title') }}:</span>
           </label>
-          <input class="input input-bordered w-full" :placeholder="$t('work.task_form.title_placeholder')"
-            v-model="createForm.title" />
+          <input
+            class="input input-bordered w-full"
+            :placeholder="$t('work.task_form.title_placeholder')"
+            v-model="createForm.title"
+          />
         </div>
         <!-- Description -->
         <div>
           <label class="label">
             <span class="label-text">{{ $t('work.task_form.description') }}:</span>
           </label>
-          <textarea class="textarea textarea-bordered w-full min-h-52"
-            :placeholder="$t('work.task_form.description_placeholder')" v-model="createForm.description"></textarea>
+          <textarea
+            class="textarea textarea-bordered w-full min-h-52"
+            :placeholder="$t('work.task_form.description_placeholder')"
+            v-model="createForm.description"
+          ></textarea>
         </div>
         <!-- Due date -->
         <div>

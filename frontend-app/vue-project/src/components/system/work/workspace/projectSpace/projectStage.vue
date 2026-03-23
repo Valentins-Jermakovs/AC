@@ -1,21 +1,15 @@
 <template>
-    <div class="drawer drawer-end">
+  <div class="drawer drawer-end">
     <!-- drawer toggle -->
     <input type="checkbox" class="drawer-toggle" v-model="drawerOpen" />
 
     <!-- CONTENT -->
     <div class="drawer-content">
       <div
-        class="w-full bg-base-100 border border-base-300 
-        rounded-box p-3 sm:p-4 
-        flex flex-col gap-4 mt-3 sm:mt-5"
+        class="w-full bg-base-100 border border-base-300 rounded-box p-3 sm:p-4 flex flex-col gap-4 mt-3 sm:mt-5"
       >
         <!-- HEADER -->
-        <div
-          class="flex flex-col sm:flex-row 
-          sm:items-center sm:justify-between 
-          gap-3"
-        >
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div class="flex flex-col sm:flex-row sm:items-center gap-2">
             <h3 class="font-semibold text-lg wrap-break-word">
               {{ stage.title }}
@@ -49,18 +43,10 @@
 
     <!-- DRAWER -->
     <div class="drawer-side z-50">
-      <label
-        class="drawer-overlay"
-        @click="drawerOpen = false"
-      ></label>
+      <label class="drawer-overlay" @click="drawerOpen = false"></label>
 
       <div
-        class="bg-base-200 
-        min-h-full 
-        w-full sm:w-96
-        p-4 sm:p-6
-        flex flex-col gap-6
-        overflow-y-auto"
+        class="bg-base-200 min-h-full w-full sm:w-96 p-4 sm:p-6 flex flex-col gap-6 overflow-y-auto"
       >
         <!-- TITLE -->
         <div class="flex items-center justify-between gap-2">
@@ -68,87 +54,60 @@
             {{ stage.title }}
           </h2>
 
-          <button
-            class="btn btn-ghost btn-sm btn-circle"
-            @click="drawerOpen = false"
-          >
-            ✕
-          </button>
+          <button class="btn btn-ghost btn-sm btn-circle" @click="drawerOpen = false">✕</button>
         </div>
 
         <!-- ACTIONS -->
         <div class="bg-base-100 border border-base-300 rounded-box w-full">
           <ul class="menu w-full">
-
             <li>
-              <button
-                class="flex gap-3 items-center"
-                @click="showCreateDialog = true"
-              >
+              <button class="flex gap-3 items-center" @click="showCreateDialog = true">
                 <font-awesome-icon icon="fa-solid fa-plus" />
                 Add stage
               </button>
             </li>
 
             <li>
-              <button
-                class="flex gap-3 items-center"
-                @click="openRelativeDialog"
-              >
+              <button class="flex gap-3 items-center" @click="openRelativeDialog">
                 <font-awesome-icon icon="fa-solid fa-code-branch" />
                 Add relative stage
               </button>
             </li>
 
             <li>
-              <button
-                class="flex gap-3 items-center"
-                @click="openEditDialog"
-              >
+              <button class="flex gap-3 items-center" @click="openEditDialog">
                 <font-awesome-icon icon="fa-solid fa-pen" />
                 Edit stage
               </button>
             </li>
 
             <li>
-              <button
-                class="flex gap-3 items-center"
-                @click="moveStage('up')"
-              >
+              <button class="flex gap-3 items-center" @click="moveStage('up')">
                 <font-awesome-icon icon="fa-solid fa-arrow-up" />
                 Move up
               </button>
             </li>
 
             <li>
-              <button
-                class="flex gap-3 items-center"
-                @click="moveStage('down')"
-              >
+              <button class="flex gap-3 items-center" @click="moveStage('down')">
                 <font-awesome-icon icon="fa-solid fa-arrow-down" />
                 Move down
               </button>
             </li>
 
             <li class="border-t border-base-300 mt-2 pt-2">
-              <button
-                class="text-error flex gap-3 items-center"
-                @click="showDelete = true"
-              >
+              <button class="text-error flex gap-3 items-center" @click="showDelete = true">
                 <font-awesome-icon icon="fa-solid fa-trash" />
                 Delete stage
               </button>
             </li>
-
           </ul>
         </div>
 
         <!-- DESCRIPTION -->
         <div class="card bg-base-100 border border-base-300">
           <div class="card-body p-4">
-            <h3 class="font-semibold text-sm opacity-70">
-              Description
-            </h3>
+            <h3 class="font-semibold text-sm opacity-70">Description</h3>
 
             <p class="text-sm wrap-break-word">
               {{ stage.description }}
@@ -159,16 +118,11 @@
         <!-- META -->
         <div class="card bg-base-100 border border-base-300">
           <div class="card-body p-4">
-
-            <h3 class="font-semibold text-sm opacity-70 mb-2">
-              Metadata
-            </h3>
+            <h3 class="font-semibold text-sm opacity-70 mb-2">Metadata</h3>
 
             <div class="overflow-x-auto">
               <table class="table table-sm">
-
                 <tbody>
-
                   <tr>
                     <td class="opacity-60">
                       <font-awesome-icon icon="fa-solid fa-calendar" />
@@ -190,30 +144,27 @@
                       {{ stage.dueDate }}
                     </td>
                   </tr>
-
                 </tbody>
-
               </table>
             </div>
-
           </div>
         </div>
 
         <!-- CLOSE -->
-        <button
-          class="btn btn-neutral mt-auto w-full"
-          @click="drawerOpen = false"
-        >
-          Close
-        </button>
-
+        <button class="btn btn-neutral mt-auto w-full" @click="drawerOpen = false">Close</button>
       </div>
     </div>
   </div>
 
   <!-- Create stage dialog -->
-  <BaseDialog v-model="showCreateDialog" title="Create new stage" confirmText="Create" cancelText="Cancel"
-    @confirm="handleCreate" @cancel="closeCreateDialog">
+  <BaseDialog
+    v-model="showCreateDialog"
+    title="Create new stage"
+    confirmText="Create"
+    cancelText="Cancel"
+    @confirm="handleCreate"
+    @cancel="closeCreateDialog"
+  >
     <div class="flex flex-col gap-2 w-full">
       <Transition name="error-slide">
         <div v-if="error">
@@ -223,19 +174,34 @@
       <label for="stageTitle" class="label">Stage Title</label>
       <input v-model="newStage.title" type="text" class="input w-full" placeholder="Stage title" />
       <label for="stageDescription" class="label">Stage Description</label>
-      <textarea v-model="newStage.description" class="textarea w-full min-h-52" placeholder="Stage description"></textarea>
+      <textarea
+        v-model="newStage.description"
+        class="textarea w-full min-h-52"
+        placeholder="Stage description"
+      ></textarea>
       <label for="stageDueDate" class="label">Stage Due Date</label>
       <input v-model="newStage.dueDate" type="date" class="input w-full" />
     </div>
   </BaseDialog>
   <!-- Delete confirmation dialog -->
-  <BaseDialog v-model="showDelete" title="Delete stage" confirmText="Delete" cancelText="Cancel"
-    @confirm="handleDelete">
+  <BaseDialog
+    v-model="showDelete"
+    title="Delete stage"
+    confirmText="Delete"
+    cancelText="Cancel"
+    @confirm="handleDelete"
+  >
     <p>Are you sure you want to delete this stage?</p>
   </BaseDialog>
   <!-- Edit stage dialog -->
-  <BaseDialog v-model="showEditDialog" title="Edit stage" confirmText="Update" cancelText="Cancel"
-    @confirm="handleUpdate" @cancel="closeEditDialog">
+  <BaseDialog
+    v-model="showEditDialog"
+    title="Edit stage"
+    confirmText="Update"
+    cancelText="Cancel"
+    @confirm="handleUpdate"
+    @cancel="closeEditDialog"
+  >
     <div class="flex flex-col gap-2 w-full">
       <Transition name="error-slide">
         <div v-if="error">
@@ -245,15 +211,25 @@
       <label for="stageTitle" class="label">Stage Title</label>
       <input v-model="editStage.title" type="text" class="input w-full" placeholder="Stage title" />
       <label for="stageDescription" class="label">Stage Description</label>
-      <textarea v-model="editStage.description" class="textarea w-full min-h-52" placeholder="Stage description"></textarea>
+      <textarea
+        v-model="editStage.description"
+        class="textarea w-full min-h-52"
+        placeholder="Stage description"
+      ></textarea>
       <label for="stageDueDate" class="label">Stage Due Date</label>
       <input v-model="editStage.dueDate" type="date" class="input w-full" />
     </div>
   </BaseDialog>
 
   <!-- Relative stage dialog -->
-  <BaseDialog v-model="showRelativeDialog" title="Add relative stage" confirmText="Create" cancelText="Cancel"
-    @confirm="handleCreateRelative" @cancel="closeRelativeDialog">
+  <BaseDialog
+    v-model="showRelativeDialog"
+    title="Add relative stage"
+    confirmText="Create"
+    cancelText="Cancel"
+    @confirm="handleCreateRelative"
+    @cancel="closeRelativeDialog"
+  >
     <div class="flex flex-col gap-2 w-full">
       <Transition name="error-slide">
         <div v-if="error">
@@ -261,9 +237,18 @@
         </div>
       </Transition>
       <label for="stageTitle" class="label">Stage Title</label>
-      <input v-model="relativeStage.title" type="text" class="input w-full" placeholder="Stage title" />
+      <input
+        v-model="relativeStage.title"
+        type="text"
+        class="input w-full"
+        placeholder="Stage title"
+      />
       <label for="stageDescription" class="label">Stage Description</label>
-      <textarea v-model="relativeStage.description" class="textarea w-full min-h-52" placeholder="Stage description"></textarea>
+      <textarea
+        v-model="relativeStage.description"
+        class="textarea w-full min-h-52"
+        placeholder="Stage description"
+      ></textarea>
       <label for="stageDueDate" class="label">Stage Due Date</label>
       <input v-model="relativeStage.dueDate" type="date" class="input w-full" />
       <div class="flex gap-2 items-center mt-2">
@@ -389,7 +374,6 @@ export default {
       this.showEditDialog = true
     },
     async handleUpdate() {
-
       const payload = {
         projectId: this.stagesStore.projectId,
         stageId: this.stage.id,
@@ -416,7 +400,6 @@ export default {
       this.showRelativeDialog = true
     },
     async handleCreateRelative() {
-
       const payload = {
         projectId: this.stagesStore.projectId,
         referenceStageId: this.stage.id, // esošā stage ID
@@ -452,7 +435,7 @@ export default {
   computed: {
     error() {
       return this.stagesStore.error
-    }
-  }
+    },
+  },
 }
 </script>

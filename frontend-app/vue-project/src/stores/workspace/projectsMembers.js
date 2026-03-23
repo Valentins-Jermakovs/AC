@@ -340,6 +340,6 @@ export const useWorkspaceProjectMembersStore = defineStore('workspaceProjectMemb
     },
     clearError() {
       this.error = null
-    }
+    },
   },
 })

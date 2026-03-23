@@ -1,7 +1,13 @@
 <template>
-  <div class="w-full bg-base-100 border border-base-300 p-2 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-5">
+  <div
+    class="w-full bg-base-100 border border-base-300 p-2 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-5"
+  >
     <!-- LIMIT -->
-    <select class="select select-bordered w-full sm:w-auto" v-model="store.meta.limit" @change="changeLimit">
+    <select
+      class="select select-bordered w-full sm:w-auto"
+      v-model="store.meta.limit"
+      @change="changeLimit"
+    >
       <option :value="5">5</option>
       <option :value="10">10</option>
       <option :value="20">20</option>

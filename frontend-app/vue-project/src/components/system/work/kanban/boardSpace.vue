@@ -1,82 +1,66 @@
 <template>
   <!-- Toolbar -->
   <div
-    class="w-full bg-base-100 border border-base-300 
-    flex flex-wrap items-center gap-2 p-2 flex-1"
+    class="w-full bg-base-100 border border-base-300 flex flex-wrap items-center gap-2 p-2 flex-1"
   >
     <!-- Create -->
-    <button
-      class="btn btn-neutral flex-1 sm:flex-none"
-      @click="openCreateModal"
-    >
+    <button class="btn btn-neutral flex-1 sm:flex-none" @click="openCreateModal">
       <font-awesome-icon icon="fa-solid fa-plus" />
       <span class="hidden sm:inline">Create Board</span>
     </button>
 
     <!-- Change title -->
-    <button
-      class="btn btn-neutral flex-1 sm:flex-none"
-      @click="openChangeTitleModal"
-    >
+    <button class="btn btn-neutral flex-1 sm:flex-none" @click="openChangeTitleModal">
       <font-awesome-icon icon="fa-solid fa-pen-to-square" />
-      <span class="hidden md:inline">
-        Change board title
-      </span>
+      <span class="hidden md:inline"> Change board title </span>
     </button>
 
     <!-- Add stage -->
-    <button
-      class="btn btn-neutral flex-1 sm:flex-none"
-      @click="openAddStageModal"
-    >
+    <button class="btn btn-neutral flex-1 sm:flex-none" @click="openAddStageModal">
       <font-awesome-icon icon="fa-solid fa-plus" />
-      <span class="hidden md:inline">
-        Add Stage
-      </span>
+      <span class="hidden md:inline"> Add Stage </span>
     </button>
 
     <!-- Right side actions -->
     <div class="flex gap-2 sm:ml-auto w-full sm:w-auto">
-
       <!-- Delete -->
       <button
-        v-if="kanbanMembersStore.currentUser 
-        && kanbanMembersStore.currentUser.role == 'owner'"
+        v-if="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role == 'owner'"
         class="btn btn-neutral flex-1 sm:flex-none"
         @click="openDeleteModal"
       >
         <font-awesome-icon icon="fa-solid fa-trash" />
-        <span class="hidden md:inline">
-          Delete board
-        </span>
+        <span class="hidden md:inline"> Delete board </span>
       </button>
 
       <!-- Leave -->
       <button
-        v-if="kanbanMembersStore.currentUser 
-        && kanbanMembersStore.currentUser.role !== 'owner'"
+        v-if="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role !== 'owner'"
         class="btn btn-neutral flex-1 sm:flex-none"
         @click="openLeaveBoardModal"
       >
         <font-awesome-icon icon="fa-solid fa-sign-out" />
-        <span class="hidden md:inline">
-          Leave board
-        </span>
+        <span class="hidden md:inline"> Leave board </span>
       </button>
-
     </div>
   </div>
 
   <!-- Board space -->
-  <div class="flex-1 flex w-full  min-h-screen p-3 sm:p-5">
+  <div class="flex-1 flex w-full min-h-screen p-3 sm:p-5">
     <kanbanStage />
   </div>
 
   <!-- Modals -->
 
   <!-- Create board -->
-  <BaseDialog v-model="createModal" title="Create New Board" confirmText="Create" cancelText="Cancel"
-    @confirm="confirmCreateBoard" @cancel="closeCreateModal">
+  <BaseDialog
+    v-model="createModal"
+    title="Create New Board"
+    confirmText="Create"
+    cancelText="Cancel"
+    @confirm="confirmCreateBoard"
+    @cancel="closeCreateModal"
+  >
     <div class="flex flex-col w-full gap-2">
       <Transition name="error-slide">
         <div v-if="errorBoard">
@@ -84,13 +68,24 @@
         </div>
       </Transition>
       <label for="boardTitle" class="label">Board Title</label>
-      <input type="text" class="input w-full" v-model="newBoardTitle" placeholder="Enter board title" />
+      <input
+        type="text"
+        class="input w-full"
+        v-model="newBoardTitle"
+        placeholder="Enter board title"
+      />
     </div>
   </BaseDialog>
 
   <!-- Change board title -->
-  <BaseDialog v-model="changeTitleModal" title="Change Board Title" confirmText="Save" cancelText="Cancel"
-    @confirm="confirmChangeTitle" @cancel="closeChangeTitleModal">
+  <BaseDialog
+    v-model="changeTitleModal"
+    title="Change Board Title"
+    confirmText="Save"
+    cancelText="Cancel"
+    @confirm="confirmChangeTitle"
+    @cancel="closeChangeTitleModal"
+  >
     <div class="flex flex-col gap-2 w-full">
       <Transition name="error-slide">
         <div v-if="errorBoard">
@@ -98,13 +93,24 @@
         </div>
       </Transition>
       <label for="boardTitle" class="label">Board Title</label>
-      <input type="text" class="input w-full" v-model="newTitle" placeholder="Enter new board title" />
+      <input
+        type="text"
+        class="input w-full"
+        v-model="newTitle"
+        placeholder="Enter new board title"
+      />
     </div>
   </BaseDialog>
 
   <!-- Add stage -->
-  <BaseDialog v-model="addStageModal" title="Add Stage" confirmText="Add" cancelText="Cancel"
-    @confirm="confirmAddStage" @cancel="closeAddStageModal">
+  <BaseDialog
+    v-model="addStageModal"
+    title="Add Stage"
+    confirmText="Add"
+    cancelText="Cancel"
+    @confirm="confirmAddStage"
+    @cancel="closeAddStageModal"
+  >
     <div class="flex flex-col gap-2 w-full">
       <Transition name="error-slide">
         <div v-if="errorStage">
@@ -112,19 +118,34 @@
         </div>
       </Transition>
       <label for="stageTitle" class="label">Stage Title</label>
-      <input type="text" class="input w-full" v-model="newStageTitle" placeholder="Enter stage title" />
+      <input
+        type="text"
+        class="input w-full"
+        v-model="newStageTitle"
+        placeholder="Enter stage title"
+      />
     </div>
   </BaseDialog>
 
   <!-- Delete board -->
-  <BaseDialog v-model="deleteModal" title="Confirm Delete" confirmText="Delete" cancelText="Cancel"
-    @confirm="confirmDeleteBoard">
+  <BaseDialog
+    v-model="deleteModal"
+    title="Confirm Delete"
+    confirmText="Delete"
+    cancelText="Cancel"
+    @confirm="confirmDeleteBoard"
+  >
     Are you sure you want to delete this board?
   </BaseDialog>
 
   <!-- Leave board -->
-  <BaseDialog v-model="leaveModal" title="Confirm Leave" confirmText="Leave" cancelText="Cancel"
-    @confirm="confirmLeaveBoard">
+  <BaseDialog
+    v-model="leaveModal"
+    title="Confirm Leave"
+    confirmText="Leave"
+    cancelText="Cancel"
+    @confirm="confirmLeaveBoard"
+  >
     Are you sure you want to leave this board?
   </BaseDialog>
 </template>
@@ -279,6 +300,6 @@ export default {
     errorStage() {
       return this.stagesStore.error
     },
-  }
+  },
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-full flex flex-col gap-2 flex-1 bg-base-100 overflow-y-scroll  border border-base-300 p-2"
+    class="w-full flex flex-col gap-2 flex-1 bg-base-100 overflow-y-scroll border border-base-300 p-2"
   >
     <TaskItem
       v-for="task in tasks"

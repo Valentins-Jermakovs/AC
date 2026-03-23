@@ -1,23 +1,14 @@
 <template>
   <div class="drawer drawer-end">
-    <input
-      :id="'task-info-drawer-' + task.id"
-      type="checkbox"
-      class="drawer-toggle"
-    />
+    <input :id="'task-info-drawer-' + task.id" type="checkbox" class="drawer-toggle" />
 
     <!-- CONTENT -->
     <div class="drawer-content">
       <div
-        class="w-full bg-base-100 border border-base-300 
-        rounded-box
-        p-3 sm:p-4 
-        flex flex-col sm:flex-row 
-        gap-3"
+        class="w-full bg-base-100 border border-base-300 rounded-box p-3 sm:p-4 flex flex-col sm:flex-row gap-3"
       >
         <!-- LEFT -->
         <div class="flex flex-col gap-3 flex-1">
-
           <div class="flex items-start sm:items-center gap-3">
             <h3 class="font-medium text-sm sm:text-base wrap-break-word">
               {{ task.title }}
@@ -26,7 +17,6 @@
 
           <!-- META -->
           <div class="flex flex-wrap gap-2 text-xs">
-
             <div class="badge badge-primary badge-outline gap-1">
               <font-awesome-icon icon="fa-solid fa-tag" />
               {{ task.status }}
@@ -51,104 +41,67 @@
               <font-awesome-icon icon="fa-solid fa-clock" />
               {{ task.dueDate }}
             </div>
-
           </div>
 
           <!-- DESCRIPTION -->
-          <div
-            class="p-3 sm:p-4 
-            bg-base-200 
-            border border-base-300 
-            rounded-box"
-          >
+          <div class="p-3 sm:p-4 bg-base-200 border border-base-300 rounded-box">
             <p class="text-sm line-clamp-3 wrap-break-word">
               {{ task.description }}
             </p>
           </div>
-
         </div>
 
         <!-- OPEN -->
         <div class="flex sm:flex-col justify-end">
-          <label
-            :for="'task-info-drawer-' + task.id"
-            class="btn btn-neutral btn-circle"
-          >
+          <label :for="'task-info-drawer-' + task.id" class="btn btn-neutral btn-circle">
             <font-awesome-icon icon="fa-solid fa-link" />
           </label>
         </div>
-
       </div>
     </div>
 
     <!-- DRAWER -->
     <div class="drawer-side z-50">
-
-      <label
-        :for="'task-info-drawer-' + task.id"
-        class="drawer-overlay"
-      ></label>
+      <label :for="'task-info-drawer-' + task.id" class="drawer-overlay"></label>
 
       <div
-        class="bg-base-100 border border-base-300 
-        min-h-full 
-        w-full sm:w-96
-        p-4 sm:p-6
-        flex flex-col gap-6
-        overflow-y-auto"
+        class="bg-base-100 border border-base-300 min-h-full w-full sm:w-96 p-4 sm:p-6 flex flex-col gap-6 overflow-y-auto"
       >
-
         <!-- HEADER -->
         <div class="flex justify-between items-start gap-3">
           <h2 class="text-lg sm:text-xl font-semibold wrap-break-word">
             {{ task.title }}
           </h2>
 
-          <label
-            :for="'task-info-drawer-' + task.id"
-            class="btn btn-ghost btn-sm btn-circle"
-          >
+          <label :for="'task-info-drawer-' + task.id" class="btn btn-ghost btn-sm btn-circle">
             ✕
           </label>
         </div>
 
         <!-- ACTIONS -->
         <div class="bg-base-200 border border-base-300 rounded-box">
-
           <ul class="menu w-full">
-
             <li>
-              <button
-                class="flex gap-3 items-center"
-                @click="openCreateDialog"
-              >
-                <font-awesome-icon icon="fa-solid fa-plus"/>
+              <button class="flex gap-3 items-center" @click="openCreateDialog">
+                <font-awesome-icon icon="fa-solid fa-plus" />
                 Create task
               </button>
             </li>
 
             <li>
-              <button
-                class="flex gap-3 items-center"
-                @click="openEditDialog"
-              >
-                <font-awesome-icon icon="fa-solid fa-pen"/>
+              <button class="flex gap-3 items-center" @click="openEditDialog">
+                <font-awesome-icon icon="fa-solid fa-pen" />
                 Edit task
               </button>
             </li>
 
             <li class="border-t border-base-300 mt-2 pt-2">
-              <button
-                class="text-error flex gap-3 items-center"
-                @click="openDeleteDialog"
-              >
-                <font-awesome-icon icon="fa-solid fa-trash"/>
+              <button class="text-error flex gap-3 items-center" @click="openDeleteDialog">
+                <font-awesome-icon icon="fa-solid fa-trash" />
                 Delete task
               </button>
             </li>
-
           </ul>
-
         </div>
 
         <!-- DETAILS -->
@@ -157,80 +110,68 @@
           :key="section.title"
           class="bg-base-200 border border-base-300 rounded-box"
         >
-
           <div class="p-4">
-
             <h3 class="text-sm font-semibold opacity-70 mb-2">
               {{ section.title }}
             </h3>
 
             <template v-if="section.type === 'table'">
-
               <div class="overflow-x-auto">
                 <table class="table table-sm">
-
                   <tbody>
-
-                    <tr
-                      v-for="row in section.rows"
-                      :key="row.label"
-                    >
+                    <tr v-for="row in section.rows" :key="row.label">
                       <td class="opacity-60 whitespace-nowrap">
-                        <font-awesome-icon :icon="row.icon"/>
+                        <font-awesome-icon :icon="row.icon" />
                         {{ row.label }}
                       </td>
 
                       <td class="wrap-break-word">
                         {{ row.value }}
                       </td>
-
                     </tr>
-
                   </tbody>
-
                 </table>
               </div>
-
             </template>
 
             <template v-else-if="section.type === 'text'">
-
               <p class="text-sm wrap-break-word">
                 {{ section.value || 'No description' }}
               </p>
-
             </template>
-
           </div>
-
         </div>
 
         <!-- CLOSE -->
-        <label
-          :for="'task-info-drawer-' + task.id"
-          class="btn btn-neutral mt-auto w-full"
-        >
+        <label :for="'task-info-drawer-' + task.id" class="btn btn-neutral mt-auto w-full">
           Close
         </label>
-
       </div>
-
     </div>
 
     <!-- CREATE TASK DIALOG -->
-    <BaseDialog v-model="createDialog" title="Create task" confirmText="Create" cancelText="Cancel"
-      @confirm="createTask" @cancel="closeCreate">
+    <BaseDialog
+      v-model="createDialog"
+      title="Create task"
+      confirmText="Create"
+      cancelText="Cancel"
+      @confirm="createTask"
+      @cancel="closeCreate"
+    >
       <div class="flex flex-col gap-2 w-full">
         <Transition name="error-slide">
-        <div v-if="error">
-          <h1 class="text-error mb-2">{{ error }}</h1>
-        </div>
-      </Transition>
+          <div v-if="error">
+            <h1 class="text-error mb-2">{{ error }}</h1>
+          </div>
+        </Transition>
         <label class="label" for="title">Title</label>
         <input v-model="form.title" class="input input-bordered w-full" placeholder="Task title" />
         <label class="label" for="description">Description</label>
-        <textarea v-model="form.description" class="textarea textarea-bordered w-full min-h-52"
-          placeholder="Description"></textarea>
+        <textarea
+          v-model="form.description"
+          class="textarea textarea-bordered w-full min-h-52"
+          placeholder="Description"
+        ></textarea>
         <div class="flex gap-2 w-full">
           <div class="flex-1">
             <label class="label" for="priority">Priority</label>
@@ -255,25 +196,39 @@
     </BaseDialog>
 
     <!-- Delete -->
-    <BaseDialog v-model="deleteDialog" title="Delete Task" confirmText="Delete" cancelText="Cancel"
-      @confirm="confirmDelete">
+    <BaseDialog
+      v-model="deleteDialog"
+      title="Delete Task"
+      confirmText="Delete"
+      cancelText="Cancel"
+      @confirm="confirmDelete"
+    >
       <p>Are you sure you want to delete this task? This action cannot be undone.</p>
     </BaseDialog>
 
     <!-- Edit -->
-    <BaseDialog v-model="editDialog" title="Edit Task" confirmText="Save" cancelText="Cancel" @confirm="updateTask"
-      @cancel="closeEdit">
+    <BaseDialog
+      v-model="editDialog"
+      title="Edit Task"
+      confirmText="Save"
+      cancelText="Cancel"
+      @confirm="updateTask"
+      @cancel="closeEdit"
+    >
       <div class="flex flex-col gap-2 w-full">
         <Transition name="error-slide">
-        <div v-if="error">
-          <h1 class="text-error mb-2">{{ error }}</h1>
-        </div>
-      </Transition>
+          <div v-if="error">
+            <h1 class="text-error mb-2">{{ error }}</h1>
+          </div>
+        </Transition>
         <label class="label" for="title">Title</label>
         <input v-model="form.title" class="input input-bordered w-full" placeholder="Task title" />
         <label class="label" for="description">Description</label>
-        <textarea v-model="form.description" class="textarea textarea-bordered w-full min-h-52"
-          placeholder="Description"></textarea>
+        <textarea
+          v-model="form.description"
+          class="textarea textarea-bordered w-full min-h-52"
+          placeholder="Description"
+        ></textarea>
         <div class="flex gap-2">
           <div class="flex-1">
             <label class="label" for="priority">Priority</label>

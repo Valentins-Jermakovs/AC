@@ -1,6 +1,7 @@
 <template>
   <div
-    class="w-full bg-base-100 border border-base-300 rounded-box flex flex-col gap-3 p-3 sm:p-4 hover:border-info hover:bg-base-200 transition-all duration-300">
+    class="w-full bg-base-100 border border-base-300 rounded-box flex flex-col gap-3 p-3 sm:p-4 hover:border-info hover:bg-base-200 transition-all duration-300"
+  >
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-3">
       <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
@@ -39,8 +40,14 @@
   </div>
 
   <!-- EDIT -->
-  <base-dialog v-model="showEdit" title="Edit project" confirmText="Save" cancelText="Cancel" @confirm="updateProject"
-    @cancel="resetEdit">
+  <base-dialog
+    v-model="showEdit"
+    title="Edit project"
+    confirmText="Save"
+    cancelText="Cancel"
+    @confirm="updateProject"
+    @cancel="resetEdit"
+  >
     <div class="flex flex-col w-full gap-2">
       <Transition name="error-slide">
         <div v-if="error">
@@ -54,14 +61,21 @@
       <label class="label">
         <span class="label-text">Description</span>
       </label>
-      <textarea v-model="editProject.description"
-        class="textarea textarea-bordered w-full min-h-40 sm:min-h-52"></textarea>
+      <textarea
+        v-model="editProject.description"
+        class="textarea textarea-bordered w-full min-h-40 sm:min-h-52"
+      ></textarea>
     </div>
   </base-dialog>
 
   <!-- DELETE -->
-  <base-dialog v-model="showDelete" title="Delete project" confirmText="Delete" cancelText="Cancel"
-    @confirm="deleteProject">
+  <base-dialog
+    v-model="showDelete"
+    title="Delete project"
+    confirmText="Delete"
+    cancelText="Cancel"
+    @confirm="deleteProject"
+  >
     <p>Are you sure you want to delete this project?</p>
   </base-dialog>
 </template>
@@ -117,7 +131,6 @@ export default {
     },
 
     async updateProject() {
-
       if (!this.editProject.title) {
         this.store.error = 'Title is required'
         return

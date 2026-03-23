@@ -1,7 +1,12 @@
 <template>
   <!-- Projects list -->
-  <div class="w-full h-full flex items-center justify-center p-2" v-if="projectsStore.selectedProject == null">
-    <div class="w-full max-w-5xl h-full flex flex-col bg-base-200 border border-base-300 p-2 md:p-4 lg:p-6">
+  <div
+    class="w-full h-full flex items-center justify-center p-2"
+    v-if="projectsStore.selectedProject == null"
+  >
+    <div
+      class="w-full max-w-5xl h-full flex flex-col bg-base-200 border border-base-300 p-2 md:p-4 lg:p-6"
+    >
       <!-- Top bar -->
       <TopBar></TopBar>
       <!-- List -->

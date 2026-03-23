@@ -1,5 +1,5 @@
 <template>
-  <div class="flex w-full items-center bg-base-100 p-3 border border-base-300  gap-2">
+  <div class="flex w-full items-center bg-base-100 p-3 border border-base-300 gap-2">
     <!-- Search input -->
     <input
       type="text"

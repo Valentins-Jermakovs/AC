@@ -1,40 +1,23 @@
 <template>
   <div class="w-full flex justify-center p-2 sm:p-4">
     <div
-      class="w-full max-w-7xl 
-      bg-base-200 border border-base-300 
-      rounded-box 
-      p-2 sm:p-4
-      flex flex-col gap-3"
+      class="w-full max-w-7xl bg-base-200 border border-base-300 rounded-box p-2 sm:p-4 flex flex-col gap-3"
     >
       <!-- Stages list -->
       <div class="flex flex-col gap-3">
-        <ProjectStage
-          v-for="stage in stagesStore.projectStages"
-          :key="stage.id"
-          :stage="stage"
-        />
+        <ProjectStage v-for="stage in stagesStore.projectStages" :key="stage.id" :stage="stage" />
       </div>
 
       <!-- Create stage -->
       <div class="w-full flex justify-center pt-2">
-        <button
-          class="btn btn-primary w-full sm:w-auto"
-          @click="showDialog = true"
-        >
+        <button class="btn btn-primary w-full sm:w-auto" @click="showDialog = true">
           <font-awesome-icon icon="fa-solid fa-plus" />
 
-          <span class="hidden sm:inline">
-            Create new stage
-          </span>
+          <span class="hidden sm:inline"> Create new stage </span>
 
-          <span class="sm:hidden">
-            New stage
-          </span>
-
+          <span class="sm:hidden"> New stage </span>
         </button>
       </div>
-
     </div>
   </div>
 
@@ -48,7 +31,6 @@
     @cancel="closeCreateDialog"
   >
     <div class="flex flex-col gap-3 w-full">
-
       <Transition name="error-slide">
         <div v-if="error">
           <h1 class="text-error">
@@ -69,9 +51,7 @@
       </div>
 
       <div class="flex flex-col gap-1">
-        <label class="label">
-          Stage Description
-        </label>
+        <label class="label"> Stage Description </label>
 
         <textarea
           v-model="newStage.description"
@@ -81,17 +61,10 @@
       </div>
 
       <div class="flex flex-col gap-1">
-        <label class="label">
-          Due Date
-        </label>
+        <label class="label"> Due Date </label>
 
-        <input
-          v-model="newStage.dueDate"
-          type="date"
-          class="input w-full"
-        />
+        <input v-model="newStage.dueDate" type="date" class="input w-full" />
       </div>
-
     </div>
   </BaseDialog>
 </template>
@@ -138,7 +111,6 @@ export default {
       this.stagesStore.clearError()
     },
     async handleCreate() {
-
       const payload = {
         title: this.newStage.title,
         description: this.newStage.description,

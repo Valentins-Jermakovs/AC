@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="w-full p-2 flex flex-wrap bg-base-100 border border-base-300 gap-2 items-center"
-  >
+  <div class="w-full p-2 flex flex-wrap bg-base-100 border border-base-300 gap-2 items-center">
     <!-- Project view -->
     <button
       class="btn flex-1 sm:flex-none"
@@ -43,10 +41,7 @@
     </button>
 
     <!-- Back -->
-    <button
-      class="btn btn-neutral w-full sm:w-auto"
-      @click="goToProjects"
-    >
+    <button class="btn btn-neutral w-full sm:w-auto" @click="goToProjects">
       <font-awesome-icon icon="fa-solid fa-arrow-left" />
       <span>Back</span>
       <span class="hidden md:inline">to projects list</span>

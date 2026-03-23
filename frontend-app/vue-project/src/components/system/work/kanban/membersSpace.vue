@@ -131,13 +131,13 @@
         </div>
 
         <!-- PAGINATION -->
-        <div class="flex gap-2 md:ml-auto w-full md:w-auto justify-center">
-          <button class="btn btn-sm btn-neutral" @click="kanbanMembersStore.prevPage"
+        <div class="flex flex-col md:flex-row gap-2 md:ml-auto w-full md:w-auto justify-center">
+          <button class="btn w-full md:w-auto btn-neutral" @click="kanbanMembersStore.prevPage"
             :disabled="kanbanMembersStore.meta.page === 1">
             <font-awesome-icon icon="fa-solid fa-arrow-left" />
           </button>
 
-          <button class="btn btn-sm btn-neutral" @click="kanbanMembersStore.nextPage"
+          <button class="btn w-full md:w-auto btn-neutral" @click="kanbanMembersStore.nextPage"
             :disabled="kanbanMembersStore.meta.page === kanbanMembersStore.meta.totalPages">
             <font-awesome-icon icon="fa-solid fa-arrow-right" />
           </button>

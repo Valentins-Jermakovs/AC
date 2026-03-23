@@ -1,38 +1,70 @@
 <template>
-  <div class="flex flex-col md:flex-row flex-1 w-full h-full">
-    <KanbanSideBar></KanbanSideBar>
-    <div class="flex flex-col flex-1 w-full h-full overflow-auto">
-      <!-- Panel: board/members -->
-      <div class="w-full h-12 bg-base-100 border border-base-300 flex p-1 gap-1" v-if="kanbanBoardStore.selectedBoard">
+  <div class="flex flex-col md:flex-row flex-1 w-full h-full overflow-hidden">
+
+    <!-- Sidebar -->
+    <KanbanSideBar class="w-full md:w-auto"></KanbanSideBar>
+
+    <!-- Main content -->
+    <div class="flex flex-col flex-1 w-full h-full overflow-hidden">
+
+      <!-- View switch panel -->
+      <div
+        v-if="kanbanBoardStore.selectedBoard"
+        class="w-full bg-base-100 border border-base-300 
+        flex flex-wrap sm:flex-nowrap p-2 gap-2"
+      >
         <button
-          class="btn h-full"
+          class="btn flex-1 sm:flex-none"
           :class="activeView === 'board' ? 'btn-primary' : 'btn-neutral'"
           @click="activeView = 'board'"
         >
-          Board View
           <font-awesome-icon icon="fa-solid fa-table-cells" />
+
+          <span class="hidden sm:inline">
+            Board View
+          </span>
         </button>
+
         <button
-          class="btn h-full"
+          class="btn flex-1 sm:flex-none"
           :class="activeView === 'members' ? 'btn-primary' : 'btn-neutral'"
           @click="activeView = 'members'"
         >
-          Members View
           <font-awesome-icon icon="fa-solid fa-users" />
+
+          <span class="hidden sm:inline">
+            Members View
+          </span>
         </button>
       </div>
 
-      <!-- ========== BOARD SPACE ========== -->
-      <BoardSpace v-if="activeView === 'board' && kanbanBoardStore.selectedBoard"></BoardSpace>
+      <!-- Content -->
+      <div class="flex flex-col flex-1 overflow-auto">
 
-      <!-- Screen for creating a new board -->
-      <NullBoards v-if="activeView === 'board' && !kanbanBoardStore.selectedBoard"></NullBoards>
+        <!-- BOARD -->
+        <BoardSpace
+          v-if="activeView === 'board' && kanbanBoardStore.selectedBoard"
+        />
 
-      <!-- ========== MEMBERS MANAGEMENT SPACE ========== -->
-      <MembersSpace v-if="activeView === 'members'"></MembersSpace>
+        <!-- Empty state -->
+        <NullBoards
+          v-if="activeView === 'board' && !kanbanBoardStore.selectedBoard"
+        />
+
+        <!-- MEMBERS -->
+        <MembersSpace
+          v-if="activeView === 'members'"
+        />
+
+      </div>
+
     </div>
 
-    <LoadingScreen v-if="kanbanBoardStore.loading"></LoadingScreen>
+    <!-- Loading -->
+    <LoadingScreen
+      v-if="kanbanBoardStore.loading"
+    />
+
   </div>
 </template>
 

@@ -1,110 +1,220 @@
 <template>
   <div class="drawer drawer-end">
-    <input :id="'task-info-drawer-' + task.id" type="checkbox" class="drawer-toggle" />
+    <input
+      :id="'task-info-drawer-' + task.id"
+      type="checkbox"
+      class="drawer-toggle"
+    />
 
     <!-- CONTENT -->
     <div class="drawer-content">
-      <div class="w-full bg-base-100 border border-base-300 p-3 flex">
+      <div
+        class="w-full bg-base-100 border border-base-300 
+        rounded-box
+        p-3 sm:p-4 
+        flex flex-col sm:flex-row 
+        gap-3"
+      >
         <!-- LEFT -->
-        <div class="flex flex-col gap-2 flex-1">
-          <div class="flex items-center gap-3">
-            <h3 class="font-medium">{{ task.title }}</h3>
+        <div class="flex flex-col gap-3 flex-1">
+
+          <div class="flex items-start sm:items-center gap-3">
+            <h3 class="font-medium text-sm sm:text-base wrap-break-word">
+              {{ task.title }}
+            </h3>
           </div>
 
           <!-- META -->
           <div class="flex flex-wrap gap-2 text-xs">
-            <div class="badge badge-primary badge-outline">
+
+            <div class="badge badge-primary badge-outline gap-1">
               <font-awesome-icon icon="fa-solid fa-tag" />
-              Status: {{ task.status }}
+              {{ task.status }}
             </div>
-            <div class="badge badge-neutral gap-2">
-              <font-awesome-icon icon="fa-solid fa-bolt" /> SP: {{ task.storyPoints }}
+
+            <div class="badge badge-neutral gap-1">
+              <font-awesome-icon icon="fa-solid fa-bolt" />
+              SP {{ task.storyPoints }}
             </div>
-            <div class="badge badge-secondary gap-2">
+
+            <div class="badge badge-secondary gap-1">
               <font-awesome-icon icon="fa-solid fa-sort" />
-              Priority: {{ task.priority }}
+              P{{ task.priority }}
             </div>
-            <div class="badge badge-neutral gap-2">
+
+            <div class="badge badge-neutral gap-1">
               <font-awesome-icon icon="fa-solid fa-calendar" />
               {{ task.createdAt }}
             </div>
-            <div class="badge badge-warning gap-2">
+
+            <div class="badge badge-warning gap-1">
               <font-awesome-icon icon="fa-solid fa-clock" />
               {{ task.dueDate }}
             </div>
+
           </div>
 
           <!-- DESCRIPTION -->
-          <div class="p-5 bg-base-200 border border-base-300">
-            <p class="text-sm line-clamp-3">{{ task.description }}</p>
+          <div
+            class="p-3 sm:p-4 
+            bg-base-200 
+            border border-base-300 
+            rounded-box"
+          >
+            <p class="text-sm line-clamp-3 wrap-break-word">
+              {{ task.description }}
+            </p>
           </div>
+
         </div>
 
-        <!-- OPEN DRAWER -->
-        <label :for="'task-info-drawer-' + task.id" class="btn btn-neutral btn-circle">
-          <font-awesome-icon icon="fa-solid fa-link" />
-        </label>
+        <!-- OPEN -->
+        <div class="flex sm:flex-col justify-end">
+          <label
+            :for="'task-info-drawer-' + task.id"
+            class="btn btn-neutral btn-circle"
+          >
+            <font-awesome-icon icon="fa-solid fa-link" />
+          </label>
+        </div>
+
       </div>
     </div>
 
     <!-- DRAWER -->
-    <div class="drawer-side">
-      <label :for="'task-info-drawer-' + task.id" class="drawer-overlay"></label>
+    <div class="drawer-side z-50">
 
-      <div class="bg-base-100 border border-base-300 min-h-full w-96 p-6 flex flex-col gap-6">
+      <label
+        :for="'task-info-drawer-' + task.id"
+        class="drawer-overlay"
+      ></label>
+
+      <div
+        class="bg-base-100 border border-base-300 
+        min-h-full 
+        w-full sm:w-96
+        p-4 sm:p-6
+        flex flex-col gap-6
+        overflow-y-auto"
+      >
+
         <!-- HEADER -->
-        <div class="flex justify-between items-center">
-          <h2 class="text-xl font-semibold">{{ task.title }}</h2>
-          <label :for="'task-info-drawer-' + task.id" class="btn btn-ghost btn-sm btn-circle">✕</label>
+        <div class="flex justify-between items-start gap-3">
+          <h2 class="text-lg sm:text-xl font-semibold wrap-break-word">
+            {{ task.title }}
+          </h2>
+
+          <label
+            :for="'task-info-drawer-' + task.id"
+            class="btn btn-ghost btn-sm btn-circle"
+          >
+            ✕
+          </label>
         </div>
 
         <!-- ACTIONS -->
-        <div class="bg-base-200 border border-base-300 w-full">
+        <div class="bg-base-200 border border-base-300 rounded-box">
+
           <ul class="menu w-full">
+
             <li>
-              <button class="flex gap-3" @click="openCreateDialog">
-                <font-awesome-icon icon="fa-solid fa-plus" /> Create task
+              <button
+                class="flex gap-3 items-center"
+                @click="openCreateDialog"
+              >
+                <font-awesome-icon icon="fa-solid fa-plus"/>
+                Create task
               </button>
             </li>
+
             <li>
-              <button class="flex gap-3" @click="openEditDialog">
-                <font-awesome-icon icon="fa-solid fa-pen" /> Edit Task
+              <button
+                class="flex gap-3 items-center"
+                @click="openEditDialog"
+              >
+                <font-awesome-icon icon="fa-solid fa-pen"/>
+                Edit task
               </button>
             </li>
+
             <li class="border-t border-base-300 mt-2 pt-2">
-              <button class="text-error flex gap-3" @click="openDeleteDialog">
-                <font-awesome-icon icon="fa-solid fa-trash" /> Delete Task
+              <button
+                class="text-error flex gap-3 items-center"
+                @click="openDeleteDialog"
+              >
+                <font-awesome-icon icon="fa-solid fa-trash"/>
+                Delete task
               </button>
             </li>
+
           </ul>
+
         </div>
 
-        <!-- DETAILS, DATES, DESCRIPTION -->
-        <div class="bg-base-200 border border-base-300" v-for="section in detailsSections" :key="section.title">
-          <div class=" p-4">
-            <h3 class="text-sm font-semibold opacity-70">{{ section.title }}</h3>
+        <!-- DETAILS -->
+        <div
+          v-for="section in detailsSections"
+          :key="section.title"
+          class="bg-base-200 border border-base-300 rounded-box"
+        >
+
+          <div class="p-4">
+
+            <h3 class="text-sm font-semibold opacity-70 mb-2">
+              {{ section.title }}
+            </h3>
+
             <template v-if="section.type === 'table'">
-              <table class="table table-sm">
-                <tbody>
-                  <tr v-for="row in section.rows" :key="row.label">
-                    <td class="opacity-60">
-                      <font-awesome-icon :icon="row.icon" />
-                      {{ row.label }}
-                    </td>
-                    <td>{{ row.value }}</td>
-                  </tr>
-                </tbody>
-              </table>
+
+              <div class="overflow-x-auto">
+                <table class="table table-sm">
+
+                  <tbody>
+
+                    <tr
+                      v-for="row in section.rows"
+                      :key="row.label"
+                    >
+                      <td class="opacity-60 whitespace-nowrap">
+                        <font-awesome-icon :icon="row.icon"/>
+                        {{ row.label }}
+                      </td>
+
+                      <td class="wrap-break-word">
+                        {{ row.value }}
+                      </td>
+
+                    </tr>
+
+                  </tbody>
+
+                </table>
+              </div>
+
             </template>
+
             <template v-else-if="section.type === 'text'">
-              <p class="text-sm">{{ section.value || 'No description' }}</p>
+
+              <p class="text-sm wrap-break-word">
+                {{ section.value || 'No description' }}
+              </p>
+
             </template>
+
           </div>
+
         </div>
 
         <!-- CLOSE -->
-        <label :for="'task-info-drawer-' + task.id" class="btn btn-neutral mt-auto"> Close </label>
+        <label
+          :for="'task-info-drawer-' + task.id"
+          class="btn btn-neutral mt-auto w-full"
+        >
+          Close
+        </label>
+
       </div>
+
     </div>
 
     <!-- CREATE TASK DIALOG -->

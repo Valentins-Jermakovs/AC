@@ -1,25 +1,43 @@
 <template>
-  <div class="drawer drawer-end">
+    <div class="drawer drawer-end">
     <!-- drawer toggle -->
     <input type="checkbox" class="drawer-toggle" v-model="drawerOpen" />
 
     <!-- CONTENT -->
     <div class="drawer-content">
-      <div class="w-full bg-base-100 border border-base-300 rounded-box p-4 flex flex-col gap-4 mt-5">
+      <div
+        class="w-full bg-base-100 border border-base-300 
+        rounded-box p-3 sm:p-4 
+        flex flex-col gap-4 mt-3 sm:mt-5"
+      >
         <!-- HEADER -->
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <h3 class="font-semibold text-lg">{{ stage.title }}</h3>
-            <div class="flex gap-2">
+        <div
+          class="flex flex-col sm:flex-row 
+          sm:items-center sm:justify-between 
+          gap-3"
+        >
+          <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+            <h3 class="font-semibold text-lg wrap-break-word">
+              {{ stage.title }}
+            </h3>
+
+            <div class="flex flex-wrap gap-2">
               <div class="badge badge-neutral gap-2">
-                <font-awesome-icon icon="fa-solid fa-calendar" /> {{ stage.createdAt }}
+                <font-awesome-icon icon="fa-solid fa-calendar" />
+                {{ stage.createdAt }}
               </div>
+
               <div class="badge badge-warning gap-2">
-                <font-awesome-icon icon="fa-solid fa-clock" /> {{ stage.dueDate }}
+                <font-awesome-icon icon="fa-solid fa-clock" />
+                {{ stage.dueDate }}
               </div>
             </div>
           </div>
-          <button class="btn btn-primary btn-circle gap-2" @click="drawerOpen = true">
+
+          <button
+            class="btn btn-primary btn-circle self-end sm:self-auto"
+            @click="drawerOpen = true"
+          >
             <font-awesome-icon icon="fa-solid fa-code-branch" />
           </button>
         </div>
@@ -30,90 +48,165 @@
     </div>
 
     <!-- DRAWER -->
-    <div class="drawer-side">
-      <label class="drawer-overlay" @click="drawerOpen = false"></label>
+    <div class="drawer-side z-50">
+      <label
+        class="drawer-overlay"
+        @click="drawerOpen = false"
+      ></label>
 
-      <div class="bg-base-200 min-h-full w-96 p-6 flex flex-col gap-6">
+      <div
+        class="bg-base-200 
+        min-h-full 
+        w-full sm:w-96
+        p-4 sm:p-6
+        flex flex-col gap-6
+        overflow-y-auto"
+      >
         <!-- TITLE -->
-        <div class="flex items-center justify-between">
-          <h2 class="text-2xl font-semibold">{{ stage.title }}</h2>
-          <button class="btn btn-ghost btn-sm btn-circle" @click="drawerOpen = false">✕</button>
+        <div class="flex items-center justify-between gap-2">
+          <h2 class="text-xl sm:text-2xl font-semibold wrap-break-word">
+            {{ stage.title }}
+          </h2>
+
+          <button
+            class="btn btn-ghost btn-sm btn-circle"
+            @click="drawerOpen = false"
+          >
+            ✕
+          </button>
         </div>
 
         <!-- ACTIONS -->
         <div class="bg-base-100 border border-base-300 rounded-box w-full">
           <ul class="menu w-full">
+
             <li>
-              <button class="flex gap-3" @click="showCreateDialog = true">
-                <font-awesome-icon icon="fa-solid fa-plus" /> Add stage
+              <button
+                class="flex gap-3 items-center"
+                @click="showCreateDialog = true"
+              >
+                <font-awesome-icon icon="fa-solid fa-plus" />
+                Add stage
               </button>
             </li>
+
             <li>
-              <button class="flex gap-3" @click="openRelativeDialog">
-                <font-awesome-icon icon="fa-solid fa-code-branch" /> Add relative stage
+              <button
+                class="flex gap-3 items-center"
+                @click="openRelativeDialog"
+              >
+                <font-awesome-icon icon="fa-solid fa-code-branch" />
+                Add relative stage
               </button>
             </li>
+
             <li>
-              <button class="flex gap-3" @click="openEditDialog">
-                <font-awesome-icon icon="fa-solid fa-pen" /> Edit stage
+              <button
+                class="flex gap-3 items-center"
+                @click="openEditDialog"
+              >
+                <font-awesome-icon icon="fa-solid fa-pen" />
+                Edit stage
               </button>
             </li>
+
             <li>
-              <button class="flex gap-3" @click="moveStage('up')">
+              <button
+                class="flex gap-3 items-center"
+                @click="moveStage('up')"
+              >
                 <font-awesome-icon icon="fa-solid fa-arrow-up" />
                 Move up
               </button>
             </li>
 
             <li>
-              <button class="flex gap-3" @click="moveStage('down')">
+              <button
+                class="flex gap-3 items-center"
+                @click="moveStage('down')"
+              >
                 <font-awesome-icon icon="fa-solid fa-arrow-down" />
                 Move down
               </button>
             </li>
+
             <li class="border-t border-base-300 mt-2 pt-2">
-              <button class="text-error flex gap-3" @click="showDelete = true">
-                <font-awesome-icon icon="fa-solid fa-trash" /> Delete stage
+              <button
+                class="text-error flex gap-3 items-center"
+                @click="showDelete = true"
+              >
+                <font-awesome-icon icon="fa-solid fa-trash" />
+                Delete stage
               </button>
             </li>
+
           </ul>
         </div>
 
         <!-- DESCRIPTION -->
         <div class="card bg-base-100 border border-base-300">
           <div class="card-body p-4">
-            <h3 class="font-semibold text-sm opacity-70">Description</h3>
-            <p class="text-sm">{{ stage.description }}</p>
+            <h3 class="font-semibold text-sm opacity-70">
+              Description
+            </h3>
+
+            <p class="text-sm wrap-break-word">
+              {{ stage.description }}
+            </p>
           </div>
         </div>
 
         <!-- META -->
         <div class="card bg-base-100 border border-base-300">
           <div class="card-body p-4">
-            <h3 class="font-semibold text-sm opacity-70 mb-2">Metadata</h3>
-            <table class="table table-sm">
-              <tbody>
-                <tr>
-                  <td class="opacity-60">
-                    <font-awesome-icon icon="fa-solid fa-calendar" />
-                    Created
-                  </td>
-                  <td class="font-medium">{{ stage.createdAt }}</td>
-                </tr>
-                <tr>
-                  <td class="opacity-60">
-                    <font-awesome-icon icon="fa-solid fa-clock" />
-                    Due date
-                  </td>
-                  <td class="font-medium">{{ stage.dueDate }}</td>
-                </tr>
-              </tbody>
-            </table>
+
+            <h3 class="font-semibold text-sm opacity-70 mb-2">
+              Metadata
+            </h3>
+
+            <div class="overflow-x-auto">
+              <table class="table table-sm">
+
+                <tbody>
+
+                  <tr>
+                    <td class="opacity-60">
+                      <font-awesome-icon icon="fa-solid fa-calendar" />
+                      Created
+                    </td>
+
+                    <td class="font-medium">
+                      {{ stage.createdAt }}
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td class="opacity-60">
+                      <font-awesome-icon icon="fa-solid fa-clock" />
+                      Due date
+                    </td>
+
+                    <td class="font-medium">
+                      {{ stage.dueDate }}
+                    </td>
+                  </tr>
+
+                </tbody>
+
+              </table>
+            </div>
+
           </div>
         </div>
 
         <!-- CLOSE -->
-        <button class="btn btn-neutral mt-auto" @click="drawerOpen = false">Close</button>
+        <button
+          class="btn btn-neutral mt-auto w-full"
+          @click="drawerOpen = false"
+        >
+          Close
+        </button>
+
       </div>
     </div>
   </div>

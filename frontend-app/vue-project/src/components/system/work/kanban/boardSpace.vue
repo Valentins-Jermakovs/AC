@@ -1,41 +1,75 @@
 <template>
-  <div class="w-full bg-base-100 border border-base-300 flex flex-wrap items-center gap-1 p-1">
-    <!-- Create Board button -->
-    <button class="btn btn-neutral" @click="openCreateModal">
+  <!-- Toolbar -->
+  <div
+    class="w-full bg-base-100 border border-base-300 
+    flex flex-wrap items-center gap-2 p-2"
+  >
+    <!-- Create -->
+    <button
+      class="btn btn-neutral flex-1 sm:flex-none"
+      @click="openCreateModal"
+    >
       <font-awesome-icon icon="fa-solid fa-plus" />
-      Create Board
+      <span class="hidden sm:inline">Create Board</span>
     </button>
 
     <!-- Change title -->
-    <button class="btn btn-neutral" @click="openChangeTitleModal">
+    <button
+      class="btn btn-neutral flex-1 sm:flex-none"
+      @click="openChangeTitleModal"
+    >
       <font-awesome-icon icon="fa-solid fa-pen-to-square" />
-      Change board title
+      <span class="hidden md:inline">
+        Change board title
+      </span>
     </button>
 
     <!-- Add stage -->
-    <button class="btn btn-neutral" @click="openAddStageModal">
+    <button
+      class="btn btn-neutral flex-1 sm:flex-none"
+      @click="openAddStageModal"
+    >
       <font-awesome-icon icon="fa-solid fa-plus" />
-      Add Stage
+      <span class="hidden md:inline">
+        Add Stage
+      </span>
     </button>
 
-    <!-- Delete board -->
-    <button class="btn btn-neutral" @click="openDeleteModal"
-      v-if="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role == 'owner'">
-      <font-awesome-icon icon="fa-solid fa-trash" />
-      Delete board
-    </button>
+    <!-- Right side actions -->
+    <div class="flex gap-2 sm:ml-auto w-full sm:w-auto">
 
-    <!-- Leave board button -->
-    <button class="btn btn-neutral" @click="openLeaveBoardModal"
-      v-if="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role !== 'owner'">
-      <font-awesome-icon icon="fa-solid fa-sign-out" />
-      Leave board
-    </button>
+      <!-- Delete -->
+      <button
+        v-if="kanbanMembersStore.currentUser 
+        && kanbanMembersStore.currentUser.role == 'owner'"
+        class="btn btn-neutral flex-1 sm:flex-none"
+        @click="openDeleteModal"
+      >
+        <font-awesome-icon icon="fa-solid fa-trash" />
+        <span class="hidden md:inline">
+          Delete board
+        </span>
+      </button>
+
+      <!-- Leave -->
+      <button
+        v-if="kanbanMembersStore.currentUser 
+        && kanbanMembersStore.currentUser.role !== 'owner'"
+        class="btn btn-neutral flex-1 sm:flex-none"
+        @click="openLeaveBoardModal"
+      >
+        <font-awesome-icon icon="fa-solid fa-sign-out" />
+        <span class="hidden md:inline">
+          Leave board
+        </span>
+      </button>
+
+    </div>
   </div>
 
   <!-- Board space -->
-  <div class="flex-1 flex w-full overflow-auto p-5">
-    <kanbanStage></kanbanStage>
+  <div class="flex-1 flex w-full overflow-auto p-3 sm:p-5">
+    <kanbanStage />
   </div>
 
   <!-- Modals -->

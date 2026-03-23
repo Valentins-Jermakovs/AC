@@ -167,5 +167,8 @@ export const useWorkspaceProjectsTasksStore = defineStore('workspaceProjectsTask
         this.loading = false
       }
     },
+    clearError() {
+      this.error = null
+    },
   },
 })

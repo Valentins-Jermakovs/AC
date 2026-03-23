@@ -1,49 +1,59 @@
 <template>
-  <div class="w-full p-2 flex bg-base-100 border border-base-300 gap-2">
-    <!-- Project view button -->
+  <div
+    class="w-full p-2 flex flex-wrap bg-base-100 border border-base-300 gap-2 items-center"
+  >
+    <!-- Project view -->
     <button
-      class="btn"
+      class="btn flex-1 sm:flex-none"
       :class="activeView === 'project' ? 'btn-primary' : 'btn-neutral'"
       @click="$emit('update:activeView', 'project')"
     >
-      <font-awesome-icon icon="fa-solid fa-list" /> Project view
+      <font-awesome-icon icon="fa-solid fa-list" />
+      <span class="hidden sm:inline">Project view</span>
     </button>
 
+    <!-- Members -->
     <button
       v-if="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role === 'owner'"
-      class="btn"
+      class="btn flex-1 sm:flex-none"
       :class="activeView === 'members' ? 'btn-primary' : 'btn-neutral'"
       @click="$emit('update:activeView', 'members')"
     >
-      <font-awesome-icon icon="fa-solid fa-users" /> Members view
+      <font-awesome-icon icon="fa-solid fa-users" />
+      <span class="hidden sm:inline">Members view</span>
     </button>
 
-    <!-- Delete / Leave buttons -->
+    <!-- Delete -->
     <button
       v-if="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role === 'owner'"
-      class="btn btn-neutral"
+      class="btn btn-neutral flex-1 sm:flex-none sm:ml-auto"
       @click="showDelete = true"
     >
       <font-awesome-icon icon="fa-solid fa-trash" />
-      Delete project
+      <span class="hidden md:inline">Delete project</span>
     </button>
 
+    <!-- Leave -->
     <button
       v-if="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role !== 'owner'"
-      class="btn btn-neutral"
+      class="btn btn-neutral flex-1 sm:flex-none sm:ml-auto"
     >
       <font-awesome-icon icon="fa-solid fa-arrow-right-from-bracket" />
-      Leave project
+      <span class="hidden md:inline">Leave project</span>
     </button>
 
-    <!-- Back button -->
-    <button class="btn btn-neutral" @click="goToProjects">
+    <!-- Back -->
+    <button
+      class="btn btn-neutral w-full sm:w-auto"
+      @click="goToProjects"
+    >
       <font-awesome-icon icon="fa-solid fa-arrow-left" />
-      Back to projects list
+      <span>Back</span>
+      <span class="hidden md:inline">to projects list</span>
     </button>
   </div>
 
-  <!-- Delete confirmation dialog -->
+  <!-- Delete dialog -->
   <base-dialog
     v-model="showDelete"
     title="Delete project"

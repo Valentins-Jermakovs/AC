@@ -1,13 +1,39 @@
 <template>
-  <div class="p-2 flex flex-col items-center bg-base-200 border border-base-300 gap-2">
-    <ProjectTask v-for="task in tasksStore.getTasksByStage(stage.id)" :key="task.id" :task="task" />
+  <div
+    class="p-2 sm:p-3 
+    flex flex-col 
+    bg-base-200 border border-base-300 
+    rounded-box 
+    gap-3"
+  >
+    <!-- Tasks -->
+    <div class="flex flex-col gap-3 w-full">
+      <ProjectTask
+        v-for="task in tasksStore.getTasksByStage(stage.id)"
+        :key="task.id"
+        :task="task"
+      />
+    </div>
 
-    <div class="w-full flex items-center justify-center p-2">
-      <button class="btn btn-primary" @click="openCreateDialog">
-        <font-awesome-icon icon="fa-solid fa-plus" /> 
-        Create new task
+    <!-- Create -->
+    <div class="w-full flex justify-center pt-2">
+      <button
+        class="btn btn-primary w-full sm:w-auto"
+        @click="openCreateDialog"
+      >
+        <font-awesome-icon icon="fa-solid fa-plus" />
+
+        <span class="hidden sm:inline">
+          Create new task
+        </span>
+
+        <span class="sm:hidden">
+          New task
+        </span>
+
       </button>
     </div>
+
   </div>
 
   <!-- CREATE -->
@@ -17,39 +43,90 @@
     confirmText="Create"
     cancelText="Cancel"
     @confirm="createTask"
+    @cancel="closeCreateDialog"
   >
     <div class="flex flex-col gap-3 w-full">
-      <label class="label" for="title">Title</label>
-      <input v-model="form.title" class="input input-bordered w-full" placeholder="Task title" />
-      <label class="label" for="description">Description</label>
-      <textarea
-        v-model="form.description"
-        class="textarea textarea-bordered w-full min-h-52"
-        placeholder="Description"
-      ></textarea>
-
-      <div class="flex gap-2">
-        <div class="flex-1">
-          <label class="label" for="priority">Priority</label>
-          <select v-model="form.priority" class="select select-bordered flex-1">
-          <option :value="1">Priority 1</option>
-          <option :value="2">Priority 2</option>
-          <option :value="3">Priority 3</option>
-        </select>
+      <Transition name="error-slide">
+        <div v-if="error">
+          <h1 class="text-error mb-2">{{ error }}</h1>
         </div>
+      </Transition>
+      <div>
+        <label class="label">
+          Title
+        </label>
 
-        <div class="flex-1">
-          <label class="label" for="storyPoints">Story Points</label>
-          <select v-model="form.storyPoints" class="select select-bordered flex-1">
-          <option :value="1">1 SP</option>
-          <option :value="3">3 SP</option>
-          <option :value="5">5 SP</option>
-        </select>
-        </div>
+        <input
+          v-model="form.title"
+          class="input input-bordered w-full"
+          placeholder="Task title"
+        />
       </div>
 
-      <label class="label" for="status">Status</label>
-      <input type="date" v-model="form.dueDate" class="input input-bordered w-full" />
+      <div>
+        <label class="label">
+          Description
+        </label>
+
+        <textarea
+          v-model="form.description"
+          class="textarea textarea-bordered 
+          w-full 
+          min-h-30 sm:min-h-52"
+          placeholder="Description"
+        ></textarea>
+      </div>
+
+      <!-- Priority + SP -->
+      <div
+        class="flex flex-col sm:flex-row gap-3"
+      >
+
+        <div class="flex flex-col flex-1">
+          <label class="label">
+            Priority
+          </label>
+
+          <select
+            v-model="form.priority"
+            class="select select-bordered w-full"
+          >
+            <option :value="1">Priority 1</option>
+            <option :value="2">Priority 2</option>
+            <option :value="3">Priority 3</option>
+          </select>
+        </div>
+
+        <div class="flex flex-col flex-1">
+          <label class="label">
+            Story Points
+          </label>
+
+          <select
+            v-model="form.storyPoints"
+            class="select select-bordered w-full"
+          >
+            <option :value="1">1 SP</option>
+            <option :value="3">3 SP</option>
+            <option :value="5">5 SP</option>
+          </select>
+        </div>
+
+      </div>
+
+      <!-- Due date -->
+      <div>
+        <label class="label">
+          Due date
+        </label>
+
+        <input
+          type="date"
+          v-model="form.dueDate"
+          class="input input-bordered w-full"
+        />
+      </div>
+
     </div>
   </BaseDialog>
 </template>
@@ -94,6 +171,12 @@ export default {
     }
   },
 
+  computed: {
+    error() {
+      return this.tasksStore.error
+    },
+  },
+
   mounted() {
     this.tasksStore.projectId = this.projectsStore.selectedProject.id
 
@@ -101,6 +184,20 @@ export default {
   },
 
   methods: {
+    closeCreateDialog() {
+      this.createDialog = false
+
+      this.form = {
+        title: '',
+        description: '',
+        priority: 1,
+        storyPoints: 1,
+        status: 'todo',
+        dueDate: null,
+      }
+
+      this.tasksStore.clearError()
+    },
     openCreateDialog() {
       this.form = {
         title: '',
@@ -115,7 +212,6 @@ export default {
     },
 
     async createTask() {
-      if (!this.form.title) return
 
       try {
         const payload = {

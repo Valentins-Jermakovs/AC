@@ -57,8 +57,14 @@
     confirmText="Save"
     cancelText="Cancel"
     @confirm="confirmUpdateStage"
+    @cancel="closeUpdateModal"
   >
     <div class="flex flex-col gap-2 w-full">
+      <Transition name="error-slide">
+        <div v-if="errorStage">
+          <h1 class="text-error mb-2">{{ errorStage }}</h1>
+        </div>
+      </Transition>
       <label for="stageTitle" class="label">Stage Title</label>
       <input type="text" class="input w-full" v-model="newStageTitle" />
     </div>
@@ -70,8 +76,14 @@
     confirmText="Insert"
     cancelText="Cancel"
     @confirm="confirmInsertStage"
+    @cancel="closeInsertModal"
   >
     <div class="flex flex-col gap-2 w-full">
+      <Transition name="error-slide">
+        <div v-if="errorStage">
+          <h1 class="text-error mb-2">{{ errorStage }}</h1>
+        </div>
+      </Transition>
       <label for="stageTitle" class="label">Stage Title</label>
       <input type="text" class="input w-full" v-model="newStageTitle" placeholder="Stage title" />
     </div>
@@ -116,6 +128,11 @@ export default {
       this.newStageTitle = this.stage.title
       this.updateModal = true
     },
+    closeUpdateModal() {
+      this.newStageTitle = ''
+      this.updateModal = false
+      this.kanbanStore.clearError()
+    },
     async confirmUpdateStage() {
       try {
         await this.stagesStore.updateStage({
@@ -134,6 +151,11 @@ export default {
       this.insertPosition = position
       this.newStageTitle = ''
       this.insertModal = true
+    },
+    closeInsertModal() {
+      this.newStageTitle = ''
+      this.insertModal = false
+      this.stagesStore.clearError()
     },
     async confirmInsertStage() {
       try {
@@ -176,6 +198,11 @@ export default {
       } catch (err) {
         console.error('Failed to delete stage:', err)
       }
+    },
+  },
+  computed: {
+    errorStage() {
+      return this.stagesStore.error
     },
   },
 }

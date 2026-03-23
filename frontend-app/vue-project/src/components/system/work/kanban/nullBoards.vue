@@ -12,8 +12,13 @@
 
   <!-- Create board modal -->
   <base-dialog v-model="createModal" title="Create New Board" confirmText="Create" cancelText="Cancel"
-    @confirm="confirmCreateBoard">
+    @confirm="confirmCreateBoard" @cancel="closeCreateModal">
     <div class="flex flex-col gap-2 w-full">
+      <Transition name="error-slide">
+        <div v-if="error">
+          <h1 class="text-error mb-2">{{ error }}</h1>
+        </div>
+      </Transition>
       <label for="boardTitle" class="label">Board Title</label>
       <input type="text" class="input w-full" v-model="newBoardTitle" placeholder="Enter board title" />
     </div>
@@ -43,8 +48,12 @@ export default {
       this.newBoardTitle = ''
       this.createModal = true
     },
+    closeCreateModal() {
+      this.newBoardTitle = ''
+      this.createModal = false
+      this.kanbanBoardStore.clearError()
+    },
     async confirmCreateBoard() {
-      if (!this.newBoardTitle.trim()) return
       try {
         await this.kanbanBoardStore.createBoard({
           title: this.newBoardTitle.trim(),
@@ -61,6 +70,11 @@ export default {
       this.userStore.fetchMe()
     }
   },
+  computed: {
+    error() {
+      return this.kanbanBoardStore.error
+    },
+  }
 }
 </script>
 

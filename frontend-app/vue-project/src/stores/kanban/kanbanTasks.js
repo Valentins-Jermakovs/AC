@@ -183,5 +183,8 @@ export const useKanbanTasksStore = defineStore('kanbanTasks', {
         this.loading = false
       }
     },
+    clearError() {
+      this.error = null
+    },
   },
 })

@@ -55,8 +55,8 @@ async def get_all_tasks(
             storyPoints=task.storyPoints,
             priority=task.priority,
             status=task.status,
-            createdAt=task.createdAt.strftime("%Y-%m-%d"),
-            dueDate=task.dueDate.strftime("%Y-%m-%d")
+            createdAt=task.createdAt.strftime("%Y-%m-%d") if task.createdAt else None,
+            dueDate=task.dueDate.strftime("%Y-%m-%d") if task.dueDate else None
         ) for task in tasks
     ]
 

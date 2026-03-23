@@ -190,6 +190,13 @@
             </select>
           </div>
         </div>
+        <!-- Status -->
+        <label class="label" for="status">Status</label>
+        <select v-model="form.status" class="select select-bordered w-full">
+          <option value="todo">To Do</option>
+          <option value="in_progress">In Progress</option>
+          <option value="done">Done</option>
+        </select>
         <label class="label" for="dueDate">Due Date</label>
         <input type="date" v-model="form.dueDate" class="input input-bordered w-full" />
       </div>

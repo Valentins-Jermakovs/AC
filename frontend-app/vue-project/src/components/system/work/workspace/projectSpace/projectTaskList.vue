@@ -90,6 +90,17 @@
         </div>
       </div>
 
+      <!-- Status -->
+      <div>
+        <label class="label"> Status </label>
+
+        <select v-model="form.status" class="select select-bordered w-full">
+          <option value="todo">To Do</option>
+          <option value="in_progress">In Progress</option>
+          <option value="done">Done</option>
+        </select>
+      </div>
+
       <!-- Due date -->
       <div>
         <label class="label"> Due date </label>

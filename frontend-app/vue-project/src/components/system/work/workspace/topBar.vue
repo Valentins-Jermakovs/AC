@@ -1,12 +1,13 @@
 <template>
-  <div class="w-full flex flex-col md:flex-row items-center gap-3 md:gap-5 justify-between p-2">
+  <div class="w-full flex flex-col md:flex-row items-center gap-3 md:gap-5 justify-between p-2 bg-base-100
+  border border-base-300">
     <!-- Create -->
     <button class="btn btn-success w-full md:w-auto" @click="showCreateDialog = true">
       <font-awesome-icon icon="fa-solid fa-plus" />
       Create project
     </button>
 
-    <div class="w-48"></div>
+    <div class="flex-1"></div>
 
     <!-- Search -->
     <div class="flex flex-col md:flex-row gap-2 flex-1 w-full">

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full flex gap-4 p-2 overflow-x-auto pb-4">
+  <div class="w-full min-h-full sm:h-auto flex gap-4 p-2 overflow-x-auto pb-4">
     <div
       v-for="stage in stagesStore.stages"
       :key="stage.id"

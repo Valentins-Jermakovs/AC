@@ -7,7 +7,7 @@
     <div
       class="bg-base-200 border border-base-300 
       p-6 sm:p-10 
-      rounded-box 
+      wrap-break-word 
       text-center 
       max-w-md w-full"
     >
@@ -47,7 +47,7 @@
       >
 
         <button
-          class="btn btn-success w-full lg:w-auto"
+          class="btn btn-success w-full lg:h-full lg:w-auto"
           @click="openAddMemberModal"
         >
           <font-awesome-icon icon="fa-solid fa-user-plus"/>
@@ -62,7 +62,7 @@
           border border-base-300 
           bg-base-200 
           p-2 
-          rounded-box"
+          wrap-break-word"
         >
 
           <input
@@ -94,7 +94,7 @@
       </div>
 
       <!-- MEMBERS LIST -->
-      <div class="w-full bg-base-200 border border-base-300 rounded-box p-2 sm:p-3 flex flex-col gap-3">
+      <div class="w-full bg-base-200 border border-base-300 wrap-break-word p-2 sm:p-3 flex flex-col gap-3">
 
 
         <div
@@ -108,7 +108,7 @@
       p-3
       bg-base-100
       border border-base-300
-      rounded-box
+      wrap-break-word
     "
   >
 
@@ -119,7 +119,7 @@
             bg-base-200 
             p-3 
             border border-base-300 
-            rounded-box
+            wrap-break-word
             break-all"
           >
             <font-awesome-icon icon="fa-solid fa-user"/>
@@ -154,7 +154,7 @@
               menu 
               bg-base-200 
               border border-base-300 
-              rounded-box
+              wrap-break-word
               w-44 
               p-2 
               shadow"
@@ -209,7 +209,7 @@
 
         bg-base-200 
         border border-base-300 
-        rounded-box
+        wrap-break-word
 
         p-3 sm:px-4 sm:py-2"
       >

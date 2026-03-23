@@ -68,7 +68,7 @@
   </div>
 
   <!-- Board space -->
-  <div class="flex-1 flex w-full overflow-auto p-3 sm:p-5">
+  <div class="flex-1 flex w-full  min-h-screen p-3 sm:p-5">
     <kanbanStage />
   </div>
 

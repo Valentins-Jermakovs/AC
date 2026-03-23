@@ -1,9 +1,7 @@
 <template>
-  <div
-    class="w-full flex items-center bg-base-100 border border-base-300 p-2 gap-5 justify-between"
-  >
+  <div class="w-full flex flex-col md:flex-row items-center gap-3 md:gap-5 justify-between p-2">
     <!-- Create -->
-    <button class="btn btn-accent" @click="showCreateDialog = true">
+    <button class="btn btn-success w-full md:w-auto" @click="showCreateDialog = true">
       <font-awesome-icon icon="fa-solid fa-plus" />
       Create project
     </button>
@@ -11,48 +9,37 @@
     <div class="w-48"></div>
 
     <!-- Search -->
-    <div class="flex gap-3 flex-1">
-      <input
-        v-model="store.searchQuery"
-        type="text"
-        class="input input-bordered w-full"
-        placeholder="Search..."
-        @keyup.enter="search"
-      />
-
-      <select v-model="store.searchMode" class="select select-bordered">
+    <div class="flex flex-col md:flex-row gap-2 flex-1 w-full">
+      <input v-model="store.searchQuery" type="text" class="input input-bordered w-full md:w-auto"
+        placeholder="Search..." @keyup.enter="search" />
+      <select v-model="store.searchMode" class="select select-bordered w-full md:w-auto">
         <option value="all">All</option>
         <option value="title">By title</option>
       </select>
-
-      <button class="btn btn-primary" @click="search">
+      <button class="btn btn-primary w-full md:w-auto" @click="search">
         <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
       </button>
     </div>
   </div>
 
   <!-- Create dialog -->
-  <base-dialog
-    v-model="showCreateDialog"
-    title="Create project"
-    confirmText="Create"
-    cancelText="Cancel"
-    @confirm="createProject"
-    @cancel="resetForm"
-  >
+  <base-dialog v-model="showCreateDialog" title="Create project" confirmText="Create" cancelText="Cancel"
+    @confirm="createProject" @cancel="closeCreateProject">
     <div class="flex flex-col w-full gap-3">
-      <input
-        v-model="newProject.title"
-        type="text"
-        class="input input-bordered w-full"
-        placeholder="Project title"
-      />
-
-      <textarea
-        v-model="newProject.description"
-        class="textarea textarea-bordered w-full min-h-52"
-        placeholder="Project description"
-      ></textarea>
+      <Transition name="error-slide">
+        <div v-if="error">
+          <h1 class="text-error mb-2">{{ error }}</h1>
+        </div>
+      </Transition>
+      <label class="label">
+        <span class="label-text">Title</span>
+      </label>
+      <input v-model="newProject.title" type="text" class="input input-bordered w-full" placeholder="Project title" />
+      <label class="label">
+        <span class="label-text">Description</span>
+      </label>
+      <textarea v-model="newProject.description" class="textarea textarea-bordered w-full min-h-52"
+        placeholder="Project description"></textarea>
     </div>
   </base-dialog>
 </template>
@@ -97,14 +84,18 @@ export default {
       }
     },
 
+    async closeCreateProject() {
+      this.showCreateDialog = false
+      this.resetForm()
+      await this.store.clearError()
+    },
+
     async createProject() {
       const payload = {
         title: this.newProject.title,
         description: this.newProject.description,
         email: this.userStore.email,
       }
-
-      if (!this.newProject.title) return
 
       try {
         await this.store.createProject(payload)
@@ -126,6 +117,12 @@ export default {
 
   mounted() {
     this.userStore.fetchMe()
+  },
+
+  computed: {
+    error() {
+      return this.store.error
+    },
   },
 }
 </script>

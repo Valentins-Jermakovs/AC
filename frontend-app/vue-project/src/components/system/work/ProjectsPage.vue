@@ -28,7 +28,7 @@
     </div>
 
     <!-- Members view -->
-    <div v-if="this.activeView === 'members'" class="w-4/5">
+    <div v-if="this.activeView === 'members'" class="w-full md:w-4/5">
       <MemberSpaceProjects></MemberSpaceProjects>
     </div>
   </div>

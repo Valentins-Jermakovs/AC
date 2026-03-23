@@ -281,14 +281,29 @@
               <option :value="1">Priority 1</option>
               <option :value="2">Priority 2</option>
               <option :value="3">Priority 3</option>
+              <option :value="4">Priority 4</option>
+              <option :value="5">Priority 5</option>
+              <option :value="6">Priority 6</option>
+              <option :value="7">Priority 7</option>
+              <option :value="8">Priority 8</option>
+              <option :value="9">Priority 9</option>
+              <option :value="10">Priority 10</option>
             </select>
           </div>
           <div class="flex-1">
             <label class="label" for="storyPoints">Story Points</label>
             <select v-model="form.storyPoints" class="select select-bordered flex-1">
               <option :value="1">1 SP</option>
+              <option :value="2">2 SP</option>
               <option :value="3">3 SP</option>
               <option :value="5">5 SP</option>
+              <option :value="8">8 SP</option>
+              <option :value="13">13 SP</option>
+              <option :value="21">21 SP</option>
+              <option :value="34">34 SP</option>
+              <option :value="55">55 SP</option>
+              <option :value="89">89 SP</option>
+              <option :value="144">144 SP</option>
             </select>
           </div>
         </div>

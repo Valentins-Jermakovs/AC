@@ -1,9 +1,12 @@
 <template>
-  <div class="p-2 flex flex-col items-center bg-base-200 rounded-box border border-base-300">
+  <div class="p-2 flex flex-col items-center bg-base-200 border border-base-300 gap-2">
     <ProjectTask v-for="task in tasksStore.getTasksByStage(stage.id)" :key="task.id" :task="task" />
 
     <div class="w-full flex items-center justify-center p-2">
-      <button class="btn btn-primary" @click="openCreateDialog">Create new task</button>
+      <button class="btn btn-primary" @click="openCreateDialog">
+        <font-awesome-icon icon="fa-solid fa-plus" /> 
+        Create new task
+      </button>
     </div>
   </div>
 
@@ -16,29 +19,37 @@
     @confirm="createTask"
   >
     <div class="flex flex-col gap-3 w-full">
+      <label class="label" for="title">Title</label>
       <input v-model="form.title" class="input input-bordered w-full" placeholder="Task title" />
-
+      <label class="label" for="description">Description</label>
       <textarea
         v-model="form.description"
-        class="textarea textarea-bordered"
+        class="textarea textarea-bordered w-full min-h-52"
         placeholder="Description"
       ></textarea>
 
       <div class="flex gap-2">
-        <select v-model="form.priority" class="select select-bordered flex-1">
+        <div class="flex-1">
+          <label class="label" for="priority">Priority</label>
+          <select v-model="form.priority" class="select select-bordered flex-1">
           <option :value="1">Priority 1</option>
           <option :value="2">Priority 2</option>
           <option :value="3">Priority 3</option>
         </select>
+        </div>
 
-        <select v-model="form.storyPoints" class="select select-bordered flex-1">
+        <div class="flex-1">
+          <label class="label" for="storyPoints">Story Points</label>
+          <select v-model="form.storyPoints" class="select select-bordered flex-1">
           <option :value="1">1 SP</option>
           <option :value="3">3 SP</option>
           <option :value="5">5 SP</option>
         </select>
+        </div>
       </div>
 
-      <input type="date" v-model="form.dueDate" class="input input-bordered" />
+      <label class="label" for="status">Status</label>
+      <input type="date" v-model="form.dueDate" class="input input-bordered w-full" />
     </div>
   </BaseDialog>
 </template>

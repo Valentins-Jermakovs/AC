@@ -3,7 +3,7 @@
     v-if="workspaceProjectMembersStore.accessDenied"
     class="w-full h-full flex items-center justify-center"
   >
-    <div class="bg-base-200 border border-base-300 p-10 rounded-box text-center">
+    <div class="bg-base-200 border border-base-300 p-10  text-center">
       <font-awesome-icon icon="fa-solid fa-lock" class="text-4xl mb-4 text-error" />
 
       <h2 class="text-xl font-bold">Access denied</h2>
@@ -48,18 +48,18 @@
         <div
           v-for="member in workspaceProjectMembersStore.projectMembers"
           :key="member.id"
-          class="w-full p-1 bg-base-100 border border-base-300 rounded-box flex items-center justify-between gap-3"
+          class="w-full p-1 bg-base-100 border border-base-300  flex items-center justify-between gap-3"
         >
           <div class="flex items-center gap-3 font-medium flex-1 p-2">
             <div
-              class="flex w-full bg-base-200 p-3 items-center gap-2 rounded-box border border-base-300"
+              class="flex w-full bg-base-200 p-3 items-center gap-2  border border-base-300"
             >
               <font-awesome-icon icon="fa-solid fa-user" />
               {{ member.email }}
             </div>
           </div>
 
-          <div class="flex items-center gap-2 badge badge-primary rounded-box">
+          <div class="flex items-center gap-2 badge badge-primary ">
             {{ member.role }}
           </div>
 
@@ -67,7 +67,7 @@
             <div tabindex="0" role="button" class="btn btn-sm btn-ghost">⋮</div>
             <ul
               tabindex="0"
-              class="dropdown-content menu bg-base-200 border border-base-300 rounded-box w-48 p-2 shadow"
+              class="dropdown-content menu bg-base-200 border border-base-300  w-48 p-2 shadow"
             >
               <li>
                 <button class="flex gap-2" @click="openUpdateMemberModal(member)">

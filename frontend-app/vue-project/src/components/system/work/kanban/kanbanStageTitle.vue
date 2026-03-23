@@ -11,37 +11,37 @@
         class="dropdown-content menu bg-base-200 border border-base-300 rounded-box w-48 p-2 shadow"
       >
         <li>
-          <button class="flex gap-2 items-center text-blue-500" @click="openUpdateModal">
+          <button class="flex gap-2 items-center" @click="openUpdateModal">
             <font-awesome-icon icon="fa-solid fa-pencil" />
             Update stage
           </button>
         </li>
         <li>
-          <button class="flex gap-2 items-center text-green-500" @click="openInsertModal('before')">
+          <button class="flex gap-2 items-center" @click="openInsertModal('before')">
             <font-awesome-icon icon="fa-solid fa-arrow-up" />
             Insert stage before
           </button>
         </li>
         <li>
-          <button class="flex gap-2 items-center text-green-500" @click="openInsertModal('after')">
+          <button class="flex gap-2 items-center" @click="openInsertModal('after')">
             <font-awesome-icon icon="fa-solid fa-arrow-down" />
             Insert stage after
           </button>
         </li>
         <li>
-          <button class="flex gap-2 items-center text-purple-500" @click="moveStage('right')">
+          <button class="flex gap-2 items-center" @click="moveStage('right')">
             <font-awesome-icon icon="fa-solid fa-arrow-right" />
             Move stage to right
           </button>
         </li>
         <li>
-          <button class="flex gap-2 items-center text-purple-500" @click="moveStage('left')">
+          <button class="flex gap-2 items-center" @click="moveStage('left')">
             <font-awesome-icon icon="fa-solid fa-arrow-left" />
             Move stage to left
           </button>
         </li>
         <li>
-          <button class="flex gap-2 items-center text-red-500" @click="openDeleteModal">
+          <button class="flex gap-2 items-center text-error" @click="openDeleteModal">
             <font-awesome-icon icon="fa-solid fa-trash" />
             Delete stage
           </button>

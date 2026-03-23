@@ -7,7 +7,7 @@
 
       <!-- Pagination -->
       <div
-        class="w-full p-4 rounded-box border border-base-300 bg-base-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        class="w-full p-4  border border-base-300 bg-base-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div class="flex flex-col sm:flex-row sm:items-center sm:gap-6 w-full sm:w-auto">
           <div class="flex flex-col sm:flex-row sm:items-center gap-2">
             <label class="text-sm opacity-70">{{ $t('cabinet.admin.table_footer.limit') }}</label>

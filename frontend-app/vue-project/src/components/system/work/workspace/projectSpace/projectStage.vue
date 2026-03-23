@@ -22,7 +22,7 @@
             </div>
           </div>
           <button class="btn btn-primary btn-sm gap-2" @click="drawerOpen = true">
-            <font-awesome-icon icon="fa-solid fa-bars" /> Info
+            <font-awesome-icon icon="fa-solid fa-code-branch" />
           </button>
         </div>
 
@@ -96,11 +96,17 @@
             <table class="table table-sm">
               <tbody>
                 <tr>
-                  <td class="opacity-60">Created</td>
+                  <td class="opacity-60">
+                    <font-awesome-icon icon="fa-solid fa-calendar" />
+                    Created
+                  </td>
                   <td class="font-medium">{{ stage.createdAt }}</td>
                 </tr>
                 <tr>
-                  <td class="opacity-60">Due date</td>
+                  <td class="opacity-60">
+                    <font-awesome-icon icon="fa-solid fa-clock" />
+                    Due date
+                  </td>
                   <td class="font-medium">{{ stage.dueDate }}</td>
                 </tr>
               </tbody>
@@ -255,7 +261,6 @@ export default {
         this.drawerOpen = false
       } catch (err) {
         console.error(err)
-        alert('Error creating stage: ' + err)
       }
     },
     async handleDelete() {
@@ -269,7 +274,6 @@ export default {
         this.drawerOpen = false
       } catch (err) {
         console.error(err)
-        alert('Error deleting stage: ' + err)
       }
     },
     async openEditDialog() {
@@ -297,7 +301,6 @@ export default {
         this.drawerOpen = false
       } catch (err) {
         console.error(err)
-        alert('Error updating stage: ' + err)
       }
     },
     openRelativeDialog() {
@@ -327,7 +330,6 @@ export default {
         this.drawerOpen = false
       } catch (err) {
         console.error(err)
-        alert('Error creating relative stage: ' + err)
       }
     },
     async moveStage(direction) {
@@ -342,7 +344,6 @@ export default {
         this.drawerOpen = false
       } catch (err) {
         console.error(err)
-        alert('Error moving stage: ' + err)
       }
     },
   },

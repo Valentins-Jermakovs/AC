@@ -1,7 +1,7 @@
 <template>
   <!-- ACCESS DENIED -->
   <div v-if="kanbanMembersStore.accessDenied" class="w-full h-full flex items-center justify-center p-4">
-    <div class="bg-base-200 border border-base-300 p-6 md:p-10 rounded-box text-center max-w-md w-full">
+    <div class="bg-base-200 border border-base-300 p-6 md:p-10  text-center max-w-md w-full">
       <font-awesome-icon icon="fa-solid fa-lock" class="text-3xl md:text-4xl mb-4 text-error" />
 
       <h2 class="text-lg md:text-xl font-bold">Access denied</h2>
@@ -18,14 +18,14 @@
 
       <!-- HEADER -->
       <div class="w-full md:w-3/5 flex flex-col md:flex-row justify-between items-stretch md:items-center gap-2">
-        <button class="btn btn-success w-full md:w-auto" @click="openAddMemberModal">
+        <button class="btn btn-success w-full md:w-auto md:h-full" @click="openAddMemberModal">
           <font-awesome-icon icon="fa-solid fa-user-plus" />
           Add member
         </button>
 
         <!-- SEARCH -->
         <div
-          class="w-full flex flex-col md:flex-row items-stretch md:items-center gap-2 border border-base-300 bg-base-200 p-2 rounded-box">
+          class="w-full flex flex-col md:flex-row items-stretch md:items-center gap-2 border border-base-300 bg-base-200 p-2 ">
           <input type="text" class="input w-full" placeholder="Search..." v-model="kanbanMembersStore.searchQuery"
             @keyup.enter="searchMembers" :disabled="kanbanMembersStore.searchType === 'all'" />
 
@@ -43,13 +43,13 @@
       </div>
 
       <!-- MEMBERS LIST -->
-      <div class="w-full md:w-3/5 bg-base-200 border border-base-300 flex flex-col gap-2 p-2 rounded-box">
+      <div class="w-full md:w-3/5 bg-base-200 border border-base-300 flex flex-col gap-2 p-2 ">
         <div v-for="member in kanbanMembersStore.members" :key="member.id"
-          class="w-full p-2 bg-base-100 border border-base-300 rounded-box flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+          class="w-full p-2 bg-base-100 border border-base-300  flex flex-col md:flex-row md:items-center md:justify-between gap-2">
           <!-- LEFT -->
           <div class="flex flex-col md:flex-row md:items-center gap-2 w-full">
 
-            <div class="flex w-full bg-base-200 p-2 items-center gap-2 rounded-box border border-base-300">
+            <div class="flex w-full bg-base-200 p-2 items-center gap-2  border border-base-300">
               <font-awesome-icon icon="fa-solid fa-user" />
 
               <span class="break-all">
@@ -70,7 +70,7 @@
             </div>
 
             <ul tabindex="0"
-              class="dropdown-content menu bg-base-200 border border-base-300 rounded-box w-40 p-2 shadow">
+              class="dropdown-content menu bg-base-200 border border-base-300  w-40 p-2 shadow">
               <li>
                 <button class="flex gap-2" @click="openUpdateMemberModal(member)">
                   <font-awesome-icon icon="fa-solid fa-pencil" />
@@ -99,7 +99,7 @@
 
       <!-- FOOTER -->
       <div
-        class="w-full md:w-3/5 flex flex-col md:flex-row bg-base-200 border border-base-300 px-3 py-3 items-center gap-3 rounded-box">
+        class="w-full md:w-3/5 flex flex-col md:flex-row bg-base-200 border border-base-300 px-3 py-3 items-center gap-3 ">
 
         <!-- LIMIT -->
         <select class="select select-bordered w-full md:w-auto" v-model="kanbanMembersStore.meta.limit"

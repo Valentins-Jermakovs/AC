@@ -1,5 +1,5 @@
 <template>
-  <div class="border border-base-300 rounded-box p-4 bg-base-100 flex flex-col gap-5 
+  <div class="border border-base-300  p-4 bg-base-100 flex flex-col gap-5 
   h-full overflow-y-auto">
     <!-- Title & Metadata -->
     <div class="flex flex-col gap-5">

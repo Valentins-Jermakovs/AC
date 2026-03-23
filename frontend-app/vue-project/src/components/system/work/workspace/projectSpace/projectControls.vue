@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full p-2 flex bg-base-200 border border-base-300 gap-2">
+  <div class="w-full p-2 flex bg-base-100 border border-base-300 gap-2">
     <!-- Project view button -->
     <button
       class="btn"

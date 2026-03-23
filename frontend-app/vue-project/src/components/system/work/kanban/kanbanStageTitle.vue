@@ -58,7 +58,10 @@
     cancelText="Cancel"
     @confirm="confirmUpdateStage"
   >
-    <input type="text" class="input w-full" v-model="newStageTitle" />
+    <div class="flex flex-col gap-2 w-full">
+      <label for="stageTitle" class="label">Stage Title</label>
+      <input type="text" class="input w-full" v-model="newStageTitle" />
+    </div>
   </BaseDialog>
 
   <BaseDialog
@@ -68,7 +71,10 @@
     cancelText="Cancel"
     @confirm="confirmInsertStage"
   >
-    <input type="text" class="input w-full" v-model="newStageTitle" placeholder="Stage title" />
+    <div class="flex flex-col gap-2 w-full">
+      <label for="stageTitle" class="label">Stage Title</label>
+      <input type="text" class="input w-full" v-model="newStageTitle" placeholder="Stage title" />
+    </div>
   </BaseDialog>
 
   <BaseDialog

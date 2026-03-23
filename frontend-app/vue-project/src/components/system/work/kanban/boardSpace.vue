@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full bg-base-200 flex items-center border border-base-300">
+  <div class="w-full bg-base-100 border border-base-300 flex flex-wrap items-center gap-1 p-1">
     <!-- Create Board button -->
     <button class="btn btn-neutral" @click="openCreateModal">
       <font-awesome-icon icon="fa-solid fa-plus" />
@@ -19,21 +19,15 @@
     </button>
 
     <!-- Delete board -->
-    <button
-      class="btn btn-neutral"
-      @click="openDeleteModal"
-      v-if="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role == 'owner'"
-    >
+    <button class="btn btn-neutral" @click="openDeleteModal"
+      v-if="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role == 'owner'">
       <font-awesome-icon icon="fa-solid fa-trash" />
       Delete board
     </button>
 
     <!-- Leave board button -->
-    <button
-      class="btn btn-neutral"
-      @click="openLeaveBoardModal"
-      v-if="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role !== 'owner'"
-    >
+    <button class="btn btn-neutral" @click="openLeaveBoardModal"
+      v-if="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role !== 'owner'">
       <font-awesome-icon icon="fa-solid fa-sign-out" />
       Leave board
     </button>
@@ -47,72 +41,56 @@
   <!-- Modals -->
 
   <!-- Create board -->
-  <BaseDialog
-    v-model="createModal"
-    title="Create New Board"
-    confirmText="Create"
-    cancelText="Cancel"
-    @confirm="confirmCreateBoard"
-  >
-    <input
-      type="text"
-      class="input w-full"
-      v-model="newBoardTitle"
-      placeholder="Enter board title"
-    />
+  <BaseDialog v-model="createModal" title="Create New Board" confirmText="Create" cancelText="Cancel"
+    @confirm="confirmCreateBoard" @cancel="closeCreateModal">
+    <div class="flex flex-col w-full gap-2">
+      <Transition name="error-slide">
+        <div v-if="errorBoard">
+          <h1 class="text-error mb-2">{{ errorBoard }}</h1>
+        </div>
+      </Transition>
+      <label for="boardTitle" class="label">Board Title</label>
+      <input type="text" class="input w-full" v-model="newBoardTitle" placeholder="Enter board title" />
+    </div>
   </BaseDialog>
 
   <!-- Change board title -->
-  <BaseDialog
-    v-model="changeTitleModal"
-    title="Change Board Title"
-    confirmText="Save"
-    cancelText="Cancel"
-    @confirm="confirmChangeTitle"
-  >
-    <input
-      type="text"
-      class="input w-full"
-      v-model="newTitle"
-      placeholder="Enter new board title"
-    />
+  <BaseDialog v-model="changeTitleModal" title="Change Board Title" confirmText="Save" cancelText="Cancel"
+    @confirm="confirmChangeTitle" @cancel="closeChangeTitleModal">
+    <div class="flex flex-col gap-2 w-full">
+      <Transition name="error-slide">
+        <div v-if="errorBoard">
+          <h1 class="text-error mb-2">{{ errorBoard }}</h1>
+        </div>
+      </Transition>
+      <label for="boardTitle" class="label">Board Title</label>
+      <input type="text" class="input w-full" v-model="newTitle" placeholder="Enter new board title" />
+    </div>
   </BaseDialog>
 
   <!-- Add stage -->
-  <BaseDialog
-    v-model="addStageModal"
-    title="Add Stage"
-    confirmText="Add"
-    cancelText="Cancel"
-    @confirm="confirmAddStage"
-  >
-    <input
-      type="text"
-      class="input w-full"
-      v-model="newStageTitle"
-      placeholder="Enter stage title"
-    />
+  <BaseDialog v-model="addStageModal" title="Add Stage" confirmText="Add" cancelText="Cancel"
+    @confirm="confirmAddStage" @cancel="closeAddStageModal">
+    <div class="flex flex-col gap-2 w-full">
+      <Transition name="error-slide">
+        <div v-if="errorStage">
+          <h1 class="text-error mb-2">{{ errorStage }}</h1>
+        </div>
+      </Transition>
+      <label for="stageTitle" class="label">Stage Title</label>
+      <input type="text" class="input w-full" v-model="newStageTitle" placeholder="Enter stage title" />
+    </div>
   </BaseDialog>
 
   <!-- Delete board -->
-  <BaseDialog
-    v-model="deleteModal"
-    title="Confirm Delete"
-    confirmText="Delete"
-    cancelText="Cancel"
-    @confirm="confirmDeleteBoard"
-  >
+  <BaseDialog v-model="deleteModal" title="Confirm Delete" confirmText="Delete" cancelText="Cancel"
+    @confirm="confirmDeleteBoard">
     Are you sure you want to delete this board?
   </BaseDialog>
 
   <!-- Leave board -->
-  <BaseDialog
-    v-model="leaveModal"
-    title="Confirm Leave"
-    confirmText="Leave"
-    cancelText="Cancel"
-    @confirm="confirmLeaveBoard"
-  >
+  <BaseDialog v-model="leaveModal" title="Confirm Leave" confirmText="Leave" cancelText="Cancel"
+    @confirm="confirmLeaveBoard">
     Are you sure you want to leave this board?
   </BaseDialog>
 </template>
@@ -159,8 +137,12 @@ export default {
       this.newBoardTitle = ''
       this.createModal = true
     },
+    closeCreateModal() {
+      this.newBoardTitle = ''
+      this.createModal = false
+      this.kanbanStore.clearError()
+    },
     async confirmCreateBoard() {
-      if (!this.newBoardTitle.trim()) return
       try {
         await this.kanbanStore.createBoard({
           title: this.newBoardTitle.trim(),
@@ -198,6 +180,11 @@ export default {
       this.newTitle = this.kanbanStore.selectedBoard.title
       this.changeTitleModal = true
     },
+    closeChangeTitleModal() {
+      this.newTitle = ''
+      this.changeTitleModal = false
+      this.kanbanStore.clearError()
+    },
     async confirmChangeTitle() {
       if (!this.kanbanStore.selectedBoard) return
       try {
@@ -217,8 +204,12 @@ export default {
       this.newStageTitle = ''
       this.addStageModal = true
     },
+    closeAddStageModal() {
+      this.newStageTitle = ''
+      this.addStageModal = false
+      this.stagesStore.clearError()
+    },
     async confirmAddStage() {
-      if (!this.newStageTitle.trim() || !this.kanbanStore.selectedBoard) return
       try {
         await this.stagesStore.createStage({
           boardId: this.kanbanStore.selectedBoard.id,
@@ -247,5 +238,13 @@ export default {
       }
     },
   },
+  computed: {
+    errorBoard() {
+      return this.kanbanStore.error
+    },
+    errorStage() {
+      return this.stagesStore.error
+    },
+  }
 }
 </script>

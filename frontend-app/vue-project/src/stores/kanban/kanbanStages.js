@@ -182,5 +182,8 @@ export const useKanbanStagesStore = defineStore('kanbanStages', {
         this.loading = false
       }
     },
+    clearError() {
+      this.error = null
+    },
   },
 })

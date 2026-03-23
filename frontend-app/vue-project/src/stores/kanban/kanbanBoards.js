@@ -162,7 +162,7 @@ export const useKanbanBoardStore = defineStore('kanban', {
         await this.repeatLastRequest()
         return response.data
       } catch (err) {
-        this.error = err.response?.data?.message || err.message || 'Something went wrong'
+        this.error = err.response?.data?.detail || err.message || 'Something went wrong'
         throw err
       } finally {
         this.loading = false

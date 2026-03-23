@@ -11,12 +11,14 @@
       @confirm="confirmCreateTask"
     >
       <div class="w-full flex flex-col gap-2">
+        <label for="taskTitle" class="label">Task Title</label>
         <input
           type="text"
           class="input w-full mb-2"
           v-model="newTaskTitle"
           placeholder="Task title"
         />
+        <label for="taskDescription" class="label">Task Description</label>
         <textarea
           class="textarea w-full"
           v-model="newTaskDescription"

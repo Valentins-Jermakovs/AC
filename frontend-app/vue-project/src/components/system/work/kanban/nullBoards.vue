@@ -11,19 +11,13 @@
   </div>
 
   <!-- Create board modal -->
-  <base-dialog
-    v-model="createModal"
-    title="Create New Board"
-    confirmText="Create"
-    cancelText="Cancel"
-    @confirm="confirmCreateBoard"
-  >
-    <input
-      type="text"
-      class="input w-full"
-      v-model="newBoardTitle"
-      placeholder="Enter board title"
-    />
+  <base-dialog v-model="createModal" title="Create New Board" confirmText="Create" cancelText="Cancel"
+    @confirm="confirmCreateBoard">
+    <div class="flex flex-col gap-2 w-full">
+      <label for="boardTitle" class="label">Board Title</label>
+      <input type="text" class="input w-full" v-model="newBoardTitle" placeholder="Enter board title" />
+    </div>
+
   </base-dialog>
 </template>
 

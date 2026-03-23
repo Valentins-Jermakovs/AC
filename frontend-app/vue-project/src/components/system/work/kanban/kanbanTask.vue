@@ -50,12 +50,14 @@
       @confirm="confirmUpdateTask"
     >
       <div class="w-full flex flex-col gap-2">
+        <label for="taskTitle" class="label">Task Title</label>
         <input
           type="text"
           class="input w-full mb-2"
           v-model="newTaskTitle"
           placeholder="Task title"
         />
+        <label for="taskDescription" class="label">Task Description</label>
         <textarea
           class="input w-full min-h-52"
           v-model="newTaskDescription"
@@ -72,8 +74,8 @@
       @confirm="confirmMoveInStage"
     >
       <div class="w-full flex flex-col gap-2">
-        <p>Choose direction:</p>
-        <select class="input w-full" v-model="moveDirection">
+        <label for="taskTitle" class="label">Move task:</label>
+        <select class="select select-bordered w-full" v-model="moveDirection">
           <option value="up">Up</option>
           <option value="down">Down</option>
         </select>
@@ -88,8 +90,8 @@
       @confirm="confirmMoveBetweenStages"
     >
       <div class="w-full flex flex-col gap-2">
-        <p>Select target stage:</p>
-        <select class="input w-full" v-model="targetStageId">
+        <label for="taskTitle" class="label">Move task to:</label>
+        <select class="select select-bordered w-full" v-model="targetStageId">
           <option v-for="stage in stages" :key="stage.id" :value="stage.id">
             {{ stage.title }}
           </option>

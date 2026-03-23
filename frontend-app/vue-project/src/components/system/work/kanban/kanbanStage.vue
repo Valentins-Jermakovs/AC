@@ -1,9 +1,9 @@
 <template>
-  <div class="w-full flex gap-4 p-2 overflow-x-auto">
+  <div class="w-full flex gap-4 p-2 overflow-x-auto pb-4">
     <div
       v-for="stage in stagesStore.stages"
       :key="stage.id"
-      class="min-w-72 flex flex-col rounded-box"
+      class="min-w-70 md:min-w-72 flex flex-col"
     >
       <kanban-stage-title :stage="stage"></kanban-stage-title>
 

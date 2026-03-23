@@ -1,9 +1,9 @@
 <template>
-  <div class="flex flex-1 w-full h-full">
+  <div class="flex flex-col md:flex-row flex-1 w-full h-full">
     <KanbanSideBar></KanbanSideBar>
     <div class="flex flex-col flex-1 w-full h-full overflow-auto">
       <!-- Panel: board/members -->
-      <div class="w-full h-12 bg-base-100 flex" v-if="kanbanBoardStore.selectedBoard">
+      <div class="w-full h-12 bg-base-100 border border-base-300 flex p-1 gap-1" v-if="kanbanBoardStore.selectedBoard">
         <button
           class="btn h-full"
           :class="activeView === 'board' ? 'btn-primary' : 'btn-neutral'"

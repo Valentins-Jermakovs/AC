@@ -108,3 +108,22 @@ body,
 #app {
   height: 100%;
 }
+
+.error-slide-enter-active,
+.error-slide-leave-active {
+  transition: all 0.4s ease;
+}
+
+.error-slide-enter-from,
+.error-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+  max-height: 0;
+}
+
+.error-slide-enter-to,
+.error-slide-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+  max-height: 100px;
+}

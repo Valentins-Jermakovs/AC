@@ -35,18 +35,22 @@
     <!-- Action Buttons -->
     <div class="flex flex-wrap justify-end gap-2 mt-2">
       <button class="btn btn-md btn-error" @click="showDelete = true">
+        <font-awesome-icon icon="fa-solid fa-trash" />
         {{ $t('common.delete') }}
       </button>
 
       <button class="btn btn-md btn-success" @click="openComplete" :disabled="task.completed">
+        <font-awesome-icon icon="fa-solid fa-check" />
         {{ $t('common.complete') }}
       </button>
 
       <button class="btn btn-md btn-secondary" @click="openEdit">
+        <font-awesome-icon icon="fa-solid fa-pen-to-square" />
         {{ $t('common.edit') }}
       </button>
 
       <button class="btn btn-md btn-primary" @click="showCreate = true">
+        <font-awesome-icon icon="fa-solid fa-plus" />
         {{ $t('common.create') }}
       </button>
     </div>

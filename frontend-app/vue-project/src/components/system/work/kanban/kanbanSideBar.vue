@@ -1,11 +1,11 @@
 <template>
-  <div class="h-full flex flex-col w-64 bg-base-200 border border-base-300 p-1 gap-2">
+  <div class="h-auto md:h-full flex flex-col w-full md:w-64 bg-base-200 border border-base-300 p-1 gap-2">
     <!-- Search bar -->
     <div class="w-full p-1 bg-base-100 border border-base-300 flex flex-col items-center gap-2">
       <div class="w-full">
         <input
           type="text"
-          class="input"
+          class="input w-full"
           placeholder="Search..."
           v-model="kanbanBoardStore.searchQuery"
           @keyup.enter="searchBoards"
@@ -43,11 +43,11 @@
         v-for="board in boards"
         :key="board.id"
         @click="selectBoard(board)"
-        class="w-full h-16 flex items-center p-2 border rounded-box duration-300 transition-all hover:cursor-pointer"
+        class="w-full h-16 flex items-center p-2 border duration-300 transition-all hover:cursor-pointer"
         :class="{
-          'bg-info/20 border-info border-2': kanbanBoardStore.selectedBoard?.id === board.id,
+          'bg-neutral text-neutral-content border-base-300 border-2': kanbanBoardStore.selectedBoard?.id === board.id,
           'border-base-300 bg-base-200 hover:bg-base-300 hover:border-info':
-            kanbanBoardStore.selectedBoard?.id !== board.id,
+          kanbanBoardStore.selectedBoard?.id !== board.id,
         }"
       >
         <h1>{{ board.title }}</h1>

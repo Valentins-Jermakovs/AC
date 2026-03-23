@@ -57,7 +57,7 @@
           placeholder="Task title"
         />
         <textarea
-          class="input w-full"
+          class="input w-full min-h-52"
           v-model="newTaskDescription"
           placeholder="Task description"
         ></textarea>

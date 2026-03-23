@@ -50,9 +50,8 @@
     @cancel="resetEdit"
   >
     <div class="flex flex-col w-full gap-3">
-      <input v-model="editProject.title" type="text" class="input input-bordered" />
-
-      <textarea v-model="editProject.description" class="textarea textarea-bordered"></textarea>
+      <input v-model="editProject.title" type="text" class="input input-bordered w-full" />
+      <textarea v-model="editProject.description" class="textarea textarea-bordered w-full min-h-52"></textarea>
     </div>
   </base-dialog>
 

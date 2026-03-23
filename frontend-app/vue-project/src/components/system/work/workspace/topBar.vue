@@ -50,7 +50,7 @@
 
       <textarea
         v-model="newProject.description"
-        class="textarea textarea-bordered w-full"
+        class="textarea textarea-bordered w-full min-h-52"
         placeholder="Project description"
       ></textarea>
     </div>

@@ -63,13 +63,10 @@ async def get_member_by_email(
     # Pagination offset
     offset = (page - 1) * limit
     
-    member = await WorkspaceProjectMemberModel.find_one({
+    members = await WorkspaceProjectMemberModel.find({
         "projectId": project_id,
         "email": email
-    })
-
-    if not member:
-        raise HTTPException(status_code=404, detail="Member not found")
+    }).skip(offset).limit(limit).to_list()
     
     # Meta
     meta = PaginationMetaSchema(
@@ -80,15 +77,17 @@ async def get_member_by_email(
     )
 
     # Item
-    item = WorkspaceProjectMemberSchema(
-        email=member.email,
-        role=member.role,
-        userId=member.userId,
-        projectId=member.projectId,
-    )
+    items = [ 
+        WorkspaceProjectMemberSchema(
+            email=member.email,
+            role=member.role,
+            userId=member.userId,
+            projectId=member.projectId,
+        ) for member in members
+    ]
 
     # ===== Return all members =====
     return WorkspaceProjectMembersPaginatedSchema(
         meta=meta,
-        items=[item]
+        items=items
     )

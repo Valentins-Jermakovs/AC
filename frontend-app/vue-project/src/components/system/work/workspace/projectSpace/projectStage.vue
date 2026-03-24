@@ -105,8 +105,8 @@
         </div>
 
         <!-- DESCRIPTION -->
-        <div class="card bg-base-100 border border-base-300">
-          <div class="card-body p-4">
+        <div class="bg-base-100 border border-base-300">
+          <div class=" p-4">
             <h3 class="font-semibold text-sm opacity-70">
               {{ $t('work.projects.drawer.description') }}
             </h3>
@@ -118,8 +118,8 @@
         </div>
 
         <!-- META -->
-        <div class="card bg-base-100 border border-base-300">
-          <div class="card-body p-4">
+        <div class=" bg-base-100 border border-base-300">
+          <div class=" p-4">
             <h3 class="font-semibold text-sm opacity-70 mb-2">
               {{ $t('work.projects.drawer.metadata') }}
             </h3>

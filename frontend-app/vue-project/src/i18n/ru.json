@@ -192,7 +192,12 @@
       },
       "admin_top": {
         "search": "Ищем данные...",
-        "filters": ["Все пользователи", "По ID", "По имени пользователя/эл. почте", "По роли"]
+        "filters": [
+          "Все пользователи",
+          "По ID",
+          "По имени пользователя/эл. почте",
+          "По роли"
+        ]
       },
       "table_top": {
         "username": "Имя пользователя",
@@ -376,6 +381,108 @@
         "access_denied": {
           "title": "Доступ запрещён",
           "description": "У вас нет прав для просмотра участников"
+        }
+      }
+    },
+    "projects": {
+      "common": {
+        "create_project": "Создать проект",
+        "enter_project": "Открыть проект",
+        "create_new_sprint": "Создать спринт",
+        "create_new_user_story": "Создать пользовательскую историю",
+        "edit_user_story": "Редактировать пользовательскую историю",
+        "delete_user_story": "Удалить пользовательскую историю",
+        "todo": "К выполнению",
+        "in_progress": "В процессе",
+        "done": "Завершено",
+        "dates": "Даты"
+      },
+      "controls": {
+        "project_view": "Проект",
+        "members_view": "Участники",
+        "edit_project": "Редактировать проект",
+        "delete_project": "Удалить проект",
+        "back_to_list": "Назад к списку",
+        "leave_project": "Покинуть проект"
+      },
+      "drawer": {
+        "add_sprint": "Добавить спринт",
+        "add_relative_sprint": "Добавить относительный спринт",
+        "edit_sprint": "Редактировать спринт",
+        "move_up": "Переместить вверх",
+        "move_down": "Переместить вниз",
+        "delete_sprint": "Удалить спринт",
+        "description": "Описание",
+        "metadata": "Метаданные",
+        "start_date": "Дата начала",
+        "end_date": "Срок выполнения"
+      },
+      "modals": {
+        "create_project": {
+          "title": "Создать проект",
+          "name": "Название проекта",
+          "name_placeholder": "Введите название проекта...",
+          "description": "Описание",
+          "description_placeholder": "Введите описание..."
+        },
+        "edit_project": {
+          "title": "Редактировать проект",
+          "name": "Название проекта",
+          "name_placeholder": "Введите название проекта...",
+          "description": "Описание",
+          "description_placeholder": "Введите описание..."
+        },
+        "delete_project": {
+          "title": "Удалить проект",
+          "content": "Вы уверены, что хотите удалить этот проект?"
+        },
+        "create_new_sprint": {
+          "title": "Создать спринт",
+          "name": "Название спринта",
+          "name_placeholder": "Введите название спринта...",
+          "description": "Описание",
+          "description_placeholder": "Введите описание...",
+          "due_date": "Срок выполнения"
+        },
+        "create_sprint_relative": {
+          "title": "Создать относительный спринт",
+          "name": "Название спринта",
+          "name_placeholder": "Введите название спринта...",
+          "description": "Описание",
+          "description_placeholder": "Введите описание...",
+          "due_date": "Срок выполнения",
+          "before": "Перед",
+          "after": "После"
+        },
+        "delete_sprint": {
+          "title": "Удалить спринт",
+          "content": "Вы уверены, что хотите удалить этот спринт?"
+        },
+        "edit_sprint": {
+          "title": "Редактировать спринт",
+          "name": "Название спринта",
+          "name_placeholder": "Введите название спринта...",
+          "description": "Описание",
+          "description_placeholder": "Введите описание...",
+          "due_date": "Срок выполнения"
+        },
+        "create_user_story": {
+          "title": "Создать пользовательскую историю",
+          "name": "Название истории",
+          "name_placeholder": "Введите название...",
+          "description": "Описание",
+          "description_placeholder": "Введите описание...",
+          "priority": "Приоритет",
+          "story_points": "Story points",
+          "status": "Статус",
+          "due_date": "Срок выполнения"
+        },
+        "edit_user_story": {
+          "title": "Редактировать пользовательскую историю"
+        },
+        "delete_user_story": {
+          "title": "Удалить пользовательскую историю",
+          "content": "Вы уверены, что хотите удалить эту пользовательскую историю?"
         }
       }
     }

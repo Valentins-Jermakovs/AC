@@ -385,9 +385,12 @@
         "enter_project": "Apskatīt projektu",
         "create_new_sprint": "Izveidot jaunu sprintu",
         "create_new_user_story": "Izveidot jaunu lietotāju stāstu",
+        "edit_user_story": "Mainīt lietotāju stāstu",
+        "delete_user_story": "Dzēst lietotāju stāstu",
         "todo": "Iesākt",
         "in_progress": "Procesā",
-        "completed": "Pabeigts"
+        "done": "Pabeigts",
+        "dates": "Datumi"
       },
       "controls": {
         "project_view": "Projekts",
@@ -459,7 +462,7 @@
           "due_date": "Izpildes datums"
         },
         "create_user_story": {
-          "title": "Izveidot lietotāju stāstu",
+          "title": "Izveidot lietotāja stāstu",
           "name": "Stāsta nosaukums",
           "name_placeholder": "Ievadiet stāsta nosaukumu...",
           "description": "Apraksts",
@@ -468,6 +471,13 @@
           "story_points": "Stāsta punkti",
           "status": "Statuss",
           "due_date": "Izpildes datums"
+        },
+        "edit_user_story": {
+          "title": "Mainīt lietotāja stāstu"
+        },
+        "delete_user_story": {
+          "title": "Dzēst lietotāja stāstu",
+          "content": "Vai tiešām vēlaties dzēst lietotāja stāstu?"
         }
       }
     }

@@ -41,73 +41,86 @@
         </div>
       </Transition>
       <div>
-        <label class="label"> Title </label>
+        <label class="label">
+          {{ $t('work.projects.modals.create_user_story.name') }}
+        </label>
 
-        <input v-model="form.title" class="input input-bordered w-full" placeholder="Task title" />
+        <input v-model="form.title" class="input input-bordered w-full" 
+        :placeholder="$t('work.projects.modals.create_user_story.name_placeholder')" />
       </div>
 
       <div>
-        <label class="label"> Description </label>
+        <label class="label">
+          {{ $t('work.projects.modals.create_user_story.description') }}
+        </label>
 
         <textarea
           v-model="form.description"
           class="textarea textarea-bordered w-full min-h-30 sm:min-h-52"
-          placeholder="Description"
+          :placeholder="$t('work.projects.modals.create_user_story.description_placeholder')"
         ></textarea>
       </div>
 
       <!-- Priority + SP -->
       <div class="flex flex-col sm:flex-row gap-3">
         <div class="flex flex-col flex-1">
-          <label class="label"> Priority </label>
+          <label class="label">
+            {{ $t('work.projects.modals.create_user_story.priority') }} 
+          </label>
 
           <select v-model="form.priority" class="select select-bordered w-full">
-            <option :value="1">Priority 1</option>
-            <option :value="2">Priority 2</option>
-            <option :value="3">Priority 3</option>
-            <option :value="4">Priority 4</option>
-            <option :value="5">Priority 5</option>
-            <option :value="6">Priority 6</option>
-            <option :value="7">Priority 7</option>
-            <option :value="8">Priority 8</option>
-            <option :value="9">Priority 9</option>
-            <option :value="10">Priority 10</option>
+            <option :value="1">1</option>
+            <option :value="2">2</option>
+            <option :value="3">3</option>
+            <option :value="4">4</option>
+            <option :value="5">5</option>
+            <option :value="6">6</option>
+            <option :value="7">7</option>
+            <option :value="8">8</option>
+            <option :value="9">9</option>
+            <option :value="10">10</option>
           </select>
         </div>
 
         <div class="flex flex-col flex-1">
-          <label class="label"> Story Points </label>
+          <label class="label">
+            {{ $t('work.projects.modals.create_user_story.story_points') }}
+          </label>
 
           <select v-model="form.storyPoints" class="select select-bordered w-full">
-            <option :value="1">1 SP</option>
-            <option :value="2">2 SP</option>
-            <option :value="3">3 SP</option>
-            <option :value="5">5 SP</option>
-            <option :value="8">8 SP</option>
-            <option :value="13">13 SP</option>
-            <option :value="21">21 SP</option>
-            <option :value="34">34 SP</option>
-            <option :value="55">55 SP</option>
-            <option :value="89">89 SP</option>
-            <option :value="144">144 SP</option>
+            <option :value="1">1</option>
+            <option :value="2">2</option>
+            <option :value="3">3</option>
+            <option :value="5">5</option>
+            <option :value="8">8</option>
+            <option :value="13">13</option>
+            <option :value="21">21</option>
+            <option :value="34">34</option>
+            <option :value="55">55</option>
+            <option :value="89">89</option>
+            <option :value="144">144</option>
           </select>
         </div>
       </div>
 
       <!-- Status -->
       <div>
-        <label class="label"> Status </label>
+        <label class="label">
+          {{ $t('work.projects.modals.create_user_story.status') }}
+        </label>
 
         <select v-model="form.status" class="select select-bordered w-full">
-          <option value="todo">To Do</option>
-          <option value="in_progress">In Progress</option>
-          <option value="done">Done</option>
+          <option value="todo">{{ $t('work.projects.common.todo') }}</option>
+          <option value="in_progress">{{ $t('work.projects.common.in_progress') }}</option>
+          <option value="done">{{ $t('work.projects.common.done') }}</option>
         </select>
       </div>
 
       <!-- Due date -->
       <div>
-        <label class="label"> Due date </label>
+        <label class="label">
+          {{ $t('work.projects.modals.create_user_story.due_date') }}
+        </label>
 
         <input type="date" v-model="form.dueDate" class="input input-bordered w-full" />
       </div>

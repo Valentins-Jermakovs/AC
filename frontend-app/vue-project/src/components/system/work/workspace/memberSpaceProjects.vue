@@ -1,101 +1,71 @@
 <template>
-  <!-- ACCESS DENIED -->
-  <div
-    v-if="workspaceProjectMembersStore.accessDenied"
-    class="w-full h-full flex items-center justify-center p-4"
-  >
-    <div
-      class="bg-base-200 border border-base-300 p-6 sm:p-10 wrap-break-word text-center max-w-md w-full"
-    >
-      <font-awesome-icon icon="fa-solid fa-lock" class="text-3xl sm:text-4xl mb-4 text-error" />
-
-      <h2 class="text-lg sm:text-xl font-bold">Access denied</h2>
-
-      <p class="text-sm sm:text-base text-base-content/60">
-        You don't have permission to view members
-      </p>
-    </div>
-  </div>
-
   <!-- MEMBERS -->
-  <div v-else class="flex-1 flex flex-col w-full h-full p-3 sm:p-5 gap-3">
+  <div class="flex-1 flex flex-col w-full h-full p-3 sm:p-5 gap-3">
     <div class="w-full flex flex-col gap-4">
       <!-- HEADER -->
       <div class="w-full flex flex-col lg:flex-row gap-3 lg:items-center">
         <button class="btn btn-success w-full lg:h-full lg:w-auto" @click="openAddMemberModal">
           <font-awesome-icon icon="fa-solid fa-user-plus" />
-          Add member
+          {{ $t('common.add_member') }}
         </button>
 
         <!-- SEARCH -->
-        <div
-          class="w-full flex flex-col sm:flex-row gap-2 border border-base-300 bg-base-200 p-2 wrap-break-word"
-        >
-          <input
-            type="text"
-            class="input w-full"
-            placeholder="Search..."
-            v-model="workspaceProjectMembersStore.searchQuery"
-            @keyup.enter="searchMembers"
-          />
+        <div class="w-full flex flex-col sm:flex-row gap-2 
+          border border-base-300 bg-base-100 p-2 wrap-break-word">
+          <input type="text" class="input w-full" :placeholder="$t('common.search')"
+            v-model="workspaceProjectMembersStore.searchQuery" @keyup.enter="searchMembers"
+            :disabled="workspaceProjectMembersStore.searchType === 'all'" />
 
-          <select
-            class="select select-bordered w-full sm:w-40"
-            v-model="workspaceProjectMembersStore.searchType"
-          >
-            <option value="all">All</option>
-            <option value="email">By email</option>
-            <option value="role">By role</option>
+          <select class=" bg-neutral text-neutral-content
+            select select-bordered w-full sm:w-40" v-model="workspaceProjectMembersStore.searchType">
+            <option value="all">{{ $t('filters.all') }}</option>
+            <option value="email">{{ $t('filters.by_email') }}</option>
+            <option value="role">{{ $t('filters.by_role') }}</option>
           </select>
 
-          <button class="btn btn-primary w-full sm:w-auto" @click="searchMembers">
+          <button class="btn btn-primary w-full sm:w-auto" @click="searchMembers"
+            :disabled="workspaceProjectMembersStore.searchType !== 'all' && !workspaceProjectMembersStore.searchQuery.trim()">
             <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
           </button>
         </div>
       </div>
 
       <!-- MEMBERS LIST -->
-      <div
-        class="w-full bg-base-200 border border-base-300 wrap-break-word p-2 sm:p-3 flex flex-col gap-3"
-      >
-        <div
-          v-for="member in workspaceProjectMembersStore.projectMembers"
-          :key="member.id"
-          class="w-full flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 bg-base-100 border border-base-300 wrap-break-word"
-        >
+      <div class="w-full bg-base-200 border border-base-300 wrap-break-word p-2 sm:p-3 flex flex-col gap-3">
+        <div v-for="member in workspaceProjectMembersStore.projectMembers" :key="member.id"
+          class="w-full flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 bg-base-100 border border-base-300 wrap-break-word">
           <!-- EMAIL -->
-          <div
-            class="flex items-center gap-2 flex-1 bg-base-200 p-3 border border-base-300 wrap-break-word break-all"
-          >
+          <div class="flex items-center gap-2 flex-1 bg-base-200 p-3 border border-base-300 wrap-break-word break-all">
             <font-awesome-icon icon="fa-solid fa-user" />
 
             {{ member.email }}
           </div>
 
           <!-- ROLE -->
-          <div class="badge badge-primary self-start sm:self-auto w-full sm:w-auto">
-            {{ member.role }}
+          <div class="badge badge-primary w-full md:w-fit">
+            <p v-if="member.role == 'owner'">{{ $t('work.kanban.common.roles.owner') }}</p>
+            <p v-if="member.role == 'admin'">{{ $t('work.kanban.common.roles.admin') }}</p>
+            <p v-if="member.role == 'editor'">{{ $t('work.kanban.common.roles.editor') }}</p>
+            <p v-if="member.role == 'viewer'">{{ $t('work.kanban.common.roles.viewer') }}</p>
           </div>
 
           <!-- ACTIONS -->
           <div class="dropdown dropdown-center md:dropdown-end">
             <div tabindex="0" role="button" class="btn w-full btn-neutral">⋮</div>
 
-            <ul
-              tabindex="0"
-              class="dropdown-content menu bg-base-200 border border-base-300 wrap-break-word w-44 p-2 shadow"
-            >
+            <ul tabindex="0"
+              class="dropdown-content menu bg-base-200 border border-base-300 wrap-break-word w-44 p-2 shadow">
               <li>
                 <button class="flex gap-2" @click="openUpdateMemberModal(member)">
                   <font-awesome-icon icon="fa-solid fa-pencil" />
-                  Update
+                  {{ $t('work.kanban.common.update_role') }}
                 </button>
               </li>
 
               <li>
                 <button class="flex gap-2 text-error" @click="openDeleteMemberModal(member)">
                   <font-awesome-icon icon="fa-solid fa-trash" />
-                  Delete
+                  {{ $t('work.kanban.common.delete_member') }}
                 </button>
               </li>
             </ul>
@@ -103,28 +73,22 @@
         </div>
 
         <!-- EMPTY -->
-        <div
-          v-if="
-            !workspaceProjectMembersStore.loading &&
-            workspaceProjectMembersStore.projectMembers.length === 0
-          "
-          class="p-6 text-center text-base-content/60"
-        >
-          No members found
+        <div v-if="
+          !workspaceProjectMembersStore.loading &&
+          workspaceProjectMembersStore.projectMembers.length === 0
+        " class="p-4 text-center text-base-content/60 flex items-center justify-center gap-2">
+          <font-awesome-icon icon="fa-solid fa-users" class="text-3xl" />
+          {{ $t('work.kanban.errors.members_not_found') }}
         </div>
       </div>
 
       <!-- FOOTER -->
       <div
-        class="w-full flex flex-col sm:flex-row gap-3 sm:items-center bg-base-200 border border-base-300 wrap-break-word p-3 sm:px-4 sm:py-2"
-      >
+        class="w-full flex flex-col sm:flex-row gap-3 sm:items-center bg-base-200 border border-base-300 wrap-break-word p-3 sm:px-4 sm:py-2">
         <!-- LIMIT -->
         <div>
-          <select
-            class="select select-bordered w-full sm:w-24"
-            v-model="workspaceProjectMembersStore.meta.limit"
-            @change="changeLimit($event.target.value)"
-          >
+          <select class="select select-bordered w-full sm:w-24" v-model="workspaceProjectMembersStore.meta.limit"
+            @change="changeLimit($event.target.value)">
             <option value="5">5</option>
             <option value="10">10</option>
             <option value="20">20</option>
@@ -135,14 +99,14 @@
         <!-- META -->
         <div class="flex flex-col sm:flex-row gap-1 sm:gap-4 items-center md:items-start text-sm">
           <p>
-            Total:
+            {{ $t('cabinet.admin.table_footer.total') }}
             <span class="font-semibold">
               {{ workspaceProjectMembersStore.meta.totalItems }}
             </span>
           </p>
 
           <p>
-            Page:
+            {{ $t('cabinet.admin.table_footer.page') }}
             <span class="font-semibold">
               {{ workspaceProjectMembersStore.meta.page }}/
               {{ workspaceProjectMembersStore.meta.totalPages }}
@@ -152,22 +116,14 @@
 
         <!-- PAGINATION -->
         <div class="flex flex-col md:flex-row gap-2 sm:ml-auto">
-          <button
-            class="btn w-full md:w-auto btn-neutral"
-            @click="workspaceProjectMembersStore.prevPage"
-            :disabled="workspaceProjectMembersStore.meta.page === 1"
-          >
+          <button class="btn w-full md:w-auto btn-neutral" @click="workspaceProjectMembersStore.prevPage"
+            :disabled="workspaceProjectMembersStore.meta.page === 1">
             <font-awesome-icon icon="fa-solid fa-arrow-left" />
           </button>
 
-          <button
-            class="btn w-full md:w-auto btn-neutral"
-            @click="workspaceProjectMembersStore.nextPage"
-            :disabled="
-              workspaceProjectMembersStore.meta.page ===
-              workspaceProjectMembersStore.meta.totalPages
-            "
-          >
+          <button class="btn w-full md:w-auto btn-neutral" @click="workspaceProjectMembersStore.nextPage" :disabled="workspaceProjectMembersStore.meta.page ===
+            workspaceProjectMembersStore.meta.totalPages
+            ">
             <font-awesome-icon icon="fa-solid fa-arrow-right" />
           </button>
         </div>
@@ -178,67 +134,76 @@
   <!-- Modals -->
 
   <!-- Add member modal -->
-  <base-dialog
-    v-model="addMemberModal"
-    title="Add Member"
-    confirmText="Add"
-    cancelText="Cancel"
-    @confirm="confirmAddMember"
-    @cancel="closeAddMemberModal"
-  >
-    <div class="w-full flex flex-col gap-5">
+  <base-dialog 
+  v-model="addMemberModal" 
+  :title="$t('work.kanban.modals.add_member.title')"
+  :confirmText="$t('common.confirm')"
+  :cancelText="$t('common.cancel')"
+  @confirm="confirmAddMember" 
+  @cancel="closeAddMemberModal">
+    <div class="w-full flex flex-col gap-2">
       <Transition name="error-slide">
-        <div v-if="error || adminError">
+        <div v-if="error">
           <h1 class="text-error mb-2">{{ error }}</h1>
-          <h1 class="text-error mb-2">{{ adminError }}</h1>
         </div>
       </Transition>
-      <label for="memberEmail" class="label">Member Email</label>
+      <label for="memberEmail" class="label">
+        {{ $t('work.kanban.modals.add_member.email') }}
+      </label>
       <!-- Text input - member email -->
-      <input
-        type="email"
-        class="input w-full"
-        placeholder="Enter member email"
-        v-model="newMemberEmail"
-      />
-      <label for="memberRole" class="label">Member Role</label>
+      <input type="email" class="input w-full" 
+      v-model="newMemberEmail"
+      :placeholder="$t('work.kanban.modals.add_member.email_placeholder')"/>
+      <label for="memberRole" class="label">
+        {{ $t('work.kanban.modals.add_member.role') }}
+      </label>
       <!-- Select input - member role -->
       <select class="select select-bordered w-full" v-model="newMemberRole">
-        <option value="admin">Admin</option>
-        <option value="editor">Editor</option>
-        <option value="viewer">Viewer</option>
+        <option value="admin">{{ $t('work.kanban.common.roles.admin') }}</option>
+        <option value="editor">{{ $t('work.kanban.common.roles.editor') }}</option>
+        <option value="viewer">{{ $t('work.kanban.common.roles.viewer') }}</option>
       </select>
     </div>
   </base-dialog>
 
   <!-- Update member role modal -->
-  <base-dialog
-    v-model="updateMemberModal"
-    title="Update Member"
-    confirmText="Update"
-    cancelText="Cancel"
-    @confirm="confirmUpdateMember"
-  >
+  <base-dialog 
+  v-model="updateMemberModal" 
+  :title="$t('work.kanban.modals.update_member.title')"
+  :confirmText="$t('common.confirm')"
+  :cancelText="$t('common.cancel')"
+  @confirm="confirmUpdateMember"
+  @cancel="closeUpdateMember">
     <div class="w-full flex flex-col gap-5">
+      <Transition name="error-slide">
+        <div v-if="memberError">
+          <h1 class="text-error mb-2">{{ memberError }}</h1>
+        </div>
+      </Transition>
       <!-- Select input - member role -->
       <select class="select select-bordered w-full" v-model="updatedRole">
-        <option value="admin">Admin</option>
-        <option value="editor">Editor</option>
-        <option value="viewer">Viewer</option>
+        <option value="admin">{{ $t('work.kanban.common.roles.admin') }}</option>
+        <option value="editor">{{ $t('work.kanban.common.roles.editor') }}</option>
+        <option value="viewer">{{ $t('work.kanban.common.roles.viewer') }}</option>
       </select>
     </div>
   </base-dialog>
 
   <!-- Delete meber modal -->
-  <base-dialog
-    v-model="deleteMemberModal"
-    title="Delete Member"
-    confirmText="Delete"
-    cancelText="Cancel"
-    @confirm="confirmDeleteMember"
-  >
+  <base-dialog 
+  v-model="deleteMemberModal" 
+  :title="$t('work.kanban.modals.delete_member.title')"
+  :confirmText="$t('common.delete')"
+  :cancelText="$t('common.cancel')"
+  @confirm="confirmDeleteMember"
+  @cancel="closeDeleteMemberModal">
     <div class="w-full flex flex-col gap-5">
-      <p>Are you sure you want to delete this member?</p>
+      <Transition name="error-slide">
+        <div v-if="memberError">
+          <h1 class="text-error mb-2">{{ memberError }}</h1>
+        </div>
+      </Transition>
+      <p>{{ $t('work.kanban.modals.delete_member.content') }}</p>
     </div>
   </base-dialog>
 
@@ -277,10 +242,10 @@ export default {
   },
 
   computed: {
-    error() {
+    memberError() {
       return this.workspaceProjectMembersStore.error
     },
-    adminError() {
+    error() {
       return this.adminStore.error
     },
   },
@@ -294,6 +259,14 @@ export default {
   },
 
   methods: {
+    closeDeleteMemberModal() {
+      this.deleteMemberModal = false
+      this.workspaceProjectMembersStore.clearError()
+    },
+    closeUpdateMember() {
+      this.updateMemberModal = false
+      this.workspaceProjectMembersStore.clearError()
+    },
     closeAddMemberModal() {
       this.adminStore.clearError()
       this.workspaceProjectMembersStore.clearError()
@@ -320,9 +293,6 @@ export default {
 
     async openUpdateMemberModal(member) {
       this.selectedMember = member
-
-      this.updatedRole = member.role
-
       this.updateMemberModal = true
     },
 
@@ -366,6 +336,18 @@ export default {
     },
 
     async confirmAddMember() {
+      if (!this.newMemberEmail) {
+        this.adminStore.error = 'Email is required'
+        return
+      }
+
+      // validate email
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!emailRegex.test(this.newMemberEmail)) {
+        this.adminStore.error = 'Invalid email format'
+        return
+      }
+
       try {
         // send email to auth server - /users/email/{email}
         await this.adminStore.getUserByEmail(this.newMemberEmail)

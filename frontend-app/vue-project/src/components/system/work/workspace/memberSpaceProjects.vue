@@ -241,6 +241,8 @@
       <p>Are you sure you want to delete this member?</p>
     </div>
   </base-dialog>
+
+  <LoadingScreen v-if="workspaceProjectMembersStore.loading"></LoadingScreen>
 </template>
 
 <script>
@@ -251,10 +253,11 @@ import { useAdminStore } from '@/stores/admin'
 // replace with
 import { useWorkspaceProjectMembersStore } from '@/stores/workspace/projectsMembers'
 import { useWorkspaceProjectsStore } from '@/stores/workspace/projects'
+import LoadingScreen from '@/components/common/LoadingScreen.vue';
 
 export default {
   name: 'MembersSpace',
-  components: { BaseDialog },
+  components: { BaseDialog, LoadingScreen },
 
   data() {
     return {

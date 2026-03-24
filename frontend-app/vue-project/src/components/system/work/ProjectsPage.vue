@@ -37,6 +37,8 @@
       <MemberSpaceProjects></MemberSpaceProjects>
     </div>
   </div>
+
+  <LoadingScreen v-if="projectsStore.loading"></LoadingScreen>
 </template>
 
 <script>
@@ -64,6 +66,7 @@ export default {
     ProjectControls,
     ProjectStageList,
     MemberSpaceProjects,
+    LoadingScreen,
   },
 
   data() {

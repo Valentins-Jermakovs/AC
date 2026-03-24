@@ -112,6 +112,8 @@
       Are you sure you want to delete this task?
     </BaseDialog>
   </div>
+
+  <LoadingScreen v-if="tasksStore.loading"></LoadingScreen>
 </template>
 
 <script>
@@ -119,10 +121,11 @@ import BaseDialog from '@/components/common/BaseDialog.vue'
 import { useKanbanTasksStore } from '@/stores/kanban/kanbanTasks'
 import { useKanbanStagesStore } from '@/stores/kanban/kanbanStages'
 import { useKanbanBoardStore } from '@/stores/kanban/kanbanBoards'
+import LoadingScreen from '@/components/common/LoadingScreen.vue'
 
 export default {
   props: { task: { type: Object, required: true } },
-  components: { BaseDialog },
+  components: { BaseDialog, LoadingScreen },
   data() {
     const boardStore = useKanbanBoardStore()
     return {

@@ -68,7 +68,6 @@ export default {
 
   methods: {
     async createProject() {
-
       const payload = {
         title: this.newProject.title,
         description: this.newProject.description,

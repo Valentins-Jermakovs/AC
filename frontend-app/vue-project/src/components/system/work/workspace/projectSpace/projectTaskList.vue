@@ -109,6 +109,8 @@
       </div>
     </div>
   </BaseDialog>
+
+  <LoadingScreen v-if="tasksStore.loading"></LoadingScreen>
 </template>
 
 <script>
@@ -117,6 +119,7 @@ import BaseDialog from '@/components/common/BaseDialog.vue'
 
 import { useWorkspaceProjectsTasksStore } from '@/stores/workspace/projectsTasks'
 import { useWorkspaceProjectsStore } from '@/stores/workspace/projects'
+import LoadingScreen from '@/components/common/LoadingScreen.vue';
 
 export default {
   name: 'ProjectTaskList',
@@ -124,6 +127,7 @@ export default {
   components: {
     ProjectTask,
     BaseDialog,
+    LoadingScreen
   },
 
   props: {

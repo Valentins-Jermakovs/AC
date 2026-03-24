@@ -236,6 +236,8 @@
       <p>Are you sure you want to delete this member?</p>
     </div>
   </base-dialog>
+
+  <LoadingScreen v-if="kanbanMembersStore.loading" />
 </template>
 
 <script>
@@ -243,10 +245,11 @@ import BaseDialog from '@/components/common/BaseDialog.vue'
 import { useKanbanMembersStore } from '@/stores/kanban/kanbanMembers'
 import { useKanbanBoardStore } from '@/stores/kanban/kanbanBoards'
 import { useAdminStore } from '@/stores/admin'
+import LoadingScreen from '@/components/common/LoadingScreen.vue';
 
 export default {
   name: 'MembersSpace',
-  components: { BaseDialog },
+  components: { BaseDialog, LoadingScreen },
 
   data() {
     return {

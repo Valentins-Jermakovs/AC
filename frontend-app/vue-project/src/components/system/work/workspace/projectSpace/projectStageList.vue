@@ -67,6 +67,8 @@
       </div>
     </div>
   </BaseDialog>
+
+  <LoadingScreen v-if="stagesStore.loading"></LoadingScreen>
 </template>
 
 <script>
@@ -74,10 +76,11 @@ import BaseDialog from '@/components/common/BaseDialog.vue'
 import ProjectStage from './projectStage.vue'
 import { useWorkspaceProjectStagesStore } from '@/stores/workspace/projectStages'
 import { useWorkspaceProjectsStore } from '@/stores/workspace/projects'
+import LoadingScreen from '@/components/common/LoadingScreen.vue';
 
 export default {
   name: 'ProjectStageList',
-  components: { ProjectStage, BaseDialog },
+  components: { ProjectStage, BaseDialog, LoadingScreen },
 
   data() {
     return {

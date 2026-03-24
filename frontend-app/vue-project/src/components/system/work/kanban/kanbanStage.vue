@@ -22,6 +22,7 @@
       />
     </div>
   </div>
+  <loading-screen v-if="stagesStore.loading" />
 </template>
 
 <script>
@@ -31,6 +32,7 @@ import KanbanTask from './kanbanTask.vue'
 import KanbanStageTitle from './kanbanStageTitle.vue'
 import KanbanTaskList from './kanbanTaskList.vue'
 import KanbanCreateTask from './kanbanCreateTask.vue'
+import LoadingScreen from '@/components/common/LoadingScreen.vue'
 
 export default {
   components: {
@@ -38,6 +40,7 @@ export default {
     KanbanStageTitle,
     KanbanTaskList,
     KanbanCreateTask,
+    LoadingScreen,
   },
   name: 'KanbanStage',
   data() {

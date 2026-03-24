@@ -55,7 +55,7 @@
 
         <textarea
           v-model="newStage.description"
-          class="textarea w-full min-h-25"
+          class="textarea w-full min-h-52"
           placeholder="Stage description"
         ></textarea>
       </div>
@@ -111,6 +111,11 @@ export default {
       this.stagesStore.clearError()
     },
     async handleCreate() {
+      if (!this.newStage.dueDate) {
+        this.stagesStore.error = 'Stage due date is required'
+        return
+      }
+
       const payload = {
         title: this.newStage.title,
         description: this.newStage.description,

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-1 flex flex-col items-center gap-3 overflow-y-scroll p-2">
+  <div class="flex-1 flex flex-col items-center gap-3 overflow-y-scroll py-2">
     <projects-list-item
       v-for="project in projectsStore.projects"
       :key="project.id"

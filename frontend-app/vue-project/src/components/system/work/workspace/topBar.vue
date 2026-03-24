@@ -11,7 +11,7 @@
     <div class="flex-1"></div>
 
     <!-- Search -->
-    <div class="flex flex-col md:flex-row gap-2 flex-1 w-full">
+    <div class="flex flex-col md:flex-row gap-2 flex-1 w-full sm:justify-between">
       <input
         v-model="store.searchQuery"
         type="text"

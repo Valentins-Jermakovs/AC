@@ -17,17 +17,23 @@
     @confirm="createProject"
     @cancel="resetForm"
   >
-    <div class="flex flex-col w-full gap-3">
+    <div class="flex flex-col w-full gap-2">
+      <Transition name="error-slide">
+        <div v-if="error">
+          <h1 class="text-error mb-2">{{ error }}</h1>
+        </div>
+      </Transition>
+      <label for="projectTitle" class="label">Project title</label>
       <input
         v-model="newProject.title"
         type="text"
         class="input input-bordered w-full"
         placeholder="Project title"
       />
-
+      <label for="projectDescription" class="label">Project description</label>
       <textarea
         v-model="newProject.description"
-        class="textarea textarea-bordered w-full"
+        class="textarea textarea-bordered w-full min-h-52"
         placeholder="Project description"
       ></textarea>
     </div>
@@ -62,7 +68,6 @@ export default {
 
   methods: {
     async createProject() {
-      if (!this.newProject.title) return
 
       const payload = {
         title: this.newProject.title,
@@ -72,12 +77,9 @@ export default {
 
       try {
         await this.store.createProject(payload)
-
         this.showCreateDialog = false
       } catch (err) {
-        console.error(err)
-      } finally {
-        this.resetForm()
+        throw err
       }
     },
 
@@ -86,6 +88,13 @@ export default {
         title: '',
         description: '',
       }
+      this.store.clearError()
+    },
+  },
+
+  computed: {
+    error() {
+      return this.store.error
     },
   },
 }

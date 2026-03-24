@@ -192,6 +192,11 @@ export default {
     },
 
     async createTask() {
+      if (!this.form.dueDate) {
+        this.tasksStore.error = 'Task due date is required'
+        return
+      }
+
       try {
         const payload = {
           title: this.form.title,

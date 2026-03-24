@@ -20,7 +20,7 @@
         />
         <label for="taskDescription" class="label">Task Description</label>
         <textarea
-          class="textarea w-full"
+          class="textarea w-full min-h-52"
           v-model="newTaskDescription"
           placeholder="Task description"
         ></textarea>

@@ -16,8 +16,8 @@
 
     <!-- META -->
     <div class="flex flex-col sm:flex-row gap-2 sm:gap-5 text-sm text-base-content/60">
-      <p>Total projects: {{ store.meta.totalItems }}</p>
-      <p>Page {{ store.meta.page }} / {{ store.meta.totalPages || 1 }}</p>
+      <p>{{ $t('cabinet.admin.table_footer.total') }} {{ store.meta.totalItems }}</p>
+      <p>{{ $t('cabinet.admin.table_footer.page') }} {{ store.meta.page }} / {{ store.meta.totalPages || 1 }}</p>
     </div>
 
     <!-- NAV -->

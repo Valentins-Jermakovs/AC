@@ -70,7 +70,8 @@
     "complete": "Pabeigt",
     "edit": "Rediģēt",
     "create": "Izveidot",
-    "add_member": "Pievienot lietotāju"
+    "add_member": "Pievienot lietotāju",
+    "close": "Aizvērt"
   },
   "filters": {
     "all": "Visi",
@@ -375,6 +376,98 @@
         "access_denied": {
           "title": "Pieeja liegta",
           "description": "Jums nav tiesību apskatīt dalībniekus"
+        }
+      }
+    },
+    "projects": {
+      "common": {
+        "create_project": "Izveidot projektu",
+        "enter_project": "Apskatīt projektu",
+        "create_new_sprint": "Izveidot jaunu sprintu",
+        "create_new_user_story": "Izveidot jaunu lietotāju stāstu",
+        "todo": "Iesākt",
+        "in_progress": "Procesā",
+        "completed": "Pabeigts"
+      },
+      "controls": {
+        "project_view": "Projekts",
+        "members_view": "Dalībnieki",
+        "edit_project": "Mainīt projektu",
+        "delete_project": "Dzēst projektu",
+        "back_to_list": "Atgriezties atpakaļ",
+        "leave_project": "Izrakstīties no projekta"
+      },
+      "drawer": {
+        "add_sprint": "Pievienot sprintu",
+        "add_relative_sprint": "Pievienot relatīvu sprintu",
+        "edit_sprint": "Mainīt sprintu",
+        "move_up": "Pārvietot uz augšu",
+        "move_down": "Pārvietot uz leju",
+        "delete_sprint": "Dzēst sprintu",
+        "description": "Apraksts",
+        "metadata": "Metadati",
+        "start_date": "Sākuma datums",
+        "end_date": "Izpildes datums"
+      },
+      "modals": {
+        "create_project": {
+          "title": "Izveidot projektu",
+          "name": "Projekta nosaukums",
+          "name_placeholder": "Ievadiet projekta nosaukumu...",
+          "description": "Apraksts",
+          "description_placeholder": "Ievadiet aprakstu..."
+        },
+        "edit_project": {
+          "title": "Mainīt projektu",
+          "name": "Projekta nosaukums",
+          "name_placeholder": "Ievadiet projekta nosaukumu...",
+          "description": "Apraksts",
+          "description_placeholder": "Ievadiet aprakstu..."
+        },
+        "delete_project": {
+          "title": "Dzēst projektu",
+          "content": "Vai tiešām vēlaties dzēst projektu?"
+        },
+        "create_new_sprint" : {
+          "title": "Izveidot jaunu sprintu",
+          "name": "Sprinta nosaukums",
+          "name_placeholder": "Ievadiet sprinta nosaukumu...",
+          "description": "Apraksts",
+          "description_placeholder": "Ievadiet aprakstu...",
+          "due_date": "Izpildes datums"
+        },
+        "create_sprint_relative": {
+          "title": "Izveidot relatīvu sprintu",
+          "name": "Sprinta nosaukums",
+          "name_placeholder": "Ievadiet sprinta nosaukumu...",
+          "description": "Apraksts",
+          "description_placeholder": "Ievadiet aprakstu...",
+          "due_date": "Izpildes datums",
+          "before": "Pirms",
+          "after": "Pēc"
+        },
+        "delete_sprint": {
+          "title": "Dzēst sprintu",
+          "content": "Vai tiešām vēlaties dzēst sprintu?"
+        },
+        "edit_sprint": {
+          "title": "Mainīt sprintu",
+          "name": "Sprinta nosaukums",
+          "name_placeholder": "Ievadiet sprinta nosaukumu...",
+          "description": "Apraksts",
+          "description_placeholder": "Ievadiet aprakstu...",
+          "due_date": "Izpildes datums"
+        },
+        "create_user_story": {
+          "title": "Izveidot lietotāju stāstu",
+          "name": "Stāsta nosaukums",
+          "name_placeholder": "Ievadiet stāsta nosaukumu...",
+          "description": "Apraksts",
+          "description_placeholder": "Ievadiet aprakstu...",
+          "priority": "Prioritāte",
+          "story_points": "Stāsta punkti",
+          "status": "Statuss",
+          "due_date": "Izpildes datums"
         }
       }
     }

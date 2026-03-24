@@ -59,7 +59,6 @@ export const useWorkspaceProjectMembersStore = defineStore('workspaceProjectMemb
       const authStore = useAuthStore()
       this.loading = true
       this.error = null
-      console.log(this.projectId)
 
       try {
         // Send GET request to backend

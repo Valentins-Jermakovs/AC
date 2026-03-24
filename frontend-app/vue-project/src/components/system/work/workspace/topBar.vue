@@ -5,7 +5,7 @@
     <!-- Create -->
     <button class="btn btn-primary w-full md:w-auto" @click="showCreateDialog = true">
       <font-awesome-icon icon="fa-solid fa-plus" />
-      Create project
+      {{ $t('work.projects.common.create_project') }}
     </button>
 
     <div class="flex-1"></div>
@@ -16,13 +16,14 @@
         v-model="store.searchQuery"
         type="text"
         class="input input-bordered w-full md:w-auto"
-        placeholder="Search..."
+        :placeholder="$t('common.search')"
         @keyup.enter="search"
         :disabled="store.searchMode === 'all'"
       />
-      <select v-model="store.searchMode" class="select select-bordered w-full md:w-auto">
-        <option value="all">All</option>
-        <option value="title">By title</option>
+      <select v-model="store.searchMode" class="select select-bordered w-full
+      bg-neutral text-neutral-content md:w-auto">
+        <option value="all">{{ $t('filters.all') }}</option>
+        <option value="title">{{ $t('filters.by_title') }}</option>
       </select>
       <button
         class="btn btn-primary w-full md:w-auto"
@@ -37,9 +38,9 @@
   <!-- Create dialog -->
   <base-dialog
     v-model="showCreateDialog"
-    title="Create project"
-    confirmText="Create"
-    cancelText="Cancel"
+    :title="$t('work.projects.modals.create_project.title')"
+    :confirmText="$t('common.create')"
+    :cancelText="$t('common.cancel')"
     @confirm="createProject"
     @cancel="closeCreateProject"
   >
@@ -50,21 +51,25 @@
         </div>
       </Transition>
       <label class="label">
-        <span class="label-text">Title</span>
+        <span class="label-text">
+          {{ $t('work.projects.modals.create_project.name') }}
+        </span>
       </label>
       <input
         v-model="newProject.title"
         type="text"
         class="input input-bordered w-full"
-        placeholder="Project title"
+        :placeholder="$t('work.projects.modals.create_project.name_placeholder')"
       />
       <label class="label">
-        <span class="label-text">Description</span>
+        <span class="label-text">
+          {{ $t('work.projects.modals.create_project.description') }}
+        </span>
       </label>
       <textarea
         v-model="newProject.description"
         class="textarea textarea-bordered w-full min-h-52"
-        placeholder="Project description"
+        :placeholder="$t('work.projects.modals.create_project.description_placeholder')"
       ></textarea>
     </div>
   </base-dialog>

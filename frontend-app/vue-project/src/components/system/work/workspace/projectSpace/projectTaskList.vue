@@ -1,5 +1,5 @@
 <template>
-  <div class="p-2 sm:p-3 flex flex-col bg-base-200 border border-base-300 rounded-box gap-3">
+  <div class="p-2 sm:p-3 flex flex-col bg-base-200 border border-base-300  gap-3">
     <!-- Tasks -->
     <div class="flex flex-col gap-3 w-full">
       <ProjectTask
@@ -14,9 +14,13 @@
       <button class="btn btn-primary w-full sm:w-auto" @click="openCreateDialog">
         <font-awesome-icon icon="fa-solid fa-plus" />
 
-        <span class="hidden sm:inline"> Create new task </span>
+        <span class="hidden sm:inline"> 
+          {{ $t('work.projects.common.create_new_user_story') }}
+        </span>
 
-        <span class="sm:hidden"> New task </span>
+        <span class="sm:hidden">
+          {{ $t('work.projects.common.create_new_user_story') }}
+        </span>
       </button>
     </div>
   </div>
@@ -24,9 +28,9 @@
   <!-- CREATE -->
   <BaseDialog
     v-model="createDialog"
-    title="Create task"
-    confirmText="Create"
-    cancelText="Cancel"
+    :title="$t('work.projects.modals.create_user_story.title')"
+    :confirmText="$t('common.create')"
+    :cancelText="$t('common.cancel')"
     @confirm="createTask"
     @cancel="closeCreateDialog"
   >

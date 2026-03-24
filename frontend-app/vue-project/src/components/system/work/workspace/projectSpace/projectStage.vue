@@ -6,7 +6,7 @@
     <!-- CONTENT -->
     <div class="drawer-content">
       <div
-        class="w-full bg-base-100 border border-base-300 rounded-box p-3 sm:p-4 flex flex-col gap-4 mt-3 sm:mt-5"
+        class="w-full bg-base-100 border border-base-300  p-3 sm:p-4 flex flex-col gap-4 mt-3 sm:mt-5"
       >
         <!-- HEADER -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -58,47 +58,47 @@
         </div>
 
         <!-- ACTIONS -->
-        <div class="bg-base-100 border border-base-300 rounded-box w-full">
+        <div class="bg-base-100 border border-base-300  w-full">
           <ul class="menu w-full">
             <li>
               <button class="flex gap-3 items-center" @click="showCreateDialog = true">
                 <font-awesome-icon icon="fa-solid fa-plus" />
-                Add stage
+                {{ $t('work.projects.drawer.add_sprint') }}
               </button>
             </li>
 
             <li>
               <button class="flex gap-3 items-center" @click="openRelativeDialog">
                 <font-awesome-icon icon="fa-solid fa-code-branch" />
-                Add relative stage
+                {{ $t('work.projects.drawer.add_relative_sprint') }}
               </button>
             </li>
 
             <li>
               <button class="flex gap-3 items-center" @click="openEditDialog">
                 <font-awesome-icon icon="fa-solid fa-pen" />
-                Edit stage
+                {{ $t('work.projects.drawer.edit_sprint') }}
               </button>
             </li>
 
             <li>
               <button class="flex gap-3 items-center" @click="moveStage('up')">
                 <font-awesome-icon icon="fa-solid fa-arrow-up" />
-                Move up
+                {{ $t('work.projects.drawer.move_up') }}
               </button>
             </li>
 
             <li>
               <button class="flex gap-3 items-center" @click="moveStage('down')">
                 <font-awesome-icon icon="fa-solid fa-arrow-down" />
-                Move down
+                {{ $t('work.projects.drawer.move_down') }}
               </button>
             </li>
 
             <li class="border-t border-base-300 mt-2 pt-2">
               <button class="text-error flex gap-3 items-center" @click="showDelete = true">
                 <font-awesome-icon icon="fa-solid fa-trash" />
-                Delete stage
+                {{ $t('work.projects.drawer.delete_sprint') }}
               </button>
             </li>
           </ul>
@@ -107,7 +107,9 @@
         <!-- DESCRIPTION -->
         <div class="card bg-base-100 border border-base-300">
           <div class="card-body p-4">
-            <h3 class="font-semibold text-sm opacity-70">Description</h3>
+            <h3 class="font-semibold text-sm opacity-70">
+              {{ $t('work.projects.drawer.description') }}
+            </h3>
 
             <p class="text-sm wrap-break-word">
               {{ stage.description }}
@@ -118,7 +120,9 @@
         <!-- META -->
         <div class="card bg-base-100 border border-base-300">
           <div class="card-body p-4">
-            <h3 class="font-semibold text-sm opacity-70 mb-2">Metadata</h3>
+            <h3 class="font-semibold text-sm opacity-70 mb-2">
+              {{ $t('work.projects.drawer.metadata') }}
+            </h3>
 
             <div class="overflow-x-auto">
               <table class="table table-sm">
@@ -126,7 +130,7 @@
                   <tr>
                     <td class="opacity-60">
                       <font-awesome-icon icon="fa-solid fa-calendar" />
-                      Created
+                      {{ $t('work.projects.drawer.start_date') }}
                     </td>
 
                     <td class="font-medium">
@@ -137,7 +141,7 @@
                   <tr>
                     <td class="opacity-60">
                       <font-awesome-icon icon="fa-solid fa-clock" />
-                      Due date
+                      {{ $t('work.projects.drawer.end_date') }}
                     </td>
 
                     <td class="font-medium">
@@ -151,7 +155,9 @@
         </div>
 
         <!-- CLOSE -->
-        <button class="btn btn-neutral mt-auto w-full" @click="drawerOpen = false">Close</button>
+        <button class="btn btn-neutral mt-auto w-full" @click="drawerOpen = false">
+          {{ $t('common.close') }}
+        </button>
       </div>
     </div>
   </div>
@@ -159,9 +165,9 @@
   <!-- Create stage dialog -->
   <BaseDialog
     v-model="showCreateDialog"
-    title="Create new stage"
-    confirmText="Create"
-    cancelText="Cancel"
+    :title="$t('work.projects.modals.create_new_sprint.title')"
+    :confirmText="$t('common.create')"
+    :cancelText="$t('common.cancel')"
     @confirm="handleCreate"
     @cancel="closeCreateDialog"
   >
@@ -171,34 +177,43 @@
           <h1 class="text-error mb-2">{{ error }}</h1>
         </div>
       </Transition>
-      <label for="stageTitle" class="label">Stage Title</label>
-      <input v-model="newStage.title" type="text" class="input w-full" placeholder="Stage title" />
-      <label for="stageDescription" class="label">Stage Description</label>
+      <label for="stageTitle" class="label">
+        {{ $t('work.projects.modals.create_new_sprint.name') }}
+      </label>
+      <input v-model="newStage.title" type="text" class="input w-full" 
+      :placeholder="$t('work.projects.modals.create_new_sprint.name_placeholder')" />
+      <label for="stageDescription" class="label">
+        {{ $t('work.projects.modals.create_new_sprint.description') }}
+      </label>
       <textarea
         v-model="newStage.description"
         class="textarea w-full min-h-52"
-        placeholder="Stage description"
+        :placeholder="$t('work.projects.modals.create_new_sprint.description_placeholder')"
       ></textarea>
-      <label for="stageDueDate" class="label">Stage Due Date</label>
+      <label for="stageDueDate" class="label">
+        {{ $t('work.projects.modals.create_new_sprint.due_date') }}
+      </label>
       <input v-model="newStage.dueDate" type="date" class="input w-full" />
     </div>
   </BaseDialog>
   <!-- Delete confirmation dialog -->
   <BaseDialog
     v-model="showDelete"
-    title="Delete stage"
-    confirmText="Delete"
-    cancelText="Cancel"
+    :title="$t('work.projects.modals.delete_sprint.title')"
+    :confirmText="$t('common.delete')"
+    :cancelText="$t('common.cancel')"
     @confirm="handleDelete"
   >
-    <p>Are you sure you want to delete this stage?</p>
+    <p>
+      {{ $t('work.projects.modals.delete_sprint.content') }}
+    </p>
   </BaseDialog>
   <!-- Edit stage dialog -->
   <BaseDialog
     v-model="showEditDialog"
-    title="Edit stage"
-    confirmText="Update"
-    cancelText="Cancel"
+    :title="$t('work.projects.modals.edit_sprint.title')"
+    :confirmText="$t('common.confirm')"
+    :cancelText="$t('common.cancel')"
     @confirm="handleUpdate"
     @cancel="closeEditDialog"
   >
@@ -208,15 +223,22 @@
           <h1 class="text-error mb-2">{{ error }}</h1>
         </div>
       </Transition>
-      <label for="stageTitle" class="label">Stage Title</label>
-      <input v-model="editStage.title" type="text" class="input w-full" placeholder="Stage title" />
-      <label for="stageDescription" class="label">Stage Description</label>
+      <label for="stageTitle" class="label">
+        {{ $t('work.projects.modals.edit_sprint.name') }}
+      </label>
+      <input v-model="editStage.title" type="text" class="input w-full"
+      :placeholder="$t('work.projects.modals.edit_sprint.name_placeholder')" />
+      <label for="stageDescription" class="label">
+        {{ $t('work.projects.modals.edit_sprint.description') }}
+      </label>
       <textarea
         v-model="editStage.description"
         class="textarea w-full min-h-52"
-        placeholder="Stage description"
+        :placeholder="$t('work.projects.modals.edit_sprint.description_placeholder')"
       ></textarea>
-      <label for="stageDueDate" class="label">Stage Due Date</label>
+      <label for="stageDueDate" class="label">
+        {{ $t('work.projects.modals.edit_sprint.due_date') }}
+      </label>
       <input v-model="editStage.dueDate" type="date" class="input w-full" />
     </div>
   </BaseDialog>
@@ -224,9 +246,9 @@
   <!-- Relative stage dialog -->
   <BaseDialog
     v-model="showRelativeDialog"
-    title="Add relative stage"
-    confirmText="Create"
-    cancelText="Cancel"
+    :title="$t('work.projects.modals.create_sprint_relative.title')"
+    :confirmText="$t('common.create')"
+    :cancelText="$t('common.cancel')"
     @confirm="handleCreateRelative"
     @cancel="closeRelativeDialog"
   >
@@ -236,29 +258,35 @@
           <h1 class="text-error mb-2">{{ error }}</h1>
         </div>
       </Transition>
-      <label for="stageTitle" class="label">Stage Title</label>
+      <label for="stageTitle" class="label">
+        {{ $t('work.projects.modals.create_sprint_relative.name') }}
+      </label>
       <input
         v-model="relativeStage.title"
         type="text"
         class="input w-full"
-        placeholder="Stage title"
+        :placeholder="$t('work.projects.modals.create_sprint_relative.name_placeholder')"
       />
-      <label for="stageDescription" class="label">Stage Description</label>
+      <label for="stageDescription" class="label">
+        {{ $t('work.projects.modals.create_sprint_relative.description') }}
+      </label>
       <textarea
         v-model="relativeStage.description"
         class="textarea w-full min-h-52"
-        placeholder="Stage description"
+        :placeholder="$t('work.projects.modals.create_sprint_relative.description_placeholder')"
       ></textarea>
-      <label for="stageDueDate" class="label">Stage Due Date</label>
+      <label for="stageDueDate" class="label">
+        {{ $t('work.projects.modals.create_sprint_relative.due_date') }}
+      </label>
       <input v-model="relativeStage.dueDate" type="date" class="input w-full" />
       <div class="flex gap-2 items-center mt-2">
         <label class="flex items-center gap-1">
           <input type="radio" value="before" class="radio" v-model="relativeStage.position" />
-          Before
+          {{ $t('work.projects.modals.create_sprint_relative.before') }}
         </label>
         <label class="flex items-center gap-1">
           <input type="radio" value="after" class="radio" v-model="relativeStage.position" />
-          After
+          {{ $t('work.projects.modals.create_sprint_relative.after') }}
         </label>
       </div>
     </div>

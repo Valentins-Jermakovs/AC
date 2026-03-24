@@ -7,7 +7,9 @@
       @click="$emit('update:activeView', 'project')"
     >
       <font-awesome-icon icon="fa-solid fa-list" />
-      <span class="hidden sm:inline">Project view</span>
+      <span class="hidden sm:inline">
+        {{ $t('work.projects.controls.project_view') }}
+      </span>
     </button>
 
     <!-- Members -->
@@ -18,17 +20,28 @@
       @click="$emit('update:activeView', 'members')"
     >
       <font-awesome-icon icon="fa-solid fa-users" />
-      <span class="hidden sm:inline">Members view</span>
+      <span class="hidden sm:inline">
+        {{ $t('work.projects.controls.members_view') }}
+      </span>
     </button>
 
+    <!-- Edit -->
+    <button class="btn btn-neutral flex-1 sm:flex-none sm:ml-auto" @click="openEdit">
+      <font-awesome-icon icon="fa-solid fa-pen-to-square" />
+      <span class="hidden md:inline">
+        {{ $t('work.projects.controls.edit_project') }}
+      </span>
+    </button>
     <!-- Delete -->
     <button
       v-if="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role === 'owner'"
-      class="btn btn-neutral flex-1 sm:flex-none sm:ml-auto"
+      class="btn btn-neutral flex-1 sm:flex-none"
       @click="showDelete = true"
     >
       <font-awesome-icon icon="fa-solid fa-trash" />
-      <span class="hidden md:inline">Delete project</span>
+      <span class="hidden md:inline">
+        {{ $t('work.projects.controls.delete_project') }}
+      </span>
     </button>
 
     <!-- Leave -->
@@ -37,26 +50,65 @@
       class="btn btn-neutral flex-1 sm:flex-none sm:ml-auto"
     >
       <font-awesome-icon icon="fa-solid fa-arrow-right-from-bracket" />
-      <span class="hidden md:inline">Leave project</span>
+      <span class="hidden md:inline">
+        {{ $t('work.projects.controls.leave_project') }}
+      </span>
     </button>
 
     <!-- Back -->
     <button class="btn btn-neutral w-full sm:w-auto" @click="goToProjects">
       <font-awesome-icon icon="fa-solid fa-arrow-left" />
-      <span>Back</span>
-      <span class="hidden md:inline">to projects list</span>
+      <span class="hidden md:inline">
+        {{ $t('work.projects.controls.back_to_list') }}
+      </span>
     </button>
   </div>
+
+  <base-dialog
+    v-model="showEdit"
+    :title="$t('work.projects.modals.edit_project.title')"
+    :confirmText="$t('common.confirm')"
+    :cancelText="$t('common.cancel')"
+    @confirm="updateProject"
+    @cancel="resetEdit"
+  >
+    <div class="flex flex-col w-full gap-2">
+      <Transition name="error-slide">
+        <div v-if="error">
+          <h1 class="text-error mb-2">{{ error }}</h1>
+        </div>
+      </Transition>
+      <label class="label">
+        <span class="label-text">
+          {{ $t('work.projects.modals.edit_project.name') }}
+        </span>
+      </label>
+      <input v-model="editProject.title" type="text" class="input input-bordered w-full" 
+        :placeholder="$t('work.projects.modals.edit_project.name_placeholder')"/>
+      <label class="label">
+        <span class="label-text">
+          {{ $t('work.projects.modals.edit_project.description') }}
+        </span>
+      </label>
+      <textarea
+        v-model="editProject.description"
+        class="textarea textarea-bordered w-full min-h-40 sm:min-h-52"
+        :placeholder="$t('work.projects.modals.edit_project.description_placeholder')"
+      ></textarea>
+    </div>
+  </base-dialog>
 
   <!-- Delete dialog -->
   <base-dialog
     v-model="showDelete"
-    title="Delete project"
-    confirmText="Delete"
-    cancelText="Cancel"
+    :title="$t('work.projects.modals.delete_project.title')"
+    :confirmText="$t('common.delete')"
+    :cancelText="$t('common.cancel')"
     @confirm="deleteProject"
   >
-    <p>Are you sure you want to delete this project?</p>
+    <p>
+      {{ $t('work.projects.modals.delete_project.content') }}
+    </p>
   </base-dialog>
 </template>
 
@@ -81,6 +133,13 @@ export default {
       store: useWorkspaceProjectsStore(),
 
       showDelete: false,
+      showEdit: false,
+
+      editProject: {
+        title: '',
+        description: '',
+        projectId: '',
+      },
     }
   },
 
@@ -95,6 +154,34 @@ export default {
       })
       this.showDelete = false
       this.goToProjects()
+    },
+    openEdit() {
+      const project = this.store.selectedProject
+
+      this.editProject = {
+        title: project.title,
+        description: project.description,
+        projectId: project.id,
+      }
+
+      this.showEdit = true
+    },
+    async updateProject() {
+      if (!this.editProject.title) {
+        this.store.error = 'Title is required'
+        return
+      }
+
+      try {
+        await this.store.updateProject(this.editProject)
+
+        this.store.selectedProject.title = this.editProject.title
+        this.store.selectedProject.description = this.editProject.description
+
+        this.showEdit = false
+      } catch (err) {
+        console.error(err)
+      }
     },
   },
 

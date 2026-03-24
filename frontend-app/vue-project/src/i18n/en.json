@@ -70,7 +70,8 @@
     "complete": "Comlete",
     "edit": "Edit",
     "create": "Create",
-    "add_member": "Add member"
+    "add_member": "Add member",
+    "close": "Close"
   },
   "filters": {
     "all": "All",

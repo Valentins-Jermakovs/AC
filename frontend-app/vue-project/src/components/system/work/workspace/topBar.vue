@@ -3,7 +3,7 @@
     class="w-full flex flex-col md:flex-row items-center gap-3 md:gap-5 justify-between p-2 bg-base-100 border border-base-300"
   >
     <!-- Create -->
-    <button class="btn btn-success w-full md:w-auto" @click="showCreateDialog = true">
+    <button class="btn btn-primary w-full md:w-auto" @click="showCreateDialog = true">
       <font-awesome-icon icon="fa-solid fa-plus" />
       Create project
     </button>
@@ -18,12 +18,14 @@
         class="input input-bordered w-full md:w-auto"
         placeholder="Search..."
         @keyup.enter="search"
+        :disabled="store.searchMode === 'all'"
       />
       <select v-model="store.searchMode" class="select select-bordered w-full md:w-auto">
         <option value="all">All</option>
         <option value="title">By title</option>
       </select>
-      <button class="btn btn-primary w-full md:w-auto" @click="search">
+      <button class="btn btn-primary w-full md:w-auto" @click="search"
+        :disabled="store.searchMode === 'title' && !store.searchQuery.trim()">
         <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
       </button>
     </div>

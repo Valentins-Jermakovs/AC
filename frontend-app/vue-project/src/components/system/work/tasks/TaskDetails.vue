@@ -38,17 +38,17 @@
         {{ $t('common.delete') }}
       </button>
 
-      <button class="btn btn-md btn-success" @click="openComplete" :disabled="task.completed">
+      <button class="btn btn-md btn-neutral" @click="openComplete" :disabled="task.completed">
         <font-awesome-icon icon="fa-solid fa-check" />
         {{ $t('common.complete') }}
       </button>
 
-      <button class="btn btn-md btn-secondary" @click="openEdit">
+      <button class="btn btn-md btn-neutral" @click="openEdit">
         <font-awesome-icon icon="fa-solid fa-pen-to-square" />
         {{ $t('common.edit') }}
       </button>
 
-      <button class="btn btn-md btn-primary" @click="showCreate = true">
+      <button class="btn btn-md btn-neutral" @click="showCreate = true">
         <font-awesome-icon icon="fa-solid fa-plus" />
         {{ $t('common.create') }}
       </button>

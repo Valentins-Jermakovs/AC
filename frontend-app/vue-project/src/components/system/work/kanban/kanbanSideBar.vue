@@ -15,7 +15,7 @@
         />
       </div>
       <div class="w-full flex items-center gap-2">
-        <select class="select select-bordered flex-1" v-model="kanbanBoardStore.searchMode">
+        <select class="select bg-neutral text-neutral-content select-bordered flex-1" v-model="kanbanBoardStore.searchMode">
           <option value="all">All</option>
           <option value="title">By title</option>
         </select>

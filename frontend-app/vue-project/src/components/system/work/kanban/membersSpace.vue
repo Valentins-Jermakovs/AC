@@ -7,9 +7,11 @@
     <div class="bg-base-200 border border-base-300 p-6 md:p-10 text-center max-w-md w-full">
       <font-awesome-icon icon="fa-solid fa-lock" class="text-3xl md:text-4xl mb-4 text-error" />
 
-      <h2 class="text-lg md:text-xl font-bold">Access denied</h2>
+      <h2 class="text-lg md:text-xl font-bold">
+        {{ $t('work.kanban.errors.access_denied.title') }}
+      </h2>
 
-      <p class="text-base-content/60">You don't have permission to view members</p>
+      <p class="text-base-content/60">{{ $t('work.kanban.errors.access_denied.description') }}</p>
     </div>
   </div>
 
@@ -22,29 +24,29 @@
       >
         <button class="btn btn-success w-full md:w-auto md:h-full" @click="openAddMemberModal">
           <font-awesome-icon icon="fa-solid fa-user-plus" />
-          Add member
+          {{ $t('common.add_member') }}
         </button>
 
         <!-- SEARCH -->
         <div
-          class="w-full flex flex-col md:flex-row items-stretch md:items-center gap-2 border border-base-300 bg-base-200 p-2"
+          class="w-full flex flex-col md:flex-row items-stretch md:items-center gap-2 border border-base-300 bg-base-100 p-2"
         >
           <input
             type="text"
             class="input w-full"
-            placeholder="Search..."
+            :placeholder="$t('common.search')"
             v-model="kanbanMembersStore.searchQuery"
             @keyup.enter="searchMembers"
             :disabled="kanbanMembersStore.searchType === 'all'"
           />
 
           <select
-            class="select select-bordered w-full md:w-40"
+            class="select select-bordered w-full md:w-40 bg-neutral text-neutral-content"
             v-model="kanbanMembersStore.searchType"
           >
-            <option value="all">All</option>
-            <option value="email">By email</option>
-            <option value="role">By role</option>
+            <option value="all">{{ $t('filters.all') }}</option>
+            <option value="email">{{ $t('filters.by_email') }}</option>
+            <option value="role">{{ $t('filters.by_role') }}</option>
           </select>
 
           <button
@@ -77,7 +79,10 @@
             </div>
 
             <div class="badge badge-primary w-full md:w-fit">
-              {{ member.role }}
+              <p v-if="member.role == 'owner'">{{ $t('work.kanban.common.roles.owner') }}</p>
+              <p v-if="member.role == 'admin'">{{ $t('work.kanban.common.roles.admin') }}</p>
+              <p v-if="member.role == 'editor'">{{ $t('work.kanban.common.roles.editor') }}</p>
+              <p v-if="member.role == 'viewer'">{{ $t('work.kanban.common.roles.viewer') }}</p>
             </div>
           </div>
 
@@ -92,14 +97,14 @@
               <li>
                 <button class="flex gap-2" @click="openUpdateMemberModal(member)">
                   <font-awesome-icon icon="fa-solid fa-pencil" />
-                  Update
+                  {{ $t('work.kanban.common.update_role') }}
                 </button>
               </li>
 
               <li>
                 <button class="flex gap-2 text-error" @click="openDeleteMemberModal(member)">
                   <font-awesome-icon icon="fa-solid fa-trash" />
-                  Delete
+                  {{ $t('work.kanban.common.delete_member') }}
                 </button>
               </li>
             </ul>
@@ -109,9 +114,10 @@
         <!-- EMPTY -->
         <div
           v-if="!kanbanMembersStore.loading && kanbanMembersStore.members.length === 0"
-          class="p-4 text-center text-base-content/60"
+          class="p-4 text-center text-base-content/60 flex items-center justify-center gap-2"
         >
-          No members found.
+          <font-awesome-icon icon="fa-solid fa-users" class="text-3xl" />
+          {{ $t('work.kanban.errors.members_not_found') }}
         </div>
       </div>
 
@@ -134,14 +140,14 @@
         <!-- STATS -->
         <div class="flex flex-col md:flex-row gap-1 md:gap-4 text-sm text-center">
           <p>
-            Total:
+            {{ $t('cabinet.admin.table_footer.total') }}
             <span class="font-semibold">
               {{ kanbanMembersStore.meta.totalItems }}
             </span>
           </p>
 
           <p>
-            Page:
+            {{ $t('cabinet.admin.table_footer.page') }}
 
             <span class="font-semibold">
               {{ kanbanMembersStore.meta.page }}/{{ kanbanMembersStore.meta.totalPages }}
@@ -174,9 +180,9 @@
   <!-- ADD MODAL -->
   <base-dialog
     v-model="addMemberModal"
-    title="Add Member"
-    confirmText="Add"
-    cancelText="Cancel"
+    :title="$t('work.kanban.modals.add_member.title')"
+    :confirmText="$t('common.confirm')"
+    :cancelText="$t('common.cancel')"
     @confirm="confirmAddMember"
     @cancel="closeAddMemberModal"
   >
@@ -187,18 +193,20 @@
         </div>
       </Transition>
 
-      <label class="label"> Member Email </label>
+      <label class="label">
+        {{ $t('work.kanban.modals.add_member.email') }}
+      </label>
       <input
         type="email"
         class="input w-full"
-        placeholder="Enter member email"
+        :placeholder="$t('work.kanban.modals.add_member.email_placeholder')"
         v-model="newMemberEmail"
       />
-      <label class="label"> Member Role </label>
+      <label class="label">{{ $t('work.kanban.modals.add_member.role') }}</label>
       <select class="select select-bordered w-full" v-model="newMemberRole">
-        <option value="admin">Admin</option>
-        <option value="editor">Editor</option>
-        <option value="viewer">Viewer</option>
+        <option value="admin">{{ $t('work.kanban.common.roles.admin') }}</option>
+        <option value="editor">{{ $t('work.kanban.common.roles.editor') }}</option>
+        <option value="viewer">{{ $t('work.kanban.common.roles.viewer') }}</option>
       </select>
     </div>
   </base-dialog>
@@ -206,20 +214,24 @@
   <!-- UPDATE MODAL -->
   <base-dialog
     v-model="updateMemberModal"
-    title="Update Member"
-    confirmText="Update"
-    cancelText="Cancel"
+    :title="$t('work.kanban.modals.update_member.title')"
+    :confirmText="$t('common.confirm')"
+    :cancelText="$t('common.cancel')"
     @confirm="confirmUpdateMember"
+    @cancel="closeUpdateMember"
   >
     <div class="w-full flex flex-col gap-2">
-      <label class="label"> Member Role </label>
+      <Transition name="error-slide">
+        <div v-if="memberError">
+          <h1 class="text-error mb-2">{{ memberError }}</h1>
+        </div>
+      </Transition>
+      <label class="label">{{ $t('work.kanban.modals.update_member.role') }}</label>
 
       <select class="select select-bordered w-full" v-model="updatedRole">
-        <option value="admin">Admin</option>
-
-        <option value="editor">Editor</option>
-
-        <option value="viewer">Viewer</option>
+        <option value="admin">{{ $t('work.kanban.common.roles.admin') }}</option>
+        <option value="editor">{{ $t('work.kanban.common.roles.editor') }}</option>
+        <option value="viewer">{{ $t('work.kanban.common.roles.viewer') }}</option>
       </select>
     </div>
   </base-dialog>
@@ -227,13 +239,19 @@
   <!-- DELETE MODAL -->
   <base-dialog
     v-model="deleteMemberModal"
-    title="Delete Member"
-    confirmText="Delete"
-    cancelText="Cancel"
+    :title="$t('work.kanban.modals.delete_member.title')"
+    :confirmText="$t('common.delete')"
+    :cancelText="$t('common.cancel')"
     @confirm="confirmDeleteMember"
+    @cancel="closeDeleteMemberModal"
   >
     <div class="w-full flex flex-col gap-5">
-      <p>Are you sure you want to delete this member?</p>
+      <Transition name="error-slide">
+        <div v-if="memberError">
+          <h1 class="text-error mb-2">{{ memberError }}</h1>
+        </div>
+      </Transition>
+      <p>{{ $t('work.kanban.modals.delete_member.content') }}</p>
     </div>
   </base-dialog>
 
@@ -245,7 +263,7 @@ import BaseDialog from '@/components/common/BaseDialog.vue'
 import { useKanbanMembersStore } from '@/stores/kanban/kanbanMembers'
 import { useKanbanBoardStore } from '@/stores/kanban/kanbanBoards'
 import { useAdminStore } from '@/stores/admin'
-import LoadingScreen from '@/components/common/LoadingScreen.vue';
+import LoadingScreen from '@/components/common/LoadingScreen.vue'
 
 export default {
   name: 'MembersSpace',
@@ -283,6 +301,14 @@ export default {
     },
   },
   methods: {
+    closeUpdateMember() {
+      this.updateMemberModal = false
+      this.kanbanMembersStore.clearError()
+    },
+    closeDeleteMemberModal() {
+      this.deleteMemberModal = false
+      this.kanbanMembersStore.clearError()
+    },
     async searchMembers() {
       const store = this.kanbanMembersStore
 
@@ -351,6 +377,18 @@ export default {
     },
 
     async confirmAddMember() {
+      if (!this.newMemberEmail) {
+        this.adminStore.error = 'Email is required'
+        return
+      }
+
+      // validate email
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!emailRegex.test(this.newMemberEmail)) {
+        this.adminStore.error = 'Invalid email format'
+        return
+      }
+
       try {
         // send email to auth server - /users/email/{email}
         await this.adminStore.getUserByEmail(this.newMemberEmail)
@@ -375,6 +413,9 @@ export default {
   computed: {
     error() {
       return this.adminStore.error
+    },
+    memberError() {
+      return this.kanbanMembersStore.error
     },
   },
 }

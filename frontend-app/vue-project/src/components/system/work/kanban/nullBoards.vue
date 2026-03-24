@@ -2,20 +2,20 @@
   <div class="w-full h-full flex items-center justify-center flex-col gap-5 p-1 flex-1">
     <div class="flex items-center justify-center gap-2 text-red text-2xl">
       <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2xl" />
-      <h1>Boards not found or you don't have selected any board</h1>
+      <h1>{{ $t('work.kanban.errors.boards_not_found') }}</h1>
     </div>
     <button class="btn btn-primary" @click="openCreateBoardModal">
       <font-awesome-icon icon="fa-solid fa-plus" />
-      Create new board
+      {{ $t('work.kanban.controls.create_board') }}
     </button>
   </div>
 
   <!-- Create board modal -->
   <base-dialog
     v-model="createModal"
-    title="Create New Board"
-    confirmText="Create"
-    cancelText="Cancel"
+    :title="$t('work.kanban.modals.create_board.title')"
+    :confirmText="$t('common.create')"
+    :cancelText="$t('common.cancel')"
     @confirm="confirmCreateBoard"
     @cancel="closeCreateModal"
   >
@@ -25,12 +25,12 @@
           <h1 class="text-error mb-2">{{ error }}</h1>
         </div>
       </Transition>
-      <label for="boardTitle" class="label">Board Title</label>
+      <label for="boardTitle" class="label">{{ $t('work.kanban.modals.create_board.name') }}</label>
       <input
         type="text"
         class="input w-full"
         v-model="newBoardTitle"
-        placeholder="Enter board title"
+        :placeholder="$t('work.kanban.modals.create_board.name_placeholder')"
       />
     </div>
   </base-dialog>

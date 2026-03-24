@@ -253,7 +253,7 @@ import { useAdminStore } from '@/stores/admin'
 // replace with
 import { useWorkspaceProjectMembersStore } from '@/stores/workspace/projectsMembers'
 import { useWorkspaceProjectsStore } from '@/stores/workspace/projects'
-import LoadingScreen from '@/components/common/LoadingScreen.vue';
+import LoadingScreen from '@/components/common/LoadingScreen.vue'
 
 export default {
   name: 'MembersSpace',

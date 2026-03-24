@@ -14,16 +14,20 @@
           @click="activeView = 'board'"
         >
           <font-awesome-icon icon="fa-solid fa-table-cells" />
-          <span class="hidden sm:inline">Board View</span>
+          <span class="hidden sm:inline">{{ $t('work.kanban.board_view') }}</span>
         </button>
 
         <button
           class="btn flex-1 sm:flex-none"
           :class="activeView === 'members' ? 'btn-primary' : 'btn-neutral'"
           @click="activeView = 'members'"
+          :disabled="
+            (kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role === 'viewer') ||
+            kanbanMembersStore.currentUser.role === 'editor'
+          "
         >
           <font-awesome-icon icon="fa-solid fa-users" />
-          <span class="hidden sm:inline">Members View</span>
+          <span class="hidden sm:inline">{{ $t('work.kanban.member_view') }}</span>
         </button>
       </div>
 
@@ -55,6 +59,7 @@ import KanbanStage from './kanban/kanbanStage.vue'
 import BoardSpace from './kanban/boardSpace.vue'
 import MembersSpace from './kanban/membersSpace.vue'
 import { useKanbanBoardStore } from '@/stores/kanban/kanbanBoards'
+import { useKanbanMembersStore } from '@/stores/kanban/kanbanMembers'
 import NullBoards from './kanban/nullBoards.vue'
 
 export default {
@@ -70,8 +75,13 @@ export default {
   data() {
     return {
       kanbanBoardStore: useKanbanBoardStore(),
+      kanbanMembersStore: useKanbanMembersStore(),
       activeView: 'board',
     }
+  },
+  async mounted() {
+    this.kanbanMembersStore.boardId = this.kanbanBoardStore.selectedBoard.id
+    await this.kanbanMembersStore.fetchMe()
   },
 }
 </script>

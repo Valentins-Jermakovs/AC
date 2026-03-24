@@ -5,29 +5,42 @@
       <div class="w-full flex justify-between items-center p-1">
         <h2 class="flex-1">{{ task.title }}</h2>
         <div class="dropdown dropdown-right z-10">
-          <div tabindex="0" role="button" class="btn btn-sm btn-ghost">⋮</div>
+          <button
+            tabindex="0"
+            role="button"
+            class="btn btn-sm btn-ghost"
+            :disabled="
+              kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role === 'viewer'
+            "
+          >
+            ⋮
+          </button>
           <ul
             tabindex="0"
             class="dropdown-content menu bg-base-200 border border-base-300 w-48 p-2 shadow"
           >
             <li>
               <button class="flex gap-2 items-center" @click="openUpdateModal">
-                <font-awesome-icon icon="fa-solid fa-pencil" /> Update task
+                <font-awesome-icon icon="fa-solid fa-pencil" />
+                {{ $t('work.kanban.common.update_task') }}
               </button>
             </li>
             <li>
               <button class="flex gap-2 items-center" @click="openMoveInStageModal">
-                <font-awesome-icon icon="fa-solid fa-arrow-up" /> Move in stage
+                <font-awesome-icon icon="fa-solid fa-arrow-up" />
+                {{ $t('work.kanban.common.move_task_in_stage') }}
               </button>
             </li>
             <li>
               <button class="flex gap-2 items-center" @click="openMoveBetweenStagesModal">
-                <font-awesome-icon icon="fa-solid fa-arrow-right" /> Move to another stage
+                <font-awesome-icon icon="fa-solid fa-arrow-right" />
+                {{ $t('work.kanban.common.move_task_to_another_stages') }}
               </button>
             </li>
             <li>
               <button class="flex gap-2 items-center text-error" @click="openDeleteModal">
-                <font-awesome-icon icon="fa-solid fa-trash" /> Delete task
+                <font-awesome-icon icon="fa-solid fa-trash" />
+                {{ $t('work.kanban.common.delete_task') }}
               </button>
             </li>
           </ul>
@@ -41,9 +54,9 @@
     <!-- BaseDialogs -->
     <BaseDialog
       v-model="updateModal"
-      title="Update Task"
-      confirmText="Save"
-      cancelText="Cancel"
+      :title="$t('work.kanban.modals.update_task.title')"
+      :confirmText="$t('common.confirm')"
+      :cancelText="$t('common.cancel')"
       @confirm="confirmUpdateTask"
       @cancel="closeUpdateModal"
     >
@@ -53,47 +66,55 @@
             <h1 class="text-error mb-2">{{ error }}</h1>
           </div>
         </Transition>
-        <label for="taskTitle" class="label">Task Title</label>
+        <label for="taskTitle" class="label">
+          {{ $t('work.kanban.modals.update_task.title_name') }}
+        </label>
         <input
           type="text"
           class="input w-full mb-2"
           v-model="newTaskTitle"
-          placeholder="Task title"
+          :placeholder="$t('work.kanban.modals.update_task.title_name_placeholder')"
         />
-        <label for="taskDescription" class="label">Task Description</label>
+        <label for="taskDescription" class="label">
+          {{ $t('work.kanban.modals.update_task.description_name') }}
+        </label>
         <textarea
           class="input w-full min-h-52"
           v-model="newTaskDescription"
-          placeholder="Task description"
+          :placeholder="$t('work.kanban.modals.update_task.description_name_placeholder')"
         ></textarea>
       </div>
     </BaseDialog>
 
     <BaseDialog
       v-model="moveInStageModal"
-      title="Move Task in Stage"
-      confirmText="Move"
-      cancelText="Cancel"
+      :title="$t('work.kanban.modals.move_task_in_stage.title')"
+      :confirmText="$t('common.confirm')"
+      :cancelText="$t('common.cancel')"
       @confirm="confirmMoveInStage"
     >
       <div class="w-full flex flex-col gap-2">
-        <label for="taskTitle" class="label">Move task:</label>
+        <label for="taskTitle" class="label">{{
+          $t('work.kanban.modals.move_task_in_stage.name')
+        }}</label>
         <select class="select select-bordered w-full" v-model="moveDirection">
-          <option value="up">Up</option>
-          <option value="down">Down</option>
+          <option value="up">{{ $t('work.kanban.common.directions.up') }}</option>
+          <option value="down">{{ $t('work.kanban.common.directions.down') }}</option>
         </select>
       </div>
     </BaseDialog>
 
     <BaseDialog
       v-model="moveBetweenStagesModal"
-      title="Move Task to Another Stage"
-      confirmText="Move"
-      cancelText="Cancel"
+      :title="$t('work.kanban.modals.move_task_to_another_stages.title')"
+      :confirmText="$t('common.confirm')"
+      :cancelText="$t('common.cancel')"
       @confirm="confirmMoveBetweenStages"
     >
       <div class="w-full flex flex-col gap-2">
-        <label for="taskTitle" class="label">Move task to:</label>
+        <label for="taskTitle" class="label">
+          {{ $t('work.kanban.modals.move_task_to_another_stages.name') }}
+        </label>
         <select class="select select-bordered w-full" v-model="targetStageId">
           <option v-for="stage in stages" :key="stage.id" :value="stage.id">
             {{ stage.title }}
@@ -104,12 +125,12 @@
 
     <BaseDialog
       v-model="deleteModal"
-      title="Delete Task"
-      confirmText="Delete"
-      cancelText="Cancel"
+      :title="$t('work.kanban.modals.delete_task.title')"
+      :confirmText="$t('common.delete')"
+      :cancelText="$t('common.cancel')"
       @confirm="confirmDeleteTask"
     >
-      Are you sure you want to delete this task?
+      {{ $t('work.kanban.modals.delete_task.content') }}
     </BaseDialog>
   </div>
 
@@ -121,6 +142,7 @@ import BaseDialog from '@/components/common/BaseDialog.vue'
 import { useKanbanTasksStore } from '@/stores/kanban/kanbanTasks'
 import { useKanbanStagesStore } from '@/stores/kanban/kanbanStages'
 import { useKanbanBoardStore } from '@/stores/kanban/kanbanBoards'
+import { useKanbanMembersStore } from '@/stores/kanban/kanbanMembers'
 import LoadingScreen from '@/components/common/LoadingScreen.vue'
 
 export default {
@@ -140,6 +162,7 @@ export default {
       newTaskDescription: '',
       moveDirection: 'up',
       targetStageId: null,
+      kanbanMembersStore: useKanbanMembersStore(),
       stages: boardStore.selectedBoard ? [] : [],
     }
   },

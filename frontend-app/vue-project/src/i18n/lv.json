@@ -69,14 +69,18 @@
     "delete": "Dzēst",
     "complete": "Pabeigt",
     "edit": "Rediģēt",
-    "create": "Izveidot"
+    "create": "Izveidot",
+    "add_member": "Pievienot lietotāju"
   },
   "filters": {
     "all": "Visi",
     "by_title": "Pēc nosaukuma",
     "by_description": "Pēc apraksta",
     "by_due_date": "Pēc izpildes datuma",
-    "by_month": "Pēc mēneša"
+    "by_month": "Pēc mēneša",
+    "by_email": "Pēc e-pasta",
+    "by_username": "Pēc lietotājvārda",
+    "by_role": "Pēc lomas"
   },
   "eyeRest": {
     "title": "Atpūtiniet acis",
@@ -249,6 +253,129 @@
       },
       "create_task": {
         "title": "Izveidot uzdevumu"
+      }
+    },
+    "kanban": {
+      "board_view": "Dēlis",
+      "member_view": "Dalībnieki",
+      "controls": {
+        "create_board": "Izveidot dēli",
+        "create_stage": "Izveidot kolonnu",
+        "create_task": "Izveidot uzdevumu",
+        "change_board_title": "Mainīt dēļa nosaukumu",
+        "delete_board": "Dzēst dēli",
+        "leave_board": "Iziet no komandas"
+      },
+      "common": {
+        "update_stage": "Mainīt kolonnu",
+        "delete_stage": "Dzēst kolonnu",
+        "insert_stage_before": "Ievietot kolonnu pirms",
+        "insert_stage_after": "Ievietot kolonnu pēc",
+        "move_stage_left": "Pārvietot kolonnu pa kreisi",
+        "move_stage_right": "Pārvietot kolonnu pa labi",
+        "update_task": "Mainīt uzdevumu",
+        "delete_task": "Dzēst uzdevumu",
+        "move_task_in_stage": "Pārvietot uzdevumu kolonnā",
+        "move_task_to_another_stages": "Pārvietot uzdevumu uz citu kolonnu",
+        "directions": {
+          "up": "Uz augšu",
+          "down": "Uz leju"
+        },
+        "roles": {
+          "owner": "Autors",
+          "admin": "Administrators",
+          "editor": "Redaktors",
+          "viewer": "Skatitājs"
+        },
+        "update_role": "Mainīt lietotāju lomu",
+        "delete_member": "Dzēst lietotāju"
+      },
+      "modals": {
+        "delete_board": {
+          "title": "Dzēst dēli?",
+          "content": "Vai tiešām vēlaties dzēst dēli?"
+        },
+        "delete_stage": {
+          "title": "Dzēst kolonnu?",
+          "content": "Vai tiešām vēlaties dzēst kolonnu?"
+        },
+        "delete_task": {
+          "title": "Dzēst uzdevumu?",
+          "content": "Vai tiešām vēlaties dzēst uzdevumu?"
+        },
+        "leave_board": {
+          "title": "Iziet no komandas?",
+          "content": "Vai tiešām vēlaties pamest šo komandu?"
+        },
+        "create_board": {
+          "title": "Izveidot dēli",
+          "name": "Dēļa nosaukums",
+          "name_placeholder": "Ievadiet dēļa nosaukumu..."
+        },
+        "create_stage": {
+          "title": "Izveidot kolonnu",
+          "name": "Kolonnu nosaukums",
+          "name_placeholder": "Ievadiet kolonnu nosaukumu..."
+        },
+        "change_board_title": {
+          "title": "Mainīt dēļa nosaukumu",
+          "name": "Dēļa nosaukums",
+          "name_placeholder": "Ievadiet dēļa nosaukumu..."
+        },
+        "update_stage_title": {
+          "title": "Mainīt kolonnu nosaukumu",
+          "name": "Kolonnas nosaukums",
+          "name_placeholder": "Ievadiet kolonnas nosaukumu..."
+        },
+        "insert_stage": {
+          "title": "Ievietot kolonnu",
+          "name": "Kolonnas nosaukums",
+          "name_placeholder": "Ievadiet kolonnas nosaukumu..."
+        },
+        "update_task": {
+          "title": "Mainīt uzdevumu",
+          "title_name": "Uzdevuma nosaukums",
+          "title_name_placeholder": "Ievadiet uzdevuma nosaukumu...",
+          "description_name": "Apraksts",
+          "description_name_placeholder": "Ievadiet aprakstu..."
+        },
+        "move_task_in_stage": {
+          "title": "Pārvietot uzdevumu kolonnā",
+          "name": "Izvēlies virzienu"
+        },
+        "move_task_to_another_stages": {
+          "title": "Pārvietot uzdevumu uz citu kolonnu",
+          "name": "Izvēlies uz kuru kolonnu pārvietot uzdevumu"
+        },
+        "create_task": {
+          "title": "Izveidot uzdevumu",
+          "title_name": "Uzdevuma nosaukums",
+          "title_name_placeholder": "Ievadiet uzdevuma nosaukumu...",
+          "description_name": "Apraksts",
+          "description_name_placeholder": "Ievadiet aprakstu..."
+        },
+        "add_member": {
+          "title": "Pievienot lietotāju",
+          "email": "E-pasts",
+          "email_placeholder": "Ievadiet e-pastu...",
+          "role": "Lomas"
+        },
+        "update_member": {
+          "title": "Mainīt lietotāju lomu",
+          "role": "Lomas"
+        },
+        "delete_member": {
+          "title": "Dzēst lietotāju",
+          "content": "Vai tiešām vēlaties dzēst lietotāju?"
+        }
+      },
+      "errors": {
+        "boards_not_found": "Dēļi nav atrasti vai izvēleti.",
+        "members_not_found": "Lietotāji netika atrasti.",
+        "access_denied": {
+          "title": "Pieeja liegta",
+          "description": "Jums nav tiesību apskatīt dalībniekus"
+        }
       }
     }
   }

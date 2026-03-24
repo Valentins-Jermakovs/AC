@@ -6,41 +6,52 @@
     <!-- Create -->
     <button class="btn btn-neutral flex-1 sm:flex-none" @click="openCreateModal">
       <font-awesome-icon icon="fa-solid fa-plus" />
-      <span class="hidden sm:inline">Create Board</span>
+      <span class="hidden sm:inline">{{ $t('work.kanban.controls.create_board') }}</span>
     </button>
 
     <!-- Change title -->
-    <button class="btn btn-neutral flex-1 sm:flex-none" @click="openChangeTitleModal">
+    <button
+      class="btn btn-neutral flex-1 sm:flex-none"
+      @click="openChangeTitleModal"
+      :disabled="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role === 'viewer'"
+    >
       <font-awesome-icon icon="fa-solid fa-pen-to-square" />
-      <span class="hidden md:inline"> Change board title </span>
+      <span class="hidden md:inline">{{ $t('work.kanban.controls.change_board_title') }}</span>
     </button>
 
     <!-- Add stage -->
-    <button class="btn btn-neutral flex-1 sm:flex-none" @click="openAddStageModal">
+    <button
+      class="btn btn-neutral flex-1 sm:flex-none"
+      @click="openAddStageModal"
+      :disabled="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role === 'viewer'"
+    >
       <font-awesome-icon icon="fa-solid fa-plus" />
-      <span class="hidden md:inline"> Add Stage </span>
+      <span class="hidden md:inline">{{ $t('work.kanban.controls.create_stage') }}</span>
     </button>
 
     <!-- Right side actions -->
     <div class="flex gap-2 sm:ml-auto w-full sm:w-auto">
       <!-- Delete -->
       <button
-        v-if="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role == 'owner'"
+        :disabled="
+          (kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role === 'viewer') ||
+          kanbanMembersStore.currentUser.role === 'editor'
+        "
         class="btn btn-neutral flex-1 sm:flex-none"
         @click="openDeleteModal"
       >
         <font-awesome-icon icon="fa-solid fa-trash" />
-        <span class="hidden md:inline"> Delete board </span>
+        <span class="hidden md:inline">{{ $t('work.kanban.controls.delete_board') }}</span>
       </button>
 
       <!-- Leave -->
       <button
-        v-if="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role !== 'owner'"
+        v-if="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role != 'owner'"
         class="btn btn-neutral flex-1 sm:flex-none"
         @click="openLeaveBoardModal"
       >
         <font-awesome-icon icon="fa-solid fa-sign-out" />
-        <span class="hidden md:inline"> Leave board </span>
+        <span class="hidden md:inline">{{ $t('work.kanban.controls.leave_board') }}</span>
       </button>
     </div>
   </div>
@@ -55,9 +66,9 @@
   <!-- Create board -->
   <BaseDialog
     v-model="createModal"
-    title="Create New Board"
-    confirmText="Create"
-    cancelText="Cancel"
+    :title="$t('work.kanban.modals.create_board.title')"
+    :confirmText="$t('common.create')"
+    :cancelText="$t('common.cancel')"
     @confirm="confirmCreateBoard"
     @cancel="closeCreateModal"
   >
@@ -67,12 +78,12 @@
           <h1 class="text-error mb-2">{{ errorBoard }}</h1>
         </div>
       </Transition>
-      <label for="boardTitle" class="label">Board Title</label>
+      <label for="boardTitle" class="label">{{ $t('work.kanban.modals.create_board.name') }}</label>
       <input
         type="text"
         class="input w-full"
         v-model="newBoardTitle"
-        placeholder="Enter board title"
+        :placeholder="$t('work.kanban.modals.create_board.name_placeholder')"
       />
     </div>
   </BaseDialog>
@@ -80,9 +91,9 @@
   <!-- Change board title -->
   <BaseDialog
     v-model="changeTitleModal"
-    title="Change Board Title"
-    confirmText="Save"
-    cancelText="Cancel"
+    :title="$t('work.kanban.modals.change_board_title.title')"
+    :confirmText="$t('common.confirm')"
+    :cancelText="$t('common.cancel')"
     @confirm="confirmChangeTitle"
     @cancel="closeChangeTitleModal"
   >
@@ -92,12 +103,14 @@
           <h1 class="text-error mb-2">{{ errorBoard }}</h1>
         </div>
       </Transition>
-      <label for="boardTitle" class="label">Board Title</label>
+      <label for="boardTitle" class="label">{{
+        $t('work.kanban.modals.change_board_title.name')
+      }}</label>
       <input
         type="text"
         class="input w-full"
         v-model="newTitle"
-        placeholder="Enter new board title"
+        :placeholder="$t('work.kanban.modals.change_board_title.name_placeholder')"
       />
     </div>
   </BaseDialog>
@@ -105,9 +118,9 @@
   <!-- Add stage -->
   <BaseDialog
     v-model="addStageModal"
-    title="Add Stage"
-    confirmText="Add"
-    cancelText="Cancel"
+    :title="$t('work.kanban.modals.create_stage.title')"
+    :confirmText="$t('common.create')"
+    :cancelText="$t('common.cancel')"
     @confirm="confirmAddStage"
     @cancel="closeAddStageModal"
   >
@@ -117,12 +130,12 @@
           <h1 class="text-error mb-2">{{ errorStage }}</h1>
         </div>
       </Transition>
-      <label for="stageTitle" class="label">Stage Title</label>
+      <label for="stageTitle" class="label">{{ $t('work.kanban.modals.create_stage.name') }}</label>
       <input
         type="text"
         class="input w-full"
         v-model="newStageTitle"
-        placeholder="Enter stage title"
+        :placeholder="$t('work.kanban.modals.create_stage.name_placeholder')"
       />
     </div>
   </BaseDialog>
@@ -130,23 +143,23 @@
   <!-- Delete board -->
   <BaseDialog
     v-model="deleteModal"
-    title="Confirm Delete"
-    confirmText="Delete"
-    cancelText="Cancel"
+    :title="$t('work.kanban.modals.delete_board.title')"
+    :confirmText="$t('common.delete')"
+    :cancelText="$t('common.cancel')"
     @confirm="confirmDeleteBoard"
   >
-    Are you sure you want to delete this board?
+    {{ $t('work.kanban.modals.delete_board.content') }}
   </BaseDialog>
 
   <!-- Leave board -->
   <BaseDialog
     v-model="leaveModal"
-    title="Confirm Leave"
-    confirmText="Leave"
-    cancelText="Cancel"
+    :title="$t('work.kanban.modals.leave_board.title')"
+    :confirmText="$t('common.confirm')"
+    :cancelText="$t('common.cancel')"
     @confirm="confirmLeaveBoard"
   >
-    Are you sure you want to leave this board?
+    {{ $t('work.kanban.modals.leave_board.content') }}
   </BaseDialog>
 </template>
 

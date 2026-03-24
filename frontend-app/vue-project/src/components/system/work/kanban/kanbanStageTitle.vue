@@ -5,7 +5,16 @@
 
     <!-- Stage options dropdown -->
     <div class="dropdown dropdown-right">
-      <div tabindex="0" role="button" class="btn btn-sm btn-ghost">⋮</div>
+      <button
+        tabindex="0"
+        role="button"
+        class="btn btn-sm btn-ghost"
+        :disabled="
+          kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role === 'viewer'
+        "
+      >
+        ⋮
+      </button>
       <ul
         tabindex="0"
         class="dropdown-content menu bg-base-200 border border-base-300 rounded-box w-48 p-2 shadow"
@@ -13,37 +22,37 @@
         <li>
           <button class="flex gap-2 items-center" @click="openUpdateModal">
             <font-awesome-icon icon="fa-solid fa-pencil" />
-            Update stage
+            {{ $t('work.kanban.common.update_stage') }}
           </button>
         </li>
         <li>
           <button class="flex gap-2 items-center" @click="openInsertModal('before')">
             <font-awesome-icon icon="fa-solid fa-arrow-up" />
-            Insert stage before
+            {{ $t('work.kanban.common.insert_stage_before') }}
           </button>
         </li>
         <li>
           <button class="flex gap-2 items-center" @click="openInsertModal('after')">
             <font-awesome-icon icon="fa-solid fa-arrow-down" />
-            Insert stage after
+            {{ $t('work.kanban.common.insert_stage_after') }}
           </button>
         </li>
         <li>
           <button class="flex gap-2 items-center" @click="moveStage('right')">
             <font-awesome-icon icon="fa-solid fa-arrow-right" />
-            Move stage to right
+            {{ $t('work.kanban.common.move_stage_right') }}
           </button>
         </li>
         <li>
           <button class="flex gap-2 items-center" @click="moveStage('left')">
             <font-awesome-icon icon="fa-solid fa-arrow-left" />
-            Move stage to left
+            {{ $t('work.kanban.common.move_stage_left') }}
           </button>
         </li>
         <li>
           <button class="flex gap-2 items-center text-error" @click="openDeleteModal">
             <font-awesome-icon icon="fa-solid fa-trash" />
-            Delete stage
+            {{ $t('work.kanban.common.delete_stage') }}
           </button>
         </li>
       </ul>
@@ -53,9 +62,9 @@
   <!-- BaseDialogs -->
   <BaseDialog
     v-model="updateModal"
-    title="Update Stage Title"
-    confirmText="Save"
-    cancelText="Cancel"
+    :title="$t('work.kanban.modals.update_stage_title.title')"
+    :confirmText="$t('common.confirm')"
+    :cancelText="$t('common.cancel')"
     @confirm="confirmUpdateStage"
     @cancel="closeUpdateModal"
   >
@@ -65,16 +74,23 @@
           <h1 class="text-error mb-2">{{ errorStage }}</h1>
         </div>
       </Transition>
-      <label for="stageTitle" class="label">Stage Title</label>
-      <input type="text" class="input w-full" v-model="newStageTitle" />
+      <label for="stageTitle" class="label">{{
+        $t('work.kanban.modals.update_stage_title.name')
+      }}</label>
+      <input
+        type="text"
+        class="input w-full"
+        v-model="newStageTitle"
+        :placeholder="$t('work.kanban.modals.update_stage_title.name_placeholder')"
+      />
     </div>
   </BaseDialog>
 
   <BaseDialog
     v-model="insertModal"
-    title="Insert Stage"
-    confirmText="Insert"
-    cancelText="Cancel"
+    :title="$t('work.kanban.modals.insert_stage.title')"
+    :confirmText="$t('common.create')"
+    :cancelText="$t('common.cancel')"
     @confirm="confirmInsertStage"
     @cancel="closeInsertModal"
   >
@@ -84,19 +100,26 @@
           <h1 class="text-error mb-2">{{ errorStage }}</h1>
         </div>
       </Transition>
-      <label for="stageTitle" class="label">Stage Title</label>
-      <input type="text" class="input w-full" v-model="newStageTitle" placeholder="Stage title" />
+      <label for="stageTitle" class="label">
+        {{ $t('work.kanban.modals.insert_stage.name') }}
+      </label>
+      <input
+        type="text"
+        class="input w-full"
+        v-model="newStageTitle"
+        :placeholder="$t('work.kanban.modals.insert_stage.name_placeholder')"
+      />
     </div>
   </BaseDialog>
 
   <BaseDialog
     v-model="deleteModal"
-    title="Delete Stage"
-    confirmText="Delete"
-    cancelText="Cancel"
+    :title="$t('work.kanban.modals.delete_stage.title')"
+    :confirmText="$t('common.delete')"
+    :cancelText="$t('common.cancel')"
     @confirm="confirmDeleteStage"
   >
-    Are you sure you want to delete this stage?
+    {{ $t('work.kanban.modals.delete_stage.content') }}
   </BaseDialog>
 </template>
 
@@ -104,6 +127,7 @@
 import BaseDialog from '@/components/common/BaseDialog.vue'
 import { useKanbanStagesStore } from '@/stores/kanban/kanbanStages'
 import { useKanbanBoardStore } from '@/stores/kanban/kanbanBoards'
+import { useKanbanMembersStore } from '@/stores/kanban/kanbanMembers'
 
 export default {
   name: 'kanbanStageTitle',
@@ -120,6 +144,7 @@ export default {
       insertPosition: 'before',
       stagesStore: useKanbanStagesStore(),
       kanbanStore: useKanbanBoardStore(),
+      kanbanMembersStore: useKanbanMembersStore(),
     }
   },
   methods: {

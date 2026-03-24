@@ -24,8 +24,11 @@
         <option value="all">All</option>
         <option value="title">By title</option>
       </select>
-      <button class="btn btn-primary w-full md:w-auto" @click="search"
-        :disabled="store.searchMode === 'title' && !store.searchQuery.trim()">
+      <button
+        class="btn btn-primary w-full md:w-auto"
+        @click="search"
+        :disabled="store.searchMode === 'title' && !store.searchQuery.trim()"
+      >
         <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
       </button>
     </div>

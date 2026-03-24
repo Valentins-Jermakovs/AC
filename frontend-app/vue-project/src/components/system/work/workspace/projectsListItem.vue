@@ -1,9 +1,6 @@
 <template>
   <div
-    class="w-full bg-base-100 border border-base-300 
-    flex flex-col gap-3 p-3 sm:p-4 hover:border-info
-    hover:bg-base-300
-    transition-all duration-300"
+    class="w-full bg-base-100 border border-base-300 flex flex-col gap-3 p-3 sm:p-4 hover:border-info hover:bg-base-300 transition-all duration-300"
   >
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-3">

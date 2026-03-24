@@ -69,14 +69,18 @@
     "delete": "Удалить",
     "complete": "Завершить",
     "edit": "Редактировать",
-    "create": "Создать"
+    "create": "Создать",
+    "add_member": "Добавить участника"
   },
   "filters": {
     "all": "Все",
     "by_title": "По названию",
     "by_description": "По описанию",
     "by_due_date": "По сроку выполнения",
-    "by_month": "По месяцу"
+    "by_month": "По месяцу",
+    "by_email": "По email",
+    "by_username": "По имени пользователя",
+    "by_role": "По роли"
   },
   "eyeRest": {
     "title": "Глазам необходим отдых",
@@ -245,10 +249,133 @@
         "content": "Вы уверены, что хотите завершить эту задачу?"
       },
       "edit_task": {
-        "title": "Редактирование задачи"
+        "title": "Редактировать задачу"
       },
       "create_task": {
         "title": "Создать задачу"
+      }
+    },
+    "kanban": {
+      "board_view": "Доска",
+      "member_view": "Участники",
+      "controls": {
+        "create_board": "Создать доску",
+        "create_stage": "Создать колонку",
+        "create_task": "Создать задачу",
+        "change_board_title": "Изменить название доски",
+        "delete_board": "Удалить доску",
+        "leave_board": "Покинуть команду"
+      },
+      "common": {
+        "update_stage": "Изменить колонку",
+        "delete_stage": "Удалить колонку",
+        "insert_stage_before": "Вставить колонку перед",
+        "insert_stage_after": "Вставить колонку после",
+        "move_stage_left": "Переместить колонку влево",
+        "move_stage_right": "Переместить колонку вправо",
+        "update_task": "Изменить задачу",
+        "delete_task": "Удалить задачу",
+        "move_task_in_stage": "Переместить задачу внутри колонки",
+        "move_task_to_another_stages": "Переместить задачу в другую колонку",
+        "directions": {
+          "up": "Вверх",
+          "down": "Вниз"
+        },
+        "roles": {
+          "owner": "Владелец",
+          "admin": "Администратор",
+          "editor": "Редактор",
+          "viewer": "Наблюдатель"
+        },
+        "update_role": "Изменить роль пользователя",
+        "delete_member": "Удалить пользователя"
+      },
+      "modals": {
+        "delete_board": {
+          "title": "Удалить доску?",
+          "content": "Вы уверены, что хотите удалить эту доску?"
+        },
+        "delete_stage": {
+          "title": "Удалить колонку?",
+          "content": "Вы уверены, что хотите удалить эту колонку?"
+        },
+        "delete_task": {
+          "title": "Удалить задачу?",
+          "content": "Вы уверены, что хотите удалить эту задачу?"
+        },
+        "leave_board": {
+          "title": "Покинуть команду?",
+          "content": "Вы уверены, что хотите покинуть эту команду?"
+        },
+        "create_board": {
+          "title": "Создать доску",
+          "name": "Название доски",
+          "name_placeholder": "Введите название доски..."
+        },
+        "create_stage": {
+          "title": "Создать колонку",
+          "name": "Название колонки",
+          "name_placeholder": "Введите название колонки..."
+        },
+        "change_board_title": {
+          "title": "Изменить название доски",
+          "name": "Название доски",
+          "name_placeholder": "Введите название доски..."
+        },
+        "update_stage_title": {
+          "title": "Изменить название колонки",
+          "name": "Название колонки",
+          "name_placeholder": "Введите название колонки..."
+        },
+        "insert_stage": {
+          "title": "Добавить колонку",
+          "name": "Название колонки",
+          "name_placeholder": "Введите название колонки..."
+        },
+        "update_task": {
+          "title": "Изменить задачу",
+          "title_name": "Название задачи",
+          "title_name_placeholder": "Введите название...",
+          "description_name": "Описание",
+          "description_name_placeholder": "Введите описание..."
+        },
+        "move_task_in_stage": {
+          "title": "Переместить задачу",
+          "name": "Выберите направление"
+        },
+        "move_task_to_another_stages": {
+          "title": "Переместить задачу в другую колонку",
+          "name": "Выберите колонку"
+        },
+        "create_task": {
+          "title": "Создать задачу",
+          "title_name": "Название задачи",
+          "title_name_placeholder": "Введите название...",
+          "description_name": "Описание",
+          "description_name_placeholder": "Введите описание..."
+        },
+        "add_member": {
+          "title": "Добавить пользователя",
+          "email": "Email",
+          "email_placeholder": "Введите email...",
+          "role": "Роль"
+        },
+        "update_member": {
+          "title": "Изменить роль пользователя",
+          "role": "Роль"
+        },
+        "delete_member": {
+          "title": "Удалить пользователя",
+          "content": "Вы уверены, что хотите удалить пользователя?"
+        }
+      },
+      "errors": {
+        "boards_not_found": "Доски не найдены или не выбраны.",
+        "members_not_found": "Пользователи не найдены.",
+        "access_denied": {
+          "title": "Доступ запрещён",
+          "description": "У вас нет прав для просмотра участников"
+        }
       }
     }
   }

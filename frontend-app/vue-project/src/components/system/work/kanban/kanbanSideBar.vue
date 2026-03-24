@@ -8,16 +8,19 @@
         <input
           type="text"
           class="input w-full"
-          placeholder="Search..."
+          :placeholder="$t('common.search')"
           v-model="kanbanBoardStore.searchQuery"
           @keyup.enter="searchBoards"
           :disabled="kanbanBoardStore.searchMode === 'all'"
         />
       </div>
       <div class="w-full flex items-center gap-2">
-        <select class="select bg-neutral text-neutral-content select-bordered flex-1" v-model="kanbanBoardStore.searchMode">
-          <option value="all">All</option>
-          <option value="title">By title</option>
+        <select
+          class="select bg-neutral text-neutral-content select-bordered flex-1"
+          v-model="kanbanBoardStore.searchMode"
+        >
+          <option value="all">{{ $t('filters.all') }}</option>
+          <option value="title">{{ $t('filters.by_title') }}</option>
         </select>
         <button
           class="btn btn-primary"
@@ -74,8 +77,8 @@
       <div
         class="w-full p-1 flex flex-col items-start bg-base-100 border border-base-300 gap-1 text-base-content/60"
       >
-        <p>Current page {{ meta.page }} / {{ meta.totalPages }}</p>
-        <p>Limit: {{ meta.limit }}</p>
+        <p>{{ $t('cabinet.admin.table_footer.page') }} {{ meta.page }} / {{ meta.totalPages }}</p>
+        <p>{{ $t('cabinet.admin.table_footer.limit') }} {{ meta.limit }}</p>
       </div>
 
       <div class="w-full gap-1 flex items-center p-1 justify-center">
@@ -144,14 +147,14 @@ export default {
           break
       }
     },
-    selectBoard(board) {
+    async selectBoard(board) {
       this.kanbanBoardStore.selectedBoard = board
 
       this.kanbanStagesStore.boardId = board.id
       this.kanbanStagesStore.getStages()
 
       this.kanbanMembersStore.boardId = board.id
-      this.kanbanMembersStore.fetchMe()
+      await this.kanbanMembersStore.fetchMe()
     },
 
     nextPage() {

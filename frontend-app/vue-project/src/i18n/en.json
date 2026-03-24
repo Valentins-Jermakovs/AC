@@ -69,14 +69,18 @@
     "delete": "Delete",
     "complete": "Comlete",
     "edit": "Edit",
-    "create": "Create"
+    "create": "Create",
+    "add_member": "Add member"
   },
   "filters": {
     "all": "All",
     "by_title": "By title",
     "by_description": "By description",
     "by_due_date": "By due date",
-    "by_month": "By month"
+    "by_month": "By month",
+    "by_email": "By email",
+    "by_username": "By username",
+    "by_role": "By role"
   },
   "eyeRest": {
     "title": "Rest Your Eyes",
@@ -208,7 +212,7 @@
     "tasks_not_found": "No tasks found/selected or your task list is empty (404)"
   },
   "work": {
-    "title": "Projects, Tasks...",
+    "title": "Projects, tasks...",
     "nav_bar": {
       "private": "Private tasks",
       "kanban": "Kanban",
@@ -216,7 +220,7 @@
     },
     "task_detail": {
       "status": "Status",
-      "created_at": "Created at",
+      "created_at": "Created",
       "due_date": "Due date",
       "complete": "Completed",
       "pending": "Pending"
@@ -245,6 +249,129 @@
       },
       "create_task": {
         "title": "Create task"
+      }
+    },
+    "kanban": {
+      "board_view": "Board",
+      "member_view": "Members",
+      "controls": {
+        "create_board": "Create board",
+        "create_stage": "Create column",
+        "create_task": "Create task",
+        "change_board_title": "Change board title",
+        "delete_board": "Delete board",
+        "leave_board": "Leave team"
+      },
+      "common": {
+        "update_stage": "Update column",
+        "delete_stage": "Delete column",
+        "insert_stage_before": "Insert column before",
+        "insert_stage_after": "Insert column after",
+        "move_stage_left": "Move column left",
+        "move_stage_right": "Move column right",
+        "update_task": "Update task",
+        "delete_task": "Delete task",
+        "move_task_in_stage": "Move task inside column",
+        "move_task_to_another_stages": "Move task to another column",
+        "directions": {
+          "up": "Up",
+          "down": "Down"
+        },
+        "roles": {
+          "owner": "Owner",
+          "admin": "Administrator",
+          "editor": "Editor",
+          "viewer": "Viewer"
+        },
+        "update_role": "Update user role",
+        "delete_member": "Delete user"
+      },
+      "modals": {
+        "delete_board": {
+          "title": "Delete board?",
+          "content": "Are you sure you want to delete this board?"
+        },
+        "delete_stage": {
+          "title": "Delete column?",
+          "content": "Are you sure you want to delete this column?"
+        },
+        "delete_task": {
+          "title": "Delete task?",
+          "content": "Are you sure you want to delete this task?"
+        },
+        "leave_board": {
+          "title": "Leave team?",
+          "content": "Are you sure you want to leave this team?"
+        },
+        "create_board": {
+          "title": "Create board",
+          "name": "Board title",
+          "name_placeholder": "Enter board title..."
+        },
+        "create_stage": {
+          "title": "Create column",
+          "name": "Column title",
+          "name_placeholder": "Enter column title..."
+        },
+        "change_board_title": {
+          "title": "Change board title",
+          "name": "Board title",
+          "name_placeholder": "Enter board title..."
+        },
+        "update_stage_title": {
+          "title": "Update column title",
+          "name": "Column title",
+          "name_placeholder": "Enter column title..."
+        },
+        "insert_stage": {
+          "title": "Insert column",
+          "name": "Column title",
+          "name_placeholder": "Enter column title..."
+        },
+        "update_task": {
+          "title": "Update task",
+          "title_name": "Task title",
+          "title_name_placeholder": "Enter task title...",
+          "description_name": "Description",
+          "description_name_placeholder": "Enter description..."
+        },
+        "move_task_in_stage": {
+          "title": "Move task inside column",
+          "name": "Choose direction"
+        },
+        "move_task_to_another_stages": {
+          "title": "Move task to another column",
+          "name": "Choose column"
+        },
+        "create_task": {
+          "title": "Create task",
+          "title_name": "Task title",
+          "title_name_placeholder": "Enter task title...",
+          "description_name": "Description",
+          "description_name_placeholder": "Enter description..."
+        },
+        "add_member": {
+          "title": "Add user",
+          "email": "Email",
+          "email_placeholder": "Enter email...",
+          "role": "Role"
+        },
+        "update_member": {
+          "title": "Update user role",
+          "role": "Role"
+        },
+        "delete_member": {
+          "title": "Delete user",
+          "content": "Are you sure you want to delete this user?"
+        }
+      },
+      "errors": {
+        "boards_not_found": "Boards not found or not selected.",
+        "members_not_found": "Users not found.",
+        "access_denied": {
+          "title": "Access denied",
+          "description": "You don't have permission to view members"
+        }
       }
     }
   }

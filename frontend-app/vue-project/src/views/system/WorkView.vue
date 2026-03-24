@@ -18,7 +18,7 @@
 <script>
 // Import UI components
 import PageHeader from '@/components/ui/PageHeader.vue'
-import headerImage from '@/assets/images/charles-forerunner-3fPXt37X6UQ-unsplash.jpg'
+import headerImage from '@/assets/images/frederic-koberl-RrJCrlU2yZs-unsplash.jpg'
 import NavigationPanel from '@/components/ui/NavigationPanel.vue'
 
 // Import pages

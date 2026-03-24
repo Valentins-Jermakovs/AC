@@ -486,5 +486,21 @@
         }
       }
     }
+  },
+  "widgets": {
+    "month_tasks": {
+      "title": "Задачи месяца",
+      "table": {
+        "title": "Название",
+        "description": "Описание",
+        "status": "Статус",
+        "created": "Создано",
+        "due_date": "Срок выполнения"
+      },
+      "status": {
+        "complete": "Завершено",
+        "pending": "В ожидании"
+      }
+    }
   }
 }

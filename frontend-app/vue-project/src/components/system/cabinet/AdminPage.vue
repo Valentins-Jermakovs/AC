@@ -143,11 +143,11 @@ export default {
         await this.adminStore.getUserById(numericId)
         this.emptyError = ''
       } else if (this.adminStore.searchMode === 'username') {
-        if (!query) return (this.emptyError = 'Tukšs ievades lauks!')
+        if (!query) return (this.emptyError = 'Empty search field!')
         await this.adminStore.getUserByNameEmail(query)
         this.emptyError = ''
       } else if (this.adminStore.searchMode === 'role') {
-        if (!query) return (this.emptyError = 'Tukšs ievades lauks!')
+        if (!query) return (this.emptyError = 'Empty search field!')
         await this.adminStore.getUserByRole(query)
         this.emptyError = ''
       }

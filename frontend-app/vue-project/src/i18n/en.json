@@ -486,5 +486,21 @@
         }
       }
     }
+  },
+  "widgets": {
+    "month_tasks": {
+      "title": "Monthly tasks",
+      "table": {
+        "title": "Title",
+        "description": "Description",
+        "status": "Status",
+        "created": "Created",
+        "due_date": "Due date"
+      },
+      "status": {
+        "complete": "Completed",
+        "pending": "Pending"
+      }
+    }
   }
 }

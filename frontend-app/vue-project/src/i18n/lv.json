@@ -481,5 +481,21 @@
         }
       }
     }
+  },
+  "widgets": {
+    "month_tasks": {
+      "title": "Mēneša uzdevumi",
+      "table": {
+        "title": "Uzdevumi",
+        "description": "Apraksts",
+        "status": "Statuss",
+        "created": "Izveidots",
+        "due_date": "Izpildes datums"
+      },
+      "status": {
+        "complete": "Pabeigts",
+        "pending": "Nepabeigts"
+      }
+    }
   }
 }

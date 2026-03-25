@@ -1,36 +1,35 @@
 # Imports
-from fastapi import HTTPException
 from bson import ObjectId
-
-# Models
 from app.models import WorkspaceTaskModel, WorkspaceProjectMemberModel
-
 
 async def get_project_tasks_stats(
     project_id: str,
     user_id: str
-):
+) -> dict[str, int]:
+    # Validation
+    if not project_id or not ObjectId.is_valid(project_id):
+        return {
+            "totalTasks": 0,
+            "todo": 0,
+            "inProgress": 0,
+            "done": 0
+        }
 
-    # ===== Validation =====
-    if not project_id:
-        raise HTTPException(status_code=400, detail="Project ID is required")
-
-    if not ObjectId.is_valid(project_id):
-        raise HTTPException(status_code=400, detail="Invalid project ID")
-
-    # ===== Access check =====
+    # Access check
     user = await WorkspaceProjectMemberModel.find_one({
         "projectId": project_id,
         "userId": user_id,
     })
 
     if not user:
-        raise HTTPException(
-            status_code=403,
-            detail="You are not member of this project"
-        )
+        return {
+            "totalTasks": 0,
+            "todo": 0,
+            "inProgress": 0,
+            "done": 0
+        }
 
-    # ===== Counts =====
+    # Counts
     todo = await WorkspaceTaskModel.find({
         "projectId": project_id,
         "status": "todo"

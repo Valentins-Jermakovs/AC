@@ -167,5 +167,6 @@ export const API_ENDPOINTS = {
   GET_PROJECTS_COUNT: '/workspace/projects/get-projects-count',
   // PUT
   SET_SELECTED_PROJECT: '/workspace/selected-project/set-selected-project',
+  DELETE_SELECTED_PROJECT: '/workspace/selected-project/clear-selected-project',
 
 }

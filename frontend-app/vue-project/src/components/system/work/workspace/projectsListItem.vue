@@ -35,6 +35,7 @@
 <script>
 import { useWorkspaceProjectsStore } from '@/stores/workspace/projects'
 import { useWorkspaceProjectMembersStore } from '@/stores/workspace/projectsMembers'
+import { useSelectedProjectStore } from '@/stores/selectedProject';
 import BaseDialog from '@/components/common/BaseDialog.vue'
 
 export default {
@@ -55,6 +56,7 @@ export default {
     return {
       store: useWorkspaceProjectsStore(),
       kanbanMembersStore: useWorkspaceProjectMembersStore(),
+      selectedProjectStore: useSelectedProjectStore(),
     }
   },
 
@@ -62,6 +64,13 @@ export default {
     openProject() {
       this.store.selectedProject = this.project
       this.kanbanMembersStore.projectId = this.project.id
+
+      const payload = {
+        workspaceId: this.project.id,
+        workspaceTitle: this.project.title
+      }
+
+      this.selectedProjectStore.setSelectedProject(payload)
     },
   },
   computed: {

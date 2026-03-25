@@ -73,7 +73,7 @@ export default {
       return [
         {
           title: this.$t('cabinet.profile.kpi.total_tasks.title'),
-          value: this.selectedProjectStore.selectedProjectTasks.totalTasks,
+          value: this.selectedProjectStore.selectedProjectTasks.totalTasks || 0,
           desc: this.$t('cabinet.profile.kpi.total_tasks.description'),
           colorClass: 'text-info',
         },

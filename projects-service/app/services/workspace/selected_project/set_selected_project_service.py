@@ -38,10 +38,24 @@ async def set_selected_project_service(
         )
     )
 
-    return workspaceTitle
+    project = await LastOpenedWorkspaceModel.find_one(LastOpenedWorkspaceModel.userId == userId)
+
+    return project
 
 # get selected project by uiser id
 async def get_selected_project(user_id: str):
     project = await LastOpenedWorkspaceModel.find_one(LastOpenedWorkspaceModel.userId == user_id)
 
     return project
+
+async def clear_selected_project_service(userId: str):
+    # ===== Validation =====
+    if not userId:
+        raise HTTPException(status_code=400, detail="User ID required")
+
+    # ===== Delete selected project =====
+    await LastOpenedWorkspaceModel.find_one(
+        LastOpenedWorkspaceModel.userId == userId
+    ).delete()
+
+    return {"detail": "Selected project cleared"}

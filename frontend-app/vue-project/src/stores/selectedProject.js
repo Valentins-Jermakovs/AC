@@ -113,6 +113,54 @@ export const useSelectedProjectStore = defineStore('selectedProject', {
             } finally {
                 this.loading = false
             }
+        },
+        async setSelectedProject(data) {
+            const authStore = useAuthStore()
+
+            this.loading = true
+            this.error = null
+
+            try {
+                const response = await api.put(API_ENDPOINTS.SET_SELECTED_PROJECT, data, {
+                    headers: {
+                        Authorization: `Bearer ${authStore.accessToken}`,
+                    },
+                })
+
+                this.selectedProject = response.data
+            } catch (err) {
+                this.error = err.response?.data?.detail || err.message || 'Something went wrong'
+            } finally {
+                this.loading = false
+            }
+        },
+        async clearSelectedProject() {
+            const authStore = useAuthStore()
+
+            this.loading = true
+            this.error = null
+
+            try {
+                const response = await api.delete(API_ENDPOINTS.DELETE_SELECTED_PROJECT, {
+                    headers: {
+                        Authorization: `Bearer ${authStore.accessToken}`,
+                    },
+                })
+
+                this.selectedProject = null
+                this.selectedProjectStagesCount = 0
+                this.selectedProjectTasks = {
+                    total: 0,
+                    todo: 0,
+                    inProgress: 0,
+                    done: 0
+                }
+
+            } catch (err) {
+                this.error = err.response?.data?.detail || err.message || 'Something went wrong'
+            } finally {
+                this.loading = false
+            }
         }
     }
 })

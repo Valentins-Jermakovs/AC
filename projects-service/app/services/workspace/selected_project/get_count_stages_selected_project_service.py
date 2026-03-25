@@ -1,84 +1,57 @@
 # Imports
-from fastapi import HTTPException
 from bson import ObjectId
-
-# Models
 from app.models import WorkspaceStageModel, WorkspaceProjectMemberModel
-
 
 async def get_stages_count(
     project_id: str,
     user_id: str
-) -> int:
+) -> int | None:  # <- ļauj None atgriezt
+    if not project_id or not ObjectId.is_valid(project_id):
+        return None
 
-    # ===== Validation =====
-    if not project_id:
-        raise HTTPException(status_code=400, detail="Workspace ID is required")
-
-    if not ObjectId.is_valid(project_id):
-        raise HTTPException(status_code=400, detail="Invalid workspace ID")
-
-    # ===== Access check =====
+    # Access check
     user = await WorkspaceProjectMemberModel.find_one({
         "projectId": project_id,
         "userId": user_id,
     })
 
     if not user:
-        raise HTTPException(
-            status_code=403,
-            detail="You are not member of this workspace or this workspace does not exist"
-        )
+        return None
 
-    # ===== Business logic =====
     total_stages = await WorkspaceStageModel.find({
         "projectId": project_id
     }).count()
 
     return total_stages
 
+
 async def get_stages_date_range(
     project_id: str,
     user_id: str
-):
+) -> dict[str, str] | None:
+    if not project_id or not ObjectId.is_valid(project_id):
+        return {"startDate": "", "endDate": ""}
 
-    # ===== Validation =====
-    if not project_id:
-        raise HTTPException(status_code=400, detail="Workspace ID is required")
-
-    if not ObjectId.is_valid(project_id):
-        raise HTTPException(status_code=400, detail="Invalid workspace ID")
-
-    # ===== Access check =====
+    # Access check
     user = await WorkspaceProjectMemberModel.find_one({
         "projectId": project_id,
         "userId": user_id,
     })
 
     if not user:
-        raise HTTPException(
-            status_code=403,
-            detail="You are not member of this workspace"
-        )
+        return {"startDate": "", "endDate": ""}
 
-    # ===== Count stages =====
     total_stages = await WorkspaceStageModel.find({
         "projectId": project_id
     }).count()
 
-    # ===== No stages =====
     if total_stages == 0:
-        return {
-            "startDate": "",
-            "endDate": ""
-        }
+        return {"startDate": "", "endDate": ""}
 
-    # ===== First stage (by createdAt) =====
     first_stage = await WorkspaceStageModel.find({
         "projectId": project_id
     }).sort("createdAt").first_or_none()
 
-    # ===== Last stage (by dueDate) =====
     last_stage = await WorkspaceStageModel.find({
         "projectId": project_id
     }).sort("-dueDate").first_or_none()

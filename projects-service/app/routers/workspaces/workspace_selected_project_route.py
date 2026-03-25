@@ -5,7 +5,7 @@ from typing import Optional
 # Utils
 from app.utils.check_access_token import check_access_token
 # Services
-from app.services.workspace.selected_project.set_selected_project_service import set_selected_project_service, get_selected_project
+from app.services.workspace.selected_project.set_selected_project_service import set_selected_project_service, get_selected_project, clear_selected_project_service
 from app.services.workspace.selected_project.get_count_stages_selected_project_service import get_stages_count, get_stages_date_range
 from app.services.workspace.selected_project.count_tasks_service_selected_project import get_project_tasks_stats
 # Schemas
@@ -66,12 +66,32 @@ async def set_selected_project_endpoint(
         workspaceTitle=data.workspaceTitle
     )
 
+# Route for delete
+@router.delete(
+    "/clear-selected-project",
+)
+async def clear_selected_project_endpoint(
+    credantials: HTTPAuthorizationCredentials = Depends(security)
+):
+    """
+    Clear selected project from the database.
+
+    Steps:
+    1. Extract access token
+    2. Verify token and get user ID
+    3. Call service to clear selected project from DB
+    """
+    access_token = credantials.credentials
+    user_id = await check_access_token(access_token)
+
+    return await clear_selected_project_service(userId=user_id)
+
 # Route for getting count of selected project stages
 @router.get(
     "/get-stages-count",
 )
 async def get_stages_count_endpoint(
-    projectId: str,
+    projectId: Optional[str] = None,
     credantials: HTTPAuthorizationCredentials = Depends(security)
 ):
     """
@@ -96,7 +116,7 @@ async def get_stages_count_endpoint(
     "/get-stages-date-range",
 )
 async def get_stages_date_range_endpoint(
-    projectId: str,
+    projectId: Optional[str] = None,
     credantials: HTTPAuthorizationCredentials = Depends(security)
 ):
     """
@@ -121,7 +141,7 @@ async def get_stages_date_range_endpoint(
     "/get-project-tasks-stats",
 )
 async def get_project_tasks_stats_endpoint(
-    projectId: str,
+    projectId: Optional[str] = None,
     credantials: HTTPAuthorizationCredentials = Depends(security)
 ):
     """

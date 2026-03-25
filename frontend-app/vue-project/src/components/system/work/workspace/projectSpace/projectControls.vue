@@ -1,11 +1,8 @@
 <template>
   <div class="w-full p-2 flex flex-wrap bg-base-100 border border-base-300 gap-2 items-center">
     <!-- Project view -->
-    <button
-      class="btn flex-1 sm:flex-none"
-      :class="activeView === 'project' ? 'btn-primary' : 'btn-neutral'"
-      @click="$emit('update:activeView', 'project')"
-    >
+    <button class="btn flex-1 sm:flex-none" :class="activeView === 'project' ? 'btn-primary' : 'btn-neutral'"
+      @click="$emit('update:activeView', 'project')">
       <font-awesome-icon icon="fa-solid fa-list" />
       <span class="hidden sm:inline">
         {{ $t('work.projects.controls.project_view') }}
@@ -13,12 +10,9 @@
     </button>
 
     <!-- Members -->
-    <button
-      v-if="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role === 'owner'"
-      class="btn flex-1 sm:flex-none"
-      :class="activeView === 'members' ? 'btn-primary' : 'btn-neutral'"
-      @click="$emit('update:activeView', 'members')"
-    >
+    <button v-if="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role === 'owner'"
+      class="btn flex-1 sm:flex-none" :class="activeView === 'members' ? 'btn-primary' : 'btn-neutral'"
+      @click="$emit('update:activeView', 'members')">
       <font-awesome-icon icon="fa-solid fa-users" />
       <span class="hidden sm:inline">
         {{ $t('work.projects.controls.members_view') }}
@@ -33,11 +27,8 @@
       </span>
     </button>
     <!-- Delete -->
-    <button
-      v-if="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role === 'owner'"
-      class="btn btn-neutral flex-1 sm:flex-none"
-      @click="showDelete = true"
-    >
+    <button v-if="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role === 'owner'"
+      class="btn btn-neutral flex-1 sm:flex-none" @click="showDelete = true">
       <font-awesome-icon icon="fa-solid fa-trash" />
       <span class="hidden md:inline">
         {{ $t('work.projects.controls.delete_project') }}
@@ -45,10 +36,8 @@
     </button>
 
     <!-- Leave -->
-    <button
-      v-if="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role !== 'owner'"
-      class="btn btn-neutral flex-1 sm:flex-none sm:ml-auto"
-    >
+    <button v-if="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role !== 'owner'"
+      class="btn btn-neutral flex-1 sm:flex-none sm:ml-auto">
       <font-awesome-icon icon="fa-solid fa-arrow-right-from-bracket" />
       <span class="hidden md:inline">
         {{ $t('work.projects.controls.leave_project') }}
@@ -64,14 +53,8 @@
     </button>
   </div>
 
-  <base-dialog
-    v-model="showEdit"
-    :title="$t('work.projects.modals.edit_project.title')"
-    :confirmText="$t('common.confirm')"
-    :cancelText="$t('common.cancel')"
-    @confirm="updateProject"
-    @cancel="resetEdit"
-  >
+  <base-dialog v-model="showEdit" :title="$t('work.projects.modals.edit_project.title')"
+    :confirmText="$t('common.confirm')" :cancelText="$t('common.cancel')" @confirm="updateProject" @cancel="resetEdit">
     <div class="flex flex-col w-full gap-2">
       <Transition name="error-slide">
         <div v-if="error">
@@ -83,29 +66,21 @@
           {{ $t('work.projects.modals.edit_project.name') }}
         </span>
       </label>
-      <input v-model="editProject.title" type="text" class="input input-bordered w-full" 
-        :placeholder="$t('work.projects.modals.edit_project.name_placeholder')"/>
+      <input v-model="editProject.title" type="text" class="input input-bordered w-full"
+        :placeholder="$t('work.projects.modals.edit_project.name_placeholder')" />
       <label class="label">
         <span class="label-text">
           {{ $t('work.projects.modals.edit_project.description') }}
         </span>
       </label>
-      <textarea
-        v-model="editProject.description"
-        class="textarea textarea-bordered w-full min-h-40 sm:min-h-52"
-        :placeholder="$t('work.projects.modals.edit_project.description_placeholder')"
-      ></textarea>
+      <textarea v-model="editProject.description" class="textarea textarea-bordered w-full min-h-40 sm:min-h-52"
+        :placeholder="$t('work.projects.modals.edit_project.description_placeholder')"></textarea>
     </div>
   </base-dialog>
 
   <!-- Delete dialog -->
-  <base-dialog
-    v-model="showDelete"
-    :title="$t('work.projects.modals.delete_project.title')"
-    :confirmText="$t('common.delete')"
-    :cancelText="$t('common.cancel')"
-    @confirm="deleteProject"
-  >
+  <base-dialog v-model="showDelete" :title="$t('work.projects.modals.delete_project.title')"
+    :confirmText="$t('common.delete')" :cancelText="$t('common.cancel')" @confirm="deleteProject">
     <p>
       {{ $t('work.projects.modals.delete_project.content') }}
     </p>
@@ -115,6 +90,7 @@
 <script>
 import { useWorkspaceProjectMembersStore } from '@/stores/workspace/projectsMembers'
 import { useWorkspaceProjectsStore } from '@/stores/workspace/projects'
+import { useSelectedProjectStore } from '@/stores/selectedProject';
 import BaseDialog from '@/components/common/BaseDialog.vue'
 
 export default {
@@ -131,6 +107,7 @@ export default {
     return {
       kanbanMembersStore: useWorkspaceProjectMembersStore(),
       store: useWorkspaceProjectsStore(),
+      selectedProjectStore: useSelectedProjectStore(),
 
       showDelete: false,
       showEdit: false,
@@ -152,6 +129,11 @@ export default {
       await this.store.deleteProject({
         projectId: this.store.selectedProject.id,
       })
+      
+
+      this.selectedProjectStore.clearSelectedProject()
+
+
       this.showDelete = false
       this.goToProjects()
     },
@@ -179,6 +161,13 @@ export default {
         this.store.selectedProject.description = this.editProject.description
 
         this.showEdit = false
+
+        const payload = {
+          workspaceId: this.store.selectedProject.id,
+          workspaceTitle: this.store.selectedProject.title,
+        }
+
+        this.selectedProjectStore.setSelectedProject(payload)
       } catch (err) {
         console.error(err)
       }

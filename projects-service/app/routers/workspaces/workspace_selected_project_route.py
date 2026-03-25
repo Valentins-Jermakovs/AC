@@ -8,6 +8,8 @@ from app.utils.check_access_token import check_access_token
 from app.services.workspace.selected_project.set_selected_project_service import set_selected_project_service
 from app.services.workspace.selected_project.get_count_stages_selected_project_service import get_stages_count, get_stages_date_range
 from app.services.workspace.selected_project.count_tasks_service_selected_project import get_project_tasks_stats
+# Schemas
+from app.schemas.data.selected_project.select_project_schema import SelectedProject
 
 # Router
 router = APIRouter(
@@ -21,11 +23,9 @@ security = HTTPBearer()
 # Route for create or update selected project
 @router.put(
     "/set-selected-project",
-    response_model=Optional[str]
 )
 async def set_selected_project_endpoint(
-    workspaceId: str,
-    workspaceTitle: str,
+    data: SelectedProject,
     credantials: HTTPAuthorizationCredentials = Depends(security)
 ):
     """
@@ -41,8 +41,8 @@ async def set_selected_project_endpoint(
 
     return await set_selected_project_service(
         userId=user_id,
-        workspaceId=workspaceId,
-        workspaceTitle=workspaceTitle
+        workspaceId=data.workspaceId,
+        workspaceTitle=data.workspaceTitle
     )
 
 # Route for getting count of selected project stages

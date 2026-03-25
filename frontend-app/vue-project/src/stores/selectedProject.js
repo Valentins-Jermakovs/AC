@@ -14,7 +14,9 @@ import { useAuthStore } from './auth'
 export const useSelectedProjectStore = defineStore('selectedProject', {
     state: () => ({
         totalProjects: 0,
-        selectedProjectTitle: '',
+        
+        selectedProject: null,
+
         selectedProjectStagesCount: 0,
 
         selectedProjectTasks: {
@@ -24,10 +26,7 @@ export const useSelectedProjectStore = defineStore('selectedProject', {
             done: 0
         },
 
-        selectedProjectDates: {
-            startDate: '',
-            endDate: ''
-        },
+        selectedProjectDates: null,
         loading: false,
         error: null
     }),
@@ -38,7 +37,82 @@ export const useSelectedProjectStore = defineStore('selectedProject', {
             this.loading = true
             this.error = null
 
-            
+            try {
+                const response = await api.get(API_ENDPOINTS.GET_SELECTED_PROJECT, {
+                    headers: {
+                        Authorization: `Bearer ${authStore.accessToken}`,
+                    },
+                })
+
+                this.selectedProject = response.data
+            } catch (err) {
+                this.error = err.response?.data?.detail || err.message || 'Something went wrong'
+            } finally {
+                this.loading = false
+            }
+        },
+        async getSelectedProjectStagesCount() {
+            const authStore = useAuthStore()
+
+            this.loading = true
+            this.error = null
+
+            try {
+                const response = await api.get(API_ENDPOINTS.GET_SELECTED_PROJECT_STAGES_COUNT, {
+                    params: { projectId: this.selectedProject.workspaceId },
+                    headers: {
+                        Authorization: `Bearer ${authStore.accessToken}`,
+                    },
+                })
+
+                this.selectedProjectStagesCount = response.data
+            } catch (err) {
+                this.error = err.response?.data?.detail || err.message || 'Something went wrong'
+            } finally {
+                this.loading = false
+            }
+        },
+        async getSelectedProjectDateRange() {
+            const authStore = useAuthStore()
+
+            this.loading = true
+            this.error = null
+
+            try {
+                const response = await api.get(API_ENDPOINTS.GET_PROJECT_DATE_RANGE, {
+                    params: { projectId: this.selectedProject.workspaceId },
+                    headers: {
+                        Authorization: `Bearer ${authStore.accessToken}`,
+                    },
+                })
+
+                this.selectedProjectDates = response.data
+            } catch (err) {
+                this.error = err.response?.data?.detail || err.message || 'Something went wrong'
+            } finally {
+                this.loading = false
+            }
+        },
+        async getSelectedProjectTasksCount() {
+            const authStore = useAuthStore()
+
+            this.loading = true
+            this.error = null
+
+            try {
+                const response = await api.get(API_ENDPOINTS.GET_PROJECT_TASKS_STATS, {
+                    params: { projectId: this.selectedProject.workspaceId },
+                    headers: {
+                        Authorization: `Bearer ${authStore.accessToken}`,
+                    },
+                })
+
+                this.selectedProjectTasks = response.data
+            } catch (err) {
+                this.error = err.response?.data?.detail || err.message || 'Something went wrong'
+            } finally {
+                this.loading = false
+            }
         }
     }
 })

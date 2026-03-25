@@ -3,7 +3,9 @@
     <!-- KPI cards -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
       <div class="flex-1 flex flex-col gap-3 bg-base-200 border border-base-300 p-5 items-center justify-center">
-        <h2 class="text-2xl font-semibold text-base-content/80">Projekta nosaukums</h2>
+        <h2 class="text-2xl font-semibold text-base-content/80">
+          {{ selectedProjectStore.selectedProject?.workspaceTitle || '...' }}
+        </h2>
       </div>
       <kpiCard v-for="(item, index) in projectKpis" :key="index" :title="item.title" :value="item.value"
         :desc="item.desc" :colorClass="item.colorClass">
@@ -16,12 +18,16 @@
 
         <div class="flex items-center gap-3">
           <font-awesome-icon icon="fa-solid fa-calendar" class="text-lg text-primary" />
-          <p class="text-base text-base-content/70">Sākuma datums</p>
+          <p class="text-base text-base-content/70">
+            {{ selectedProjectStore.selectedProjectDates?.startDate || '...' }}
+          </p>
         </div>
 
         <div class="flex items-center gap-3">
           <font-awesome-icon icon="fa-solid fa-clock" class="text-lg text-warning" />
-          <p class="text-base text-base-content/70">Beigu datums</p>
+          <p class="text-base text-base-content/70">
+            {{ selectedProjectStore.selectedProjectDates?.endDate || '...' }}
+          </p>
         </div>
       </div>
     </div>
@@ -45,6 +51,7 @@ import kpiCard from '@/components/common/kpiCard.vue';
 import UserProgressCard from './UserProgressCard.vue';
 import { usePrivateTasksStore } from '@/stores/privateTasks'
 import { useUserStore } from '@/stores/user'
+import { useSelectedProjectStore } from '@/stores/selectedProject';
 
 export default {
   name: 'DashboardPage',
@@ -56,9 +63,9 @@ export default {
 
   data() {
     return {
-
       taskStore: usePrivateTasksStore(),
       userStore: useUserStore(),
+      selectedProjectStore: useSelectedProjectStore(),
     }
   },
   computed: {
@@ -66,25 +73,25 @@ export default {
       return [
         {
           title: this.$t('cabinet.profile.kpi.total_tasks.title'),
-          value: '1200€',
+          value: this.selectedProjectStore.selectedProjectTasks.totalTasks,
           desc: this.$t('cabinet.profile.kpi.total_tasks.description'),
           colorClass: 'text-info',
         },
         {
           title: this.$t('cabinet.profile.kpi.todo_tasks.title'),
-          value: 12,
+          value: this.selectedProjectStore.selectedProjectTasks.todo,
           desc: this.$t('cabinet.profile.kpi.todo_tasks.description'),
           colorClass: 'text-error',
         },
         {
           title: this.$t('cabinet.profile.kpi.in_progress_tasks.title'),
-          value: '4',
+          value: this.selectedProjectStore.selectedProjectTasks.inProgress,
           desc: this.$t('cabinet.profile.kpi.in_progress_tasks.description'),
           colorClass: 'text-warning',
         },
         {
           title: this.$t('cabinet.profile.kpi.done_tasks.title'),
-          value: '20',
+          value: this.selectedProjectStore.selectedProjectTasks.done,
           desc: this.$t('cabinet.profile.kpi.done_tasks.description'),
           colorClass: 'text-success',
         },
@@ -95,7 +102,7 @@ export default {
       return [
         {
           title: this.$t('cabinet.profile.kpi.project_stages.title'),
-          value: '1200€',
+          value: this.selectedProjectStore.selectedProjectStagesCount,
           desc: this.$t('cabinet.profile.kpi.project_stages.description'),
           colorClass: 'text-info',
         },
@@ -138,6 +145,11 @@ export default {
     await this.taskStore.fetchTasksAllCompleted()
     await this.taskStore.fetchTasksAllInMonth()
     await this.taskStore.fetchTasksAllCompletedInMonth()
+
+    await this.selectedProjectStore.getSelectedProjectData()
+    await this.selectedProjectStore.getSelectedProjectStagesCount()
+    await this.selectedProjectStore.getSelectedProjectDateRange()
+    await this.selectedProjectStore.getSelectedProjectTasksCount()
   },
 }
 </script>

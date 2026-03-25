@@ -16,7 +16,7 @@
         <div class="flex flex-col sm:flex-row sm:items-center sm:gap-6 w-full sm:w-auto">
           <div class="flex flex-col sm:flex-row sm:items-center gap-2">
             <label class="text-sm opacity-70">{{ $t('cabinet.admin.table_footer.limit') }}</label>
-            <select class="select select-bordered mt-1 sm:mt-0" v-model="limit">
+            <select class="select select-bordered mt-1 w-full sm:w-auto sm:mt-0" v-model="limit">
               <option :value="5">5</option>
               <option :value="10">10</option>
               <option :value="20">20</option>

@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col p-5 w-full h-full gap-2">
     <!-- KPI cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+    <div class="grid grid-cols-1 sm:grid-cols-4 gap-2">
       <div
         class="flex-1 flex flex-col gap-3 bg-base-200 border border-base-300 p-5 items-center justify-center"
       >
@@ -114,6 +114,12 @@ export default {
     projectKpis() {
       return [
         {
+          title: this.$t('cabinet.profile.kpi.projects_total.title'),
+          value: this.selectedProjectStore.totalProjects,
+          desc: this.$t('cabinet.profile.kpi.projects_total.description'),
+          colorClass: 'text-info',
+        },
+        {
           title: this.$t('cabinet.profile.kpi.project_stages.title'),
           value: this.selectedProjectStore.selectedProjectStagesCount,
           desc: this.$t('cabinet.profile.kpi.project_stages.description'),
@@ -125,22 +131,22 @@ export default {
       return [
         {
           title: this.$t('cabinet.profile.kpi.tasks'),
-          value: this.taskStore.tasksKpi.totalCompletedTasks,
-          max: this.taskStore.tasksKpi.totalTasks,
+          value: this.taskStore.tasksKpi.totalCompletedTasks || 0,
+          max: this.taskStore.tasksKpi.totalTasks || 0,
           percent: Math.round(
             (this.taskStore.tasksKpi.totalCompletedTasks / this.taskStore.tasksKpi.totalTasks) *
-              100,
+              100 || 0,
           ),
           colorClass: 'text-success',
           progressClass: 'progress-success',
         },
         {
           title: this.$t('cabinet.profile.kpi.month_tasks'),
-          value: this.taskStore.tasksKpi.totalInMonthCompleted,
-          max: this.taskStore.tasksKpi.totalInMonth,
+          value: this.taskStore.tasksKpi.totalInMonthCompleted || 0,
+          max: this.taskStore.tasksKpi.totalInMonth || 0,
           percent: Math.round(
             (this.taskStore.tasksKpi.totalInMonthCompleted / this.taskStore.tasksKpi.totalInMonth) *
-              100,
+              100 || 0,
           ),
           colorClass: 'text-primary',
           progressClass: 'progress-primary',
@@ -163,6 +169,7 @@ export default {
     await this.selectedProjectStore.getSelectedProjectStagesCount()
     await this.selectedProjectStore.getSelectedProjectDateRange()
     await this.selectedProjectStore.getSelectedProjectTasksCount()
+    await this.selectedProjectStore.getProjectsCount()
   },
 }
 </script>

@@ -2,11 +2,13 @@
   <div class="flex flex-col flex-1 items-center justify-center gap-5">
     <h2 class="text-2xl flex items-center gap-3">
       <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2xl" class="text-warning" />
-
-      You don't have any projects
+      {{ $t('work.projects.errors.projects_not_found') }}
     </h2>
 
-    <button class="btn btn-primary" @click="showCreateDialog = true">Create project</button>
+    <button class="btn btn-primary" @click="showCreateDialog = true">
+      <font-awesome-icon icon="fa-solid fa-plus" />
+      {{ $t('work.projects.common.create_project') }}
+    </button>
   </div>
 
   <base-dialog

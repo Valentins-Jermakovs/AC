@@ -189,6 +189,10 @@
         },
         "project_dates": {
           "title": "Projekta datumi"
+        },
+        "projects_total": {
+          "title": "Projekti",
+          "description": "Visi projekti"
         }
       },
       "actions": {
@@ -403,6 +407,9 @@
       }
     },
     "projects": {
+      "errors": {
+        "projects_not_found": "Jums nav neviena projekta"
+      },
       "common": {
         "create_project": "Izveidot projektu",
         "enter_project": "Apskatīt projektu",

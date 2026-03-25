@@ -88,8 +88,6 @@ export const useWorkspaceProjectsStore = defineStore('workspaceProjects', {
         }
 
         this.projects = []
-
-        this.error = err.response?.data?.detail || err.message || 'Something went wrong'
       } finally {
         this.loading = false
       }
@@ -128,7 +126,6 @@ export const useWorkspaceProjectsStore = defineStore('workspaceProjects', {
           this.meta.page = 1
         }
       } catch (err) {
-        this.error = err.response?.data?.detail || err.message || 'Something went wrong'
 
         this.meta = {
           page: 1,

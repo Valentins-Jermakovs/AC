@@ -164,6 +164,10 @@
       "email": "Email",
       "roles": "User Roles",
       "kpi": {
+        "projects_total": {
+          "title": "Projects",
+          "description": "Number of projects"
+        },
         "tasks": "Tasks",
         "month_tasks": "Monthly Tasks",
         "week_activity": "Weekly Activity",
@@ -399,6 +403,9 @@
       }
     },
     "projects": {
+      "errors": {
+        "projects_not_found": "You don't have any projects"
+      },
       "common": {
         "create_project": "Create project",
         "enter_project": "Open project",

@@ -161,5 +161,26 @@ export const useSelectedProjectStore = defineStore('selectedProject', {
         this.loading = false
       }
     },
+
+    async getProjectsCount() {
+      const authStore = useAuthStore()
+
+      this.loading = true
+      this.error = null
+
+      try {
+        const response = await api.get(API_ENDPOINTS.GET_PROJECTS_COUNT, {
+          headers: {
+            Authorization: `Bearer ${authStore.accessToken}`,
+          },
+        })
+
+        this.totalProjects = response.data
+      } catch (err) {
+        this.error = err.response?.data?.detail || err.message || 'Something went wrong'
+      } finally {
+        this.loading = false
+      }
+    }
   },
 })

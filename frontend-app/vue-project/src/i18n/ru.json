@@ -164,6 +164,10 @@
       "email": "Электронная почта",
       "roles": "Роли пользователя",
       "kpi": {
+        "projects_total": {
+          "title": "Все проекты",
+          "description": "Все проекты"
+        },
         "tasks": "Задачи",
         "month_tasks": "Задачи за месяц",
         "week_activity": "Активность за неделю",
@@ -403,6 +407,9 @@
       }
     },
     "projects": {
+      "errors": {
+        "projects_not_found": "Проекты не найдены"
+      },
       "common": {
         "create_project": "Создать проект",
         "enter_project": "Открыть проект",

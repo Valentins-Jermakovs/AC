@@ -98,22 +98,22 @@ export default {
       return [
         {
           title: this.$t('cabinet.profile.kpi.tasks'),
-          value: this.taskStore.tasksKpi.totalCompletedTasks,
-          max: this.taskStore.tasksKpi.totalTasks,
+          value: this.taskStore.tasksKpi.totalCompletedTasks || 0,
+          max: this.taskStore.tasksKpi.totalTasks || 0,
           percent: Math.round(
             (this.taskStore.tasksKpi.totalCompletedTasks / this.taskStore.tasksKpi.totalTasks) *
-              100,
+              100 || 0,
           ),
           colorClass: 'text-success',
           progressClass: 'progress-success',
         },
         {
           title: this.$t('cabinet.profile.kpi.month_tasks'),
-          value: this.taskStore.tasksKpi.totalInMonthCompleted,
-          max: this.taskStore.tasksKpi.totalInMonth,
+          value: this.taskStore.tasksKpi.totalInMonthCompleted || 0,
+          max: this.taskStore.tasksKpi.totalInMonth || 0,
           percent: Math.round(
             (this.taskStore.tasksKpi.totalInMonthCompleted / this.taskStore.tasksKpi.totalInMonth) *
-              100,
+              100 || 0,
           ),
           colorClass: 'text-primary',
           progressClass: 'progress-primary',

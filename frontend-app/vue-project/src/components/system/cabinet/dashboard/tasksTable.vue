@@ -3,7 +3,7 @@
     <!-- Header -->
     <div class="p-5 border-b border-base-300">
       <h1 class="text-xl font-semibold">
-        {{  $t('widgets.month_tasks.title') }}
+        {{ $t('widgets.month_tasks.title') }}
       </h1>
     </div>
 
@@ -12,11 +12,11 @@
       <table class="table w-full">
         <thead class="bg-base-300">
           <tr>
-            <th>{{  $t('widgets.month_tasks.table.title') }}</th>
-            <th>{{  $t('widgets.month_tasks.table.description') }}</th>
-            <th>{{  $t('widgets.month_tasks.table.created') }}</th>
-            <th>{{  $t('widgets.month_tasks.table.due_date') }}</th>
-            <th>{{  $t('widgets.month_tasks.table.status') }}</th>
+            <th>{{ $t('widgets.month_tasks.table.title') }}</th>
+            <th>{{ $t('widgets.month_tasks.table.description') }}</th>
+            <th>{{ $t('widgets.month_tasks.table.created') }}</th>
+            <th>{{ $t('widgets.month_tasks.table.due_date') }}</th>
+            <th>{{ $t('widgets.month_tasks.table.status') }}</th>
           </tr>
         </thead>
 
@@ -40,7 +40,11 @@
 
             <td>
               <div class="badge" :class="task.completed ? 'badge-success' : 'badge-warning'">
-                {{ task.completed ? $t('widgets.month_tasks.status.complete') : $t('widgets.month_tasks.status.pending') }}
+                {{
+                  task.completed
+                    ? $t('widgets.month_tasks.status.complete')
+                    : $t('widgets.month_tasks.status.pending')
+                }}
               </div>
             </td>
           </tr>

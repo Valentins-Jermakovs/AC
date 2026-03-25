@@ -156,7 +156,6 @@ export const API_ENDPOINTS = {
   // DELETE
   DELETE_PROJECT_MEMBER: '/workspace/members/delete-member',
 
-
   // ===== Selected project management =====
 
   // GET
@@ -168,5 +167,4 @@ export const API_ENDPOINTS = {
   // PUT
   SET_SELECTED_PROJECT: '/workspace/selected-project/set-selected-project',
   DELETE_SELECTED_PROJECT: '/workspace/selected-project/clear-selected-project',
-
 }

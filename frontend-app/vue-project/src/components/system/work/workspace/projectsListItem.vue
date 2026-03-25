@@ -28,14 +28,12 @@
       </button>
     </div>
   </div>
-
-  
 </template>
 
 <script>
 import { useWorkspaceProjectsStore } from '@/stores/workspace/projects'
 import { useWorkspaceProjectMembersStore } from '@/stores/workspace/projectsMembers'
-import { useSelectedProjectStore } from '@/stores/selectedProject';
+import { useSelectedProjectStore } from '@/stores/selectedProject'
 import BaseDialog from '@/components/common/BaseDialog.vue'
 
 export default {
@@ -67,7 +65,7 @@ export default {
 
       const payload = {
         workspaceId: this.project.id,
-        workspaceTitle: this.project.title
+        workspaceTitle: this.project.title,
       }
 
       this.selectedProjectStore.setSelectedProject(payload)

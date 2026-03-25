@@ -10,32 +10,53 @@
         </button>
 
         <!-- SEARCH -->
-        <div class="w-full flex flex-col sm:flex-row gap-2 
-          border border-base-300 bg-base-100 p-2 wrap-break-word">
-          <input type="text" class="input w-full" :placeholder="$t('common.search')"
-            v-model="workspaceProjectMembersStore.searchQuery" @keyup.enter="searchMembers"
-            :disabled="workspaceProjectMembersStore.searchType === 'all'" />
+        <div
+          class="w-full flex flex-col sm:flex-row gap-2 border border-base-300 bg-base-100 p-2 wrap-break-word"
+        >
+          <input
+            type="text"
+            class="input w-full"
+            :placeholder="$t('common.search')"
+            v-model="workspaceProjectMembersStore.searchQuery"
+            @keyup.enter="searchMembers"
+            :disabled="workspaceProjectMembersStore.searchType === 'all'"
+          />
 
-          <select class=" bg-neutral text-neutral-content
-            select select-bordered w-full sm:w-40" v-model="workspaceProjectMembersStore.searchType">
+          <select
+            class="bg-neutral text-neutral-content select select-bordered w-full sm:w-40"
+            v-model="workspaceProjectMembersStore.searchType"
+          >
             <option value="all">{{ $t('filters.all') }}</option>
             <option value="email">{{ $t('filters.by_email') }}</option>
             <option value="role">{{ $t('filters.by_role') }}</option>
           </select>
 
-          <button class="btn btn-primary w-full sm:w-auto" @click="searchMembers"
-            :disabled="workspaceProjectMembersStore.searchType !== 'all' && !workspaceProjectMembersStore.searchQuery.trim()">
+          <button
+            class="btn btn-primary w-full sm:w-auto"
+            @click="searchMembers"
+            :disabled="
+              workspaceProjectMembersStore.searchType !== 'all' &&
+              !workspaceProjectMembersStore.searchQuery.trim()
+            "
+          >
             <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
           </button>
         </div>
       </div>
 
       <!-- MEMBERS LIST -->
-      <div class="w-full bg-base-200 border border-base-300 wrap-break-word p-2 sm:p-3 flex flex-col gap-3">
-        <div v-for="member in workspaceProjectMembersStore.projectMembers" :key="member.id"
-          class="w-full flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 bg-base-100 border border-base-300 wrap-break-word">
+      <div
+        class="w-full bg-base-200 border border-base-300 wrap-break-word p-2 sm:p-3 flex flex-col gap-3"
+      >
+        <div
+          v-for="member in workspaceProjectMembersStore.projectMembers"
+          :key="member.id"
+          class="w-full flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 bg-base-100 border border-base-300 wrap-break-word"
+        >
           <!-- EMAIL -->
-          <div class="flex items-center gap-2 flex-1 bg-base-200 p-3 border border-base-300 wrap-break-word break-all">
+          <div
+            class="flex items-center gap-2 flex-1 bg-base-200 p-3 border border-base-300 wrap-break-word break-all"
+          >
             <font-awesome-icon icon="fa-solid fa-user" />
 
             {{ member.email }}
@@ -53,8 +74,10 @@
           <div class="dropdown dropdown-center md:dropdown-end">
             <div tabindex="0" role="button" class="btn w-full btn-neutral">⋮</div>
 
-            <ul tabindex="0"
-              class="dropdown-content menu bg-base-200 border border-base-300 wrap-break-word w-44 p-2 shadow">
+            <ul
+              tabindex="0"
+              class="dropdown-content menu bg-base-200 border border-base-300 wrap-break-word w-44 p-2 shadow"
+            >
               <li>
                 <button class="flex gap-2" @click="openUpdateMemberModal(member)">
                   <font-awesome-icon icon="fa-solid fa-pencil" />
@@ -73,10 +96,13 @@
         </div>
 
         <!-- EMPTY -->
-        <div v-if="
-          !workspaceProjectMembersStore.loading &&
-          workspaceProjectMembersStore.projectMembers.length === 0
-        " class="p-4 text-center text-base-content/60 flex items-center justify-center gap-2">
+        <div
+          v-if="
+            !workspaceProjectMembersStore.loading &&
+            workspaceProjectMembersStore.projectMembers.length === 0
+          "
+          class="p-4 text-center text-base-content/60 flex items-center justify-center gap-2"
+        >
           <font-awesome-icon icon="fa-solid fa-users" class="text-3xl" />
           {{ $t('work.kanban.errors.members_not_found') }}
         </div>
@@ -84,11 +110,15 @@
 
       <!-- FOOTER -->
       <div
-        class="w-full flex flex-col sm:flex-row gap-3 sm:items-center bg-base-200 border border-base-300 wrap-break-word p-3 sm:px-4 sm:py-2">
+        class="w-full flex flex-col sm:flex-row gap-3 sm:items-center bg-base-200 border border-base-300 wrap-break-word p-3 sm:px-4 sm:py-2"
+      >
         <!-- LIMIT -->
         <div>
-          <select class="select select-bordered w-full sm:w-24" v-model="workspaceProjectMembersStore.meta.limit"
-            @change="changeLimit($event.target.value)">
+          <select
+            class="select select-bordered w-full sm:w-24"
+            v-model="workspaceProjectMembersStore.meta.limit"
+            @change="changeLimit($event.target.value)"
+          >
             <option value="5">5</option>
             <option value="10">10</option>
             <option value="20">20</option>
@@ -116,14 +146,22 @@
 
         <!-- PAGINATION -->
         <div class="flex flex-col md:flex-row gap-2 sm:ml-auto">
-          <button class="btn w-full md:w-auto btn-neutral" @click="workspaceProjectMembersStore.prevPage"
-            :disabled="workspaceProjectMembersStore.meta.page === 1">
+          <button
+            class="btn w-full md:w-auto btn-neutral"
+            @click="workspaceProjectMembersStore.prevPage"
+            :disabled="workspaceProjectMembersStore.meta.page === 1"
+          >
             <font-awesome-icon icon="fa-solid fa-arrow-left" />
           </button>
 
-          <button class="btn w-full md:w-auto btn-neutral" @click="workspaceProjectMembersStore.nextPage" :disabled="workspaceProjectMembersStore.meta.page ===
-            workspaceProjectMembersStore.meta.totalPages
-            ">
+          <button
+            class="btn w-full md:w-auto btn-neutral"
+            @click="workspaceProjectMembersStore.nextPage"
+            :disabled="
+              workspaceProjectMembersStore.meta.page ===
+              workspaceProjectMembersStore.meta.totalPages
+            "
+          >
             <font-awesome-icon icon="fa-solid fa-arrow-right" />
           </button>
         </div>
@@ -134,13 +172,14 @@
   <!-- Modals -->
 
   <!-- Add member modal -->
-  <base-dialog 
-  v-model="addMemberModal" 
-  :title="$t('work.kanban.modals.add_member.title')"
-  :confirmText="$t('common.confirm')"
-  :cancelText="$t('common.cancel')"
-  @confirm="confirmAddMember" 
-  @cancel="closeAddMemberModal">
+  <base-dialog
+    v-model="addMemberModal"
+    :title="$t('work.kanban.modals.add_member.title')"
+    :confirmText="$t('common.confirm')"
+    :cancelText="$t('common.cancel')"
+    @confirm="confirmAddMember"
+    @cancel="closeAddMemberModal"
+  >
     <div class="w-full flex flex-col gap-2">
       <Transition name="error-slide">
         <div v-if="error">
@@ -151,9 +190,12 @@
         {{ $t('work.kanban.modals.add_member.email') }}
       </label>
       <!-- Text input - member email -->
-      <input type="email" class="input w-full" 
-      v-model="newMemberEmail"
-      :placeholder="$t('work.kanban.modals.add_member.email_placeholder')"/>
+      <input
+        type="email"
+        class="input w-full"
+        v-model="newMemberEmail"
+        :placeholder="$t('work.kanban.modals.add_member.email_placeholder')"
+      />
       <label for="memberRole" class="label">
         {{ $t('work.kanban.modals.add_member.role') }}
       </label>
@@ -167,13 +209,14 @@
   </base-dialog>
 
   <!-- Update member role modal -->
-  <base-dialog 
-  v-model="updateMemberModal" 
-  :title="$t('work.kanban.modals.update_member.title')"
-  :confirmText="$t('common.confirm')"
-  :cancelText="$t('common.cancel')"
-  @confirm="confirmUpdateMember"
-  @cancel="closeUpdateMember">
+  <base-dialog
+    v-model="updateMemberModal"
+    :title="$t('work.kanban.modals.update_member.title')"
+    :confirmText="$t('common.confirm')"
+    :cancelText="$t('common.cancel')"
+    @confirm="confirmUpdateMember"
+    @cancel="closeUpdateMember"
+  >
     <div class="w-full flex flex-col gap-5">
       <Transition name="error-slide">
         <div v-if="memberError">
@@ -190,13 +233,14 @@
   </base-dialog>
 
   <!-- Delete meber modal -->
-  <base-dialog 
-  v-model="deleteMemberModal" 
-  :title="$t('work.kanban.modals.delete_member.title')"
-  :confirmText="$t('common.delete')"
-  :cancelText="$t('common.cancel')"
-  @confirm="confirmDeleteMember"
-  @cancel="closeDeleteMemberModal">
+  <base-dialog
+    v-model="deleteMemberModal"
+    :title="$t('work.kanban.modals.delete_member.title')"
+    :confirmText="$t('common.delete')"
+    :cancelText="$t('common.cancel')"
+    @confirm="confirmDeleteMember"
+    @cancel="closeDeleteMemberModal"
+  >
     <div class="w-full flex flex-col gap-5">
       <Transition name="error-slide">
         <div v-if="memberError">

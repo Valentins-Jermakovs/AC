@@ -454,13 +454,14 @@
           "title": "Dzēst projektu",
           "content": "Vai tiešām vēlaties dzēst projektu?"
         },
-        "create_new_sprint" : {
+        "create_new_sprint": {
           "title": "Izveidot jaunu sprintu",
           "name": "Sprinta nosaukums",
           "name_placeholder": "Ievadiet sprinta nosaukumu...",
           "description": "Apraksts",
           "description_placeholder": "Ievadiet aprakstu...",
-          "due_date": "Izpildes datums"
+          "due_date": "Izpildes datums",
+          "start_date": "Sākuma datums"
         },
         "create_sprint_relative": {
           "title": "Izveidot relatīvu sprintu",
@@ -469,6 +470,7 @@
           "description": "Apraksts",
           "description_placeholder": "Ievadiet aprakstu...",
           "due_date": "Izpildes datums",
+          "start_date": "Sākuma datums",
           "before": "Pirms",
           "after": "Pēc"
         },
@@ -482,7 +484,8 @@
           "name_placeholder": "Ievadiet sprinta nosaukumu...",
           "description": "Apraksts",
           "description_placeholder": "Ievadiet aprakstu...",
-          "due_date": "Izpildes datums"
+          "due_date": "Izpildes datums",
+          "start_date": "Sākuma datums"
         },
         "create_user_story": {
           "title": "Izveidot lietotāja stāstu",
@@ -493,7 +496,8 @@
           "priority": "Prioritāte",
           "story_points": "Stāsta punkti",
           "status": "Statuss",
-          "due_date": "Izpildes datums"
+          "due_date": "Izpildes datums",
+          "start_date": "Sākuma datums"
         },
         "edit_user_story": {
           "title": "Mainīt lietotāja stāstu"

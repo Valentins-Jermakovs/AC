@@ -206,21 +206,12 @@
         },
         "card_two": {
           "title": "Available modes:",
-          "content": [
-            "select/search users",
-            "modify user roles",
-            "change activity status"
-          ]
+          "content": ["select/search users", "modify user roles", "change activity status"]
         }
       },
       "admin_top": {
         "search": "Search data...",
-        "filters": [
-          "All users",
-          "By ID",
-          "By username/email",
-          "By role"
-        ]
+        "filters": ["All users", "By ID", "By username/email", "By role"]
       },
       "table_top": {
         "username": "Username",
@@ -465,7 +456,8 @@
           "name_placeholder": "Enter sprint name...",
           "description": "Description",
           "description_placeholder": "Enter description...",
-          "due_date": "Due date"
+          "due_date": "Due date",
+          "start_date": "Start date"
         },
         "create_sprint_relative": {
           "title": "Create relative sprint",
@@ -474,6 +466,7 @@
           "description": "Description",
           "description_placeholder": "Enter description...",
           "due_date": "Due date",
+          "start_date": "Start date",
           "before": "Before",
           "after": "After"
         },
@@ -487,7 +480,8 @@
           "name_placeholder": "Enter sprint name...",
           "description": "Description",
           "description_placeholder": "Enter description...",
-          "due_date": "Due date"
+          "due_date": "Due date",
+          "start_date": "Start date"
         },
         "create_user_story": {
           "title": "Create user story",
@@ -498,7 +492,8 @@
           "priority": "Priority",
           "story_points": "Story points",
           "status": "Status",
-          "due_date": "Due date"
+          "due_date": "Due date",
+          "start_date": "Start date"
         },
         "edit_user_story": {
           "title": "Edit user story"

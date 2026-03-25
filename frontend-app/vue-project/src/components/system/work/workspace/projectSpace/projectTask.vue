@@ -20,13 +20,16 @@
             <div class="badge badge-primary badge-outline gap-1">
               <font-awesome-icon icon="fa-solid fa-tag" />
               <p v-if="task.status == 'todo'">{{ $t('work.projects.common.todo') }}</p>
-              <p v-if="task.status == 'in_progress'">{{ $t('work.projects.common.in_progress') }}</p>
+              <p v-if="task.status == 'in_progress'">
+                {{ $t('work.projects.common.in_progress') }}
+              </p>
               <p v-if="task.status == 'done'">{{ $t('work.projects.common.done') }}</p>
             </div>
 
             <div class="badge badge-neutral gap-1">
               <font-awesome-icon icon="fa-solid fa-bolt" />
-              {{ $t('work.projects.modals.create_user_story.story_points') }}: {{ task.storyPoints }}
+              {{ $t('work.projects.modals.create_user_story.story_points') }}:
+              {{ task.storyPoints }}
             </div>
 
             <div class="badge badge-secondary gap-1">
@@ -169,8 +172,11 @@
         <label class="label" for="title">
           {{ $t('work.projects.modals.create_user_story.name') }}
         </label>
-        <input v-model="form.title" class="input input-bordered w-full"
-        :placeholder="$t('work.projects.modals.create_user_story.name_placeholder')"/>
+        <input
+          v-model="form.title"
+          class="input input-bordered w-full"
+          :placeholder="$t('work.projects.modals.create_user_story.name_placeholder')"
+        />
         <label class="label" for="description">
           {{ $t('work.projects.modals.create_user_story.description') }}
         </label>
@@ -182,7 +188,7 @@
         <div class="flex gap-2 w-full">
           <div class="flex-1">
             <label class="label" for="priority">
-              {{ $t('work.projects.modals.create_user_story.priority') }} 
+              {{ $t('work.projects.modals.create_user_story.priority') }}
             </label>
             <select v-model="form.priority" class="select select-bordered flex-1">
               <option :value="1">1</option>
@@ -225,6 +231,14 @@
           <option value="in_progress">{{ $t('work.projects.common.in_progress') }}</option>
           <option value="done">{{ $t('work.projects.common.done') }}</option>
         </select>
+        <!-- Created at -->
+        <div>
+          <label class="label">
+            {{ $t('work.projects.modals.create_user_story.start_date') }}
+          </label>
+
+          <input type="date" v-model="form.createdAt" class="input input-bordered w-full" />
+        </div>
         <label class="label" for="dueDate">
           {{ $t('work.projects.modals.create_user_story.due_date') }}
         </label>
@@ -263,8 +277,11 @@
         <label class="label" for="title">
           {{ $t('work.projects.modals.create_user_story.name') }}
         </label>
-        <input v-model="form.title" class="input input-bordered w-full"
-        :placeholder="$t('work.projects.modals.create_user_story.name_placeholder')" />
+        <input
+          v-model="form.title"
+          class="input input-bordered w-full"
+          :placeholder="$t('work.projects.modals.create_user_story.name_placeholder')"
+        />
         <label class="label" for="description">
           {{ $t('work.projects.modals.create_user_story.description') }}
         </label>
@@ -324,6 +341,14 @@
             {{ $t('work.projects.common.done') }}
           </option>
         </select>
+        <!-- Created at -->
+        <div>
+          <label class="label">
+            {{ $t('work.projects.modals.create_user_story.start_date') }}
+          </label>
+
+          <input type="date" v-model="form.createdAt" class="input input-bordered w-full" />
+        </div>
         <label class="label" for="dueDate">
           {{ $t('work.projects.modals.create_user_story.due_date') }}
         </label>
@@ -356,6 +381,7 @@ export default {
         storyPoints: 1,
         status: 'todo',
         dueDate: null,
+        createdAt: null,
       },
     }
   },
@@ -369,17 +395,37 @@ export default {
           title: this.$t('work.projects.drawer.metadata'),
           type: 'table',
           rows: [
-            { label: this.$t('work.projects.modals.create_user_story.story_points'), value: this.task.storyPoints, icon: 'fa-solid fa-bolt' },
-            { label: this.$t('work.projects.modals.create_user_story.priority'), value: this.task.priority, icon: 'fa-solid fa-flag' },
-            { label: this.$t('work.projects.modals.create_user_story.status'), value: this.$t(`work.projects.common.${this.task.status}`), icon: 'fa-solid fa-check' },
+            {
+              label: this.$t('work.projects.modals.create_user_story.story_points'),
+              value: this.task.storyPoints,
+              icon: 'fa-solid fa-bolt',
+            },
+            {
+              label: this.$t('work.projects.modals.create_user_story.priority'),
+              value: this.task.priority,
+              icon: 'fa-solid fa-flag',
+            },
+            {
+              label: this.$t('work.projects.modals.create_user_story.status'),
+              value: this.$t(`work.projects.common.${this.task.status}`),
+              icon: 'fa-solid fa-check',
+            },
           ],
         },
         {
           title: this.$t('work.projects.common.dates'),
           type: 'table',
           rows: [
-            { label: this.$t('work.projects.drawer.start_date'), value: this.task.createdAt, icon: 'fa-solid fa-calendar' },
-            { label: this.$t('work.projects.drawer.end_date'), value: this.task.dueDate, icon: 'fa-solid fa-clock' },
+            {
+              label: this.$t('work.projects.drawer.start_date'),
+              value: this.task.createdAt,
+              icon: 'fa-solid fa-calendar',
+            },
+            {
+              label: this.$t('work.projects.drawer.end_date'),
+              value: this.task.dueDate,
+              icon: 'fa-solid fa-clock',
+            },
           ],
         },
         {
@@ -407,6 +453,7 @@ export default {
         storyPoints: 1,
         status: 'todo',
         dueDate: null,
+        createdAt: null,
       }
       this.createDialog = true
     },
@@ -419,6 +466,7 @@ export default {
           storyPoints: this.form.storyPoints,
           status: this.form.status,
           dueDate: this.form.dueDate,
+          createdAt: this.form.createdAt,
           projectId: this.projectsStore.selectedProject.id,
           stageId: this.task.stageId,
         }
@@ -460,6 +508,7 @@ export default {
         storyPoints: this.task.storyPoints,
         status: this.task.status,
         dueDate: this.task.dueDate,
+        createdAt: this.task.createdAt,
       }
       this.editDialog = true
     },
@@ -474,6 +523,7 @@ export default {
           storyPoints: this.form.storyPoints,
           status: this.form.status,
           dueDate: this.form.dueDate,
+          createdAt: this.form.createdAt,
           projectId: this.projectsStore.selectedProject.id,
           stageId: this.task.stageId,
         }

@@ -6,7 +6,7 @@
     <!-- CONTENT -->
     <div class="drawer-content">
       <div
-        class="w-full bg-base-100 border border-base-300  p-3 sm:p-4 flex flex-col gap-4 mt-3 sm:mt-5"
+        class="w-full bg-base-100 border border-base-300 p-3 sm:p-4 flex flex-col gap-4 mt-3 sm:mt-5"
       >
         <!-- HEADER -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -58,7 +58,7 @@
         </div>
 
         <!-- ACTIONS -->
-        <div class="bg-base-100 border border-base-300  w-full">
+        <div class="bg-base-100 border border-base-300 w-full">
           <ul class="menu w-full">
             <li>
               <button class="flex gap-3 items-center" @click="showCreateDialog = true">
@@ -106,7 +106,7 @@
 
         <!-- DESCRIPTION -->
         <div class="bg-base-100 border border-base-300">
-          <div class=" p-4">
+          <div class="p-4">
             <h3 class="font-semibold text-sm opacity-70">
               {{ $t('work.projects.drawer.description') }}
             </h3>
@@ -118,8 +118,8 @@
         </div>
 
         <!-- META -->
-        <div class=" bg-base-100 border border-base-300">
-          <div class=" p-4">
+        <div class="bg-base-100 border border-base-300">
+          <div class="p-4">
             <h3 class="font-semibold text-sm opacity-70 mb-2">
               {{ $t('work.projects.drawer.metadata') }}
             </h3>
@@ -180,8 +180,12 @@
       <label for="stageTitle" class="label">
         {{ $t('work.projects.modals.create_new_sprint.name') }}
       </label>
-      <input v-model="newStage.title" type="text" class="input w-full" 
-      :placeholder="$t('work.projects.modals.create_new_sprint.name_placeholder')" />
+      <input
+        v-model="newStage.title"
+        type="text"
+        class="input w-full"
+        :placeholder="$t('work.projects.modals.create_new_sprint.name_placeholder')"
+      />
       <label for="stageDescription" class="label">
         {{ $t('work.projects.modals.create_new_sprint.description') }}
       </label>
@@ -190,6 +194,13 @@
         class="textarea w-full min-h-52"
         :placeholder="$t('work.projects.modals.create_new_sprint.description_placeholder')"
       ></textarea>
+      <div class="flex flex-col gap-1">
+        <label class="label">
+          {{ $t('work.projects.modals.create_new_sprint.start_date') }}
+        </label>
+
+        <input v-model="newStage.createdAt" type="date" class="input w-full" />
+      </div>
       <label for="stageDueDate" class="label">
         {{ $t('work.projects.modals.create_new_sprint.due_date') }}
       </label>
@@ -226,8 +237,12 @@
       <label for="stageTitle" class="label">
         {{ $t('work.projects.modals.edit_sprint.name') }}
       </label>
-      <input v-model="editStage.title" type="text" class="input w-full"
-      :placeholder="$t('work.projects.modals.edit_sprint.name_placeholder')" />
+      <input
+        v-model="editStage.title"
+        type="text"
+        class="input w-full"
+        :placeholder="$t('work.projects.modals.edit_sprint.name_placeholder')"
+      />
       <label for="stageDescription" class="label">
         {{ $t('work.projects.modals.edit_sprint.description') }}
       </label>
@@ -236,6 +251,10 @@
         class="textarea w-full min-h-52"
         :placeholder="$t('work.projects.modals.edit_sprint.description_placeholder')"
       ></textarea>
+      <label for="stageDueDate" class="label">
+        {{ $t('work.projects.modals.edit_sprint.due_date') }}
+      </label>
+      <input v-model="editStage.createdAt" type="date" class="input w-full" />
       <label for="stageDueDate" class="label">
         {{ $t('work.projects.modals.edit_sprint.due_date') }}
       </label>
@@ -275,6 +294,13 @@
         class="textarea w-full min-h-52"
         :placeholder="$t('work.projects.modals.create_sprint_relative.description_placeholder')"
       ></textarea>
+      <div class="flex flex-col gap-1">
+        <label class="label">
+          {{ $t('work.projects.modals.create_new_sprint.start_date') }}
+        </label>
+
+        <input v-model="relativeStage.createdAt" type="date" class="input w-full" />
+      </div>
       <label for="stageDueDate" class="label">
         {{ $t('work.projects.modals.create_sprint_relative.due_date') }}
       </label>
@@ -316,18 +342,21 @@ export default {
         title: '',
         description: '',
         dueDate: '',
+        createdAt: '',
       },
       editStage: {
         // ← form data for editing
         title: '',
         description: '',
         dueDate: '',
+        createdAt: '',
       },
       relativeStage: {
         // ← form dati relative stage
         title: '',
         description: '',
         dueDate: '',
+        createdAt: '',
         position: 'after', // default: after
       },
     }
@@ -366,6 +395,7 @@ export default {
         title: this.newStage.title,
         description: this.newStage.description,
         dueDate: this.newStage.dueDate,
+        createdAt: this.newStage.createdAt,
         projectId: this.stagesStore.projectId,
       }
 
@@ -373,7 +403,7 @@ export default {
         await this.stagesStore.createStage(payload)
 
         // Reset form and close dialog
-        this.newStage = { title: '', description: '', dueDate: '' }
+        this.newStage = { title: '', description: '', dueDate: '', createdAt: '' }
         this.showCreateDialog = false
         this.drawerOpen = false
       } catch (err) {
@@ -398,6 +428,7 @@ export default {
         title: this.stage.title,
         description: this.stage.description,
         dueDate: this.stage.dueDate,
+        createdAt: this.stage.createdAt,
       }
       this.showEditDialog = true
     },
@@ -408,12 +439,20 @@ export default {
         title: this.editStage.title,
         description: this.editStage.description,
         dueDate: this.editStage.dueDate,
+        createdAt: this.editStage.createdAt,
       }
 
       try {
         await this.stagesStore.updateStage(payload)
         this.showEditDialog = false
         this.drawerOpen = false
+
+        this.editStage = {
+          title: '',
+          description: '',
+          dueDate: '',
+          createdAt: '',
+        }
       } catch (err) {
         console.error(err)
       }
@@ -423,6 +462,7 @@ export default {
         title: '',
         description: '',
         dueDate: '',
+        createdAt: '',
         position: 'after',
       }
       this.showRelativeDialog = true
@@ -434,6 +474,7 @@ export default {
         title: this.relativeStage.title,
         description: this.relativeStage.description,
         dueDate: this.relativeStage.dueDate,
+        createdAt: this.relativeStage.createdAt,
         position: this.relativeStage.position,
       }
 
@@ -441,6 +482,14 @@ export default {
         await this.stagesStore.createStageRelative(payload)
         this.showRelativeDialog = false
         this.drawerOpen = false
+
+        this.relativeStage = {
+          title: '',
+          description: '',
+          dueDate: '',
+          createdAt: '',
+          position: 'after',
+        }
       } catch (err) {
         console.error(err)
       }

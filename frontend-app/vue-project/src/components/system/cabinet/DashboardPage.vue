@@ -2,13 +2,21 @@
   <div class="flex flex-col p-5 w-full h-full gap-2">
     <!-- KPI cards -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-      <div class="flex-1 flex flex-col gap-3 bg-base-200 border border-base-300 p-5 items-center justify-center">
+      <div
+        class="flex-1 flex flex-col gap-3 bg-base-200 border border-base-300 p-5 items-center justify-center"
+      >
         <h2 class="text-2xl font-semibold text-base-content/80">
           {{ selectedProjectStore.selectedProject?.workspaceTitle || '...' }}
         </h2>
       </div>
-      <kpiCard v-for="(item, index) in projectKpis" :key="index" :title="item.title" :value="item.value"
-        :desc="item.desc" :colorClass="item.colorClass">
+      <kpiCard
+        v-for="(item, index) in projectKpis"
+        :key="index"
+        :title="item.title"
+        :value="item.value"
+        :desc="item.desc"
+        :colorClass="item.colorClass"
+      >
       </kpiCard>
       <!-- Project Dates Card -->
       <div class="flex-1 flex flex-col gap-3 bg-base-200 border border-base-300 p-5">
@@ -32,8 +40,14 @@
       </div>
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
-      <kpiCard v-for="(item, index) in kpis" :key="index" :title="item.title" :value="item.value" :desc="item.desc"
-        :colorClass="item.colorClass">
+      <kpiCard
+        v-for="(item, index) in kpis"
+        :key="index"
+        :title="item.title"
+        :value="item.value"
+        :desc="item.desc"
+        :colorClass="item.colorClass"
+      >
       </kpiCard>
     </div>
     <!-- Progress cards -->
@@ -47,18 +61,18 @@
 
 <script>
 import TasksTable from './dashboard/tasksTable.vue'
-import kpiCard from '@/components/common/kpiCard.vue';
-import UserProgressCard from './UserProgressCard.vue';
+import kpiCard from '@/components/common/kpiCard.vue'
+import UserProgressCard from './UserProgressCard.vue'
 import { usePrivateTasksStore } from '@/stores/privateTasks'
 import { useUserStore } from '@/stores/user'
-import { useSelectedProjectStore } from '@/stores/selectedProject';
+import { useSelectedProjectStore } from '@/stores/selectedProject'
 
 export default {
   name: 'DashboardPage',
   components: {
     TasksTable,
     kpiCard,
-    UserProgressCard
+    UserProgressCard,
   },
 
   data() {
@@ -95,7 +109,6 @@ export default {
           desc: this.$t('cabinet.profile.kpi.done_tasks.description'),
           colorClass: 'text-success',
         },
-
       ]
     },
     projectKpis() {
@@ -116,7 +129,7 @@ export default {
           max: this.taskStore.tasksKpi.totalTasks,
           percent: Math.round(
             (this.taskStore.tasksKpi.totalCompletedTasks / this.taskStore.tasksKpi.totalTasks) *
-            100,
+              100,
           ),
           colorClass: 'text-success',
           progressClass: 'progress-success',
@@ -127,7 +140,7 @@ export default {
           max: this.taskStore.tasksKpi.totalInMonth,
           percent: Math.round(
             (this.taskStore.tasksKpi.totalInMonthCompleted / this.taskStore.tasksKpi.totalInMonth) *
-            100,
+              100,
           ),
           colorClass: 'text-primary',
           progressClass: 'progress-primary',

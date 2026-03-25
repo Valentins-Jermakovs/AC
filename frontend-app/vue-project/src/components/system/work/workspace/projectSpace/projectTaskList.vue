@@ -1,5 +1,5 @@
 <template>
-  <div class="p-2 sm:p-3 flex flex-col bg-base-200 border border-base-300  gap-3">
+  <div class="p-2 sm:p-3 flex flex-col bg-base-200 border border-base-300 gap-3">
     <!-- Tasks -->
     <div class="flex flex-col gap-3 w-full">
       <ProjectTask
@@ -14,7 +14,7 @@
       <button class="btn btn-primary w-full sm:w-auto" @click="openCreateDialog">
         <font-awesome-icon icon="fa-solid fa-plus" />
 
-        <span class="hidden sm:inline"> 
+        <span class="hidden sm:inline">
           {{ $t('work.projects.common.create_new_user_story') }}
         </span>
 
@@ -45,8 +45,11 @@
           {{ $t('work.projects.modals.create_user_story.name') }}
         </label>
 
-        <input v-model="form.title" class="input input-bordered w-full" 
-        :placeholder="$t('work.projects.modals.create_user_story.name_placeholder')" />
+        <input
+          v-model="form.title"
+          class="input input-bordered w-full"
+          :placeholder="$t('work.projects.modals.create_user_story.name_placeholder')"
+        />
       </div>
 
       <div>
@@ -65,7 +68,7 @@
       <div class="flex flex-col sm:flex-row gap-3">
         <div class="flex flex-col flex-1">
           <label class="label">
-            {{ $t('work.projects.modals.create_user_story.priority') }} 
+            {{ $t('work.projects.modals.create_user_story.priority') }}
           </label>
 
           <select v-model="form.priority" class="select select-bordered w-full">
@@ -114,6 +117,15 @@
           <option value="in_progress">{{ $t('work.projects.common.in_progress') }}</option>
           <option value="done">{{ $t('work.projects.common.done') }}</option>
         </select>
+      </div>
+
+      <!-- Created at -->
+      <div>
+        <label class="label">
+          {{ $t('work.projects.modals.create_user_story.start_date') }}
+        </label>
+
+        <input type="date" v-model="form.createdAt" class="input input-bordered w-full" />
       </div>
 
       <!-- Due date -->
@@ -168,6 +180,7 @@ export default {
         storyPoints: 1,
         status: 'todo',
         dueDate: null,
+        createdAt: null,
       },
     }
   },
@@ -226,6 +239,7 @@ export default {
           storyPoints: this.form.storyPoints,
           status: this.form.status,
           dueDate: this.form.dueDate,
+          createdAt: this.form.createdAt,
           projectId: this.projectsStore.selectedProject.id,
           stageId: this.stage.id,
         }
@@ -233,6 +247,15 @@ export default {
         await this.tasksStore.createTask(payload)
 
         this.createDialog = false
+
+        this.form = {
+          title: '',
+          description: '',
+          priority: 1,
+          storyPoints: 1,
+          status: 'todo',
+          dueDate: null,
+        }
       } catch (e) {
         console.error(e)
       }

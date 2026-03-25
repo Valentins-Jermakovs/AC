@@ -1,8 +1,6 @@
 <template>
   <div class="w-full flex justify-center p-2 sm:p-4">
-    <div
-      class="w-full max-w-7xl bg-base-200 border border-base-300 p-2 sm:p-4 flex flex-col gap-3"
-    >
+    <div class="w-full max-w-7xl bg-base-200 border border-base-300 p-2 sm:p-4 flex flex-col gap-3">
       <!-- Stages list -->
       <div class="flex flex-col gap-3">
         <ProjectStage v-for="stage in stagesStore.projectStages" :key="stage.id" :stage="stage" />
@@ -70,6 +68,14 @@
 
       <div class="flex flex-col gap-1">
         <label class="label">
+          {{ $t('work.projects.modals.create_new_sprint.start_date') }}
+        </label>
+
+        <input v-model="newStage.createdAt" type="date" class="input w-full" />
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label class="label">
           {{ $t('work.projects.modals.create_new_sprint.due_date') }}
         </label>
 
@@ -102,6 +108,7 @@ export default {
         title: '',
         description: '',
         dueDate: '',
+        createdAt: '',
       },
     }
   },
@@ -133,6 +140,7 @@ export default {
         title: this.newStage.title,
         description: this.newStage.description,
         dueDate: this.newStage.dueDate,
+        createdAt: this.newStage.createdAt,
         projectId: this.stagesStore.projectId,
       }
 
@@ -140,7 +148,7 @@ export default {
         await this.stagesStore.createStage(payload)
 
         // Reset form and close dialog
-        this.newStage = { title: '', description: '', dueDate: '' }
+        this.newStage = { title: '', description: '', dueDate: '', createdAt: '' }
         this.showDialog = false
       } catch (err) {
         console.error(err)

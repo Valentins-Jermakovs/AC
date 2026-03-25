@@ -13,26 +13,25 @@ export default {
   props: {
     title: {
       type: String,
-      required: false
+      required: false,
     },
 
     value: {
       type: [String, Number],
-      required: false
+      required: false,
     },
 
     desc: {
       type: String,
-      required: false
+      required: false,
     },
 
     colorClass: {
       type: String,
-      default: 'text-base-content'
-    }
-  }
+      default: 'text-base-content',
+    },
+  },
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

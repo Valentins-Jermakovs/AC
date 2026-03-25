@@ -20,8 +20,10 @@
         @keyup.enter="search"
         :disabled="store.searchMode === 'all'"
       />
-      <select v-model="store.searchMode" class="select select-bordered w-full
-      bg-neutral text-neutral-content md:w-auto">
+      <select
+        v-model="store.searchMode"
+        class="select select-bordered w-full bg-neutral text-neutral-content md:w-auto"
+      >
         <option value="all">{{ $t('filters.all') }}</option>
         <option value="title">{{ $t('filters.by_title') }}</option>
       </select>

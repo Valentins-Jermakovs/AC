@@ -50,9 +50,7 @@
 
           <!-- DESCRIPTION -->
           <div class="p-3 sm:p-4 bg-base-200 border border-base-300 rounded-box">
-            <p class="text-sm line-clamp-3 wrap-break-word">
-              {{ task.description }}
-            </p>
+            <pre class="text-sm line-clamp-3 wrap-break-word">{{ task.description }}</pre>
           </div>
         </div>
 
@@ -140,9 +138,7 @@
             </template>
 
             <template v-else-if="section.type === 'text'">
-              <p class="text-sm wrap-break-word">
-                {{ section.value }}
-              </p>
+              <pre class="text-sm wrap-break-word">{{ section.value }}</pre>
             </template>
           </div>
         </div>

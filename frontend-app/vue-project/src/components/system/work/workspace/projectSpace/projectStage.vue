@@ -111,9 +111,7 @@
               {{ $t('work.projects.drawer.description') }}
             </h3>
 
-            <p class="text-sm wrap-break-word">
-              {{ stage.description }}
-            </p>
+            <pre class="text-sm wrap-break-word">{{ stage.description }}</pre>
           </div>
         </div>
 

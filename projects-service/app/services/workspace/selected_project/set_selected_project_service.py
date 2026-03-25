@@ -39,3 +39,9 @@ async def set_selected_project_service(
     )
 
     return workspaceTitle
+
+# get selected project by uiser id
+async def get_selected_project(user_id: str):
+    project = await LastOpenedWorkspaceModel.find_one(LastOpenedWorkspaceModel.userId == user_id)
+
+    return project

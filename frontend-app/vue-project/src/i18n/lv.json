@@ -166,7 +166,30 @@
       "kpi": {
         "tasks": "Uzdevumi",
         "month_tasks": "Mēneša uzdevumi",
-        "week_activity": "Nedēļas aktivitāte"
+        "week_activity": "Nedēļas aktivitāte",
+        "total_tasks": {
+          "title": "Projekta uzdevumi",
+          "description": "Visi projekta uzdevumi"
+        },
+        "todo_tasks": {
+          "title": "Uzdevumi iesākšanai",
+          "description": "Uzdevumi ar statusu: Iesākt"
+        },
+        "in_progress_tasks": {
+          "title": "Uzdevumi procesā",
+          "description": "Uzdevumi ar statusu: Procesā"
+        },
+        "done_tasks": {
+          "title": "Uzdevumi pabeigti",
+          "description": "Uzdevumi ar statusu: Pabeigts"
+        },
+        "project_stages": {
+          "title": "Projekta sprinti",
+          "description": "Projekta sprintu skaits"
+        },
+        "project_dates": {
+          "title": "Projekta datumi"
+        }
       },
       "actions": {
         "title": "Lietotāja modifikācija",

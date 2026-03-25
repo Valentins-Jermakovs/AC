@@ -166,7 +166,30 @@
       "kpi": {
         "tasks": "Задачи",
         "month_tasks": "Задачи за месяц",
-        "week_activity": "Активность за неделю"
+        "week_activity": "Активность за неделю",
+        "total_tasks": {
+          "title": "Задачи проекта",
+          "description": "Все задачи проекта"
+        },
+        "todo_tasks": {
+          "title": "Задачи для начала",
+          "description": "Задачи со статусом: Начать"
+        },
+        "in_progress_tasks": {
+          "title": "Задачи в процессе",
+          "description": "Задачи со статусом: В процессе"
+        },
+        "done_tasks": {
+          "title": "Завершённые задачи",
+          "description": "Задачи со статусом: Завершено"
+        },
+        "project_stages": {
+          "title": "Спринты проекта",
+          "description": "Количество спринтов проекта"
+        },
+        "project_dates": {
+          "title": "Даты проекта"
+        }
       },
       "actions": {
         "title": "Изменение пользователя",

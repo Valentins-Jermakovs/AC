@@ -155,4 +155,16 @@ export const API_ENDPOINTS = {
   UPDATE_PROJECT_MEMBER: '/workspace/members/update-member',
   // DELETE
   DELETE_PROJECT_MEMBER: '/workspace/members/delete-member',
+
+
+  // ===== Selected project management =====
+
+  // GET
+  GET_SELECTED_PROJECT_STAGES_COUNT: '/workspace/selected-project/get-selected-count',
+  GET_PROJECT_DATE_RANGE: '/workspace/selected-project/get-stages-date-range',
+  GET_PROJECT_TASKS_STATS: '/workspace/selected-project/get-project-tasks-stats',
+  GET_PROJECTS_COUNT: '/workspace/projects/get-projects-count',
+  // PUT
+  SET_SELECTED_PROJECT: '/workspace/selected-project/set-selected-project',
+
 }

@@ -166,7 +166,30 @@
       "kpi": {
         "tasks": "Tasks",
         "month_tasks": "Monthly Tasks",
-        "week_activity": "Weekly Activity"
+        "week_activity": "Weekly Activity",
+        "total_tasks": {
+          "title": "Project Tasks",
+          "description": "All tasks of the project"
+        },
+        "todo_tasks": {
+          "title": "Tasks to Start",
+          "description": "Tasks with status: To Do"
+        },
+        "in_progress_tasks": {
+          "title": "Tasks In Progress",
+          "description": "Tasks with status: In Progress"
+        },
+        "done_tasks": {
+          "title": "Completed Tasks",
+          "description": "Tasks with status: Done"
+        },
+        "project_stages": {
+          "title": "Project Sprints",
+          "description": "Number of project sprints"
+        },
+        "project_dates": {
+          "title": "Project Dates"
+        }
       },
       "actions": {
         "title": "User Modification",

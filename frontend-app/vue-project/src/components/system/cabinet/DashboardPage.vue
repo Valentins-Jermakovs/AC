@@ -1,6 +1,30 @@
 <template>
   <div class="flex flex-col p-5 w-full h-full gap-2">
     <!-- KPI cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+      <div class="flex-1 flex flex-col gap-3 bg-base-200 border border-base-300 p-5 items-center justify-center">
+        <h2 class="text-2xl font-semibold text-base-content/80">Projekta nosaukums</h2>
+      </div>
+      <kpiCard v-for="(item, index) in projectKpis" :key="index" :title="item.title" :value="item.value"
+        :desc="item.desc" :colorClass="item.colorClass">
+      </kpiCard>
+      <!-- Project Dates Card -->
+      <div class="flex-1 flex flex-col gap-3 bg-base-200 border border-base-300 p-5">
+        <h2 class="text-2xl font-semibold text-base-content/80">
+          {{ $t('cabinet.profile.kpi.project_dates.title') }}
+        </h2>
+
+        <div class="flex items-center gap-3">
+          <font-awesome-icon icon="fa-solid fa-calendar" class="text-lg text-primary" />
+          <p class="text-base text-base-content/70">Sākuma datums</p>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <font-awesome-icon icon="fa-solid fa-clock" class="text-lg text-warning" />
+          <p class="text-base text-base-content/70">Beigu datums</p>
+        </div>
+      </div>
+    </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
       <kpiCard v-for="(item, index) in kpis" :key="index" :title="item.title" :value="item.value" :desc="item.desc"
         :colorClass="item.colorClass">
@@ -32,37 +56,51 @@ export default {
 
   data() {
     return {
-      kpis: [
-        {
-          title: 'Finance',
-          value: '1200€',
-          desc: 'incoming',
-          colorClass: 'text-success',
-        },
-        {
-          title: 'Projects',
-          value: 12,
-          desc: 'Completed',
-          colorClass: 'text-info',
-        },
-        {
-          title: 'Articles',
-          value: '4',
-          desc: 'Completed',
-          colorClass: 'text-primary',
-        },
-        {
-          title: 'Files',
-          value: '20',
-          desc: 'Completed',
-          colorClass: 'text-warning',
-        },
-      ],
+
       taskStore: usePrivateTasksStore(),
       userStore: useUserStore(),
     }
   },
   computed: {
+    kpis() {
+      return [
+        {
+          title: this.$t('cabinet.profile.kpi.total_tasks.title'),
+          value: '1200€',
+          desc: this.$t('cabinet.profile.kpi.total_tasks.description'),
+          colorClass: 'text-info',
+        },
+        {
+          title: this.$t('cabinet.profile.kpi.todo_tasks.title'),
+          value: 12,
+          desc: this.$t('cabinet.profile.kpi.todo_tasks.description'),
+          colorClass: 'text-error',
+        },
+        {
+          title: this.$t('cabinet.profile.kpi.in_progress_tasks.title'),
+          value: '4',
+          desc: this.$t('cabinet.profile.kpi.in_progress_tasks.description'),
+          colorClass: 'text-warning',
+        },
+        {
+          title: this.$t('cabinet.profile.kpi.done_tasks.title'),
+          value: '20',
+          desc: this.$t('cabinet.profile.kpi.done_tasks.description'),
+          colorClass: 'text-success',
+        },
+
+      ]
+    },
+    projectKpis() {
+      return [
+        {
+          title: this.$t('cabinet.profile.kpi.project_stages.title'),
+          value: '1200€',
+          desc: this.$t('cabinet.profile.kpi.project_stages.description'),
+          colorClass: 'text-info',
+        },
+      ]
+    },
     progressItems() {
       return [
         {

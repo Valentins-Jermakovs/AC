@@ -5,7 +5,7 @@ from typing import Optional
 # Utils
 from app.utils.check_access_token import check_access_token
 # Services
-from app.services.workspace.selected_project.set_selected_project_service import set_selected_project_service
+from app.services.workspace.selected_project.set_selected_project_service import set_selected_project_service, get_selected_project
 from app.services.workspace.selected_project.get_count_stages_selected_project_service import get_stages_count, get_stages_date_range
 from app.services.workspace.selected_project.count_tasks_service_selected_project import get_project_tasks_stats
 # Schemas
@@ -19,6 +19,27 @@ router = APIRouter(
 
 # Security scheme for access token
 security = HTTPBearer()
+
+# Route for getting selected project
+@router.get(
+    "/get-selected-project",
+)
+async def get_selected_project_endpoint(
+    credantials: HTTPAuthorizationCredentials = Depends(security)
+):
+    """
+    Get selected project from the database.
+
+    Steps:
+    1. Extract access token
+    2. Verify token and get user ID
+    3. Call service to get selected project from DB
+    4. Return selected project
+    """
+    access_token = credantials.credentials
+    user_id = await check_access_token(access_token)
+
+    return await get_selected_project(user_id=user_id)
 
 # Route for create or update selected project
 @router.put(

@@ -13,7 +13,8 @@ from ..models import (
     WorkspaceProjectModel,
     WorkspaceProjectMemberModel,
     WorkspaceStageModel,
-    WorkspaceTaskModel
+    WorkspaceTaskModel,
+    LastOpenedWorkspaceModel
 )
 
 # Colors for logging
@@ -77,6 +78,7 @@ async def init_db():
             WorkspaceProjectModel,
             WorkspaceProjectMemberModel,
             WorkspaceStageModel,
-            WorkspaceTaskModel
+            WorkspaceTaskModel,
+            LastOpenedWorkspaceModel
         ]
     )

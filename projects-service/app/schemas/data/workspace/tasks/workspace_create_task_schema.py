@@ -14,6 +14,7 @@ class WorkspaceCreateTaskSchema(BaseModel):
     priority: int                         # Priority
     status: str                           # Status
     dueDate: Optional[str] = None
+    createdAt: Optional[str] = None
 
     # Model config - examples
     model_config = {
@@ -27,7 +28,8 @@ class WorkspaceCreateTaskSchema(BaseModel):
                     "storyPoints": 1,
                     "priority": 1,
                     "status": "todo",
-                    "dueDate": "2026-01-01"
+                    "dueDate": "2026-01-01",
+                    "createdAt": "2022-01-01"
                 }
             ]
         }

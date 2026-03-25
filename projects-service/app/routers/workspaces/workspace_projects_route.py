@@ -17,7 +17,7 @@ from app.schemas.data.workspace.projects.workspace_project_title_or_description 
 from app.services.workspace.projects.create_project_service import create_project
 from app.services.workspace.projects.update_project_service import update_project
 from app.services.workspace.projects.delete_project_service import delete_project
-from app.services.workspace.projects.get_all_projects_service import get_all_projects
+from app.services.workspace.projects.get_all_projects_service import get_all_projects, get_projects_count
 from app.services.workspace.projects.get_project_by_title_service import get_project_by_title
 # Router
 router = APIRouter(
@@ -55,6 +55,29 @@ async def get_all_projects_endpoint(
         user_id=user_id,
         page=page,
         limit=limit
+    )
+
+# Route for counting all projects
+@router.get(
+    "/get-projects-count",
+)
+async def get_projects_count_endpoint(
+    credantials: HTTPAuthorizationCredentials = Depends(security)
+):
+    """
+    Get all projects from the database.
+
+    Steps:
+    1. Extract access token
+    2. Verify token and get user ID
+    3. Call service to get all projects from DB
+    4. Return all projects
+    """
+    access_token = credantials.credentials
+    user_id = await check_access_token(access_token)
+
+    return await get_projects_count(
+        user_id=user_id
     )
 
 

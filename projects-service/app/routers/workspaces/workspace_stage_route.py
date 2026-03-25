@@ -84,6 +84,7 @@ async def create_stage_endpoint(
         description=data.description,
         project_id=data.projectId,
         due_date=data.dueDate,
+        created_at=data.createdAt,
         user_id=user_id
     )
 
@@ -146,7 +147,8 @@ async def update_stage_endpoint(
         description=data.description,
         user_id=user_id,
         project_id=data.projectId,
-        due_date=data.dueDate
+        due_date=data.dueDate,
+        created_at=data.createdAt
     )
 
 # Route for moving a kanban stage

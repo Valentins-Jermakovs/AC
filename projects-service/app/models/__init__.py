@@ -15,7 +15,8 @@ from .workspace_models import (
     WorkspaceProjectModel,
     WorkspaceStageModel,
     WorkspaceTaskModel,
-    WorkspaceProjectMemberModel
+    WorkspaceProjectMemberModel,
+    LastOpenedWorkspaceModel
 )
 # ===== Private =====
 from .private_task_models import PrivateTaskModel

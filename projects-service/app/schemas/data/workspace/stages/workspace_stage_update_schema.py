@@ -11,6 +11,7 @@ class WorkspaceStageUpdateSchema(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
     dueDate: Optional[str] = None
+    createdAt: Optional[str] = None
 
     model_config = {
         "json_schema_extra": {
@@ -20,7 +21,8 @@ class WorkspaceStageUpdateSchema(BaseModel):
                     "projectId": "projectId",
                     "title": "New stage",
                     "description": "New stage description",
-                    "dueDate": "2026-01-01"
+                    "dueDate": "2026-01-01",
+                    "createdAt": "2022-01-01"
                 }
             ]
         }

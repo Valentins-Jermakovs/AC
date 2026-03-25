@@ -1,106 +1,77 @@
 # Imports
 from fastapi import HTTPException
 from bson import ObjectId
+from typing import Optional
 # Utils
 from app.utils.time_converter import convert_to_datetime
 # Models
 from app.models import WorkspaceTaskModel, WorkspaceProjectMemberModel
 # Schemas
-# ===== response:
 from app.schemas.response.workspaces.tasks.workspace_task_schema import WorkspaceTaskSchema
-# ===== data:
 from app.schemas.data.workspace.tasks.workspace_update_task_schema import WorkspaceUpdateTaskSchema
 
 
-# ===============================
-# Function update task
-# ================================
 async def update_task(
     data: WorkspaceUpdateTaskSchema,
     user_id: str
 ) -> WorkspaceTaskSchema:
     
-    # Check current user
-    user =  await WorkspaceProjectMemberModel.find_one({
+    # ===== Access check =====
+    user = await WorkspaceProjectMemberModel.find_one({
         "projectId": data.projectId,
         "userId": user_id,
     })
-
     if not user:
         raise HTTPException(status_code=403, detail="You are not member of this project")
-    
-    # Check if user is viewer
     if user.role == "viewer":
         raise HTTPException(status_code=403, detail="You cannot work in this project")
 
-    # Raise if task_id is not valid
+    # ===== Validation =====
     if not ObjectId.is_valid(data.taskId):
         raise HTTPException(status_code=400, detail="Invalid task ID")
     
-    # Get task
     task = await WorkspaceTaskModel.find_one({"_id": ObjectId(data.taskId)})
-
-    # Raise if task not found
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
-    
+
+    # ===== Update fields =====
     if data.title is not None:
-        
-        # Raise if task title already exists
         if await WorkspaceTaskModel.find_one({"title": data.title, "_id": {"$ne": task.id}}):
             raise HTTPException(status_code=400, detail="Task title already exists")
-    
-        # Raise if task too short
-        if len(data.title) < 3:
-            raise HTTPException(status_code=400, detail="Title is too short")
-        
-        # Raise if task too long
-        if len(data.title) > 100:
-            raise HTTPException(status_code=400, detail="Title is too long")
-        
+        if not (3 <= len(data.title) <= 100):
+            raise HTTPException(status_code=400, detail="Title must be between 3 and 100 characters")
         task.title = data.title
 
-
     if data.description is not None:
-        # Raise if task description too long
-        if len(data.description) > 1000:
-            raise HTTPException(status_code=400, detail="Description is too long")
-    
-        # Raise if task description too short
-        if len(data.description) < 3:
-            raise HTTPException(status_code=400, detail="Description is too short")
-        
+        if not (3 <= len(data.description) <= 1000):
+            raise HTTPException(status_code=400, detail="Description must be between 3 and 1000 characters")
         task.description = data.description
 
     if data.storyPoints is not None:
-
         if data.storyPoints not in [1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144]:
-            raise HTTPException(status_code=400, detail="Story points must be between 1 and 9")
-        
+            raise HTTPException(status_code=400, detail="Invalid story points")
         task.storyPoints = data.storyPoints
 
     if data.priority is not None:
-
-        if data.priority not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]:
-            raise HTTPException(status_code=400, detail="Priority must be between 1 and 5")
-
+        if data.priority not in list(range(1, 11)):
+            raise HTTPException(status_code=400, detail="Invalid priority")
         task.priority = data.priority
 
     if data.status is not None:
-
         if data.status not in ["todo", "in_progress", "done"]:
             raise HTTPException(status_code=400, detail="Status must be todo, in_progress or done")
-
         task.status = data.status
 
     if data.dueDate is not None:
-        data.dueDate = await convert_to_datetime(data.dueDate)
+        task.dueDate = await convert_to_datetime(data.dueDate)
 
-        task.dueDate = data.dueDate
+    if data.createdAt is not None:
+        task.createdAt = await convert_to_datetime(data.createdAt)
 
-    # Save task
+    # ===== Save task =====
     await task.save()
 
+    # ===== Return schema =====
     return WorkspaceTaskSchema(
         id=str(task.id),
         projectId=str(task.projectId),
@@ -111,5 +82,5 @@ async def update_task(
         priority=task.priority,
         status=task.status,
         createdAt=task.createdAt.strftime("%Y-%m-%d"),
-        dueDate=task.dueDate.strftime("%Y-%m-%d")
+        dueDate=task.dueDate.strftime("%Y-%m-%d") if task.dueDate else None
     )

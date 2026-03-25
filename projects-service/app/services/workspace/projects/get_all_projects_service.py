@@ -70,3 +70,19 @@ async def get_all_projects(
             totalPages=total_pages
         )
     )
+
+# =========================
+# Get projects count
+# =========================
+async def get_projects_count(user_id: str) -> int:
+
+    # ===== Validation =====
+    if not user_id:
+        raise HTTPException(status_code=400, detail="User ID required")
+
+    # ===== Business logic =====
+    total_projects = await WorkspaceProjectMemberModel.find({
+        "userId": user_id
+    }).count()
+
+    return total_projects

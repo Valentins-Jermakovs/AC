@@ -1,94 +1,82 @@
 # Imports
 from fastapi import HTTPException
 from bson import ObjectId
+from typing import Optional
 # Utils
 from app.utils.time_converter import convert_to_datetime
+from app.utils.current_date import get_current_date
 # Models
 from app.models import WorkspaceTaskModel, WorkspaceProjectMemberModel
 # Schemas
-# ===== response:
 from app.schemas.response.workspaces.tasks.workspace_task_schema import WorkspaceTaskSchema
-# ===== data:
 from app.schemas.data.workspace.tasks.workspace_create_task_schema import WorkspaceCreateTaskSchema
 
-# ===============================
-# Function create task
-# ================================
+
 async def create_task(
     task_data: WorkspaceCreateTaskSchema,
     user_id: str
 ) -> WorkspaceTaskSchema:
     
-    # Check current user
-    user =  await WorkspaceProjectMemberModel.find_one({
+    # ===== Access check =====
+    user = await WorkspaceProjectMemberModel.find_one({
         "projectId": task_data.projectId,
         "userId": user_id,
     })
-
     if not user:
         raise HTTPException(status_code=403, detail="You are not member of this project")
-    
-    # Check if user is viewer
     if user.role == "viewer":
         raise HTTPException(status_code=403, detail="You cannot work in this project")
     
-    # Raise if project_id is not valid
+    # ===== Validation =====
     if not ObjectId.is_valid(task_data.projectId):
         raise HTTPException(status_code=400, detail="Invalid project ID")
-    
-    # Raise if stage_id is not valid
     if not ObjectId.is_valid(task_data.stageId):
         raise HTTPException(status_code=400, detail="Invalid stage ID")
-
-    # if title not unique
-    # Find task with user_id and title
-    task = await WorkspaceTaskModel.find_one({
+    
+    if await WorkspaceTaskModel.find_one({
         "projectId": task_data.projectId,
         "stageId": task_data.stageId,
         "title": task_data.title
-    })
-    if task:
+    }):
         raise HTTPException(status_code=400, detail="Title must be unique")
     
-    if len(task_data.title) > 100:
-        raise HTTPException(status_code=400, detail="Title is too long")
+    if not (3 <= len(task_data.title) <= 100):
+        raise HTTPException(status_code=400, detail="Title must be between 3 and 100 characters")
     
-    if len(task_data.title) < 3:
-        raise HTTPException(status_code=400, detail="Title is too short")
-    
-    task_order = 0
-
-    # Last task in stage
-    last_task = await WorkspaceTaskModel.find({
-        "stageId": task_data.stageId}
-    ).sort("-order").first_or_none()
-
-    if not last_task:
-        task_order = 1000.0
-    else:
-        task_order = last_task.order + 1000.0
-
     if task_data.status not in ["todo", "in_progress", "done"]:
         raise HTTPException(status_code=400, detail="Invalid status")
     
-    if task_data.priority not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]:
+    if task_data.priority not in list(range(1, 11)):
         raise HTTPException(status_code=400, detail="Invalid priority")
     
     if task_data.storyPoints not in [1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144]:
         raise HTTPException(status_code=400, detail="Invalid story points")
     
-    if task_data.description is not None:
+    if task_data.description:
         if not task_data.description.strip():
             raise HTTPException(status_code=400, detail="Description cannot be empty")
-
         if len(task_data.description) > 1000:
             raise HTTPException(status_code=400, detail="Description is too long")
+    
+    # ===== Convert dates =====
+    if task_data.dueDate:
+        due_date_dt = await convert_to_datetime(task_data.dueDate)
+    else:
+        due_date_dt = None
+    
+    if task_data.createdAt:
+        created_at_dt = await convert_to_datetime(task_data.createdAt)
+    else:
+        created_at_dt = get_current_date()
 
-    if task_data.dueDate is not None:
-        task_data.dueDate = await convert_to_datetime(task_data.dueDate)
+    # ===== Calculate task order =====
+    last_task = await WorkspaceTaskModel.find({
+        "stageId": task_data.stageId
+    }).sort("-order").first_or_none()
 
+    task_order = last_task.order + 1000.0 if last_task else 1000.0
 
-    # save new task in DB
+    # ===== Create new task =====
     new_task = WorkspaceTaskModel(
         projectId=task_data.projectId,
         stageId=task_data.stageId,
@@ -98,15 +86,15 @@ async def create_task(
         priority=task_data.priority,
         status=task_data.status,
         order=task_order,
-        dueDate=task_data.dueDate
+        createdAt=created_at_dt,
+        dueDate=due_date_dt
     )
 
-    # insert new task
     await new_task.insert()
 
-    # return created task
+    # ===== Return schema =====
     return WorkspaceTaskSchema(
-        id=str(ObjectId()),
+        id=str(new_task.id),
         projectId=task_data.projectId,
         stageId=task_data.stageId,
         title=task_data.title,
@@ -115,5 +103,5 @@ async def create_task(
         priority=task_data.priority,
         status=task_data.status,
         createdAt=new_task.createdAt.strftime("%Y-%m-%d"),
-        dueDate=task_data.dueDate.strftime("%Y-%m-%d")
+        dueDate=due_date_dt.strftime("%Y-%m-%d") if due_date_dt else None
     )

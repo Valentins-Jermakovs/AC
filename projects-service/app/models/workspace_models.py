@@ -47,7 +47,7 @@ class WorkspaceStageModel(Document):
     title: str      # Stage title
     order: int      # Stage order
     description: Optional[str] = None   # Stage description
-    createdAt: datetime = Field(default_factory=get_current_date)    # Creation date
+    createdAt: datetime   # Start date
     dueDate: Optional[datetime] = None
 
     class Settings:
@@ -75,7 +75,7 @@ class WorkspaceTaskModel(Document):
     priority: Optional[int] = None      # Optional priority
     status: Optional[str] = None        # Optional status
     order: float                        # Task order
-    createdAt: datetime = Field(default_factory=get_current_date)    # Creation date
+    createdAt: datetime    # Start date
     dueDate: Optional[datetime] = None
 
     class Settings:
@@ -112,3 +112,20 @@ class WorkspaceProjectMemberModel(Document):
             ],
         ]
 
+# ============================
+# Last opened WorkspaceProject model
+# ============================
+class LastOpenedWorkspaceModel(Document):
+    userId: str
+    workspaceId: str
+    workspaceTitle: str
+
+    class Settings:
+        name = "last_opened_workspace"
+        indexes = [
+            "userId",       # Index for user ID
+            [
+                ("userId", 1),      # Compound index for user ID
+                ("workspaceId", 1)  # and workspace ID
+            ],
+        ]

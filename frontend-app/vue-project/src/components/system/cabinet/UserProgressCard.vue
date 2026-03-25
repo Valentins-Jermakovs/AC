@@ -1,6 +1,6 @@
 <template>
   <!-- Card container -->
-  <div class="bg-base-200 border border-base-300 p-5 rounded-box">
+  <div class="bg-base-200 border border-base-300 p-5">
     <!-- Title and percentage row -->
     <div class="flex justify-between items-center gap-2">
       <!-- Card title -->

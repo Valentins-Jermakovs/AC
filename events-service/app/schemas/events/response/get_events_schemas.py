@@ -9,7 +9,6 @@ class SingleEventSchema(BaseModel):
     id: str
     title: str
     description: str
-    creatorId: str
     startDate: str
     endDate: str
     startTime: Optional[str] = None
@@ -26,7 +25,6 @@ class SingleEventSchema(BaseModel):
                     "id": "event_id",
                     "title": "Event title",
                     "description": "Event description",
-                    "creatorId": "creator_id",
                     "startDate": "2023-01-01",
                     "endDate": "2023-01-01",
                     "startTime": "00:00",

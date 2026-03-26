@@ -4,7 +4,8 @@ from contextlib import asynccontextmanager
 from app.dependencies.database import init_db
 # API routers
 from app.routes import (
-    events_route
+    events_route,
+    participiants_route
 )
 
 # =========================
@@ -30,3 +31,4 @@ app = FastAPI(lifespan=lifespan)
 # =========================
 # Each router adds its own endpoints to the app
 app.include_router(events_route.router)
+app.include_router(participiants_route.router)

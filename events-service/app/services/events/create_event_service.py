@@ -2,15 +2,19 @@
 # Schemas
 from app.schemas.events.response.get_events_schemas import SingleEventSchema
 from app.schemas.events.data.create_event_schema import CreateEventSchema
+from app.schemas.participants.data.create_participant_schema import CreateParticipantSchema
 # Models
 from app.models import EventModel
 from app.models.events_models import ColorEnum, StatusEnum
 # Utilities
 from app.utils.current_date import get_current_date
 from app.utils.time_converter import convert_to_datetime
+# Other services
+from app.services.participants.create_participant_service import create_participant
 # Libraries
 from fastapi import HTTPException
 from datetime import datetime, timezone
+import re
 
 async def create_event(
     data: CreateEventSchema,
@@ -74,9 +78,9 @@ async def create_event(
 
     # ===== Create event =====
     event = EventModel(
+        creatorId=user_id,
         title=data.title,
         description=data.description,
-        creatorId=user_id,
         startDate=start_date,
         endDate=end_date,
         startTime=data.startTime,
@@ -89,11 +93,23 @@ async def create_event(
 
     await event.save()
 
+    # validate creatorEmail
+    if not re.match(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', data.creatorEmail):
+        raise HTTPException(status_code=400, detail="Invalid email")
+
+    # ===== Create participant =====
+    participant = CreateParticipantSchema(
+        eventId=str(event.id),
+        userId=user_id,
+        userEmail=data.creatorEmail
+    )
+
+    await create_participant(participant)
+
     return SingleEventSchema(
         id=str(event.id),
         title=event.title,
         description=event.description,
-        creatorId=event.creatorId,
         startDate=event.startDate.strftime("%Y-%m-%d"),
         endDate=event.endDate.strftime("%Y-%m-%d"),
         startTime=event.startTime,

@@ -8,6 +8,10 @@ from app.schemas.events.data.create_event_schema import CreateEventSchema
 from app.schemas.events.data.update_event_schema import UpdateEventSchema
 # ===== response:
 from app.schemas.events.response.get_events_schemas import SingleEventSchema
+from app.schemas.events.response.get_events_schemas import (
+    MultipleEventsSchema,
+    EventsInMonthSchema
+)
 # =========================
 # Utils
 from app.utils.check_access_token import check_access_token
@@ -15,6 +19,9 @@ from app.utils.check_access_token import check_access_token
 from app.services.events.create_event_service import create_event
 from app.services.events.delete_event_service import delete_event
 from app.services.events.update_event_service import update_event
+from app.services.events.get_events_service import (
+    get_all_events
+)
 
 # Router
 router = APIRouter(
@@ -25,6 +32,32 @@ router = APIRouter(
 # Security scheme for access token
 security = HTTPBearer()
 
+
+# ===== GET ===========================================================
+@router.get(
+    "/get-all-events",
+    response_model=MultipleEventsSchema
+)
+async def get_all_events_endpoint(
+    credantials: HTTPAuthorizationCredentials = Depends(security),
+    limit: int = 10,
+    page: int = 1
+):
+    """
+    Get all events.
+
+    Steps:
+    1. Call service to get all events in DB
+    2. Return all events
+    """
+    access_token = credantials.credentials
+    user_id = await check_access_token(access_token)
+
+    return await get_all_events(
+        page=page,
+        limit=limit,
+        user_id=user_id
+    )
 
 # ===== POST ==========================================================
 @router.post(

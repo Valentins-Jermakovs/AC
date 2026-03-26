@@ -40,13 +40,13 @@ class StatusEnum(str, Enum):
 # Event Model
 # ===========================
 class EventModel(Document):
+    creatorId: str                                          # ID of creator
     title: str                                              # Title of event
     description: Optional[str] = None                       # Description of event
-    creatorId: str                                          # Id of creator
     startDate: datetime                                     # Start date of event
     endDate: datetime                                       # End date of event
-    startTime: Optional[str] = None                        # Start time of event
-    endTime: Optional[str] = None                          # End time of event
+    startTime: Optional[str] = None                         # Start time of event
+    endTime: Optional[str] = None                           # End time of event
     allDay: bool = False                                    # If event is all day
     color: ColorEnum = ColorEnum.primary                    # Color of event
     status: StatusEnum = StatusEnum.active                  # Status of event

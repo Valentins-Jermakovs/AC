@@ -5,6 +5,7 @@ from app.schemas.events.data.update_event_schema import UpdateEventSchema
 # Models
 from app.models import EventModel
 from app.models.events_models import ColorEnum, StatusEnum
+from app.models.participants_models import ParticipantModel
 from bson import ObjectId
 # Libraries
 from fastapi import HTTPException
@@ -70,10 +71,15 @@ async def update_event(
                 raise HTTPException(status_code=400, detail="Invalid end time format. Use HH:MM")
     
         # ===== Update event =====
+        
         event = await EventModel.find_one({
             "_id": ObjectId(data.eventId),
             "creatorId": user_id
         })
+
+        print("EventId:", data.eventId, "Type:", type(data.eventId))
+        print("UserId:", user_id, "Type:", type(user_id))
+
         if not event:
             raise HTTPException(status_code=404, detail="Event not found")
         
@@ -104,7 +110,6 @@ async def update_event(
             id=str(event.id),
             title=event.title,
             description=event.description,
-            creatorId=event.creatorId,
             startDate=event.startDate.strftime("%Y-%m-%d"),
             endDate=event.endDate.strftime("%Y-%m-%d"),
             startTime=event.startTime,

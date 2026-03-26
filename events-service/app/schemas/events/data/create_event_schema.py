@@ -14,6 +14,7 @@ class CreateEventSchema(BaseModel):
     allDay: bool
     color: str
     status: str
+    creatorEmail: str
 
     model_config = {
         "json_schema_extra": {
@@ -27,7 +28,8 @@ class CreateEventSchema(BaseModel):
                     "endTime": "00:00",
                     "allDay": True,
                     "color": "primary",
-                    "status": "active"
+                    "status": "active",
+                    "creatorEmail": "Ig0wz@example.com"
                 }
             ]
         }

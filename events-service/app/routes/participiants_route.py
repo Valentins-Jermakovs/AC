@@ -5,13 +5,18 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 # ===== data:
 from app.schemas.participants.data.create_participant_schema import CreateParticipantSchema
 # ===== response:
-from app.schemas.participants.response.get_participants_schemas import SingleParticipantSchema
+from app.schemas.participants.response.get_participants_schemas import (
+    SingleParticipantSchema,
+    PaginationMetadataSchema,
+    MultipleParticipantsSchema
+)
 # =========================
 # Utils
 from app.utils.check_access_token import check_access_token
 # Services
 from app.services.participants.create_participant_service import create_participant
 from app.services.participants.delete_participant_service import delete_participant
+from app.services.participants.get_participants_service import get_all_participants
 
 # Router
 router = APIRouter(
@@ -21,6 +26,37 @@ router = APIRouter(
 
 # Security scheme for access token
 security = HTTPBearer()
+
+# ===== GET ===========================================================
+# Route for getting all participants
+@router.get(
+    "/get-all-participants",
+    response_model=MultipleParticipantsSchema
+)
+async def get_all_participants_route(
+    limit: int = 10,
+    page: int = 1,
+    event_id: str | None = None,
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+):
+    """
+    Get all participants.
+
+    Steps:
+    1. Extract access token
+    2. Verify token and get user ID
+    3. Call service to get all participants
+    4. Return all participants
+    """
+    access_token = credentials.credentials
+    user_id = await check_access_token(access_token)
+
+    return await get_all_participants(
+        limit=limit,
+        page=page,
+        user_id=user_id,
+        event_id=event_id
+    )
 
 # ===== POST ==========================================================
 # Route for creating a new participant

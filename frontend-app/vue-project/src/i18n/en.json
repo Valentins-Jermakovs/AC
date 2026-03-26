@@ -1,10 +1,10 @@
 {
-  "appTitle": "Analytics Center",
+  "appTitle": "Work Analytics Center",
   "landingPage": {
-    "hero_title": "Analytics Center",
+    "hero_title": "Work Analytics Center",
     "hero_subtitle": "A personal productivity and analytics platform",
-    "about_title": "About Analytics Center",
-    "about_content": "Analytics Center is a personal productivity platform designed to help you monitor and improve your daily activities. It was created as an academic project to explore data analysis, task management, and productivity optimization.",
+    "about_title": "About Work Analytics Center",
+    "about_content": "Work Analytics Center is a personal productivity platform designed to help you monitor and improve your daily activities. It was created as an academic project to explore data analysis, task management, and productivity optimization.",
     "features": {
       "title": "Key Features",
       "tasks": "Task Management",
@@ -22,10 +22,10 @@
     },
     "CTA": {
       "title": "Get Started Today!",
-      "description": "Join the Analytics Center community to boost your productivity and gain valuable insights from your data."
+      "description": "Join the Work Analytics Center community to boost your productivity and gain valuable insights from your data."
     },
     "footer": {
-      "copyright": "© 2026 Analytics Center. All rights reserved.",
+      "copyright": "© 2026 Work Analytics Center. All rights reserved.",
       "privacy": "Privacy Policy",
       "terms": "Terms of Use"
     }
@@ -90,7 +90,7 @@
     "close": "OK"
   },
   "topbar": {
-    "title": "Analytics Center"
+    "title": "WAC"
   },
   "modals": {
     "logout": {

@@ -1,10 +1,10 @@
 {
-  "appTitle": "Analītikas centrs",
+  "appTitle": "Darba Analītikas Centrs",
   "landingPage": {
-    "hero_title": "Analītikas centrs",
+    "hero_title": "Darba Analītikas Centrs",
     "hero_subtitle": "Personīgās produktivitātes un analītikas platforma",
-    "about_title": "Par Analītikas Centru",
-    "about_content": "Analītikas centrs ir personīgā produktivitātes platforma, kas izstrādāta, lai palīdzētu jums uzraudzīt un uzlabot ikdienas aktivitātes. Izveidota kā akadēmisks projekts, lai izpētītu datu analīzi, uzdevumu pārvaldību un produktivitātes optimizāciju.",
+    "about_title": "Par Darba Analītikas Centru",
+    "about_content": "Darba Analītikas Centrs ir personīgā produktivitātes platforma, kas izstrādāta, lai palīdzētu jums uzraudzīt un uzlabot ikdienas aktivitātes. Izveidota kā akadēmisks projekts, lai izpētītu datu analīzi, uzdevumu pārvaldību un produktivitātes optimizāciju.",
     "features": {
       "title": "Galvenās funkcijas",
       "tasks": "Uzdevumu pārvaldība",
@@ -25,7 +25,7 @@
       "description": "Pievienojaties Analītikas Centra kopienai, lai palielināt produktivitāti un iegūt informāciju par datiem."
     },
     "footer": {
-      "copyright": "© 2026 Analītikas centrs. Visas tiesības aizsargātas.",
+      "copyright": "© 2026 Darba Analītikas Centrs. Visas tiesības aizsargātas.",
       "privacy": "Privātuma politika",
       "terms": "Lietošanai nosacījumi"
     }
@@ -90,7 +90,7 @@
     "close": "Labi"
   },
   "topbar": {
-    "title": "Analītikas centrs"
+    "title": "DAC"
   },
   "modals": {
     "logout": {

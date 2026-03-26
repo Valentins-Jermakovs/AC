@@ -9,7 +9,7 @@
         <div
           v-for="(feature, index) in features"
           :key="index"
-          class="card p-6 md:bg-base-200 md:card-border md:border-base-300"
+          class="card rounded-none p-6 md:bg-base-200 md:card-border md:border-base-300"
         >
           <div class="text-4xl mb-4">
             <font-awesome-icon :icon="feature.icon" />

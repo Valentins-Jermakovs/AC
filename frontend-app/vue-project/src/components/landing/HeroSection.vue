@@ -11,7 +11,7 @@
     <!-- Wrapper for centering content -->
     <div class="flex flex-col gap-4 items-center justify-center w-full">
       <!-- Text container with optional background on large screens -->
-      <div class="p-5 lg:bg-base-200 lg:w-1/3 h-52 rounded-box lg:border-base-300">
+      <div class="p-5 lg:bg-base-200 lg:w-1/3 h-52 lg:border-base-300">
         <!-- Main title -->
         <h1 class="text-4xl lg:text-5xl font-bold mb-4 text-center text-white lg:text-base-content">
           {{ $t('landingPage.hero_title') }}

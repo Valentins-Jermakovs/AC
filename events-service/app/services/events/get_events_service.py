@@ -13,6 +13,7 @@ from app.models.participants_models import ParticipantModel
 from fastapi import HTTPException
 from datetime import datetime, timezone
 from bson import ObjectId
+import re
 
 # ==========================
 # Get all events
@@ -21,7 +22,7 @@ async def get_all_events(
     page: int = 1,
     limit: int = 10,
     user_id: int = None
-):
+) -> MultipleEventsSchema:
     if limit <= 0 or limit > 100:
         raise HTTPException(status_code=400, detail="Limit must be 1-100")
     if page <= 0:
@@ -96,7 +97,9 @@ async def get_all_events_in_month(
     month: int, 
     year: int,
     user_id: str
-):
+) -> EventsInMonthSchema:
+    if year < 1:
+        raise HTTPException(status_code=400, detail="Invalid year")
 
     if month < 1 or month > 12:
         raise HTTPException(status_code=400, detail="Invalid month")
@@ -144,3 +147,111 @@ async def get_all_events_in_month(
     ]
 
     return EventsInMonthSchema(events=events)
+
+
+# Get events by title
+async def get_events_by_title(
+    title: str,
+    user_id: str,
+    page: int = 1,
+    limit: int = 10
+):
+
+    # validate pagination
+    if page < 1:
+        page = 1
+
+    if limit < 1 or limit > 100:
+        limit = 10
+
+    # get participant events
+    participants = await ParticipantModel.find({
+        "userId": user_id
+    }).to_list()
+
+    if not participants:
+        return MultipleEventsSchema(
+            events=[],
+            metadata=PaginationMetadataSchema(
+                page=1,
+                total_pages=0,
+                limit=limit,
+                total_items=0
+            )
+        )
+
+    # safe ObjectId conversion
+    event_ids = [
+        ObjectId(p.eventId)
+        for p in participants
+        if ObjectId.is_valid(p.eventId)
+    ]
+
+    if not event_ids:
+        return MultipleEventsSchema(
+            events=[],
+            metadata=PaginationMetadataSchema(
+                page=1,
+                total_pages=0,
+                limit=limit,
+                total_items=0
+            )
+        )
+
+    # safe regex search
+    safe_title = re.escape(title.strip())
+
+    query = {
+        "_id": {"$in": event_ids},
+        "title": {
+            "$regex": safe_title,
+            "$options": "i"
+        }
+    }
+
+    # count FIRST
+    total_events = await EventModel.find(query).count()
+
+    total_pages = (
+        (total_events + limit - 1) // limit
+        if total_events else 0
+    )
+
+    # clamp page
+    if page > total_pages and total_pages != 0:
+        page = total_pages
+
+    # get events
+    events = await EventModel.find(query)\
+        .sort("-createdAt")\
+        .skip((page - 1) * limit)\
+        .limit(limit)\
+        .to_list()
+
+    # map response
+    items = [
+        SingleEventSchema(
+            id=str(event.id),
+            title=event.title,
+            description=event.description,
+            startDate=event.startDate.strftime("%Y-%m-%d"),
+            endDate=event.endDate.strftime("%Y-%m-%d"),
+            startTime=event.startTime,
+            endTime=event.endTime,
+            allDay=event.allDay,
+            color=event.color,
+            status=event.status,
+            createdAt=event.createdAt.strftime("%Y-%m-%d")
+        )
+        for event in events
+    ]
+
+    return MultipleEventsSchema(
+        events=items,
+        metadata=PaginationMetadataSchema(
+            page=page,
+            total_pages=total_pages,
+            limit=limit,
+            total_items=total_events
+        )
+    )

@@ -21,7 +21,8 @@ from app.services.events.delete_event_service import delete_event
 from app.services.events.update_event_service import update_event
 from app.services.events.get_events_service import (
     get_all_events,
-    get_all_events_in_month
+    get_all_events_in_month,
+    get_events_by_title
 )
 
 # Router
@@ -83,6 +84,34 @@ async def get_all_events_in_month_endpoint(
     return await get_all_events_in_month(
         month=month,
         year=year,
+        user_id=user_id
+    )
+
+
+@router.get(
+    "/get-events-by-title",
+    response_model=MultipleEventsSchema
+)
+async def get_events_by_title_endpoint(
+    title: str,
+    page: int = 1,
+    limit: int = 10,
+    credantials: HTTPAuthorizationCredentials = Depends(security),
+):
+    """
+    Get all events by title.
+
+    Steps:
+    1. Call service to get all events in DB
+    2. Return all events
+    """
+    access_token = credantials.credentials
+    user_id = await check_access_token(access_token)
+
+    return await get_events_by_title(
+        title=title,
+        page=page,
+        limit=limit,
         user_id=user_id
     )
 

@@ -10,7 +10,7 @@ from app.schemas.participants.response.get_participants_schemas import (
 # Libraries
 from fastapi import HTTPException
 from bson import ObjectId
-from typing import List
+import re
 
 
 # ================================
@@ -77,6 +77,87 @@ async def get_all_participants(
         }
 
     # total count
+    total_items = await ParticipantModel.find(query).count()
+
+    participants = await ParticipantModel.find(query)\
+        .skip(offset)\
+        .limit(limit)\
+        .to_list()
+
+    total_pages = (
+        (total_items + limit - 1) // limit
+        if total_items else 0
+    )
+
+    items = [
+        SingleParticipantSchema(
+            id=str(p.id),
+            eventId=p.eventId,
+            userId=p.userId,
+            userEmail=p.userEmail
+        )
+        for p in participants
+    ]
+
+    return MultipleParticipantsSchema(
+        participants=items,
+        metadata=PaginationMetadataSchema(
+            page=page,
+            total_pages=total_pages,
+            limit=limit,
+            total_items=total_items
+        )
+    )
+
+
+async def search_event_participants_by_email(
+    event_id: str,
+    email: str,
+    user_id: str,
+    page: int = 1,
+    limit: int = 10
+) -> MultipleParticipantsSchema:
+
+    if not ObjectId.is_valid(event_id):
+        raise HTTPException(status_code=400, detail="Invalid event ID")
+
+    if not email:
+        raise HTTPException(status_code=400, detail="Email required")
+
+    if page <= 0:
+        raise HTTPException(status_code=400, detail="Page must be positive")
+
+    if limit <= 0 or limit > 100:
+        raise HTTPException(status_code=400, detail="Limit must be 1-100")
+
+    # validate email
+    regex = r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,7}"
+    if not re.fullmatch(regex, email):
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid email format"
+        )
+
+    offset = (page - 1) * limit
+
+    # check event ownership
+    event = await EventModel.find_one({
+        "_id": ObjectId(event_id),
+        "creatorId": str(user_id)
+    })
+
+    if not event:
+        raise HTTPException(status_code=404, detail="Event not found")
+
+    # search query
+    query = {
+        "eventId": event_id,
+        "userEmail": {
+            "$regex": email,
+            "$options": "i"
+        }
+    }
+
     total_items = await ParticipantModel.find(query).count()
 
     participants = await ParticipantModel.find(query)\

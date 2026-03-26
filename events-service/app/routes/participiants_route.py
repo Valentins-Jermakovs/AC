@@ -16,7 +16,7 @@ from app.utils.check_access_token import check_access_token
 # Services
 from app.services.participants.create_participant_service import create_participant
 from app.services.participants.delete_participant_service import delete_participant
-from app.services.participants.get_participants_service import get_all_participants
+from app.services.participants.get_participants_service import get_all_participants, search_event_participants_by_email
 
 # Router
 router = APIRouter(
@@ -56,6 +56,38 @@ async def get_all_participants_route(
         page=page,
         user_id=user_id,
         event_id=event_id
+    )
+
+# Route for getting participants by email
+@router.get(
+    "/get-participants-by-email",
+    response_model=MultipleParticipantsSchema
+)
+async def get_participants_by_email_route(
+    email: str,
+    event_id: str,
+    limit: int = 10,
+    page: int = 1,
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+):
+    """
+    Get participants by email.
+
+    Steps:
+    1. Extract access token
+    2. Verify token and get user ID
+    3. Call service to get participants by email
+    4. Return participants
+    """
+    access_token = credentials.credentials
+    user_id = await check_access_token(access_token)
+
+    return await search_event_participants_by_email(
+        event_id=event_id,
+        email=email,
+        user_id=user_id,
+        page=page,
+        limit=limit
     )
 
 # ===== POST ==========================================================

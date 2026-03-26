@@ -2,6 +2,8 @@
 from fastapi import HTTPException
 from app.models import EventModel
 from bson import ObjectId
+# Models
+from app.models.participants_models import ParticipantModel
 
 # =================================
 # Delete event
@@ -21,6 +23,11 @@ async def delete_event(
 
     if not event:
         raise HTTPException(status_code=404, detail="Event not found")
+    
+    # Delete participants
+    await ParticipantModel.find({
+        "eventId": eventId
+    }).delete()
     
     await event.delete()
 

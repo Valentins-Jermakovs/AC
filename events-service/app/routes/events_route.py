@@ -12,6 +12,7 @@ from app.schemas.events.response.get_events_schemas import SingleEventSchema
 from app.utils.check_access_token import check_access_token
 # Services
 from app.services.events.create_event_service import create_event
+from app.services.events.delete_event_service import delete_event
 
 # Router
 router = APIRouter(
@@ -47,4 +48,30 @@ async def create_event_endpoint(
     return await create_event(
         data=data, 
         user_id=user_id
+    )
+
+# ===== DELETE ==========================================================
+@router.delete(
+    "/delete-event/{eventId}",
+    response_model=dict
+)
+async def delete_event_endpoint(
+    eventId: str,
+    credantials: HTTPAuthorizationCredentials = Depends(security),
+):
+    """
+    Delete an event.
+
+    Steps:
+    1. Extract access token
+    2. Verify token and get user ID
+    3. Call service to delete event in DB
+    4. Return success message
+    """
+    access_token = credantials.credentials
+    user_id = await check_access_token(access_token)
+
+    return await delete_event(
+        eventId=eventId, 
+        createrId=user_id
     )

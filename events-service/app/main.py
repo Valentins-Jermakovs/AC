@@ -2,6 +2,10 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from app.dependencies.database import init_db
+# API routers
+from app.routes import (
+    events_route
+)
 
 # =========================
 # Application lifespan
@@ -24,6 +28,5 @@ app = FastAPI(lifespan=lifespan)
 # =========================
 # API endpoints
 # =========================
-@app.get("/")
-async def hello_world():
-    return {"message": "Hello World"}
+# Each router adds its own endpoints to the app
+app.include_router(events_route.router)

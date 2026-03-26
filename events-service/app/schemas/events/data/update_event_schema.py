@@ -14,15 +14,18 @@ class UpdateEventSchema(BaseModel):
     color: Optional[str]
     status: Optional[str]
 
-    class Config:
-        schema_extra = {
-            "example": {
-                "title": "Event title",
-                "description": "Event description",
-                "startDate": "2023-01-01T00:00:00.000Z",
-                "endDate": "2023-01-01T00:00:00.000Z",
-                "allDay": True,
-                "color": "primary",
-                "status": "active"
-            }
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "title": "Event title",
+                    "description": "Event description",
+                    "startDate": "2023-01-01T00:00:00.000Z",
+                    "endDate": "2023-01-01T00:00:00.000Z",
+                    "allDay": True,
+                    "color": "primary",
+                    "status": "active"
+                }
+            ]
         }
+    }

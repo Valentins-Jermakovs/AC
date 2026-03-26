@@ -1,7 +1,7 @@
 # Imports
 from enum import Enum
 from beanie import Document
-from datetime import datetime
+from datetime import datetime, time
 from pydantic import Field
 from typing import Optional
 # Utilities
@@ -45,6 +45,8 @@ class EventModel(Document):
     creatorId: str                                          # Id of creator
     startDate: datetime                                     # Start date of event
     endDate: datetime                                       # End date of event
+    startTime: Optional[str] = None                        # Start time of event
+    endTime: Optional[str] = None                          # End time of event
     allDay: bool = False                                    # If event is all day
     color: ColorEnum = ColorEnum.primary                    # Color of event
     status: StatusEnum = StatusEnum.active                  # Status of event

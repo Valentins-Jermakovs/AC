@@ -9,19 +9,26 @@ class CreateEventSchema(BaseModel):
     description: str
     startDate: str
     endDate: str
+    startTime: str
+    endTime: str
     allDay: bool
     color: str
     status: str
 
-    class Config:
-        schema_extra = {
-            "example": {
-                "title": "Event title",
-                "description": "Event description",
-                "startDate": "2023-01-01T00:00:00.000Z",
-                "endDate": "2023-01-01T00:00:00.000Z",
-                "allDay": True,
-                "color": "primary",
-                "status": "active"
-            }
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "title": "Event title",
+                    "description": "Event description",
+                    "startDate": "2023-01-01",
+                    "endDate": "2023-01-01",
+                    "startTime": "00:00",
+                    "endTime": "00:00",
+                    "allDay": True,
+                    "color": "primary",
+                    "status": "active"
+                }
+            ]
         }
+    }

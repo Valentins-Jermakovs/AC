@@ -5,6 +5,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 # ===== Events Schemas =====
 # ===== data:
 from app.schemas.events.data.create_event_schema import CreateEventSchema
+from app.schemas.events.data.update_event_schema import UpdateEventSchema
 # ===== response:
 from app.schemas.events.response.get_events_schemas import SingleEventSchema
 # =========================
@@ -13,6 +14,7 @@ from app.utils.check_access_token import check_access_token
 # Services
 from app.services.events.create_event_service import create_event
 from app.services.events.delete_event_service import delete_event
+from app.services.events.update_event_service import update_event
 
 # Router
 router = APIRouter(
@@ -47,6 +49,32 @@ async def create_event_endpoint(
 
     return await create_event(
         data=data, 
+        user_id=user_id
+    )
+
+# ===== PUT =============================================================
+@router.put(
+    "/update-event",
+    response_model=SingleEventSchema
+)
+async def update_event_endpoint(
+    data: UpdateEventSchema,
+    credantials: HTTPAuthorizationCredentials = Depends(security),
+):
+    """
+    Update an event.
+
+    Steps:
+    1. Extract access token
+    2. Verify token and get user ID
+    3. Call service to update event in DB
+    4. Return updated event
+    """
+    access_token = credantials.credentials
+    user_id = await check_access_token(access_token)
+
+    return await update_event(
+        data=data,
         user_id=user_id
     )
 

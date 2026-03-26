@@ -43,7 +43,6 @@ class EventModel(Document):
     title: str                                              # Title of event
     description: Optional[str] = None                       # Description of event
     creatorId: str                                          # Id of creator
-    participants: list[str] = Field(default_factory=list)   # List of participants
     startDate: datetime                                     # Start date of event
     endDate: datetime                                       # End date of event
     allDay: bool = False                                    # If event is all day
@@ -59,5 +58,4 @@ class EventModel(Document):
                 ("creatorId", 1),   # Compound index for creator ID
                 ("createdAt", -1)   # Sort by creation date in descending order
             ],
-            "participants",         # Index for participants
         ]

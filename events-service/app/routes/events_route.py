@@ -20,7 +20,8 @@ from app.services.events.create_event_service import create_event
 from app.services.events.delete_event_service import delete_event
 from app.services.events.update_event_service import update_event
 from app.services.events.get_events_service import (
-    get_all_events
+    get_all_events,
+    get_all_events_in_month
 )
 
 # Router
@@ -56,6 +57,32 @@ async def get_all_events_endpoint(
     return await get_all_events(
         page=page,
         limit=limit,
+        user_id=user_id
+    )
+
+
+@router.get(
+    "/get-all-events-in-month",
+    response_model=EventsInMonthSchema
+)
+async def get_all_events_in_month_endpoint(
+    month: int,
+    year: int,
+    credantials: HTTPAuthorizationCredentials = Depends(security),
+):
+    """
+    Get all events in a month.
+
+    Steps:
+    1. Call service to get all events in DB
+    2. Return all events
+    """
+    access_token = credantials.credentials
+    user_id = await check_access_token(access_token)
+
+    return await get_all_events_in_month(
+        month=month,
+        year=year,
         user_id=user_id
     )
 

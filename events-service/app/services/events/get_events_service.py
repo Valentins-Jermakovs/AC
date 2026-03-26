@@ -11,6 +11,7 @@ from app.models import EventModel
 from app.models.participants_models import ParticipantModel
 # Libraries
 from fastapi import HTTPException
+from datetime import datetime, timezone
 from bson import ObjectId
 
 # ==========================
@@ -89,3 +90,57 @@ async def get_all_events(
         events=items,
         metadata=metadata
     )
+
+# Get all events in a month
+async def get_all_events_in_month(
+    month: int, 
+    year: int,
+    user_id: str
+):
+
+    if month < 1 or month > 12:
+        raise HTTPException(status_code=400, detail="Invalid month")
+
+    start_date = datetime(year, month, 1, tzinfo=timezone.utc)
+
+    if month == 12:
+        end_date = datetime(year + 1, 1, 1, tzinfo=timezone.utc)
+    else:
+        end_date = datetime(year, month + 1, 1, tzinfo=timezone.utc)
+
+    participants = await ParticipantModel.find({
+        "userId": user_id
+    }).to_list()
+
+    if not participants:
+        return EventsInMonthSchema(events=[])
+
+    event_ids = [
+        ObjectId(p.eventId)
+        for p in participants
+        if ObjectId.is_valid(p.eventId)
+    ]
+
+    calendar_events = await EventModel.find({
+        "_id": {"$in": event_ids},
+        "startDate": {"$lt": end_date},
+        "endDate": {"$gte": start_date}
+    }).to_list()
+
+    events = [
+        SingleEventSchema(
+            id=str(event.id),
+            title=event.title,
+            description=event.description,
+            startDate=event.startDate.strftime("%Y-%m-%d"),
+            endDate=event.endDate.strftime("%Y-%m-%d"),
+            startTime=event.startTime,
+            endTime=event.endTime,
+            allDay=event.allDay,
+            color=event.color,
+            status=event.status,
+            createdAt=event.createdAt.strftime("%Y-%m-%d")
+        ) for event in calendar_events
+    ]
+
+    return EventsInMonthSchema(events=events)

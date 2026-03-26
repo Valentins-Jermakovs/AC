@@ -4,7 +4,7 @@ from beanie import init_beanie
 import os
 from dotenv import load_dotenv
 # Models
-
+from ..models import EventModel
 
 # Colors for logging
 class bcolors:
@@ -59,6 +59,6 @@ async def init_db():
     await init_beanie(
         database=db,
         document_models=[
-
+            EventModel
         ]
     )

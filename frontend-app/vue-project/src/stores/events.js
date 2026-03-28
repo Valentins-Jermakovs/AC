@@ -9,6 +9,7 @@ import { API_ENDPOINTS } from '@/config/api'
 
 // Auth and User stores (used for token and role checking)
 import { useAuthStore } from './auth'
+import { faRefresh } from '@fortawesome/free-solid-svg-icons'
 
 // Create Admin store
 export const useEventsStore = defineStore('events', {
@@ -35,6 +36,7 @@ export const useEventsStore = defineStore('events', {
         lastRequest: null,
     }),
     actions: {
+        // ===== EVENTS MANAGEMENT =====
         async getAllEvents() {
             const authStore = useAuthStore()
 
@@ -221,6 +223,63 @@ export const useEventsStore = defineStore('events', {
             } finally {
                 this.loading = false
             }
-        }
+        },
+        // --------------------------
+        // Pagination helpers
+        // --------------------------
+        async setPage(page) {
+            this.meta.page = page
+            await this.fetchUsers(page, this.meta.limit)
+        },
+
+        async setLimit(limit) {
+            this.meta.limit = limit
+            this.meta.page = 1
+        },
+
+        async nextPage() {
+            if (this.meta.page < this.meta.total_pages) {
+                this.meta.page++
+                await this.fetchUsers(this.meta.page, this.meta.limit)
+            }
+        },
+
+        async prevPage() {
+            if (this.meta.page > 1) {
+                this.meta.page--
+                await this.fetchUsers(this.meta.page, this.meta.limit)
+            }
+        },
+
+        async refresh() {
+            if (!this.lastRequest) {
+                await this.getAllEvents()
+                return
+            }
+
+            switch (this.lastRequest.type) {
+                case 'all':
+                    await this.getAllEvents()
+                    break
+                case 'month':
+                    await this.getEventsByMonth(this.lastRequest.month, this.lastRequest.year)
+                    break
+                case 'title':
+                    await this.getEventsByTitle(this.lastRequest.title)
+                    break
+            }
+        },
+
+        // --------------------------
+        // Clear
+        // --------------------------
+        clearSearch() {
+            this.searchMode = 'all'
+            this.searchQuery = ''
+        },
+        clearError() {
+            this.error = null
+        },
+
     }
 })

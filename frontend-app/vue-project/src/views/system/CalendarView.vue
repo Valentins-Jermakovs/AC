@@ -1,6 +1,8 @@
 <template>
   <PageHeader :title="title" :imageUrl="image"></PageHeader>
   <NavigationPanel :buttons="navButtons" v-model="activePage"></NavigationPanel>
+
+  <CalendarPage v-if="activePage === 'calendar'"></CalendarPage>
 </template>
 
 <script>
@@ -10,12 +12,14 @@ import headerImage from '@/assets/images/claudio-guglieri-Qj8haLTfHzs-unsplash.j
 // for testing only
 import { useEventsStore } from '@/stores/events';
 import NavigationPanel from '@/components/ui/NavigationPanel.vue';
+import CalendarPage from '@/components/system/calendar/calendarPage.vue';
 
 export default {
   name: 'CalendarView',
   components: {
     PageHeader,
-    NavigationPanel
+    NavigationPanel,
+    CalendarPage
   },
   data() {
     return {

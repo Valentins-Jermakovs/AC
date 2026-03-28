@@ -48,7 +48,6 @@ export const useEventsStore = defineStore('events', {
         this.searchQuery = ''
       } catch (error) {
         this.error = error.response?.data?.detail || error.message || 'Something went wrong'
-        this.meta = { page: 1, limit: 10, total_events: 0, total_pages: 0 }
       } finally {
         this.loading = false
       }
@@ -75,7 +74,6 @@ export const useEventsStore = defineStore('events', {
         this.lastRequest = { type: 'title', title: this.searchQuery }
       } catch (error) {
         this.error = error.response?.data?.detail || error.message || 'Something went wrong'
-        this.meta = { page: 1, limit: 10, total_events: 0, total_pages: 1 }
       } finally {
         this.loading = false
       }
@@ -102,13 +100,27 @@ export const useEventsStore = defineStore('events', {
         this.lastRequest = { type: 'month', month, year }
       } catch (error) {
         this.error = error.response?.data?.detail || error.message || 'Something went wrong'
-        this.meta = { page: 1, limit: 10, total_events: 0, total_pages: 0 }
       } finally {
         this.loading = false
       }
     },
 
     async createEvent(data) {
+
+      /* data = {
+        "allDay": true,
+        "color": "primary",
+        "creatorEmail": "Ig0wz@example.com",
+        "description": "Event description",
+        "endDate": "2023-01-01",
+        "endTime": "00:00",
+        "startDate": "2023-01-01",
+        "startTime": "00:00",
+        "status": "active",
+        "title": "Event title"
+      }
+      */
+
       const authStore = useAuthStore()
       this.loading = true
       this.error = null

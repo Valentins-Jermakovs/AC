@@ -23,6 +23,10 @@ async def get_all_events(
     limit: int = 10,
     user_id: int = None
 ) -> MultipleEventsSchema:
+    
+    if page < 1:
+        page = 1
+
     if limit <= 0 or limit > 100:
         raise HTTPException(status_code=400, detail="Limit must be 1-100")
     if page <= 0:
@@ -173,7 +177,7 @@ async def get_events_by_title(
         return MultipleEventsSchema(
             events=[],
             metadata=PaginationMetadataSchema(
-                page=1,
+                page=0,
                 total_pages=0,
                 limit=limit,
                 total_items=0
@@ -191,7 +195,7 @@ async def get_events_by_title(
         return MultipleEventsSchema(
             events=[],
             metadata=PaginationMetadataSchema(
-                page=1,
+                page=0,
                 total_pages=0,
                 limit=limit,
                 total_items=0
@@ -218,13 +222,17 @@ async def get_events_by_title(
     )
 
     # clamp page
-    if page > total_pages and total_pages != 0:
+    if total_pages == 0:
+        page = 0
+    elif page > total_pages:
         page = total_pages
+
+    skip = (page - 1) * limit if page > 0 else 0
 
     # get events
     events = await EventModel.find(query)\
         .sort("-createdAt")\
-        .skip((page - 1) * limit)\
+        .skip(skip)\
         .limit(limit)\
         .to_list()
 

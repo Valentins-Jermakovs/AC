@@ -11,31 +11,18 @@
         </button>
 
         <!-- SEARCH -->
-        <div
-          class="w-full flex flex-col sm:flex-row gap-2 border border-base-300 bg-base-100 p-2 wrap-break-word"
-        >
-          <input
-            type="text"
-            class="input w-full"
-            :placeholder="$t('common.search')"
-            v-model="eventsStore.searchQuery"
-            @keyup.enter="searchEvents"
-            :disabled="eventsStore.searchType === 'all'"
-          />
+        <div class="w-full flex flex-col sm:flex-row gap-2 border border-base-300 bg-base-100 p-2 wrap-break-word">
+          <input type="text" class="input w-full" :placeholder="$t('common.search')" v-model="eventsStore.searchQuery"
+            @keyup.enter="searchEvents" :disabled="eventsStore.searchType === 'all'" />
 
-          <select
-            class="bg-neutral text-neutral-content select select-bordered w-full sm:w-40"
-            v-model="eventsStore.searchMode"
-          >
+          <select class="bg-neutral text-neutral-content select select-bordered w-full sm:w-40"
+            v-model="eventsStore.searchMode">
             <option value="all">{{ $t('filters.all') }}</option>
             <option value="title">{{ $t('filters.by_title') }}</option>
           </select>
 
-          <button
-            class="btn btn-primary w-full sm:w-auto"
-            @click="searchEvents"
-            :disabled="eventsStore.searchMode !== 'all' && !eventsStore.searchQuery.trim()"
-          >
+          <button class="btn btn-primary w-full sm:w-auto" @click="searchEvents"
+            :disabled="eventsStore.searchMode !== 'all' && !eventsStore.searchQuery.trim()">
             <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
           </button>
         </div>
@@ -44,11 +31,8 @@
 
     <!-- EVENTS LIST -->
     <div class="w-full flex flex-col gap-4 bg-base-200 border border-base-300 p-2">
-      <div
-        v-for="event in eventsStore.events"
-        :key="event.id"
-        class="w-full bg-base-100 border border-base-300 p-4 flex flex-col gap-3"
-      >
+      <div v-for="event in eventsStore.events" :key="event.id"
+        class="w-full bg-base-100 border border-base-300 p-4 flex flex-col gap-3">
         <!-- TITLE -->
         <div class="flex items-center gap-2 text-lg font-bold text-base-content">
           <font-awesome-icon icon="fa-solid fa-calendar" />
@@ -97,14 +81,123 @@
           </button>
         </div>
       </div>
+      <!-- EMPTY -->
+      <div v-if="
+        !eventsStore.loading &&
+        eventsStore.events.length === 0
+      " class="p-4 text-center text-base-content/60 flex items-center justify-center gap-2">
+        <font-awesome-icon icon="fa-solid fa-users" class="text-3xl" />
+        Error, empty events
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div
+      class="w-full flex flex-col sm:flex-row gap-3 sm:items-center bg-base-200 border border-base-300 wrap-break-word p-3 sm:px-4 sm:py-2">
+      <!-- LIMIT -->
+      <div>
+        <select class="select select-bordered w-full sm:w-24" v-model="eventsStore.meta.limit"
+          @change="eventsStore.setLimit(Number($event.target.value))">
+          <option :value="5">5</option>
+          <option :value="10">10</option>
+          <option :value="20">20</option>
+          <option :value="30">30</option>
+        </select>
+      </div>
+
+      <!-- META -->
+      <div class="flex flex-col sm:flex-row gap-1 sm:gap-4 items-center md:items-start text-sm">
+
+        <p>
+          {{ $t('cabinet.admin.table_footer.total') }}
+          <span class="font-semibold">
+            {{ eventsStore.meta.total_events }}
+          </span>
+        </p>
+
+        <p>
+          {{ $t('cabinet.admin.table_footer.page') }}
+          <span class="font-semibold">
+            {{ eventsStore.meta.page }}/{{ eventsStore.meta.total_pages }}
+          </span>
+        </p>
+
+      </div>
+
+      <!-- PAGINATION -->
+      <div class="flex flex-col md:flex-row gap-2 sm:ml-auto">
+
+        <button class="btn w-full md:w-auto btn-neutral" @click="eventsStore.prevPage"
+          :disabled="eventsStore.meta.page === 0 || eventsStore.meta.page === 1">
+          <font-awesome-icon icon="fa-solid fa-arrow-left" />
+        </button>
+
+        <button class="btn w-full md:w-auto btn-neutral" @click="eventsStore.nextPage"
+          :disabled="eventsStore.meta.page === eventsStore.meta.total_pages">
+          <font-awesome-icon icon="fa-solid fa-arrow-right" />
+        </button>
+
+      </div>
+
     </div>
   </div>
+
+  <!-- Add event modal -->
+  <base-dialog v-model="addEventModal" title="Add event" confirmText="Create" cancelText="Cancel"
+    @confirm="confirmAddEvent" @cancel="closeAddEventModal">
+
+    <div class="flex flex-col gap-3 w-full">
+
+      <Transition name="error-slide">
+        <div v-if="eventError">
+          <h1 class="text-error mb-2">{{ eventError }}</h1>
+        </div>
+      </Transition>
+
+      <input class="input w-full" placeholder="Title" v-model="newEvent.title" />
+
+      <textarea class="textarea w-full min-h-52" placeholder="Description" v-model="newEvent.description"></textarea>
+
+      <div class="grid grid-cols-2 gap-2">
+
+        <input type="date" class="input" v-model="newEvent.startDate" />
+
+        <input type="date" class="input" v-model="newEvent.endDate" />
+
+        <input type="time" class="input" v-model="newEvent.startTime" />
+
+        <input type="time" class="input" v-model="newEvent.endTime" />
+
+      </div>
+
+      <label class="flex gap-2 items-center">
+
+        <input type="checkbox" class="checkbox" v-model="newEvent.allDay" />
+
+        All day
+
+      </label>
+
+      <select class="select w-full" v-model="newEvent.color">
+
+        <option value="primary">Primary</option>
+        <option value="success">Success</option>
+        <option value="warning">Warning</option>
+        <option value="error">Error</option>
+
+      </select>
+
+    </div>
+
+  </base-dialog>
 </template>
 
 <script>
 import BaseDialog from '@/components/common/BaseDialog.vue'
 import LoadingScreen from '@/components/common/LoadingScreen.vue'
 import { useEventsStore } from '@/stores/events'
+import { useUserStore } from '@/stores/user';
+
 
 export default {
   name: 'EventSpace',
@@ -113,6 +206,21 @@ export default {
   data() {
     return {
       eventsStore: useEventsStore(),
+      userStore: useUserStore(),
+
+      addEventModal: false,
+
+      newEvent: {
+        title: '',
+        description: '',
+        startDate: '',
+        endDate: '',
+        startTime: '',
+        endTime: '',
+        allDay: false,
+        color: 'primary',
+        status: 'active'
+      }
     }
   },
 
@@ -124,6 +232,7 @@ export default {
 
   async mounted() {
     await this.eventsStore.getAllEvents()
+    await this.userStore.fetchMe()
   },
 
   methods: {
@@ -148,6 +257,55 @@ export default {
     async changeLimit(limit) {
       await this.eventsStore.setLimit(Number(limit))
     },
+
+    openAddEventModal() {
+      this.addEventModal = true
+      this.eventsStore.clearError()
+    },
+
+    closeAddEventModal() {
+      this.addEventModal = false
+    },
+
+    async confirmAddEvent() {
+
+      try {
+
+        const event = {
+          title: this.newEvent.title,
+          description: this.newEvent.description,
+          startDate: this.newEvent.startDate,
+          endDate: this.newEvent.endDate,
+          startTime: this.newEvent.startTime,
+          endTime: this.newEvent.endTime,
+          allDay: this.newEvent.allDay,
+          color: this.newEvent.color,
+          status: this.newEvent.status,
+          creatorEmail: this.userStore.email
+        }
+
+        await this.eventsStore.createEvent(event)
+
+        this.addEventModal = false
+
+        // reset form
+        this.newEvent = {
+          title: '',
+          description: '',
+          startDate: '',
+          endDate: '',
+          startTime: '',
+          endTime: '',
+          allDay: false,
+          color: 'primary',
+          status: 'active'
+        }
+
+      } catch (e) {
+        // error jau store
+      }
+
+    }
   },
 }
 </script>

@@ -91,25 +91,10 @@
 
         <!-- ACTIONS -->
         <div class="flex justify-end mt-2">
-          <div class="dropdown dropdown-end">
-            <div tabindex="0" class="btn btn-sm btn-neutral">Actions ⋮</div>
-            <ul tabindex="0" class="dropdown-content menu p-2 bg-base-100 border border-base-300">
-              <li>
-                <button
-                  class="flex items-center gap-2 text-base-content hover:text-base-content/90"
-                >
-                  <font-awesome-icon icon="fa-solid fa-pencil" />
-                  Edit
-                </button>
-              </li>
-              <li>
-                <button class="flex items-center gap-2 text-error hover:text-error/80">
-                  <font-awesome-icon icon="fa-solid fa-trash" />
-                  Delete
-                </button>
-              </li>
-            </ul>
-          </div>
+          <button class="btn btn-info">
+            <font-awesome-icon icon="fa-solid fa-link" />
+            Enter
+          </button>
         </div>
       </div>
     </div>

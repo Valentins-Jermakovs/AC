@@ -46,10 +46,8 @@ export const API_ENDPOINTS = {
   // GET - KPI CARDS
   GET_ALL_PRIVATE_TASKS_COUNTED: '/private-tasks/get-all-tasks-counted',
   GET_ALL_PRIVATE_COMPLETED_TASKS_COUNTED: '/private-tasks/get-all-tasks-completed-counted',
-  GET_ALL_PRIAVTE_TASKS_IN_CURRENT_MONTH_COUNTED:
-    '/private-tasks/get-all-tasks-current-month-counted',
-  GET_ALL_PRIVATE_COMPLETED_TASKS_IN_CURRENT_MONTH_COUNTED:
-    '/private-tasks/get-all-tasks-current-month-completed-counted',
+  GET_ALL_PRIAVTE_TASKS_IN_CURRENT_MONTH_COUNTED: '/private-tasks/get-all-tasks-current-month-counted',
+  GET_ALL_PRIVATE_COMPLETED_TASKS_IN_CURRENT_MONTH_COUNTED: '/private-tasks/get-all-tasks-current-month-completed-counted',
 
   // POST
   CREATE_PRIVATE_TASK: '/private-tasks/create-task',
@@ -167,4 +165,28 @@ export const API_ENDPOINTS = {
   // PUT
   SET_SELECTED_PROJECT: '/workspace/selected-project/set-selected-project',
   DELETE_SELECTED_PROJECT: '/workspace/selected-project/clear-selected-project',
+
+
+  // ===== EVENTS MANAGEMENT =====
+
+  //=====events:
+  // GET
+  GET_ALL_EVENTS: '/events/get-all-events',
+  GET_EVENTS_IN_MONTH: '/events/get-all-events-in-month',
+  GET_EVENTS_BY_TITLE: '/events/get-events-by-title',
+  //POST
+  CREATE_EVENT: '/events/create-event',
+  //PUT
+  UPDATE_EVENT: '/events/update-event',
+  //DELETE
+  DELETE_EVENT: (id) => `/events/delete-event/${id}`,
+
+  //=====participants:
+  // GET
+  GET_ALL_PARTICIPANTS: '/participants/get-all-participants',
+  GET_PARTICIPANTS_BY_EMAIL: '/participants/get-participants-by-email',
+  //POST
+  CREATE_PARTICIPANT: '/participants/create-participant',
+  //DELETE
+  DELETE_PARTICIPANT: (id) => `/participants/delete-participant/${id}`,
 }

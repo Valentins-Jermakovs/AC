@@ -1,6 +1,5 @@
 <template>
-  <div class="bg-base-200 border border-base-300"
-  v-if="privateTasksStore.privateTasks.length > 0">
+  <div class="bg-base-200 border border-base-300" v-if="privateTasksStore.privateTasks.length > 0">
     <!-- Header -->
     <div class="p-5 border-b border-base-300">
       <h1 class="text-xl font-semibold">

@@ -126,7 +126,6 @@ export const useWorkspaceProjectsStore = defineStore('workspaceProjects', {
           this.meta.page = 1
         }
       } catch (err) {
-
         this.meta = {
           page: 1,
           limit: 10,

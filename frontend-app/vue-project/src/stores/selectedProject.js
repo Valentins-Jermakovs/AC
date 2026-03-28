@@ -181,6 +181,6 @@ export const useSelectedProjectStore = defineStore('selectedProject', {
       } finally {
         this.loading = false
       }
-    }
+    },
   },
 })

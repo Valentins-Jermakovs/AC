@@ -3,23 +3,26 @@
   <NavigationPanel :buttons="navButtons" v-model="activePage"></NavigationPanel>
 
   <CalendarPage v-if="activePage === 'calendar'"></CalendarPage>
+  <EventsPage v-if="activePage === 'events'"></EventsPage>
 </template>
 
 <script>
-import PageHeader from '@/components/ui/PageHeader.vue';
+import PageHeader from '@/components/ui/PageHeader.vue'
 import headerImage from '@/assets/images/claudio-guglieri-Qj8haLTfHzs-unsplash.jpg'
 
 // for testing only
-import { useEventsStore } from '@/stores/events';
-import NavigationPanel from '@/components/ui/NavigationPanel.vue';
-import CalendarPage from '@/components/system/calendar/calendarPage.vue';
+import { useEventsStore } from '@/stores/events'
+import NavigationPanel from '@/components/ui/NavigationPanel.vue'
+import CalendarPage from '@/components/system/calendar/calendarPage.vue'
+import EventsPage from '@/components/system/calendar/eventsPage.vue'
 
 export default {
   name: 'CalendarView',
   components: {
     PageHeader,
     NavigationPanel,
-    CalendarPage
+    CalendarPage,
+    EventsPage,
   },
   data() {
     return {
@@ -35,7 +38,7 @@ export default {
 
   async mounted() {
     //await this.eventsStore.getAllEvents();
-    await this.eventsStore.getEventsByMonth(3, 2026);
+    await this.eventsStore.getEventsByMonth(3, 2026)
   },
 
   computed: {
@@ -44,23 +47,22 @@ export default {
       let navButtons = [
         {
           key: 'calendar',
-          title: "Calendar",
+          title: 'Calendar',
         },
         {
           key: 'events',
-          title: "Events",
+          title: 'Events',
         },
         {
           key: 'participants',
-          title: "Participants",
+          title: 'Participants',
         },
       ]
 
       return navButtons
     },
-  }
+  },
 }
-
 </script>
 
 <style scoped></style>

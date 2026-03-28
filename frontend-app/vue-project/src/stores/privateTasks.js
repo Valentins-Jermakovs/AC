@@ -110,7 +110,7 @@ export const usePrivateTasksStore = defineStore('privateTasks', {
 
       try {
         const response = await api.get(
-          API_ENDPOINTS.GET_ALL_PRIAVTE_TASKS_IN_CURRENT_MONTH_COUNTED,
+          API_ENDPOINTS.GET_ALL_PRIVATE_TASKS_IN_CURRENT_MONTH_COUNTED,
           {
             headers: {
               Authorization: `Bearer ${authStore.accessToken}`,

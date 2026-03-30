@@ -31,10 +31,12 @@ export const useEventParticipantsStore = defineStore('eventParticipants', {
             this.loading = true
             this.error = null
 
+            this.participants = []
+
             try {
                 const response = await api.get(API_ENDPOINTS.GET_ALL_PARTICIPANTS, {
                     params: {
-                        eventId: this.selectedEvent.Id,
+                        event_id: this.selectedEvent.id,
                         page: this.meta.page,
                         limit: this.meta.limit
                     },
@@ -65,7 +67,7 @@ export const useEventParticipantsStore = defineStore('eventParticipants', {
             try {
                 const response = await api.get(API_ENDPOINTS.GET_PARTICIPANTS_BY_EMAIL, {
                     params: {
-                        eventId: this.selectedEvent.Id,
+                        event_id: this.selectedEvent.id,
                         email: email,
                         page: this.meta.page,
                         limit: this.meta.limit
@@ -105,8 +107,6 @@ export const useEventParticipantsStore = defineStore('eventParticipants', {
                 const response = await api.post(API_ENDPOINTS.CREATE_PARTICIPANT, data, {
                     headers: { Authorization: `Bearer ${authStore.accessToken}` },
                 })
-
-                await this.fetchParticipants()
                 await this.refresh()
                 return response.data
             } catch (err) {
@@ -127,7 +127,6 @@ export const useEventParticipantsStore = defineStore('eventParticipants', {
                     headers: { Authorization: `Bearer ${authStore.accessToken}` },
                 })
 
-                await this.fetchParticipants()
                 await this.refresh()
                 return response.data
             } catch (err) {

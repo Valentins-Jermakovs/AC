@@ -53,10 +53,6 @@ export default {
           key: 'events',
           title: 'Events',
         },
-        {
-          key: 'participants',
-          title: 'Participants',
-        },
       ]
 
       return navButtons

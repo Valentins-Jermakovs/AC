@@ -125,7 +125,6 @@ export const useEventsStore = defineStore('events', {
     },
 
     async createEvent(data) {
-
       /* data = {
         "allDay": true,
         "color": "primary",

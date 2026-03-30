@@ -1,6 +1,5 @@
 <template>
   <div class="w-full flex flex-col gap-1">
-
     <!-- Week days header -->
     <div class="hidden md:grid md:grid-cols-7 text-sm">
       <div
@@ -34,10 +33,8 @@
         >
           {{ event.title }}
         </div>
-
       </div>
     </div>
-
   </div>
 </template>
 

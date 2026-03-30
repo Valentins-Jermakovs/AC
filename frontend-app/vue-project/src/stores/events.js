@@ -6,7 +6,6 @@ import { useAuthStore } from './auth'
 export const useEventsStore = defineStore('events', {
   state: () => ({
     events: [],
-    participants: [],
     selectedEvent: null,
 
     meta: {
@@ -22,7 +21,7 @@ export const useEventsStore = defineStore('events', {
     searchMode: 'all',
     searchQuery: '',
 
-    lastRequest: null, // { type: 'all' | 'month' | 'title', month?, year?, title? }
+    lastRequest: null, // { type: 'all' | 'month' }
   }),
   actions: {
     // ===== EVENTS MANAGEMENT =====
@@ -141,6 +140,20 @@ export const useEventsStore = defineStore('events', {
     },
 
     async updateEvent(data) {
+      /*
+      data = {
+        "allDay": true,
+        "color": "primary",
+        "description": "Event description",
+        "endDate": "2023-01-01",
+        "endTime": "00:00",
+        "startDate": "2023-01-01",
+        "startTime": "00:00",
+        "status": "active",
+        "title": "Event title",
+        "eventId": 1
+      }
+      */
       const authStore = useAuthStore()
       this.loading = true
       this.error = null

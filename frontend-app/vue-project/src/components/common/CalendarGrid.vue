@@ -1,34 +1,55 @@
 <template>
-  <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 text-xs sm:text-sm gap-1">
-    <div
-      v-for="(day, index) in days"
-      :key="index"
-      class="h-24 border border-base-content/10 p-2 flex flex-col gap-1 overflow-hidden bg-base-100"
-      :class="{
-        'bg-base-300 font-bold': day && isToday(day),
-      }"
-    >
-      <!-- Day number -->
-      <span v-if="day" class="font-semibold">
-        {{ day }}
-      </span>
+  <div class="w-full flex flex-col gap-1">
 
-      <!-- Events -->
+    <!-- Week days header -->
+    <div class="hidden md:grid md:grid-cols-7 text-sm">
       <div
-        v-for="event in getEventsForDay(day)"
-        :key="event.id"
-        class="text-xs px-1 py-0.5 mb-0.5 truncate text-white"
-        :class="colorClass(event.color)"
+        v-for="dayName in weekDays"
+        :key="dayName"
+        class="p-2 text-center font-semibold border border-base-content/10 bg-base-100"
       >
-        {{ event.title }}
+        {{ dayName }}
       </div>
     </div>
+
+    <!-- Calendar grid -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 text-xs sm:text-sm gap-1">
+      <div
+        v-for="(day, index) in days"
+        :key="index"
+        class="h-24 border border-base-content/10 p-2 flex flex-col gap-1 overflow-hidden bg-base-100"
+        :class="{
+          'bg-base-300 font-bold': day && isToday(day),
+        }"
+      >
+        <span v-if="day" class="font-semibold">
+          {{ day }}
+        </span>
+
+        <div
+          v-for="event in getEventsForDay(day)"
+          :key="event.id"
+          class="text-xs px-1 py-0.5 mb-0.5 truncate text-white"
+          :class="colorClass(event.color)"
+        >
+          {{ event.title }}
+        </div>
+
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script>
 export default {
   name: 'CalendarGrid',
+
+  data() {
+    return {
+      weekDays: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    }
+  },
 
   props: {
     days: {

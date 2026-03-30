@@ -68,16 +68,24 @@
           </div>
           <div>All Day: {{ event.allDay ? 'Yes' : 'No' }}</div>
           <div class="flex gap-1 flex-wrap">
-            <span class="badge" :class="'badge-' + event.color">{{ event.color }}</span>
+            <span class="badge" :class="`badge-${event.color}`">{{ event.color }}</span>
             <span class="badge badge-info">{{ event.status }}</span>
           </div>
         </div>
 
         <!-- ACTIONS -->
-        <div class="flex justify-end mt-2">
-          <button class="btn btn-info">
-            <font-awesome-icon icon="fa-solid fa-link" />
-            Enter
+        <div class="flex justify-end gap-1">
+          <button class="btn btn-sm md:btn-md btn-neutral flex-1 md:flex-none">
+            <font-awesome-icon icon="fa-solid fa-users" />
+            User managment
+          </button>
+          <button class="btn btn-sm md:btn-md btn-neutral flex-1 md:flex-none" @click="openUpdateEventModal(event)">
+            <font-awesome-icon icon="fa-solid fa-pencil" />
+            Update
+          </button>
+          <button class="btn btn-sm md:btn-md btn-error flex-1 md:flex-none" @click="openDeleteEventModal(event)">
+            <font-awesome-icon icon="fa-solid fa-trash" />
+            Delete
           </button>
         </div>
       </div>
@@ -190,6 +198,82 @@
     </div>
 
   </base-dialog>
+
+
+  <!-- Update event modal -->
+  <base-dialog v-model="updateEventModal" title="Update event" confirmText="Update" cancelText="Cancel"
+    @confirm="confirmUpdateEvent" @cancel="closeUpdateEventModal">
+
+    <div class="flex flex-col gap-3 w-full">
+
+      <Transition name="error-slide">
+        <div v-if="eventError">
+          <h1 class="text-error mb-2">{{ eventError }}</h1>
+        </div>
+      </Transition>
+
+      <input class="input w-full" placeholder="Title" v-model="updateEvent.title" />
+
+      <textarea class="textarea w-full min-h-52" placeholder="Description" v-model="updateEvent.description"></textarea>
+
+      <div class="grid grid-cols-2 gap-2">
+
+        <input type="date" class="input" v-model="updateEvent.startDate" />
+
+        <input type="date" class="input" v-model="updateEvent.endDate" />
+
+        <input type="time" class="input" v-model="updateEvent.startTime" />
+
+        <input type="time" class="input" v-model="updateEvent.endTime" />
+
+      </div>
+
+      <label class="flex gap-2 items-center">
+
+        <input type="checkbox" class="checkbox" v-model="updateEvent.allDay" />
+
+        All day
+
+      </label>
+
+      <select class="select w-full" v-model="updateEvent.status">
+
+        <option value="active">Active</option>
+        <option value="cancelled">Cancelled</option>
+        <option value="completed">Completed</option>
+
+      </select>
+
+      <select class="select w-full" v-model="updateEvent.color">
+
+        <option value="primary">Primary</option>
+        <option value="success">Success</option>
+        <option value="warning">Warning</option>
+        <option value="error">Error</option>
+
+      </select>
+
+    </div>
+
+  </base-dialog>
+
+  <!-- Delete event modal -->
+  <base-dialog v-model="deleteEventModal" title="Delete event" confirmText="Delete" cancelText="Cancel"
+    @confirm="confirmDeleteEvent" @cancel="closeAddEventModal">
+
+    <div class="flex flex-col gap-3 w-full">
+
+      <Transition name="error-slide">
+        <div v-if="eventError">
+          <h1 class="text-error mb-2">{{ eventError }}</h1>
+        </div>
+      </Transition>
+
+      <p>Are you sure you want to delete this event?</p>
+
+    </div>
+
+  </base-dialog>
 </template>
 
 <script>
@@ -200,8 +284,13 @@ import { useUserStore } from '@/stores/user';
 
 
 export default {
+
   name: 'EventSpace',
-  components: { BaseDialog, LoadingScreen },
+
+  components: {
+    BaseDialog,
+    LoadingScreen
+  },
 
   data() {
     return {
@@ -209,8 +298,22 @@ export default {
       userStore: useUserStore(),
 
       addEventModal: false,
+      deleteEventModal: false,
+      updateEventModal: false,
 
       newEvent: {
+        title: '',
+        description: '',
+        startDate: '',
+        endDate: '',
+        startTime: '',
+        endTime: '',
+        allDay: false,
+        color: 'primary',
+        status: 'active'
+      },
+
+      updateEvent: {
         title: '',
         description: '',
         startDate: '',
@@ -290,6 +393,7 @@ export default {
 
         // reset form
         this.newEvent = {
+          eventId: '',
           title: '',
           description: '',
           startDate: '',
@@ -305,7 +409,100 @@ export default {
         // error jau store
       }
 
-    }
+    },
+
+    openDeleteEventModal(event) {
+      this.deleteEventModal = true
+      this.eventsStore.selectedEvent = event
+    },
+    async confirmDeleteEvent() {
+      try {
+        await this.eventsStore.removeEvent(this.eventsStore.selectedEvent.id)
+        this.deleteEventModal = false
+        this.eventsStore.selectedEvent = null
+      } catch (e) {
+
+      }
+    },
+    closeDeleteEventModal() {
+      this.deleteEventModal = false
+      this.eventsStore.selectedEvent = null
+    },
+    openUpdateEventModal(event) {
+      this.updateEventModal = true
+
+      this.eventsStore.selectedEvent = event
+
+      this.updateEvent.eventId = event.id
+      this.updateEvent.title = event.title
+      this.updateEvent.description = event.description
+      this.updateEvent.startDate = event.startDate
+      this.updateEvent.endDate = event.endDate
+      this.updateEvent.startTime = event.startTime
+      this.updateEvent.endTime = event.endTime
+      this.updateEvent.allDay = event.allDay
+      this.updateEvent.color = event.color
+      this.updateEvent.status = event.status
+    },
+
+    async confirmUpdateEvent() {
+      try {
+
+        const event = {
+          eventId: this.updateEvent.eventId,
+          title: this.updateEvent.title,
+          description: this.updateEvent.description,
+          startDate: this.updateEvent.startDate,
+          endDate: this.updateEvent.endDate,
+          startTime: this.updateEvent.startTime,
+          endTime: this.updateEvent.endTime,
+          allDay: this.updateEvent.allDay,
+          color: this.updateEvent.color,
+          status: this.updateEvent.status,
+          creatorEmail: this.userStore.email
+        }
+
+        await this.eventsStore.updateEvent(event)
+
+        this.updateEventModal = false
+
+        // reset form
+        this.updateEvent = {
+          eventId: '',
+          title: '',
+          description: '',
+          startDate: '',
+          endDate: '',
+          startTime: '',
+          endTime: '',
+          allDay: false,
+          color: 'primary',
+          status: 'active'
+        }
+
+      } catch (e) {
+
+      }
+    },
+
+    closeUpdateEventModal() {
+      this.updateEventModal = false
+      this.eventsStore.selectedEvent = null
+
+      // reset form
+      this.updateEvent = {
+        eventId: '',
+        title: '',
+        description: '',
+        startDate: '',
+        endDate: '',
+        startTime: '',
+        endTime: '',
+        allDay: false,
+        color: 'primary',
+        status: 'active'
+      }
+    },
   },
 }
 </script>

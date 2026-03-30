@@ -275,4 +275,7 @@ async def is_creator_of_event(
         "creatorId": user_id
     })
 
-    return event.creatorId == user_id
+    if not event:
+        return False
+
+    return True

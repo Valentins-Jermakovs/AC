@@ -333,6 +333,19 @@
 
     <!-- Event members -->
     <EventMembers v-if="eventsStore.isCreator == true"></EventMembers>
+    <!-- Leave event modal -->
+    <!-- Add member modal -->
+    <base-dialog v-model="leaveModal" title="Leave event" :confirmText="$t('common.confirm')"
+      :cancelText="$t('common.cancel')" @confirm="confirmLeave" @cancel="closeLeaveModal">
+      <div class="w-full flex flex-col gap-2">
+        <Transition name="error-slide">
+          <div v-if="error">
+            <h1 class="text-error mb-2">{{ error }}</h1>
+          </div>
+        </Transition>
+        <p>Leave event?</p>
+      </div>
+    </base-dialog>
   </div>
 </template>
 
@@ -340,6 +353,7 @@
 import BaseDialog from '@/components/common/BaseDialog.vue'
 import LoadingScreen from '@/components/common/LoadingScreen.vue'
 import { useEventsStore } from '@/stores/events'
+import { useEventParticipantsStore } from '@/stores/eventParticipants';
 import { useUserStore } from '@/stores/user';
 import EventMembers from './eventMembers.vue';
 
@@ -358,10 +372,14 @@ export default {
     return {
       eventsStore: useEventsStore(),
       userStore: useUserStore(),
+      eventParticipantsStore: useEventParticipantsStore(),
 
       addEventModal: false,
       deleteEventModal: false,
       updateEventModal: false,
+
+      leaveModal: false,
+      error: '',
 
       newEvent: {
         title: '',
@@ -563,6 +581,7 @@ export default {
 
     openEditEvent(event) {
       this.eventsStore.selectedEvent = event
+      this.eventParticipantsStore.selectedEvent = event
       if (this.eventsStore.selectedEvent) {
         this.eventsStore.checkIsCreator()
       }
@@ -571,6 +590,17 @@ export default {
     closeEvent() {
       this.eventsStore.selectedEvent = null
       this.eventsStore.getAllEvents()
+    },
+    leaveEvent() {
+      this.leaveModal = true
+    },
+    closeLeaveModal() {
+      this.leaveModal = false
+    },
+    async confirmLeave() {
+      await this.eventParticipantsStore.leaveEvent()
+      this.eventsStore.selectedEvent = null
+      await this.eventsStore.getAllEvents()
     }
   },
 }

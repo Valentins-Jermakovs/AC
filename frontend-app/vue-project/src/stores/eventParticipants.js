@@ -95,7 +95,8 @@ export const useEventParticipantsStore = defineStore('eventParticipants', {
             /*
             data = {
                 "eventId": 1,
-                "email": "Ig0wz@example.com"
+                "email": "Ig0wz@example.com",
+                "userId": 1
             }
             */
 
@@ -142,9 +143,10 @@ export const useEventParticipantsStore = defineStore('eventParticipants', {
             this.error = null
 
             try {
-                const response = await api.delete(API_ENDPOINTS.LEAVE_EVENT(eventId = this.selectedEvent.Id), {
+                const response = await api.delete(API_ENDPOINTS.LEAVE_EVENT(this.selectedEvent.id), {
                     headers: { Authorization: `Bearer ${authStore.accessToken}` },
                 })
+                this.selectedEvent = null
             }
             catch (err) {
                 this.error = err.response?.data?.detail || err.message || 'Something went wrong'

@@ -113,7 +113,6 @@ async def create_participant_route(
     user_id = await check_access_token(access_token)
 
     return await create_participant(
-        creatorId=user_id,
         data=participant
     )
 

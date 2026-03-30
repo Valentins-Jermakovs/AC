@@ -137,6 +137,24 @@ export const useEventParticipantsStore = defineStore('eventParticipants', {
                 this.loading = false
             }
         },
+        async leaveEvent() {
+            const authStore = useAuthStore()
+            this.loading = true
+            this.error = null
+
+            try {
+                const response = await api.delete(API_ENDPOINTS.LEAVE_EVENT(eventId = this.selectedEvent.Id), {
+                    headers: { Authorization: `Bearer ${authStore.accessToken}` },
+                })
+            }
+            catch (err) {
+                this.error = err.response?.data?.detail || err.message || 'Something went wrong'
+                throw err
+            }
+            finally {
+                this.loading = false
+            }
+        },
         // --------------------------
         // Pagination
         // --------------------------

@@ -175,6 +175,7 @@ export const API_ENDPOINTS = {
   GET_ALL_EVENTS: '/events/get-all-events',
   GET_EVENTS_IN_MONTH: '/events/get-all-events-in-month',
   GET_EVENTS_BY_TITLE: '/events/get-events-by-title',
+  GET_IS_EVENT_CREATOR: '/events/is-creator-of-event',
   //POST
   CREATE_EVENT: '/events/create-event',
   //PUT
@@ -190,4 +191,5 @@ export const API_ENDPOINTS = {
   CREATE_PARTICIPANT: '/participants/create-participant',
   //DELETE
   DELETE_PARTICIPANT: (eventId, userId) => `/participants/delete-participant/${eventId}/${userId}`,
+  LEAVE_EVENT: (eventId) => `/participants/leave-event/${eventId}`,
 }

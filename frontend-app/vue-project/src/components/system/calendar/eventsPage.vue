@@ -75,8 +75,7 @@
 
         <!-- ACTIONS -->
         <div class="flex justify-end gap-1">
-          <button class="btn btn-neutral"
-            @click="openEditEvent(event)">
+          <button class="btn btn-neutral" @click="openEditEvent(event)">
             <font-awesome-icon icon="fa-solid fa-pen-to-square" class="mr-1" />
             Edit
           </button>
@@ -268,17 +267,69 @@
 
   </base-dialog>
 
-  <div v-if="eventsStore.selectedEvent">
-    <div>
-      <button class="btn btn-sm md:btn-md btn-neutral flex-1 md:flex-none" @click="openUpdateEventModal">
-        <font-awesome-icon icon="fa-solid fa-pencil" />
+  <div v-if="eventsStore.selectedEvent"
+    class=" p-4 bg-base-100 border border-base-300  flex flex-col gap-4">
+
+    <!-- Event info -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Left column: Title + Description -->
+      <div class="flex flex-col gap-2">
+        <h1 class="text-3xl font-bold text-base-content">{{ eventsStore.selectedEvent.title }}</h1>
+        <p class="text-base-content/70">{{ eventsStore.selectedEvent.description }}</p>
+      </div>
+
+      <!-- Right column: Details -->
+      <div class="flex flex-col gap-2 text-sm text-base-content/80">
+        <div class="flex items-center gap-2">
+          <font-awesome-icon icon="fa-solid fa-calendar" />
+          <span>Start: {{ eventsStore.selectedEvent.startDate }} {{ eventsStore.selectedEvent.startTime }}</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <font-awesome-icon icon="fa-solid fa-calendar-check" />
+          <span>End: {{ eventsStore.selectedEvent.endDate }} {{ eventsStore.selectedEvent.endTime }}</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <font-awesome-icon icon="fa-solid fa-clock" />
+          <span>All day: {{ eventsStore.selectedEvent.allDay ? 'Yes' : 'No' }}</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <font-awesome-icon icon="fa-solid fa-palette" />
+          <span>Color:</span>
+          <span :class="`badge badge-${eventsStore.selectedEvent.color}`">{{ eventsStore.selectedEvent.color }}</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <font-awesome-icon icon="fa-solid fa-info-circle" />
+          <span>Status: {{ eventsStore.selectedEvent.status }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="flex flex-col sm:flex-row gap-2 justify-end mt-4">
+      <button class="btn btn-neutral flex-1 sm:flex-none" @click="openUpdateEventModal"
+        :disabled="eventsStore.isCreator !== true">
+        <font-awesome-icon icon="fa-solid fa-pencil" class="mr-2" />
         Update
       </button>
-      <button class="btn btn-sm md:btn-md btn-error flex-1 md:flex-none" @click="openDeleteEventModal">
-        <font-awesome-icon icon="fa-solid fa-trash" />
+
+      <button class="btn btn-error flex-1 sm:flex-none" @click="openDeleteEventModal"
+        :disabled="eventsStore.isCreator !== true">
+        <font-awesome-icon icon="fa-solid fa-trash" class="mr-2" />
         Delete
       </button>
+
+      <button class="btn btn-warning flex-1 sm:flex-none" @click="leaveEvent"
+        :disabled="eventsStore.isCreator !== false">
+        <font-awesome-icon icon="fa-solid fa-door-open" class="mr-2" />
+        Leave Event
+      </button>
+
+      <button class="btn btn-warning flex-1 sm:flex-none" @click="closeEvent">
+        <font-awesome-icon icon="fa-solid fa-arrow-left" class="mr-2" />
+        Back to List
+      </button>
     </div>
+
   </div>
 </template>
 
@@ -507,6 +558,13 @@ export default {
 
     openEditEvent(event) {
       this.eventsStore.selectedEvent = event
+      if (this.eventsStore.selectedEvent) {
+        this.eventsStore.checkIsCreator()
+      }
+    },
+
+    closeEvent() {
+      this.eventsStore.selectedEvent = null
     }
   },
 }

@@ -22,9 +22,29 @@ export const useEventsStore = defineStore('events', {
     searchQuery: '',
 
     lastRequest: null, // { type: 'all' | 'month' }
+
+    isCreator: false,
   }),
   actions: {
     // ===== EVENTS MANAGEMENT =====
+    async checkIsCreator() {
+      const authStore = useAuthStore()
+      this.loading = true
+      this.error = null
+
+      try {
+        const response = await api.get(API_ENDPOINTS.GET_IS_EVENT_CREATOR, {
+          params: { event_id: this.selectedEvent.id },
+          headers: { Authorization: `Bearer ${authStore.accessToken}` },
+        })
+
+        this.isCreator = response.data
+      } catch (err) {
+        this.error = err.response?.data?.detail || err.message || 'Something went wrong'
+      } finally {
+        this.loading = false
+      }
+    },
     async getAllEvents() {
       const authStore = useAuthStore()
       this.loading = true

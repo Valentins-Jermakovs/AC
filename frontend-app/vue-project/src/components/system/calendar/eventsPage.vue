@@ -1,7 +1,7 @@
 <template>
   <LoadingScreen v-if="eventsStore.isLoading" />
 
-  <div class="flex-1 flex flex-col w-full h-full p-3 sm:p-5 gap-3">
+  <div v-if="!eventsStore.selectedEvent" class="flex-1 flex flex-col w-full h-full p-3 sm:p-5 gap-3">
     <!-- Events list header -->
     <div class="w-full flex flex-col gap-4">
       <div class="w-full flex flex-col lg:flex-row gap-3 lg:items-center">
@@ -75,17 +75,10 @@
 
         <!-- ACTIONS -->
         <div class="flex justify-end gap-1">
-          <button class="btn btn-sm md:btn-md btn-neutral flex-1 md:flex-none">
-            <font-awesome-icon icon="fa-solid fa-users" />
-            User managment
-          </button>
-          <button class="btn btn-sm md:btn-md btn-neutral flex-1 md:flex-none" @click="openUpdateEventModal(event)">
-            <font-awesome-icon icon="fa-solid fa-pencil" />
-            Update
-          </button>
-          <button class="btn btn-sm md:btn-md btn-error flex-1 md:flex-none" @click="openDeleteEventModal(event)">
-            <font-awesome-icon icon="fa-solid fa-trash" />
-            Delete
+          <button class="btn btn-neutral"
+            @click="openEditEvent(event)">
+            <font-awesome-icon icon="fa-solid fa-pen-to-square" class="mr-1" />
+            Edit
           </button>
         </div>
       </div>
@@ -274,6 +267,19 @@
     </div>
 
   </base-dialog>
+
+  <div v-if="eventsStore.selectedEvent">
+    <div>
+      <button class="btn btn-sm md:btn-md btn-neutral flex-1 md:flex-none" @click="openUpdateEventModal">
+        <font-awesome-icon icon="fa-solid fa-pencil" />
+        Update
+      </button>
+      <button class="btn btn-sm md:btn-md btn-error flex-1 md:flex-none" @click="openDeleteEventModal">
+        <font-awesome-icon icon="fa-solid fa-trash" />
+        Delete
+      </button>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -411,9 +417,8 @@ export default {
 
     },
 
-    openDeleteEventModal(event) {
+    openDeleteEventModal() {
       this.deleteEventModal = true
-      this.eventsStore.selectedEvent = event
     },
     async confirmDeleteEvent() {
       try {
@@ -426,23 +431,20 @@ export default {
     },
     closeDeleteEventModal() {
       this.deleteEventModal = false
-      this.eventsStore.selectedEvent = null
     },
-    openUpdateEventModal(event) {
+    openUpdateEventModal() {
       this.updateEventModal = true
 
-      this.eventsStore.selectedEvent = event
-
-      this.updateEvent.eventId = event.id
-      this.updateEvent.title = event.title
-      this.updateEvent.description = event.description
-      this.updateEvent.startDate = event.startDate
-      this.updateEvent.endDate = event.endDate
-      this.updateEvent.startTime = event.startTime
-      this.updateEvent.endTime = event.endTime
-      this.updateEvent.allDay = event.allDay
-      this.updateEvent.color = event.color
-      this.updateEvent.status = event.status
+      this.updateEvent.eventId = this.eventsStore.selectedEvent.id
+      this.updateEvent.title = this.eventsStore.selectedEvent.title
+      this.updateEvent.description = this.eventsStore.selectedEvent.description
+      this.updateEvent.startDate = this.eventsStore.selectedEvent.startDate
+      this.updateEvent.endDate = this.eventsStore.selectedEvent.endDate
+      this.updateEvent.startTime = this.eventsStore.selectedEvent.startTime
+      this.updateEvent.endTime = this.eventsStore.selectedEvent.endTime
+      this.updateEvent.allDay = this.eventsStore.selectedEvent.allDay
+      this.updateEvent.color = this.eventsStore.selectedEvent.color
+      this.updateEvent.status = this.eventsStore.selectedEvent.status
     },
 
     async confirmUpdateEvent() {
@@ -487,7 +489,6 @@ export default {
 
     closeUpdateEventModal() {
       this.updateEventModal = false
-      this.eventsStore.selectedEvent = null
 
       // reset form
       this.updateEvent = {
@@ -503,6 +504,10 @@ export default {
         status: 'active'
       }
     },
+
+    openEditEvent(event) {
+      this.eventsStore.selectedEvent = event
+    }
   },
 }
 </script>

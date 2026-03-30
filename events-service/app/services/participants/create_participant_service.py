@@ -3,7 +3,7 @@
 from app.schemas.participants.response.get_participants_schemas import SingleParticipantSchema
 from app.schemas.participants.data.create_participant_schema import CreateParticipantSchema
 # Models
-from app.models import ParticipantModel
+from app.models import ParticipantModel, EventModel
 # Libraries
 from fastapi import HTTPException
 from bson import ObjectId
@@ -15,6 +15,7 @@ import re
 async def create_participant(
     data: CreateParticipantSchema
 ) -> SingleParticipantSchema:
+
     # ===== Validation =====
     # validate event id
     if not ObjectId.is_valid(data.eventId):

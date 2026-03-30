@@ -35,3 +35,32 @@ async def delete_participant(
     await participant.delete()
 
     return {"message": "Participant deleted successfully"}
+
+async def leave_event(
+    eventId: str,
+    userId: str
+) -> dict:
+    
+    if not ObjectId.is_valid(eventId):
+        raise HTTPException(status_code=400, detail="Invalid event ID")
+
+    # check if user is creator
+    event = await EventModel.find_one({
+        "_id": ObjectId(eventId),
+        "creatorId": userId
+    })
+
+    if event:
+        raise HTTPException(status_code=403, detail="You are the creator of this event")
+
+    participant = await ParticipantModel.find_one({
+        "eventId": eventId,
+        "userId": userId
+    })
+
+    if not participant:
+        raise HTTPException(status_code=404, detail="Participant not found")
+    
+    await participant.delete()
+
+    return {"message": "Participant deleted successfully"}

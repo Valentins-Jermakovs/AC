@@ -20,7 +20,7 @@ async def create_event(
     data: CreateEventSchema,
     user_id: str
 ) -> SingleEventSchema:
-  
+
     # ===== Validation =====
     # Check if start date is before end date
     start_date = await convert_to_datetime(data.startDate)

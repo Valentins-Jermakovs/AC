@@ -15,7 +15,7 @@ from app.schemas.participants.response.get_participants_schemas import (
 from app.utils.check_access_token import check_access_token
 # Services
 from app.services.participants.create_participant_service import create_participant
-from app.services.participants.delete_participant_service import delete_participant
+from app.services.participants.delete_participant_service import delete_participant, leave_event
 from app.services.participants.get_participants_service import get_all_participants, search_event_participants_by_email
 
 # Router
@@ -113,6 +113,7 @@ async def create_participant_route(
     user_id = await check_access_token(access_token)
 
     return await create_participant(
+        creatorId=user_id,
         data=participant
     )
 
@@ -143,4 +144,30 @@ async def delete_participant_route(
         eventId=eventId,
         userId=userId,
         operatorId=user_id
+    )
+
+# Route for leaving an event
+@router.delete(
+    "/leave-event/{eventId}",
+    response_model=dict
+)
+async def leave_event_route(
+    eventId: str,
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+):
+    """
+    Leave an event.
+
+    Steps:
+    1. Extract access token
+    2. Verify token and get user ID
+    3. Call service to leave event in DB
+    4. Return success message
+    """
+    access_token = credentials.credentials
+    user_id = await check_access_token(access_token)
+
+    return await leave_event(
+        eventId=eventId, 
+        userId=user_id
     )

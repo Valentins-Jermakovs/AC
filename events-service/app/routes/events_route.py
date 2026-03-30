@@ -22,7 +22,8 @@ from app.services.events.update_event_service import update_event
 from app.services.events.get_events_service import (
     get_all_events,
     get_all_events_in_month,
-    get_events_by_title
+    get_events_by_title,
+    is_creator_of_event
 )
 
 # Router
@@ -115,6 +116,29 @@ async def get_events_by_title_endpoint(
         user_id=user_id
     )
 
+@router.get(
+    "/is-creator-of-event",
+    response_model=bool
+)
+async def is_creator_of_event_endpoint(
+    event_id: str,
+    credantials: HTTPAuthorizationCredentials = Depends(security),
+):
+    """
+    Get all events by title.
+
+    Steps:
+    1. Call service to get all events in DB
+    2. Return all events
+    """
+    access_token = credantials.credentials
+    user_id = await check_access_token(access_token)
+
+    return await is_creator_of_event(
+        event_id=event_id,
+        user_id=user_id
+    )
+
 # ===== POST ==========================================================
 @router.post(
     "/create-event",
@@ -190,5 +214,5 @@ async def delete_event_endpoint(
 
     return await delete_event(
         eventId=eventId, 
-        createrId=user_id
+        creatorId=user_id
     )

@@ -10,15 +10,24 @@ from app.models.participants_models import ParticipantModel
 # =================================
 async def delete_event(
     eventId: str,
-    createrId: str
+    creatorId: str
 ) -> dict:
+    
+    # Check is current user is creator?
+    creator = await EventModel.find_one({
+        "creatorId": creatorId
+    })
+
+    if not creator:
+        raise HTTPException(status_code=403, detail="You are not the creator of this event")
+    
     
     if not ObjectId.is_valid(eventId):
         raise HTTPException(status_code=400, detail="Invalid event ID")
 
     event = await EventModel.find_one({
         "_id": ObjectId(eventId),
-        "creatorId": createrId
+        "creatorId": creatorId
     })
 
     if not event:

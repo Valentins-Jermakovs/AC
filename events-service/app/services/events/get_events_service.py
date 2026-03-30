@@ -263,3 +263,16 @@ async def get_events_by_title(
             total_items=total_events
         )
     )
+
+# Get current user, if it creater of event
+async def is_creator_of_event(
+    event_id: str, 
+    user_id: str
+):
+    
+    event = await EventModel.find_one({
+        "_id": ObjectId(event_id),
+        "creatorId": user_id
+    })
+
+    return event.creatorId == user_id

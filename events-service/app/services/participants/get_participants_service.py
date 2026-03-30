@@ -64,7 +64,7 @@ async def get_all_participants(
                 participants=[],
                 metadata=PaginationMetadataSchema(
                     page=1,
-                    total_pages=0,
+                    total_pages=1,
                     limit=limit,
                     total_items=0
                 )

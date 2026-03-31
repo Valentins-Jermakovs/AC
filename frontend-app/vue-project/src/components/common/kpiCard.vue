@@ -2,7 +2,7 @@
   <div class="flex-1 flex flex-col gap-2 bg-base-200 border border-base-300 p-5">
     <div class="stat-title">{{ title }}</div>
     <div :class="['stat-value', colorClass]">
-      <span v-if="value === 0 || value === '0'">
+      <span v-if="value === 0 || value === '0'" class="text-2xl">
         {{ $t('work.projects.errors.no_data') }}
       </span>
       <span v-else>{{ value }}</span>

@@ -1,12 +1,74 @@
 <template>
 
+    <!-- LOADING -->
+    <div v-if="!loaded" class="w-full bg-base-200 border border-base-300 flex flex-col">
+
+        <div class="skeleton w-full h-56"></div>
+
+        <div class="p-5 flex flex-col gap-5">
+
+            <div class="flex gap-3 bg-base-100 border border-base-300 p-4">
+                <div class="skeleton w-6 h-6"></div>
+
+                <div class="flex flex-col gap-2 w-full">
+                    <div class="skeleton h-4 w-32"></div>
+                    <div class="skeleton h-4 w-full"></div>
+                    <div class="skeleton h-4 w-5/6"></div>
+                </div>
+
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                <div class="bg-base-100 border border-base-300 p-4 flex gap-3">
+                    <div class="skeleton w-6 h-6"></div>
+
+                    <div class="flex flex-col gap-2 w-full">
+                        <div class="skeleton h-4 w-20"></div>
+                        <div class="skeleton h-4 w-32"></div>
+                        <div class="skeleton h-4 w-24"></div>
+                    </div>
+
+                </div>
+
+                <div class="bg-base-100 border border-base-300 p-4 flex gap-3">
+                    <div class="skeleton w-6 h-6"></div>
+
+                    <div class="flex flex-col gap-2 w-full">
+                        <div class="skeleton h-4 w-20"></div>
+                        <div class="skeleton h-4 w-32"></div>
+                        <div class="skeleton h-4 w-24"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="bg-base-100 border border-base-300 p-4 flex gap-3">
+                <div class="skeleton w-6 h-6"></div>
+
+                <div class="flex flex-col gap-2 w-full">
+                    <div class="skeleton h-4 w-24"></div>
+                    <div class="skeleton h-4 w-40"></div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
     <!-- EVENT EXISTS -->
-    <div v-if="closestEvent" class="w-full bg-base-200 border border-base-300 flex flex-col">
+    <div v-else-if="closestEvent" class="w-full bg-base-200 border border-base-300 flex flex-col">
 
         <!-- HEADER -->
         <div class="w-full h-56 bg-base-10000 relative">
 
-            <img src="@/assets/images/aaron-burden-n3OZeX6bR0g-unsplash.jpg" class="w-full h-full object-cover" />
+            <div v-if="!loaded" class="skeleton absolute inset-0"></div>
+
+            <img src="@/assets/images/aaron-burden-n3OZeX6bR0g-unsplash.jpg" 
+            class="w-full h-full object-cover transition-opacity duration-700" 
+            :class="loaded ? 'opacity-100' : 'opacity-0'"/>
 
             <div class="absolute inset-0 bg-black/50 flex flex-col justify-end p-5 gap-2">
 
@@ -48,9 +110,7 @@
                         Description
                     </span>
 
-                    <p class="text-base-content/80">
-                        {{ closestEvent.description }}
-                    </p>
+                    <pre class="text-base-content/80">{{ closestEvent.description }}</pre>
 
                 </div>
 
@@ -165,6 +225,7 @@ export default {
     data() {
         return {
             eventsStore: useEventsStore(),
+            loaded: false
         }
     },
 
@@ -179,8 +240,10 @@ export default {
     },
 
     async mounted() {
+        this.loaded = false
         const now = new Date()
         await this.eventsStore.getEventsByMonth(now.getMonth() + 1, now.getFullYear())
+        this.loaded = true
     }
 }
 

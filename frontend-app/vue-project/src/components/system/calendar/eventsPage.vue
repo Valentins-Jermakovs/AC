@@ -299,7 +299,7 @@
           <h1 class="text-3xl font-bold text-base-content">
             {{ eventsStore.selectedEvent.title }}
           </h1>
-          <p class="text-base-content/70">{{ eventsStore.selectedEvent.description }}</p>
+          <pre class="text-base-content/70">{{ eventsStore.selectedEvent.description }}</pre>
         </div>
 
         <!-- Right column: Details -->
@@ -592,6 +592,16 @@ export default {
           allDay: false,
           color: 'primary',
           status: 'active',
+        }
+
+        this.eventsStore.refresh()
+        
+        // get selected event from store, where ids are the same
+        for (let i = 0; i < this.eventsStore.events.length; i++) {
+          if (this.eventsStore.events[i].id === this.eventsStore.selectedEvent.id) {
+            this.eventsStore.selectedEvent = this.eventsStore.events[i]
+            break
+          }
         }
       } catch (e) {}
     },

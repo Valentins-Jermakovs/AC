@@ -5,7 +5,7 @@
     style="-webkit-overflow-scrolling: touch"
   >
     <!-- INNER FLEX ROW FOR BUTTONS -->
-    <div class="flex flex-nowrap h-full min-w-max px-2 md:px-0 md:pl-20">
+    <div class="flex flex-nowrap h-full min-w-max">
       <!-- Render each button -->
       <button
         v-for="(item, index) in buttons"

@@ -6,42 +6,41 @@
       <!-- Card title -->
       <h3 class="text-lg font-semibold">{{ title }}</h3>
 
-      <!-- Percentage value with dynamic color -->
-      <span :class="['text-xl font-bold', colorClass]"> {{ percent }}% </span>
+      <!-- Percentage value with dynamic color or no-data -->
+      <span v-if="value && max" :class="['text-xl font-bold', colorClass]">
+        {{ percent }}%
+      </span>
+      <span v-else class="flex items-center gap-1 text-base-content/50 italic animate-pulse">
+        <font-awesome-icon icon="fa-solid fa-circle-exclamation" />
+        {{ $t('cabinet.profile.kpi.no_tasks') }}
+      </span>
     </div>
 
     <!-- Progress bar -->
-    <progress :class="['progress', progressClass, 'w-full']" :value="value" :max="max"></progress>
+    <progress v-if="value && max" :class="['progress', progressClass, 'w-full']" :value="value" :max="max">
+    </progress>
+    <progress v-else class="progress w-full"></progress>
 
     <!-- Numeric value display -->
-    <div class="text-sm text-base-content/70 text-right">{{ value }} / {{ max }}</div>
+    <div class="text-sm text-base-content/70 text-right">
+      <span v-if="value && max">{{ value }} / {{ max }}</span>
+      <span v-else>{{ $t('cabinet.profile.kpi.no_tasks') }}</span>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'ProgressCard',
-
   props: {
-    // Title shown at the top of the card
     title: String,
-
-    // Current value of progress
     value: Number,
-
-    // Maximum value of progress
     max: Number,
-
-    // Percentage value (displayed on the right)
     percent: Number,
-
-    // Text color class for percentage
     colorClass: {
       type: String,
       default: 'text-success',
     },
-
-    // Progress bar color class
     progressClass: {
       type: String,
       default: 'progress-success',

@@ -168,8 +168,9 @@
           "title": "Projects",
           "description": "Number of projects"
         },
-        "tasks": "Tasks",
-        "month_tasks": "Monthly Tasks",
+        "tasks": "Private Tasks",
+        "month_tasks": "Private Monthly Tasks",
+        "no_tasks": "No task data",
         "week_activity": "Weekly Activity",
         "total_tasks": {
           "title": "Project Tasks",
@@ -414,7 +415,9 @@
     "projects": {
       "errors": {
         "projects_not_found": "You don't have any projects",
-        "project_not_selected": "You don't have selected any project"
+        "project_not_selected": "You don't have selected any project",
+        "no_dates": "No data",
+        "no_data_for_project": "No project data"
       },
       "common": {
         "create_project": "Create project",

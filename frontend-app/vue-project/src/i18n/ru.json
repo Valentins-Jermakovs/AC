@@ -168,8 +168,9 @@
           "title": "Все проекты",
           "description": "Все проекты"
         },
-        "tasks": "Задачи",
-        "month_tasks": "Задачи за месяц",
+        "tasks": "Личные задачи",
+        "month_tasks": "Личные задачи за месяц",
+        "no_tasks": "Нет данных о задачах",
         "week_activity": "Активность за неделю",
         "total_tasks": {
           "title": "Задачи проекта",
@@ -414,7 +415,9 @@
     "projects": {
       "errors": {
         "projects_not_found": "Проекты не найдены",
-        "project_not_selected": "Вы не выбрали проект"
+        "project_not_selected": "Вы не выбрали проект",
+        "no_data": "Нет данных",
+        "no_data_for_project": "Нет данных для проекта"
       },
       "common": {
         "create_project": "Создать проект",

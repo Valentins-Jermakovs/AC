@@ -1,7 +1,12 @@
 <template>
   <div class="flex-1 flex flex-col gap-2 bg-base-200 border border-base-300 p-5">
     <div class="stat-title">{{ title }}</div>
-    <div :class="['stat-value', colorClass]">{{ value }}</div>
+    <div :class="['stat-value', colorClass]">
+      <span v-if="value === 0 || value === '0'">
+        {{ $t('work.projects.errors.no_data') }}
+      </span>
+      <span v-else>{{ value }}</span>
+    </div>
     <div class="stat-desc">{{ desc }}</div>
   </div>
 </template>

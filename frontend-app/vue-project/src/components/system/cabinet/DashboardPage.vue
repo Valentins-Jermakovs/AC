@@ -23,22 +23,29 @@
         :desc="item.desc" :colorClass="item.colorClass">
       </kpiCard>
       <!-- Project Dates Card -->
+      <!-- Project Dates Card -->
       <div class="flex-1 flex flex-col gap-3 bg-base-200 border border-base-300 p-5">
         <h2 class="text-2xl font-semibold text-base-content/80">
           {{ $t('cabinet.profile.kpi.project_dates.title') }}
         </h2>
 
+        <!-- Start Date -->
         <div class="flex items-center gap-3">
-          <font-awesome-icon icon="fa-solid fa-calendar" class="text-lg text-primary" />
+          <font-awesome-icon
+            :icon="selectedProjectStore.selectedProjectDates?.startDate ? 'fa-solid fa-calendar' : 'fa-solid fa-circle-exclamation'"
+            :class="selectedProjectStore.selectedProjectDates?.startDate ? 'text-primary text-lg' : 'text-base-content/40 text-lg animate-pulse'" />
           <p class="text-base text-base-content/70">
-            {{ selectedProjectStore.selectedProjectDates?.startDate || '...' }}
+            {{ selectedProjectStore.selectedProjectDates?.startDate || $t('work.projects.errors.no_data_for_project') }}
           </p>
         </div>
 
+        <!-- End Date -->
         <div class="flex items-center gap-3">
-          <font-awesome-icon icon="fa-solid fa-clock" class="text-lg text-warning" />
+          <font-awesome-icon
+            :icon="selectedProjectStore.selectedProjectDates?.endDate ? 'fa-solid fa-clock' : 'fa-solid fa-circle-exclamation'"
+            :class="selectedProjectStore.selectedProjectDates?.endDate ? 'text-warning text-lg' : 'text-base-content/40 text-lg animate-pulse'" />
           <p class="text-base text-base-content/70">
-            {{ selectedProjectStore.selectedProjectDates?.endDate || '...' }}
+            {{ selectedProjectStore.selectedProjectDates?.endDate || $t('work.projects.errors.no_data_for_project') }}
           </p>
         </div>
       </div>

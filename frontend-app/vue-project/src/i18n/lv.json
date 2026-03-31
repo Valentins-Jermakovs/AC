@@ -164,8 +164,9 @@
       "email": "E-pasts",
       "roles": "Lietotāja lomas",
       "kpi": {
-        "tasks": "Uzdevumi",
-        "month_tasks": "Mēneša uzdevumi",
+        "tasks": "Privātie uzdevumi",
+        "month_tasks": "Privātie mēneša uzdevumi",
+        "no_tasks": "Nav uzdevumu datu",
         "week_activity": "Nedēļas aktivitāte",
         "total_tasks": {
           "title": "Projekta uzdevumi",
@@ -409,7 +410,9 @@
     "projects": {
       "errors": {
         "projects_not_found": "Jums nav neviena projekta",
-        "project_not_selected": "Jums nav izvēlēts neviens projekts"
+        "project_not_selected": "Jums nav izvēlēts neviens projekts",
+        "no_data": "Nav datu",
+        "no_data_for_project": "Nav projekta datu"
       },
       "common": {
         "create_project": "Izveidot projektu",

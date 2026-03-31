@@ -45,20 +45,6 @@ export default {
       currentMonth: new Date().getMonth(),
       currentYear: new Date().getFullYear(),
 
-      months: [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December',
-      ],
     }
   },
 
@@ -113,6 +99,23 @@ export default {
 
       return days
     },
+
+    months() {
+      return [
+        this.$t('calendar.month.january'),
+        this.$t('calendar.month.february'),
+        this.$t('calendar.month.march'),
+        this.$t('calendar.month.april'),
+        this.$t('calendar.month.may'),
+        this.$t('calendar.month.june'),
+        this.$t('calendar.month.july'),
+        this.$t('calendar.month.august'),
+        this.$t('calendar.month.september'),
+        this.$t('calendar.month.october'),
+        this.$t('calendar.month.november'),
+        this.$t('calendar.month.december'),
+      ]
+    }
   },
 }
 </script>

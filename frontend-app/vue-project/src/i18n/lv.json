@@ -408,7 +408,8 @@
     },
     "projects": {
       "errors": {
-        "projects_not_found": "Jums nav neviena projekta"
+        "projects_not_found": "Jums nav neviena projekta",
+        "project_not_selected": "Jums nav izvēlēts neviens projekts"
       },
       "common": {
         "create_project": "Izveidot projektu",
@@ -531,5 +532,54 @@
         "pending": "Nepabeigts"
       }
     }
+  },
+  "calendar": {
+    "titles": {
+      "calendar": "Kalendārs",
+      "events": "Notikumi"
+    },
+    "month": {
+      "january": "Janvāris",
+      "february": "Februāris",
+      "march": "Marts",
+      "april": "Aprīlis",
+      "may": "Maijs",
+      "june": "Jūnijs",
+      "july": "Jūlijs",
+      "august": "Augusts",
+      "september": "Septembris",
+      "october": "Oktobris",
+      "november": "Novembris",
+      "december": "Decembris"
+    },
+    "days": {
+      "monday": "Pirmdiena",
+      "tuesday": "Otrdiena",
+      "wednesday": "Trešdiena",
+      "thursday": "Ceturtdiena",
+      "friday": "Piektdiena",
+      "saturday": "Sestdiena",
+      "sunday": "Svētdiena"
+    },
+    "status": {
+      "complete": "Pabeigts",
+      "cancelled": "Atcelts",
+      "active": "Aktīvs"
+    },
+    "color": {
+      "primary": "Primārs",
+      "success": "Izdevies",
+      "error": "Svarīgi",
+      "warning": "Uzmanību"
+    },
+    "description": "Apraksts",
+    "start": "Sākums",
+    "end": "Beigas",
+    "duration": "Ilgums",
+    "all_day": "Visa diena",
+    "timed_event": "Laikā ierobežots notikums",
+    "no_events_in_month": "Šomēness notikumu nav",
+    "no_events_in_month_description": "Nekas nav ieplānots",
+    "more": "vairāk"
   }
 }

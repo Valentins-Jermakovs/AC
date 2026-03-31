@@ -87,7 +87,10 @@
           </div>
           <div>All Day: {{ event.allDay ? 'Yes' : 'No' }}</div>
           <div class="flex gap-1 flex-wrap">
-            <span class="badge" :class="`badge-${event.color}`">{{ event.color }}</span>
+            <span v-if="event.color == 'primary' " class="badge badge-primary">{{ $t('calendar.color.primary') }}</span>
+            <span v-if="event.color == 'error' " class="badge badge-error">{{ $t('calendar.color.error') }}</span>
+            <span v-if="event.color == 'warning' " class="badge badge-warning">{{ $t('calendar.color.warning') }}</span>
+            <span v-if="event.color == 'success' " class="badge badge-success">{{ $t('calendar.color.success') }}</span>
             <span class="badge badge-info">{{ event.status }}</span>
           </div>
         </div>

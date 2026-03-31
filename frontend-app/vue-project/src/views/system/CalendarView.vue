@@ -26,7 +26,6 @@ export default {
   },
   data() {
     return {
-      title: 'Calendar',
       image: headerImage,
 
       eventsStore: useEventsStore(),
@@ -42,16 +41,19 @@ export default {
   },
 
   computed: {
+    title() {
+      return this.$t('calendar.titles.calendar')
+    },
     navButtons() {
       // Basic navigation buttons
       let navButtons = [
         {
           key: 'calendar',
-          title: 'Calendar',
+          title: this.$t('calendar.titles.calendar'),
         },
         {
           key: 'events',
-          title: 'Events',
+          title: this.$t('calendar.titles.events'),
         },
       ]
 

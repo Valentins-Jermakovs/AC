@@ -219,7 +219,12 @@
       },
       "admin_top": {
         "search": "Ищем данные...",
-        "filters": ["Все пользователи", "По ID", "По имени пользователя/эл. почте", "По роли"]
+        "filters": [
+          "Все пользователи",
+          "По ID",
+          "По имени пользователя/эл. почте",
+          "По роли"
+        ]
       },
       "table_top": {
         "username": "Имя пользователя",
@@ -408,7 +413,8 @@
     },
     "projects": {
       "errors": {
-        "projects_not_found": "Проекты не найдены"
+        "projects_not_found": "Проекты не найдены",
+        "project_not_selected": "Вы не выбрали проект"
       },
       "common": {
         "create_project": "Создать проект",
@@ -520,16 +526,65 @@
     "month_tasks": {
       "title": "Задачи месяца",
       "table": {
-        "title": "Название",
+        "title": "Задачи",
         "description": "Описание",
         "status": "Статус",
         "created": "Создано",
         "due_date": "Срок выполнения"
       },
       "status": {
-        "complete": "Завершено",
-        "pending": "В ожидании"
+        "complete": "Выполнено",
+        "pending": "В процессе"
       }
     }
+  },
+  "calendar": {
+    "titles": {
+      "calendar": "Календарь",
+      "events": "События"
+    },
+    "month": {
+      "january": "Январь",
+      "february": "Февраль",
+      "march": "Март",
+      "april": "Апрель",
+      "may": "Май",
+      "june": "Июнь",
+      "july": "Июль",
+      "august": "Август",
+      "september": "Сентябрь",
+      "october": "Октябрь",
+      "november": "Ноябрь",
+      "december": "Декабрь"
+    },
+    "days": {
+      "monday": "Понедельник",
+      "tuesday": "Вторник",
+      "wednesday": "Среда",
+      "thursday": "Четверг",
+      "friday": "Пятница",
+      "saturday": "Суббота",
+      "sunday": "Воскресенье"
+    },
+    "status": {
+      "complete": "Выполнено",
+      "cancelled": "Отменено",
+      "active": "Активно"
+    },
+    "color": {
+      "primary": "Основной",
+      "success": "Успех",
+      "error": "Ошибка",
+      "warning": "Внимание"
+    },
+    "description": "Описание",
+    "start": "Начало",
+    "end": "Конец",
+    "duration": "Продолжительность",
+    "all_day": "Весь день",
+    "timed_event": "Событие с временем",
+    "no_events_in_month": "В этом месяце событий нет",
+    "no_events_in_month_description": "Ничего не запланировано",
+    "more": "Подробнее"
   }
 }

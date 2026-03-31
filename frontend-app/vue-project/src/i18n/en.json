@@ -210,12 +210,21 @@
         },
         "card_two": {
           "title": "Available modes:",
-          "content": ["select/search users", "modify user roles", "change activity status"]
+          "content": [
+            "select/search users",
+            "modify user roles",
+            "change activity status"
+          ]
         }
       },
       "admin_top": {
         "search": "Search data...",
-        "filters": ["All users", "By ID", "By username/email", "By role"]
+        "filters": [
+          "All users",
+          "By ID",
+          "By username/email",
+          "By role"
+        ]
       },
       "table_top": {
         "username": "Username",
@@ -404,7 +413,8 @@
     },
     "projects": {
       "errors": {
-        "projects_not_found": "You don't have any projects"
+        "projects_not_found": "You don't have any projects",
+        "project_not_selected": "You don't have selected any project"
       },
       "common": {
         "create_project": "Create project",
@@ -514,18 +524,67 @@
   },
   "widgets": {
     "month_tasks": {
-      "title": "Monthly tasks",
+      "title": "Monthly Tasks",
       "table": {
-        "title": "Title",
+        "title": "Tasks",
         "description": "Description",
         "status": "Status",
         "created": "Created",
-        "due_date": "Due date"
+        "due_date": "Due Date"
       },
       "status": {
-        "complete": "Completed",
+        "complete": "Complete",
         "pending": "Pending"
       }
     }
+  },
+  "calendar": {
+    "titles": {
+      "calendar": "Calendar",
+      "events": "Events"
+    },
+    "month": {
+      "january": "January",
+      "february": "February",
+      "march": "March",
+      "april": "April",
+      "may": "May",
+      "june": "June",
+      "july": "July",
+      "august": "August",
+      "september": "September",
+      "october": "October",
+      "november": "November",
+      "december": "December"
+    },
+    "days": {
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday",
+      "sunday": "Sunday"
+    },
+    "status": {
+      "complete": "Complete",
+      "cancelled": "Cancelled",
+      "active": "Active"
+    },
+    "color": {
+      "primary": "Primary",
+      "success": "Success",
+      "error": "Error",
+      "warning": "Warning"
+    },
+    "description": "Description",
+    "start": "Start",
+    "end": "End",
+    "duration": "Duration",
+    "all_day": "All Day",
+    "timed_event": "Timed Event",
+    "no_events_in_month": "No events this month",
+    "no_events_in_month_description": "Nothing planned",
+    "more": "More"
   }
 }

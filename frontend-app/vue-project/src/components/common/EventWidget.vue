@@ -73,20 +73,25 @@
             <div class="absolute inset-0 bg-black/50 flex flex-col justify-end p-5 gap-2">
 
                 <h1 class="text-3xl font-bold text-white flex items-center gap-3">
-                    <font-awesome-icon icon="fa-solid fa-calendar" />
+                    <font-awesome-icon icon="fa-solid fa-calendar-days" />
                     {{ closestEvent.title }}
                 </h1>
 
                 <div class="flex gap-2">
 
                     <span :class="`badge badge-${closestEvent.color}`">
-                        <font-awesome-icon icon="fa-solid fa-palette" class="mr-1" />
-                        {{ closestEvent.color }}
+                        <font-awesome-icon icon="fa-solid fa-brush" class="mr-1" />
+                        <p v-if="closestEvent.color == 'primary'">{{ $t('calendar.color.primary') }}</p>
+                        <p v-if="closestEvent.color == 'success'">{{ $t('calendar.color.success') }}</p>
+                        <p v-if="closestEvent.color == 'warning'">{{ $t('calendar.color.warning') }}</p>
+                        <p v-if="closestEvent.color == 'error'">{{ $t('calendar.color.error') }}</p>
                     </span>
 
                     <span class="badge badge-info">
                         <font-awesome-icon icon="fa-solid fa-circle-info" class="mr-1" />
-                        {{ closestEvent.status }}
+                        <p v-if="closestEvent.status == 'active'">{{ $t('calendar.status.active') }}</p>
+                        <p v-if="closestEvent.status == 'cancelled'">{{ $t('calendar.status.cancelled') }}</p>
+                        <p v-if="closestEvent.status == 'completed'">{{ $t('calendar.status.completed') }}</p>
                     </span>
 
                 </div>
@@ -102,12 +107,12 @@
             <!-- DESCRIPTION -->
             <div class="flex gap-3 bg-base-100 border border-base-300 p-4">
 
-                <font-awesome-icon icon="fa-solid fa-align-left" class="text-xl text-primary mt-1" />
+                <font-awesome-icon icon="fa-regular fa-bookmark" class="text-xl text-primary mt-1" />
 
                 <div class="flex flex-col gap-1">
 
                     <span class="text-sm text-base-content/60">
-                        Description
+                        {{ $t('calendar.description') }}
                     </span>
 
                     <pre class="text-base-content/80">{{ closestEvent.description }}</pre>
@@ -128,7 +133,7 @@
                     <div class="flex flex-col">
 
                         <span class="text-sm text-base-content/60">
-                            Start
+                            {{ $t('calendar.start') }}
                         </span>
 
                         <span class="font-semibold">
@@ -136,6 +141,7 @@
                         </span>
 
                         <span class="text-sm text-base-content/70">
+                            <font-awesome-icon icon="fa-solid fa-clock" class="mr-1" />
                             {{ closestEvent.startTime }}
                         </span>
 
@@ -152,7 +158,7 @@
                     <div class="flex flex-col">
 
                         <span class="text-sm text-base-content/60">
-                            End
+                            {{ $t('calendar.end') }}
                         </span>
 
                         <span class="font-semibold">
@@ -160,6 +166,7 @@
                         </span>
 
                         <span class="text-sm text-base-content/70">
+                            <font-awesome-icon icon="fa-solid fa-clock" class="mr-1" />
                             {{ closestEvent.endTime }}
                         </span>
 
@@ -178,11 +185,11 @@
                 <div class="flex flex-col">
 
                     <span class="text-sm text-base-content/60">
-                        Duration
+                        {{ $t('calendar.duration') }}
                     </span>
 
                     <span class="font-semibold">
-                        {{ closestEvent.allDay ? "All day event" : "Timed event" }}
+                        {{ closestEvent.allDay ? $t('calendar.allDay') : $t('calendar.timed_event') }}
                     </span>
 
                 </div>
@@ -203,11 +210,11 @@
         <div class="flex flex-col gap-1">
 
             <h2 class="text-xl font-semibold">
-                No events this month
+                {{ $t('calendar.no_events_in_month') }}
             </h2>
 
             <p class="text-base-content/60">
-                Nothing is planned for this month yet.
+                {{ $t('calendar.no_events_in_month_description') }}
             </p>
 
         </div>

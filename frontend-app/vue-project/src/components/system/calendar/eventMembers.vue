@@ -1,6 +1,6 @@
 <template>
   <!-- MEMBERS -->
-  <div class="flex-1 flex flex-col w-full h-full p-3 sm:p-5 gap-3">
+  <div class="flex-1 flex flex-col w-full h-full gap-3">
     <div class="w-full flex flex-col gap-4">
       <!-- HEADER -->
       <div class="w-full flex flex-col lg:flex-row gap-3 lg:items-center">

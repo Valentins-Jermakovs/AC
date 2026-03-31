@@ -5,7 +5,11 @@
       <h1 class="text-xl font-semibold">{{ $t('cabinet.profile.kpi.month_tasks') }}</h1>
 
       <!-- Loader -->
-      <font-awesome-icon v-if="loading" icon="fa-solid fa-spinner" class="animate-spin text-base-content/60 ml-2" />
+      <font-awesome-icon
+        v-if="loading"
+        icon="fa-solid fa-spinner"
+        class="animate-spin text-base-content/60 ml-2"
+      />
     </div>
 
     <!-- CONTENT -->
@@ -17,8 +21,14 @@
 
     <div v-else>
       <!-- NO TASKS -->
-      <div v-if="privateTasksStore.privateTasks.length === 0" class="p-10 text-center flex flex-col items-center gap-3">
-        <font-awesome-icon icon="fa-solid fa-calendar-xmark" class="text-5xl text-base-content/40" />
+      <div
+        v-if="privateTasksStore.privateTasks.length === 0"
+        class="p-10 text-center flex flex-col items-center gap-3"
+      >
+        <font-awesome-icon
+          icon="fa-solid fa-calendar-xmark"
+          class="text-5xl text-base-content/40"
+        />
         <p class="text-base-content/60 italic">
           {{ $t('cabinet.profile.kpi.no_tasks') }}
         </p>
@@ -46,8 +56,11 @@
                 <td>{{ task.dueDate }}</td>
                 <td>
                   <div class="badge" :class="task.completed ? 'badge-success' : 'badge-warning'">
-                    {{ task.completed ? $t('widgets.month_tasks.status.complete') :
-                      $t('widgets.month_tasks.status.pending') }}
+                    {{
+                      task.completed
+                        ? $t('widgets.month_tasks.status.complete')
+                        : $t('widgets.month_tasks.status.pending')
+                    }}
                   </div>
                 </td>
               </tr>
@@ -57,12 +70,19 @@
 
         <!-- MOBILE CARDS -->
         <div class="flex flex-col gap-3 md:hidden p-4">
-          <div v-for="task in privateTasksStore.privateTasks" :key="task.id"
-            class="bg-base-100 border border-base-300 p-4 rounded-box flex flex-col gap-2">
+          <div
+            v-for="task in privateTasksStore.privateTasks"
+            :key="task.id"
+            class="bg-base-100 border border-base-300 p-4 rounded-box flex flex-col gap-2"
+          >
             <div class="flex justify-between">
               <h2 class="font-semibold">{{ task.title }}</h2>
               <div class="badge" :class="task.completed ? 'badge-success' : 'badge-warning'">
-                {{ task.completed ? $t('widgets.month_tasks.status.complete') : $t('widgets.month_tasks.status.pending') }}
+                {{
+                  task.completed
+                    ? $t('widgets.month_tasks.status.complete')
+                    : $t('widgets.month_tasks.status.pending')
+                }}
               </div>
             </div>
             <p class="text-sm opacity-70">{{ task.description }}</p>

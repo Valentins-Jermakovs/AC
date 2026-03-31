@@ -23,8 +23,12 @@
         <label class="label">
           <span class="label-text">{{ $t('common.old_password') }}</span>
         </label>
-        <input v-model="oldPassword" type="password" class="input input-bordered w-full" 
-        :placeholder="$t('common.old_password')"/>
+        <input
+          v-model="oldPassword"
+          type="password"
+          class="input input-bordered w-full"
+          :placeholder="$t('common.old_password')"
+        />
       </div>
 
       <!-- New password input -->
@@ -32,8 +36,12 @@
         <label class="label">
           <span class="label-text">{{ $t('common.new_password') }}</span>
         </label>
-        <input v-model="newPassword" type="password" class="input input-bordered w-full" 
-        :placeholder="$t('common.new_password')"/>
+        <input
+          v-model="newPassword"
+          type="password"
+          class="input input-bordered w-full"
+          :placeholder="$t('common.new_password')"
+        />
       </div>
     </div>
   </BaseDialog>

@@ -6,21 +6,31 @@
         <EventWidget></EventWidget>
       </div>
       <div
-        class="flex-1 flex flex-col gap-3 bg-base-200 border border-base-300 p-5 items-center justify-center text-center">
+        class="flex-1 flex flex-col gap-3 bg-base-200 border border-base-300 p-5 items-center justify-center text-center"
+      >
         <template v-if="selectedProjectStore.selectedProject">
           <h2 class="text-2xl font-semibold text-base-content/80">
             {{ selectedProjectStore.selectedProject.workspaceTitle }}
           </h2>
         </template>
         <template v-else>
-          <font-awesome-icon icon="fa-solid fa-folder-open" class="text-4xl text-base-content/40 mb-2" />
+          <font-awesome-icon
+            icon="fa-solid fa-folder-open"
+            class="text-4xl text-base-content/40 mb-2"
+          />
           <h2 class="text-lg font-semibold text-base-content/60">
             {{ $t('work.projects.errors.project_not_selected') }}
           </h2>
         </template>
       </div>
-      <kpiCard v-for="(item, index) in projectKpis" :key="index" :title="item.title" :value="item.value"
-        :desc="item.desc" :colorClass="item.colorClass">
+      <kpiCard
+        v-for="(item, index) in projectKpis"
+        :key="index"
+        :title="item.title"
+        :value="item.value"
+        :desc="item.desc"
+        :colorClass="item.colorClass"
+      >
       </kpiCard>
       <!-- Project Dates Card -->
       <!-- Project Dates Card -->
@@ -32,27 +42,57 @@
         <!-- Start Date -->
         <div class="flex items-center gap-3">
           <font-awesome-icon
-            :icon="selectedProjectStore.selectedProjectDates?.startDate ? 'fa-solid fa-calendar' : 'fa-solid fa-circle-exclamation'"
-            :class="selectedProjectStore.selectedProjectDates?.startDate ? 'text-primary text-lg' : 'text-base-content/40 text-lg animate-pulse'" />
+            :icon="
+              selectedProjectStore.selectedProjectDates?.startDate
+                ? 'fa-solid fa-calendar'
+                : 'fa-solid fa-circle-exclamation'
+            "
+            :class="
+              selectedProjectStore.selectedProjectDates?.startDate
+                ? 'text-primary text-lg'
+                : 'text-base-content/40 text-lg animate-pulse'
+            "
+          />
           <p class="text-base text-base-content/70">
-            {{ selectedProjectStore.selectedProjectDates?.startDate || $t('work.projects.errors.no_data_for_project') }}
+            {{
+              selectedProjectStore.selectedProjectDates?.startDate ||
+              $t('work.projects.errors.no_data_for_project')
+            }}
           </p>
         </div>
 
         <!-- End Date -->
         <div class="flex items-center gap-3">
           <font-awesome-icon
-            :icon="selectedProjectStore.selectedProjectDates?.endDate ? 'fa-solid fa-clock' : 'fa-solid fa-circle-exclamation'"
-            :class="selectedProjectStore.selectedProjectDates?.endDate ? 'text-warning text-lg' : 'text-base-content/40 text-lg animate-pulse'" />
+            :icon="
+              selectedProjectStore.selectedProjectDates?.endDate
+                ? 'fa-solid fa-clock'
+                : 'fa-solid fa-circle-exclamation'
+            "
+            :class="
+              selectedProjectStore.selectedProjectDates?.endDate
+                ? 'text-warning text-lg'
+                : 'text-base-content/40 text-lg animate-pulse'
+            "
+          />
           <p class="text-base text-base-content/70">
-            {{ selectedProjectStore.selectedProjectDates?.endDate || $t('work.projects.errors.no_data_for_project') }}
+            {{
+              selectedProjectStore.selectedProjectDates?.endDate ||
+              $t('work.projects.errors.no_data_for_project')
+            }}
           </p>
         </div>
       </div>
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
-      <kpiCard v-for="(item, index) in kpis" :key="index" :title="item.title" :value="item.value" :desc="item.desc"
-        :colorClass="item.colorClass">
+      <kpiCard
+        v-for="(item, index) in kpis"
+        :key="index"
+        :title="item.title"
+        :value="item.value"
+        :desc="item.desc"
+        :colorClass="item.colorClass"
+      >
       </kpiCard>
     </div>
     <!-- Progress cards -->
@@ -62,7 +102,9 @@
     </div>
     <TasksTable></TasksTable>
   </div>
-  <LoadingScreen v-if="taskStore.loading || userStore.loading || selectedProjectStore.loading"></LoadingScreen>
+  <LoadingScreen
+    v-if="taskStore.loading || userStore.loading || selectedProjectStore.loading"
+  ></LoadingScreen>
 </template>
 
 <script>
@@ -82,7 +124,7 @@ export default {
     kpiCard,
     UserProgressCard,
     EventWidget,
-    LoadingScreen
+    LoadingScreen,
   },
 
   data() {
@@ -145,7 +187,7 @@ export default {
           max: this.taskStore.tasksKpi.totalTasks || 0,
           percent: Math.round(
             (this.taskStore.tasksKpi.totalCompletedTasks / this.taskStore.tasksKpi.totalTasks) *
-            100 || 0,
+              100 || 0,
           ),
           colorClass: 'text-success',
           progressClass: 'progress-success',
@@ -156,7 +198,7 @@ export default {
           max: this.taskStore.tasksKpi.totalInMonth || 0,
           percent: Math.round(
             (this.taskStore.tasksKpi.totalInMonthCompleted / this.taskStore.tasksKpi.totalInMonth) *
-            100 || 0,
+              100 || 0,
           ),
           colorClass: 'text-primary',
           progressClass: 'progress-primary',

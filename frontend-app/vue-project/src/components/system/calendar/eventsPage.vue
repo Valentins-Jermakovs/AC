@@ -1,5 +1,7 @@
 <template>
-  <LoadingScreen v-if="eventsStore.loading || userStore.loading || eventParticipantsStore.loading" />
+  <LoadingScreen
+    v-if="eventsStore.loading || userStore.loading || eventParticipantsStore.loading"
+  />
 
   <div
     v-if="!eventsStore.selectedEvent"
@@ -47,69 +49,98 @@
 
     <!-- EVENTS LIST -->
     <div class="w-full flex flex-col gap-4 bg-base-200 border border-base-300 p-2">
+      <!-- EVENTS -->
       <div
         v-for="event in eventsStore.events"
         :key="event.id"
         class="w-full bg-base-100 border border-base-300 p-4 flex flex-col gap-3"
       >
         <!-- TITLE -->
-        <div class="flex items-center gap-2 text-lg font-bold text-base-content">
-          <font-awesome-icon icon="fa-solid fa-calendar" />
-          {{ event.title }}
+        <div class="flex items-center gap-3 text-lg font-bold text-base-content">
+          <font-awesome-icon icon="fa-solid fa-calendar-alt" class="text-primary text-xl" />
+          <span class="truncate">{{ event.title }}</span>
         </div>
 
         <!-- DESCRIPTION -->
-        <div class="text-sm text-base-content/70 wrap-break-word p-2 bg-base-200">
+        <div class="text-sm text-base-content/70 p-2 bg-base-200 wrap-break-word">
           {{ event.description }}
         </div>
 
         <!-- DATE & TIME -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm text-base-content/60">
-          <div class="flex gap-1 flex-col">
-            <div>
-              <font-awesome-icon icon="fa-solid fa-calendar" />
-              Start: {{ event.startDate }}
-            </div>
-            <div>
-              <font-awesome-icon icon="fa-solid fa-clock" />
-              {{ event.startTime }}
-            </div>
-          </div>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-3 text-sm">
+          <!-- Start -->
           <div class="flex flex-col gap-1">
-            <div>
-              <font-awesome-icon icon="fa-solid fa-clock" />
-              End: {{ event.endDate }}
+            <div class="flex items-center gap-1">
+              <font-awesome-icon icon="fa-solid fa-calendar-plus" class="text-success" />
+              <span class="font-medium">Start:</span>
+              <span>{{ event.startDate }}</span>
             </div>
-            <div>
-              <font-awesome-icon icon="fa-solid fa-clock" />
-              {{ event.endTime }}
+            <div class="flex items-center gap-1">
+              <font-awesome-icon icon="fa-solid fa-clock" class="text-warning" />
+              <span>{{ event.startTime }}</span>
             </div>
           </div>
-          <div>All Day: {{ event.allDay ? 'Yes' : 'No' }}</div>
-          <div class="flex gap-1 flex-wrap">
-            <span v-if="event.color == 'primary' " class="badge badge-primary">{{ $t('calendar.color.primary') }}</span>
-            <span v-if="event.color == 'error' " class="badge badge-error">{{ $t('calendar.color.error') }}</span>
-            <span v-if="event.color == 'warning' " class="badge badge-warning">{{ $t('calendar.color.warning') }}</span>
-            <span v-if="event.color == 'success' " class="badge badge-success">{{ $t('calendar.color.success') }}</span>
+
+          <!-- End -->
+          <div class="flex flex-col gap-1">
+            <div class="flex items-center gap-1">
+              <font-awesome-icon icon="fa-solid fa-calendar-check" class="text-error" />
+              <span class="font-medium">End:</span>
+              <span>{{ event.endDate }}</span>
+            </div>
+            <div class="flex items-center gap-1">
+              <font-awesome-icon icon="fa-solid fa-clock" class="text-warning" />
+              <span>{{ event.endTime }}</span>
+            </div>
+          </div>
+
+          <!-- All day -->
+          <div class="flex items-center gap-1">
+            <font-awesome-icon icon="fa-solid fa-clock" class="text-info" />
+            <span class="font-medium">All Day:</span>
+            <span>{{ event.allDay ? 'Yes' : 'No' }}</span>
+          </div>
+
+          <!-- Status / Color badges -->
+          <div class="flex gap-2 flex-wrap">
+            <span v-if="event.color === 'primary'" class="badge badge-primary">{{
+              $t('calendar.color.primary')
+            }}</span>
+            <span v-if="event.color === 'success'" class="badge badge-success">{{
+              $t('calendar.color.success')
+            }}</span>
+            <span v-if="event.color === 'warning'" class="badge badge-warning">{{
+              $t('calendar.color.warning')
+            }}</span>
+            <span v-if="event.color === 'error'" class="badge badge-error">{{
+              $t('calendar.color.error')
+            }}</span>
             <span class="badge badge-info">{{ event.status }}</span>
           </div>
         </div>
 
         <!-- ACTIONS -->
-        <div class="flex justify-end gap-1">
-          <button class="btn btn-neutral" @click="openEditEvent(event)">
-            <font-awesome-icon icon="fa-solid fa-pen-to-square" class="mr-1" />
-            Edit
+        <div class="flex justify-end gap-2 mt-2">
+          <button
+            class="btn btn-sm btn-neutral flex items-center gap-1"
+            @click="openEditEvent(event)"
+          >
+            <font-awesome-icon icon="fa-solid fa-pen-to-square" />
+            <span>Edit</span>
           </button>
         </div>
       </div>
+
       <!-- EMPTY -->
       <div
         v-if="!eventsStore.loading && eventsStore.events.length === 0"
-        class="p-4 text-center text-base-content/60 flex items-center justify-center gap-2"
+        class="col-span-full p-10 text-center text-base-content/60 flex flex-col items-center justify-center gap-4 animate-pulse"
       >
-        <font-awesome-icon icon="fa-solid fa-users" class="text-3xl" />
-        Error, empty events
+        <font-awesome-icon
+          icon="fa-solid fa-calendar-xmark"
+          class="text-5xl text-base-content/40 animate-bounce"
+        />
+        <p class="text-lg italic">No events available</p>
       </div>
     </div>
 
@@ -294,82 +325,97 @@
   </base-dialog>
 
   <div v-if="eventsStore.selectedEvent" class="p-4 bg-base-100 flex flex-col gap-4">
-    <div class="bg-base-200 border border-base-300 p-2 flex flex-col gap-4">
+    <div class="bg-base-200 border border-base-300 p-4 flex flex-col gap-6">
       <!-- Event info -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Left column: Title + Description -->
-        <div class="flex flex-col gap-2">
-          <h1 class="text-3xl font-bold text-base-content">
+        <div class="flex flex-col gap-3 p-2 border border-base-300 bg-base-100">
+          <h1 class="text-3xl font-bold text-base-content ml-2">
             {{ eventsStore.selectedEvent.title }}
           </h1>
-          <pre class="text-base-content/70">{{ eventsStore.selectedEvent.description }}</pre>
+          <pre
+            class="bg-base-200/50 p-4 text-sm border border-base-300 flex-1 text-base-content/70 whitespace-pre-wrap wrap-break-word"
+            >{{ eventsStore.selectedEvent.description }}</pre
+          >
         </div>
 
         <!-- Right column: Details -->
-        <div class="flex flex-col gap-2 text-sm text-base-content/80">
+        <div class="flex flex-col gap-3 text-base-content/80 text-lg">
+          <div class="flex gap-2 flex-col bg-base-100 p-2 border border-base-300">
+            <div class="flex gap-2 items-center">
+              <font-awesome-icon icon="fa-solid fa-calendar" class="text-success" />
+              <span><strong>Start:</strong> {{ eventsStore.selectedEvent.startDate }}</span>
+            </div>
+            <div class="flex gap-2 items-center">
+              <font-awesome-icon icon="fa-solid fa-clock" />
+              <span>{{ eventsStore.selectedEvent.startTime }}</span>
+            </div>
+          </div>
+
+          <div class="flex gap-2 flex-col bg-base-100 p-2 border border-base-300">
+            <div class="flex gap-2 items-center">
+              <font-awesome-icon icon="fa-solid fa-calendar" class="text-error" />
+              <span><strong>End:</strong>{{ eventsStore.selectedEvent.endDate }}</span>
+            </div>
+            <div class="flex gap-2 items-center">
+              <font-awesome-icon icon="fa-solid fa-clock" />
+              <span>{{ eventsStore.selectedEvent.endTime }}</span>
+            </div>
+          </div>
           <div class="flex items-center gap-2">
-            <font-awesome-icon icon="fa-solid fa-calendar" />
+            <font-awesome-icon icon="fa-solid fa-clock" class="text-info" />
             <span
-              >Start: {{ eventsStore.selectedEvent.startDate }}
-              {{ eventsStore.selectedEvent.startTime }}</span
+              ><strong>All day:</strong> {{ eventsStore.selectedEvent.allDay ? 'Yes' : 'No' }}</span
             >
           </div>
           <div class="flex items-center gap-2">
-            <font-awesome-icon icon="fa-solid fa-calendar-check" />
-            <span
-              >End: {{ eventsStore.selectedEvent.endDate }}
-              {{ eventsStore.selectedEvent.endTime }}</span
-            >
-          </div>
-          <div class="flex items-center gap-2">
-            <font-awesome-icon icon="fa-solid fa-clock" />
-            <span>All day: {{ eventsStore.selectedEvent.allDay ? 'Yes' : 'No' }}</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <font-awesome-icon icon="fa-solid fa-palette" />
-            <span>Color:</span>
+            <font-awesome-icon icon="fa-solid fa-palette" class="text-primary" />
+            <span><strong>Color:</strong></span>
             <span :class="`badge badge-${eventsStore.selectedEvent.color}`">{{
               eventsStore.selectedEvent.color
             }}</span>
           </div>
           <div class="flex items-center gap-2">
-            <font-awesome-icon icon="fa-solid fa-info-circle" />
-            <span>Status: {{ eventsStore.selectedEvent.status }}</span>
+            <font-awesome-icon icon="fa-solid fa-info-circle" class="text-warning" />
+            <span><strong>Status:</strong> {{ eventsStore.selectedEvent.status }}</span>
           </div>
         </div>
       </div>
 
       <!-- Action buttons -->
-      <div class="flex flex-col sm:flex-row gap-2 justify-end mt-4">
+      <div class="flex flex-col sm:flex-row gap-3 justify-end mt-4">
         <button
-          class="btn btn-neutral flex-1 sm:flex-none"
+          class="btn btn-neutral flex-1 sm:flex-none flex items-center justify-center gap-2"
           @click="openUpdateEventModal"
           :disabled="eventsStore.isCreator !== true"
         >
-          <font-awesome-icon icon="fa-solid fa-pencil" class="mr-2" />
+          <font-awesome-icon icon="fa-solid fa-pencil" />
           Update
         </button>
 
         <button
-          class="btn btn-error flex-1 sm:flex-none"
+          class="btn btn-error flex-1 sm:flex-none flex items-center justify-center gap-2"
           @click="openDeleteEventModal"
           :disabled="eventsStore.isCreator !== true"
         >
-          <font-awesome-icon icon="fa-solid fa-trash" class="mr-2" />
+          <font-awesome-icon icon="fa-solid fa-trash" />
           Delete
         </button>
 
         <button
-          class="btn btn-warning flex-1 sm:flex-none"
+          class="btn btn-warning flex-1 sm:flex-none flex items-center justify-center gap-2"
           @click="leaveEvent"
           :disabled="eventsStore.isCreator !== false"
         >
-          <font-awesome-icon icon="fa-solid fa-door-open" class="mr-2" />
+          <font-awesome-icon icon="fa-solid fa-door-open" />
           Leave Event
         </button>
 
-        <button class="btn btn-warning flex-1 sm:flex-none" @click="closeEvent">
-          <font-awesome-icon icon="fa-solid fa-arrow-left" class="mr-2" />
+        <button
+          class="btn btn-warning flex-1 sm:flex-none flex items-center justify-center gap-2"
+          @click="closeEvent"
+        >
+          <font-awesome-icon icon="fa-solid fa-arrow-left" />
           Back to List
         </button>
       </div>
@@ -598,7 +644,7 @@ export default {
         }
 
         this.eventsStore.refresh()
-        
+
         // get selected event from store, where ids are the same
         for (let i = 0; i < this.eventsStore.events.length; i++) {
           if (this.eventsStore.events[i].id === this.eventsStore.selectedEvent.id) {

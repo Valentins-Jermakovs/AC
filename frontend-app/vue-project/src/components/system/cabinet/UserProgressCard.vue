@@ -7,9 +7,7 @@
       <h3 class="text-lg font-semibold">{{ title }}</h3>
 
       <!-- Percentage value with dynamic color or no-data -->
-      <span v-if="value && max" :class="['text-xl font-bold', colorClass]">
-        {{ percent }}%
-      </span>
+      <span v-if="value && max" :class="['text-xl font-bold', colorClass]"> {{ percent }}% </span>
       <span v-else class="flex items-center gap-1 text-base-content/50 italic animate-pulse">
         <font-awesome-icon icon="fa-solid fa-circle-exclamation" />
         {{ $t('cabinet.profile.kpi.no_tasks') }}
@@ -17,8 +15,12 @@
     </div>
 
     <!-- Progress bar -->
-    <progress v-if="value && max" :class="['progress', progressClass, 'w-full']" :value="value" :max="max">
-    </progress>
+    <progress
+      v-if="value && max"
+      :class="['progress', progressClass, 'w-full']"
+      :value="value"
+      :max="max"
+    ></progress>
     <progress v-else class="progress w-full"></progress>
 
     <!-- Numeric value display -->

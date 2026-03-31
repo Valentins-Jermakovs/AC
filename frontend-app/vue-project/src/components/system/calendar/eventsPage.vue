@@ -12,12 +12,12 @@
       <div class="w-full flex flex-col lg:flex-row gap-3 lg:items-center">
         <button class="btn btn-success w-full lg:h-full lg:w-auto" @click="openAddEventModal">
           <font-awesome-icon icon="fa-solid fa-calendar-plus" />
-          Add event
+          {{ $t('calendar.add_event') }}
         </button>
 
         <!-- SEARCH -->
         <div
-          class="w-full flex flex-col sm:flex-row gap-2 border border-base-300 bg-base-100 p-2 wrap-break-word"
+          class="w-full flex flex-col sm:flex-row gap-2 border border-base-300 bg-base-200 p-2 wrap-break-word"
         >
           <input
             type="text"
@@ -39,7 +39,7 @@
           <button
             class="btn btn-primary w-full sm:w-auto"
             @click="searchEvents"
-            :disabled="eventsStore.searchMode !== 'all' && !eventsStore.searchQuery.trim()"
+            :disabled="eventsStore.searchMode !== 'all' && eventsStore.searchQuery.length < 3"
           >
             <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
           </button>
@@ -62,8 +62,8 @@
         </div>
 
         <!-- DESCRIPTION -->
-        <div class="text-sm text-base-content/70 p-2 bg-base-200 wrap-break-word">
-          {{ event.description }}
+        <div class="text-sm text-base-content/70 p-2 bg-base-200/50 border border-base-300 wrap-break-word">
+          <pre>{{ event.description }}</pre>
         </div>
 
         <!-- DATE & TIME -->
@@ -72,7 +72,7 @@
           <div class="flex flex-col gap-1">
             <div class="flex items-center gap-1">
               <font-awesome-icon icon="fa-solid fa-calendar-plus" class="text-success" />
-              <span class="font-medium">Start:</span>
+              <span class="font-medium">{{ $t('calendar.start') }}:</span>
               <span>{{ event.startDate }}</span>
             </div>
             <div class="flex items-center gap-1">
@@ -85,7 +85,7 @@
           <div class="flex flex-col gap-1">
             <div class="flex items-center gap-1">
               <font-awesome-icon icon="fa-solid fa-calendar-check" class="text-error" />
-              <span class="font-medium">End:</span>
+              <span class="font-medium">{{ $t('calendar.end') }}:</span>
               <span>{{ event.endDate }}</span>
             </div>
             <div class="flex items-center gap-1">
@@ -97,8 +97,17 @@
           <!-- All day -->
           <div class="flex items-center gap-1">
             <font-awesome-icon icon="fa-solid fa-clock" class="text-info" />
-            <span class="font-medium">All Day:</span>
-            <span>{{ event.allDay ? 'Yes' : 'No' }}</span>
+            <span class="font-medium">{{ $t('calendar.all_day') }}:</span>
+            <font-awesome-icon
+              v-if="event.allDay"
+              icon="fa-solid fa-check"
+              class="text-success badge badge-neutral rounded-full"
+            />
+            <font-awesome-icon 
+            v-else 
+            icon="fa-solid fa-xmark" 
+            class="text-error badge badge-neutral rounded-full" 
+            />
           </div>
 
           <!-- Status / Color badges -->
@@ -115,7 +124,11 @@
             <span v-if="event.color === 'error'" class="badge badge-error">{{
               $t('calendar.color.error')
             }}</span>
-            <span class="badge badge-info">{{ event.status }}</span>
+            <span class="badge badge-info">
+              <p v-if="event.status === 'active'">{{ $t('calendar.status.active') }}</p>
+              <p v-if="event.status === 'completed'">{{ $t('calendar.status.completed') }}</p>
+              <p v-if="event.status === 'cancelled'">{{ $t('calendar.status.cancelled') }}</p>
+            </span>
           </div>
         </div>
 
@@ -125,8 +138,8 @@
             class="btn btn-sm btn-neutral flex items-center gap-1"
             @click="openEditEvent(event)"
           >
-            <font-awesome-icon icon="fa-solid fa-pen-to-square" />
-            <span>Edit</span>
+            <font-awesome-icon icon="fa-solid fa-link" class="text-primary" />
+            <span>{{ $t('calendar.more') }}</span>
           </button>
         </div>
       </div>
@@ -140,7 +153,10 @@
           icon="fa-solid fa-calendar-xmark"
           class="text-5xl text-base-content/40 animate-bounce"
         />
-        <p class="text-lg italic">No events available</p>
+        <progress class="progress w-1/3 progress-neutral" max="100"></progress>
+        <p class="text-lg italic">
+          {{ $t('calendar.errors.no_events') }}
+        </p>
       </div>
     </div>
 
@@ -203,9 +219,9 @@
   <!-- Add event modal -->
   <base-dialog
     v-model="addEventModal"
-    title="Add event"
-    confirmText="Create"
-    cancelText="Cancel"
+    :title="$t('calendar.modals.create_event.title')"
+    :confirmText="$t('common.create')"
+    :cancelText="$t('common.cancel')"
     @confirm="confirmAddEvent"
     @cancel="closeAddEventModal"
   >
@@ -215,36 +231,39 @@
           <h1 class="text-error mb-2">{{ eventError }}</h1>
         </div>
       </Transition>
-
-      <input class="input w-full" placeholder="Title" v-model="newEvent.title" />
-
+      <label class="label w-full">
+        {{ $t('calendar.modals.create_event.name') }}
+      </label>
+      <input class="input w-full" :placeholder="$t('calendar.modals.create_event.name_placeholder')" v-model="newEvent.title" />
+      <label class="label w-full">
+        {{ $t('calendar.modals.create_event.description') }}
+      </label>
       <textarea
         class="textarea w-full min-h-52"
-        placeholder="Description"
+        :placeholder="$t('calendar.modals.create_event.description_placeholder')"
         v-model="newEvent.description"
       ></textarea>
-
+      <label class="label w-full">
+          {{ $t('calendar.modals.create_event.time_settings') }}
+      </label>
       <div class="grid grid-cols-2 gap-2">
         <input type="date" class="input" v-model="newEvent.startDate" />
-
         <input type="date" class="input" v-model="newEvent.endDate" />
-
         <input type="time" class="input" v-model="newEvent.startTime" />
-
         <input type="time" class="input" v-model="newEvent.endTime" />
       </div>
-
       <label class="flex gap-2 items-center">
         <input type="checkbox" class="checkbox" v-model="newEvent.allDay" />
-
-        All day
+        {{ $t('calendar.modals.create_event.all_day') }}
       </label>
-
+      <label class="label w-full">
+        {{ $t('calendar.modals.create_event.color') }}
+      </label>
       <select class="select w-full" v-model="newEvent.color">
-        <option value="primary">Primary</option>
-        <option value="success">Success</option>
-        <option value="warning">Warning</option>
-        <option value="error">Error</option>
+        <option value="primary">{{ $t('calendar.color.primary') }}</option>
+        <option value="success">{{ $t('calendar.color.success') }}</option>
+        <option value="warning">{{ $t('calendar.color.warning') }}</option>
+        <option value="error">{{ $t('calendar.color.error') }}</option>
       </select>
     </div>
   </base-dialog>
@@ -252,9 +271,9 @@
   <!-- Update event modal -->
   <base-dialog
     v-model="updateEventModal"
-    title="Update event"
-    confirmText="Update"
-    cancelText="Cancel"
+    :title="$t('calendar.modals.update_event.title')"
+    :confirmText="$t('common.confirm')"
+    :cancelText="$t('common.cancel')"
     @confirm="confirmUpdateEvent"
     @cancel="closeUpdateEventModal"
   >
@@ -264,42 +283,37 @@
           <h1 class="text-error mb-2">{{ eventError }}</h1>
         </div>
       </Transition>
-
-      <input class="input w-full" placeholder="Title" v-model="updateEvent.title" />
-
+      <label class="label w-full">{{ $t('calendar.modals.update_event.name') }}</label>
+      <input class="input w-full" :placeholder="$t('calendar.modals.update_event.name_placeholder')" v-model="updateEvent.title" />
+      <label class="label w-full">{{ $t('calendar.modals.update_event.description') }}</label>
       <textarea
         class="textarea w-full min-h-52"
-        placeholder="Description"
+        :placeholder="$t('calendar.modals.update_event.description_placeholder')"
         v-model="updateEvent.description"
       ></textarea>
-
+      <label class="label w-full">{{ $t('calendar.modals.update_event.time_settings') }}</label>
       <div class="grid grid-cols-2 gap-2">
         <input type="date" class="input" v-model="updateEvent.startDate" />
-
         <input type="date" class="input" v-model="updateEvent.endDate" />
-
         <input type="time" class="input" v-model="updateEvent.startTime" />
-
         <input type="time" class="input" v-model="updateEvent.endTime" />
       </div>
-
       <label class="flex gap-2 items-center">
         <input type="checkbox" class="checkbox" v-model="updateEvent.allDay" />
-
-        All day
+        {{ $t('calendar.modals.update_event.all_day') }}
       </label>
-
+      <label class="label w-full">{{ $t('calendar.modals.update_event.status') }}</label>
       <select class="select w-full" v-model="updateEvent.status">
-        <option value="active">Active</option>
-        <option value="cancelled">Cancelled</option>
-        <option value="completed">Completed</option>
+        <option value="active">{{ $t('calendar.status.active') }}</option>
+        <option value="cancelled">{{ $t('calendar.status.cancelled') }}</option>
+        <option value="completed">{{ $t('calendar.status.complete') }}</option>
       </select>
-
+      <label class="label w-full">{{ $t('calendar.modals.update_event.color') }}</label>
       <select class="select w-full" v-model="updateEvent.color">
-        <option value="primary">Primary</option>
-        <option value="success">Success</option>
-        <option value="warning">Warning</option>
-        <option value="error">Error</option>
+        <option value="primary">{{ $t('calendar.color.primary') }}</option>
+        <option value="success">{{ $t('calendar.color.success') }}</option>
+        <option value="warning">{{ $t('calendar.color.warning') }}</option>
+        <option value="error">{{ $t('calendar.color.error') }}</option>
       </select>
     </div>
   </base-dialog>
@@ -344,7 +358,7 @@
           <div class="flex gap-2 flex-col bg-base-100 p-2 border border-base-300">
             <div class="flex gap-2 items-center">
               <font-awesome-icon icon="fa-solid fa-calendar" class="text-success" />
-              <span><strong>Start:</strong> {{ eventsStore.selectedEvent.startDate }}</span>
+              <span><strong>{{ $t('calendar.start') }}:</strong> {{ eventsStore.selectedEvent.startDate }}</span>
             </div>
             <div class="flex gap-2 items-center">
               <font-awesome-icon icon="fa-solid fa-clock" />
@@ -355,7 +369,7 @@
           <div class="flex gap-2 flex-col bg-base-100 p-2 border border-base-300">
             <div class="flex gap-2 items-center">
               <font-awesome-icon icon="fa-solid fa-calendar" class="text-error" />
-              <span><strong>End:</strong>{{ eventsStore.selectedEvent.endDate }}</span>
+              <span><strong>{{ $t('calendar.end') }}:</strong> {{ eventsStore.selectedEvent.endDate }}</span>
             </div>
             <div class="flex gap-2 items-center">
               <font-awesome-icon icon="fa-solid fa-clock" />
@@ -364,20 +378,35 @@
           </div>
           <div class="flex items-center gap-2">
             <font-awesome-icon icon="fa-solid fa-clock" class="text-info" />
-            <span
-              ><strong>All day:</strong> {{ eventsStore.selectedEvent.allDay ? 'Yes' : 'No' }}</span
-            >
+            <span>
+              <strong>{{ $t('calendar.all_day') }}: </strong> 
+              <font-awesome-icon
+                v-if="eventsStore.selectedEvent.allDay"
+                icon="fa-solid fa-check"
+                class="text-success badge badge-neutral  rounded-full"
+              />
+              <font-awesome-icon 
+              v-else 
+              icon="fa-solid fa-xmark" 
+              class="text-error badge badge-neutral rounded-full" 
+              />
+            </span>
           </div>
           <div class="flex items-center gap-2">
-            <font-awesome-icon icon="fa-solid fa-palette" class="text-primary" />
-            <span><strong>Color:</strong></span>
-            <span :class="`badge badge-${eventsStore.selectedEvent.color}`">{{
-              eventsStore.selectedEvent.color
-            }}</span>
+            <font-awesome-icon icon="fa-solid fa-brush" class="text-primary" />
+            <span><strong>{{ $t('calendar.color_text') }}:</strong></span>
+            <span v-if="eventsStore.selectedEvent.color === 'warning'" class="badge badge-warning">{{ $t('calendar.color.warning') }}</span>
+            <span v-if="eventsStore.selectedEvent.color === 'success'" class="badge badge-success">{{ $t('calendar.color.success') }}</span>
+            <span v-if="eventsStore.selectedEvent.color === 'primary'" class="badge badge-primary">{{ $t('calendar.color.primary') }}</span>
+            <span v-if="eventsStore.selectedEvent.color === 'error'" class="badge badge-error">{{ $t('calendar.color.error') }}</span>
           </div>
           <div class="flex items-center gap-2">
             <font-awesome-icon icon="fa-solid fa-info-circle" class="text-warning" />
-            <span><strong>Status:</strong> {{ eventsStore.selectedEvent.status }}</span>
+            <span><strong>{{ $t('calendar.status_text') }}: </strong>
+              <span v-if="eventsStore.selectedEvent.status === 'active'" class="badge badge-info">{{ $t('calendar.status.active') }}</span>
+              <span v-if="eventsStore.selectedEvent.status === 'completed'" class="badge badge-success">{{ $t('calendar.status.completed') }}</span>
+              <span v-if="eventsStore.selectedEvent.status === 'cancelled'" class="badge badge-error">{{ $t('calendar.status.cancelled') }}</span>
+            </span>
           </div>
         </div>
       </div>
@@ -390,7 +419,7 @@
           :disabled="eventsStore.isCreator !== true"
         >
           <font-awesome-icon icon="fa-solid fa-pencil" />
-          Update
+          {{ $t('common.edit') }}
         </button>
 
         <button
@@ -399,7 +428,7 @@
           :disabled="eventsStore.isCreator !== true"
         >
           <font-awesome-icon icon="fa-solid fa-trash" />
-          Delete
+          {{ $t('common.delete') }}
         </button>
 
         <button
@@ -408,7 +437,7 @@
           :disabled="eventsStore.isCreator !== false"
         >
           <font-awesome-icon icon="fa-solid fa-door-open" />
-          Leave Event
+          {{ $t('calendar.leave_event') }}
         </button>
 
         <button
@@ -416,7 +445,7 @@
           @click="closeEvent"
         >
           <font-awesome-icon icon="fa-solid fa-arrow-left" />
-          Back to List
+          {{ $t('calendar.back_to_list') }}
         </button>
       </div>
     </div>
@@ -427,7 +456,7 @@
     <!-- Add member modal -->
     <base-dialog
       v-model="leaveModal"
-      title="Leave event"
+      :title="$t('calendar.modals.leave_event.title')"
       :confirmText="$t('common.confirm')"
       :cancelText="$t('common.cancel')"
       @confirm="confirmLeave"
@@ -439,7 +468,7 @@
             <h1 class="text-error mb-2">{{ error }}</h1>
           </div>
         </Transition>
-        <p>Leave event?</p>
+        <p>{{ $t('calendar.modals.leave_event.content') }}</p>
       </div>
     </base-dialog>
   </div>

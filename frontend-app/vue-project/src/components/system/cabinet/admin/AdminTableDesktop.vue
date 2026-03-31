@@ -5,12 +5,7 @@
         <tr>
           <th>
             <!-- Select All Checkbox -->
-            <input
-              type="checkbox"
-              class="checkbox checkbox-neutral"
-              :checked="selectAllLocal"
-              @change="toggleAll"
-            />
+            <input type="checkbox" class="checkbox checkbox-neutral" :checked="selectAllLocal" @change="toggleAll" />
           </th>
           <th>{{ $t('cabinet.admin.table_top.username') }}</th>
           <th>{{ $t('cabinet.admin.table_top.email') }}</th>
@@ -33,26 +28,26 @@
       <tbody v-else-if="store.users.length === 0">
         <tr>
           <td colspan="7" class="text-center">
-            <div class="alert alert-error">{{ $t('common.no_data') }}</div>
+            <div class="flex flex-col items-center gap-4 py-6">
+              <!-- Progress bar -->
+              <progress class="progress w-1/3 progress-neutral" max="100"></progress>
+
+              <!-- Teksts -->
+              <div class="alert alert-error w-auto px-4 py-2">
+                {{ $t('common.no_data') }}
+              </div>
+            </div>
           </td>
         </tr>
       </tbody>
 
       <!-- Users list -->
       <tbody v-else>
-        <tr
-          v-for="user in store.users"
-          :key="user.id"
-          :class="{ 'bg-base-300': selectedUserIdsLocal.includes(user.id) }"
-        >
+        <tr v-for="user in store.users" :key="user.id"
+          :class="{ 'bg-base-300': selectedUserIdsLocal.includes(user.id) }">
           <td>
-            <input
-              type="checkbox"
-              class="checkbox checkbox-neutral"
-              :value="user.id"
-              :checked="selectedUserIdsLocal.includes(user.id)"
-              @change="toggleUser(user.id)"
-            />
+            <input type="checkbox" class="checkbox checkbox-neutral" :value="user.id"
+              :checked="selectedUserIdsLocal.includes(user.id)" @change="toggleUser(user.id)" />
           </td>
           <td>{{ user.username }}</td>
           <td class="truncate max-w-50" :title="user.email">{{ user.email }}</td>

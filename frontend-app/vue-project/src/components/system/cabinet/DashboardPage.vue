@@ -16,7 +16,7 @@
         <template v-else>
           <font-awesome-icon
             icon="fa-solid fa-folder-open"
-            class="text-4xl text-base-content/40 mb-2"
+            class="text-4xl text-base-content/40 mb-2 animate-pulse"
           />
           <h2 class="text-lg font-semibold text-base-content/60">
             {{ $t('work.projects.errors.project_not_selected') }}

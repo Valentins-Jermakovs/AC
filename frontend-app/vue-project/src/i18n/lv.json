@@ -578,6 +578,8 @@
       "error": "Svarīgi",
       "warning": "Uzmanību"
     },
+    "color_text": "Krāsa",
+    "status_text": "Statuss",
     "description": "Apraksts",
     "start": "Sākums",
     "end": "Beigas",
@@ -586,6 +588,50 @@
     "timed_event": "Laikā ierobežots notikums",
     "no_events_in_month": "Šomēness notikumu nav",
     "no_events_in_month_description": "Nekas nav ieplānots",
-    "more": "vairāk"
+    "more": "Vairāk",
+    "add_event": "Pievienot notikumu",
+    "leave_event": "Iziet no notikuma",
+    "back_to_list": "Atgriezties atpakaļ",
+    "modals": {
+      "create_event": {
+        "title": "Izveidot notikumu",
+        "name": "Notikuma nosaukums",
+        "name_placeholder": "Ievadiet notikuma nosaukumu...",
+        "description": "Apraksts",
+        "description_placeholder": "Ievadiet aprakstu...",
+        "start": "Sākums",
+        "end": "Beigas",
+        "all_day": "Visa diena",
+        "color": "Krāsa",
+        "status": "Statuss",
+        "time_settings": "Laika iestatījumi"
+      },
+      "add_event_member": {
+        "title": "Pievienot lietotāju",
+        "email": "E-pasts",
+        "email_placeholder": "Ievadiet e-pastu..."
+      },
+      "delete_event_member": {
+        "title": "Dzēst lietotāju",
+        "content": "Vai tiešām vēlaties dzēst lietotāju?"
+      },
+      "update_event": {
+        "title": "Atjaunot notikumu",
+        "name": "Notikuma nosaukums",
+        "name_placeholder": "Ievadiet notikuma nosaukumu...",
+        "description": "Apraksts",
+        "description_placeholder": "Ievadiet aprakstu...",
+        "start": "Sākums",
+        "end": "Beigas",
+        "all_day": "Visa diena",
+        "color": "Krāsa",
+        "status": "Statuss",
+        "time_settings": "Laika iestatījumi"
+      },
+      "leave_event": {
+        "title": "Iziet no notikuma",
+        "content": "Vai tiešām vēlaties iziet no notikuma?"
+      }
+    }
   }
 }

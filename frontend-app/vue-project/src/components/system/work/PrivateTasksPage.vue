@@ -77,8 +77,7 @@
         <div
           class="flex flex-col md:flex-row items-center gap-2 font-semibold text-2xl text-base-content/60"
         >
-          <font-awesome-icon icon="fa-solid fa-triangle-exclamation" />
-          <p class="text-center">{{ $t('errors.tasks_not_found') }}</p>
+          <font-awesome-icon icon="fa-solid fa-file-pen" size="2xl" />
         </div>
 
         <button class="btn btn-primary btn-lg" @click="showCreate = true">

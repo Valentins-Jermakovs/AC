@@ -8,7 +8,7 @@
 
 <script>
 import PageHeader from '@/components/ui/PageHeader.vue'
-import headerImage from '@/assets/images/claudio-guglieri-Qj8haLTfHzs-unsplash.jpg'
+import headerImage from '@/assets/images/rinat-aidarkhan-4UubN0f3PYc-unsplash.jpg'
 
 // for testing only
 import { useEventsStore } from '@/stores/events'

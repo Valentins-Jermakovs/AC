@@ -164,8 +164,8 @@
     v-else
     class="w-full bg-base-200 border border-base-300 p-10 flex flex-col items-center justify-center gap-4 text-center"
   >
-    <font-awesome-icon icon="fa-solid fa-calendar-xmark" class="text-5xl text-base-content/40" />
-
+    <font-awesome-icon icon="fa-solid fa-calendar-xmark" class="text-5xl text-base-content/40 animate-bounce" />
+    <progress class="progress w-1/3 progress-neutral" max="100"></progress>
     <div class="flex flex-col gap-1">
       <h2 class="text-xl font-semibold">
         {{ $t('calendar.no_events_in_month') }}

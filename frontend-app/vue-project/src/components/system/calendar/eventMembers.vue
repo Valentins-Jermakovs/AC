@@ -3,15 +3,16 @@
   <div class="flex-1 flex flex-col w-full h-full gap-3">
     <div class="w-full flex flex-col gap-4">
       <!-- HEADER -->
-      <div class="w-full flex flex-col lg:flex-row gap-3 lg:items-center">
-        <button class="btn btn-success lg:w-auto" @click="openAddMemberModal">
+      <div class="w-full lg:h-16 flex flex-col lg:flex-row lg:items-center gap-3">
+        <button class="btn btn-success lg:h-full" @click="openAddMemberModal">
           <font-awesome-icon icon="fa-solid fa-user-plus" />
           {{ $t('common.add_member') }}
         </button>
 
         <!-- SEARCH -->
         <div
-          class="w-full flex flex-col sm:flex-row gap-2 border border-base-300 bg-base-100 p-2 wrap-break-word"
+          class="w-full h-full items-center flex flex-col sm:flex-row gap-2 border 
+          border-base-300 bg-base-200 p-2 wrap-break-word"
         >
           <input
             type="text"
@@ -34,7 +35,7 @@
             @click="searchMembers"
             :disabled="
               eventParticipantsStore.searchMode !== 'all' &&
-              !eventParticipantsStore.searchQuery.trim()
+              eventParticipantsStore.searchQuery.length < 3
             "
           >
             <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
@@ -81,9 +82,10 @@
         <!-- EMPTY -->
         <div
           v-if="!eventParticipantsStore.loading && eventParticipantsStore.participants.length === 0"
-          class="p-4 text-center text-base-content/60 flex items-center justify-center gap-2"
+          class="p-4 text-center text-base-content/60 flex items-center justify-center gap-2 flex-col"
         >
-          <font-awesome-icon icon="fa-solid fa-users" class="text-3xl" />
+          <font-awesome-icon icon="fa-solid fa-users" class="text-3xl animate-bounce" />
+          <progress class="progress w-1/3 progress-neutral" max="100"></progress>
           {{ $t('work.kanban.errors.members_not_found') }}
         </div>
       </div>
@@ -147,7 +149,7 @@
     <!-- Add member modal -->
     <base-dialog
       v-model="addMemberModal"
-      title="Add event member"
+      :title="$t('calendar.modals.add_event_member.title')"
       :confirmText="$t('common.confirm')"
       :cancelText="$t('common.cancel')"
       @confirm="confirmAddMember"
@@ -175,7 +177,7 @@
     <!-- Add member modal -->
     <base-dialog
       v-model="deleteMemberModal"
-      title="Delete event member"
+      :title="$t('calendar.modals.delete_event_member.title')"
       :confirmText="$t('common.confirm')"
       :cancelText="$t('common.cancel')"
       @confirm="confirmDeleteMember"
@@ -187,7 +189,7 @@
             <h1 class="text-error mb-2">{{ error }}</h1>
           </div>
         </Transition>
-        <p>Delete member?</p>
+        <p>{{ $t('calendar.modals.delete_event_member.content') }}</p>
       </div>
     </base-dialog>
   </div>

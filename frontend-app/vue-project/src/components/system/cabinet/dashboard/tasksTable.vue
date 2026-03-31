@@ -27,8 +27,9 @@
       >
         <font-awesome-icon
           icon="fa-solid fa-calendar-xmark"
-          class="text-5xl text-base-content/40"
+          class="text-5xl text-base-content/40 animate-bounce"
         />
+        <progress class="progress w-1/3 progress-neutral" max="100"></progress>
         <p class="text-base-content/60 italic">
           {{ $t('cabinet.profile.kpi.no_tasks') }}
         </p>

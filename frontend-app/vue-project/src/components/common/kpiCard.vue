@@ -3,7 +3,7 @@
     <div class="stat-title">{{ title }}</div>
 
     <div :class="['stat-value', colorClass, 'flex items-center gap-2']">
-      <template v-if="value === 0 || value === '0'">
+      <template v-if="value === 0 || value === '0' || value === null">
         <font-awesome-icon
           icon="fa-solid fa-spinner"
           class="animate-spin text-xl text-base-content/60"

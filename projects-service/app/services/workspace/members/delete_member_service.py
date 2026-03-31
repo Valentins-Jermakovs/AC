@@ -5,6 +5,7 @@ from bson import ObjectId
 # Models
 from app.models import WorkspaceProjectMemberModel
 
+from app.services.workspace.selected_project.set_selected_project_service import clear_selected_project_service
 
 # =================================================
 # Delete or leave project member
@@ -50,6 +51,9 @@ async def delete_project_member(
             "projectId": project_id,
             "userId": user_id
         }).delete()
+
+        # Clear selected project
+        await clear_selected_project_service(user_id)
 
         return {"message": "You have left the project successfully"}
 

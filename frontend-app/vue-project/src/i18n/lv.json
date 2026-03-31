@@ -284,6 +284,10 @@
         "title": "Izveidot uzdevumu"
       }
     },
+    "errors": {
+      "task_not_found": "Uzdevums nav atrasts/izvēlēts",
+      "not_found_description": "Izveido uzdevumu, lai uzsākt darbu"
+    },
     "kanban": {
       "board_view": "Dēlis",
       "member_view": "Dalībnieki",
@@ -412,7 +416,9 @@
         "projects_not_found": "Jums nav neviena projekta",
         "project_not_selected": "Jums nav izvēlēts neviens projekts",
         "no_data": "Nav datu",
-        "no_data_for_project": "Nav projekta datu"
+        "no_data_for_project": "Nav projekta datu",
+        "no_sprints": "Šim projektam nav sprintu",
+        "no_user_stories": "Šim sprintam nav lietotāju stāstu"
       },
       "common": {
         "create_project": "Izveidot projektu",
@@ -516,6 +522,10 @@
         "delete_user_story": {
           "title": "Dzēst lietotāja stāstu",
           "content": "Vai tiešām vēlaties dzēst lietotāja stāstu?"
+        },
+        "leave_project": {
+          "title": "Izrakstīties no projekta",
+          "content": "Vai tiešām vēlaties izrakstīties no projekta?"
         }
       }
     }

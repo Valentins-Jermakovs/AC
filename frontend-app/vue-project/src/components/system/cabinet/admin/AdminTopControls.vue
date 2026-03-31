@@ -10,8 +10,11 @@
           class="input input-bordered w-full"
           :disabled="store.searchMode === '' || store.searchMode === 'all'"
         />
-        <button class="btn btn-primary" @click="$emit('search')"
-          :disabled="store.searchQuery.length < 3 && store.searchMode !== 'all'">
+        <button
+          class="btn btn-primary"
+          @click="$emit('search')"
+          :disabled="store.searchQuery.length < 3 && store.searchMode !== 'all'"
+        >
           <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
         </button>
       </div>

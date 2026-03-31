@@ -7,89 +7,85 @@ from app.models import WorkspaceProjectMemberModel
 
 
 # =================================================
-# Delete project member
+# Delete or leave project member
 # =================================================
 async def delete_project_member(
     project_id: str,
     user_id: str,
-    user_id_creator: str
+    user_id_requester: str
 ) -> dict:
+    """
+    Allows a project member to leave the project themselves, or an admin/owner
+    to remove another member. Only owner cannot remove themselves.
+    """
 
     # ================= VALIDATION =================
-    # Raise if project_id is not provided
     if not project_id:
         raise HTTPException(status_code=400, detail="Project ID is required")
-    # Raise if user_id is not provided
     if not user_id:
         raise HTTPException(status_code=400, detail="User ID is required")
-    # Raise if project_id is not valid
     if not ObjectId.is_valid(project_id):
         raise HTTPException(status_code=400, detail="Invalid project ID")
 
-    # ================= VERIFY CREATOR =================
-
-    creator = await WorkspaceProjectMemberModel.find_one({
+    # ================= FETCH REQUESTER =================
+    requester = await WorkspaceProjectMemberModel.find_one({
         "projectId": project_id,
-        "userId": user_id_creator
+        "userId": user_id_requester
     })
 
-    if not creator:
+    if not requester:
         raise HTTPException(status_code=403, detail="You are not a member of this project")
-    
-    if user_id_creator == user_id:
-        
-        # Raise if owner is trying to remove themselves
-        if creator.role == "owner":
+
+    # ================= SELF LEAVE =================
+    if user_id_requester == user_id:
+        # Owner cannot leave
+        if requester.role == "owner":
             raise HTTPException(
                 status_code=403,
-                detail="Owner cannot remove themselves"
+                detail="Owner cannot leave the project"
             )
 
-        # Remove user from project
+        # Remove self
         await WorkspaceProjectMemberModel.find_one({
             "projectId": project_id,
             "userId": user_id
         }).delete()
 
-        return {"message": "Project member removed successfully"}
+        return {"message": "You have left the project successfully"}
 
-    if creator.role not in ["admin", "owner"]:
+    # ================= VERIFY PERMISSIONS =================
+    # Only admin or owner can remove other members
+    if requester.role not in ["admin", "owner"]:
         raise HTTPException(
             status_code=403,
             detail="Only admin or owner can remove members"
         )
 
     # ================= FIND MEMBER TO DELETE =================
-
-    project_member = await WorkspaceProjectMemberModel.find_one({
+    member_to_delete = await WorkspaceProjectMemberModel.find_one({
         "projectId": project_id,
         "userId": user_id
     })
 
-    # If admin try to delete admin
-    if creator.role == "admin" and project_member.role == "admin":
-        raise HTTPException(
-            status_code=403,
-            detail="Admin cannot remove admin"
-        )
-
-    if not project_member:
-        raise HTTPException(
-            status_code=404,
-            detail="Project member not found"
-        )
+    if not member_to_delete:
+        raise HTTPException(status_code=404, detail="Project member not found")
 
     # ================= ROLE PROTECTION =================
-
     # Admin cannot remove owner
-    if creator.role == "admin" and project_member.role == "owner":
+    if requester.role == "admin" and member_to_delete.role == "owner":
         raise HTTPException(
             status_code=403,
             detail="Admin cannot remove owner"
         )
 
-    # ================= DELETE =================
+    # Admin cannot remove other admin
+    if requester.role == "admin" and member_to_delete.role == "admin":
+        raise HTTPException(
+            status_code=403,
+            detail="Admin cannot remove another admin"
+        )
 
-    await project_member.delete()
+    # ================= DELETE =================
+    await member_to_delete.delete()
 
     return {"message": "Project member removed successfully"}

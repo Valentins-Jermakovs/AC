@@ -26,7 +26,7 @@
           class="btn btn-primary"
           @click="searchBoards"
           :disabled="
-            kanbanBoardStore.searchMode === 'title' && !kanbanBoardStore.searchQuery.trim()
+            kanbanBoardStore.searchMode === 'title' && kanbanBoardStore.searchQuery.length < 3
           "
         >
           <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
@@ -40,8 +40,28 @@
     >
       <!-- If list is empty -->
       <div v-if="boards.length === 0" class="w-full h-full flex items-center justify-center">
-        <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2xl" />
-        Boards not found!
+        <div
+          class="flex flex-col items-center gap-5 p-8 bg-base-200 border border-base-300 w-full max-w-md"
+        >
+          <!-- Icon -->
+          <div class="flex flex-col items-center gap-3">
+            <font-awesome-icon
+              icon="fa-solid fa-chess-board"
+              class="text-6xl text-base-content/20"
+            />
+          </div>
+
+          <!-- Text -->
+          <div class="text-center">
+            <h2 class="text-md font-semibold flex items-center gap-2 justify-center text-error">
+              <font-awesome-icon icon="fa-solid fa-circle-exclamation" class="animate-bounce" />
+              {{ $t('work.kanban.errors.boards_not_found') }}
+            </h2>
+          </div>
+
+          <!-- Visual element -->
+          <progress class="progress progress-error w-40"></progress>
+        </div>
       </div>
 
       <div
@@ -118,8 +138,8 @@ export default {
     }
   },
 
-  mounted() {
-    this.kanbanBoardStore.fetchKanbanBoards()
+  async mounted() {
+    await this.kanbanBoardStore.fetchKanbanBoards()
   },
 
   computed: {

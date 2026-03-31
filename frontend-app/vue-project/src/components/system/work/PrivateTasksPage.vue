@@ -65,8 +65,21 @@
         v-else-if="privateTasksStore.privateTasks.length > 0"
         class="flex flex-col items-center justify-center h-full text-base-content/50 gap-3 text-center"
       >
-        <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2xl" />
-        {{ $t('errors.tasks_not_found') }}
+        <!-- Rotējoša brīdinājuma ikona -->
+        <font-awesome-icon
+          icon="fa-solid fa-triangle-exclamation"
+          size="4x"
+          class="text-warning animate-spin-slow"
+        />
+
+        <!-- Teksts ar papildikonu -->
+        <h2 class="text-xl font-semibold text-base-content/80 flex items-center gap-2">
+          <font-awesome-icon icon="fa-solid fa-list" />
+          {{ $t('errors.tasks_not_found') }}
+        </h2>
+
+        <!-- Mūžīgais progress bar animācijai -->
+        <progress class="progress progress-primary w-32"></progress>
       </div>
 
       <!-- Saraksts tukšs -->
@@ -74,13 +87,17 @@
         v-else
         class="flex flex-col items-center justify-center h-full gap-4 bg-base-100 rounded p-4"
       >
-        <div
-          class="flex flex-col md:flex-row items-center gap-2 font-semibold text-2xl text-base-content/60"
-        >
-          <font-awesome-icon icon="fa-solid fa-file-pen" size="2xl" />
+        <div class="flex flex-col items-center gap-2 font-semibold text-2xl text-base-content/60">
+          <font-awesome-icon
+            icon="fa-solid fa-file-pen"
+            size="2xl text-base-content/40 animate-bounce"
+          />
+          <p class="text-lg text-base-content/40">
+            {{ $t('work.errors.not_found_description') }}
+          </p>
         </div>
 
-        <button class="btn btn-primary btn-lg" @click="showCreate = true">
+        <button class="btn btn-primary btn-md" @click="showCreate = true">
           {{ $t('common.create') }}
         </button>
 

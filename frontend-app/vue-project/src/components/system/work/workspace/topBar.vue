@@ -8,14 +8,12 @@
       {{ $t('work.projects.common.create_project') }}
     </button>
 
-    <div class="flex-1"></div>
-
     <!-- Search -->
     <div class="flex flex-col md:flex-row gap-2 flex-1 w-full sm:justify-between">
       <input
         v-model="store.searchQuery"
         type="text"
-        class="input input-bordered w-full md:w-auto"
+        class="input input-bordered w-full"
         :placeholder="$t('common.search')"
         @keyup.enter="search"
         :disabled="store.searchMode === 'all'"
@@ -30,7 +28,7 @@
       <button
         class="btn btn-primary w-full md:w-auto"
         @click="search"
-        :disabled="store.searchMode === 'title' && !store.searchQuery.trim()"
+        :disabled="store.searchMode === 'title' && store.searchQuery.length < 3"
       >
         <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
       </button>

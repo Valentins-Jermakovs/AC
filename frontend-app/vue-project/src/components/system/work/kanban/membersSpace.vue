@@ -29,7 +29,7 @@
 
         <!-- SEARCH -->
         <div
-          class="w-full flex flex-col md:flex-row items-stretch md:items-center gap-2 border border-base-300 bg-base-100 p-2"
+          class="w-full flex flex-col md:flex-row items-stretch md:items-center gap-2 border border-base-300 bg-base-200 p-2"
         >
           <input
             type="text"
@@ -37,7 +37,9 @@
             :placeholder="$t('common.search')"
             v-model="kanbanMembersStore.searchQuery"
             @keyup.enter="searchMembers"
-            :disabled="kanbanMembersStore.searchType === 'all'"
+            :disabled="
+              kanbanMembersStore.searchType === 'all' && kanbanMembersStore.searchQuery.length < 3
+            "
           />
 
           <select
@@ -114,10 +116,31 @@
         <!-- EMPTY -->
         <div
           v-if="!kanbanMembersStore.loading && kanbanMembersStore.members.length === 0"
-          class="p-4 text-center text-base-content/60 flex items-center justify-center gap-2"
+          class="p-8 flex flex-col items-center justify-center gap-4 text-base-content/60"
         >
-          <font-awesome-icon icon="fa-solid fa-users" class="text-3xl" />
-          {{ $t('work.kanban.errors.members_not_found') }}
+          <!-- Icon composition -->
+          <div class="relative flex items-center justify-center">
+            <font-awesome-icon icon="fa-solid fa-users" class="text-6xl text-base-content/20" />
+
+            <font-awesome-icon
+              icon="fa-solid fa-circle-exclamation"
+              class="text-error text-xl absolute -top-1 -right-2"
+              fade
+            />
+          </div>
+
+          <!-- Text block -->
+          <div class="text-center flex flex-col gap-1">
+            <h3
+              class="text-lg font-semibold text-base-content/80 flex items-center gap-2 justify-center"
+            >
+              <font-awesome-icon icon="fa-solid fa-user-slash" class="text-error" />
+              {{ $t('work.kanban.errors.members_not_found') }}
+            </h3>
+          </div>
+
+          <!-- Visual element -->
+          <progress class="progress progress-primary w-32"></progress>
         </div>
       </div>
 

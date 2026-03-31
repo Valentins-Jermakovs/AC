@@ -11,8 +11,7 @@
 
         <!-- SEARCH -->
         <div
-          class="w-full h-full items-center flex flex-col sm:flex-row gap-2 border 
-          border-base-300 bg-base-200 p-2 wrap-break-word"
+          class="w-full h-full items-center flex flex-col sm:flex-row gap-2 border border-base-300 bg-base-200 p-2 wrap-break-word"
         >
           <input
             type="text"

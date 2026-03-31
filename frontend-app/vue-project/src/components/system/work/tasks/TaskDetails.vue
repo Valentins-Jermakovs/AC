@@ -2,20 +2,39 @@
   <div class="border border-base-300 p-4 bg-base-100 flex flex-col gap-5 h-full overflow-y-auto">
     <!-- Title & Metadata -->
     <div class="flex flex-col gap-5">
-      <h1 class="font-semibold text-2xl wrap-break-word whitespace-pre-line">{{ task.title }}</h1>
+      <h1
+        class="font-semibold text-2xl wrap-break-word whitespace-pre-line flex gap-3 items-center"
+      >
+        <font-awesome-icon icon="fa-solid fa-clipboard-list" class="text-primary" />
+
+        {{ task.title }}
+      </h1>
       <div class="flex flex-wrap gap-4 text-sm text-base-content/70">
-        <div class="flex gap-1 items-center">
+        <div class="flex gap-2 items-center">
+          <font-awesome-icon
+            icon="fa-solid fa-circle-check"
+            :class="task.completed ? 'text-success' : 'text-warning'"
+          />
           <span class="font-medium">{{ $t('work.task_detail.status') }}:</span>
+
           <span :class="statusClass(task.completed)">
             {{ task.completed ? $t('work.task_detail.complete') : $t('work.task_detail.pending') }}
           </span>
         </div>
-        <div class="flex gap-1 items-center">
-          <span class="font-medium">{{ $t('work.task_detail.created_at') }}:</span>
+
+        <div class="flex gap-2 items-center">
+          <font-awesome-icon icon="fa-solid fa-calendar-plus" class="text-info" />
+
+          <span class="font-medium"> {{ $t('work.task_detail.created_at') }}: </span>
+
           <span class="text-info">{{ task.createdAt }}</span>
         </div>
-        <div class="flex gap-1 items-center">
-          <span class="font-medium">{{ $t('work.task_detail.due_date') }}:</span>
+
+        <div class="flex gap-2 items-center">
+          <font-awesome-icon icon="fa-solid fa-hourglass-half" class="text-warning" />
+
+          <span class="font-medium"> {{ $t('work.task_detail.due_date') }}: </span>
+
           <span class="text-warning">{{ task.dueDate }}</span>
         </div>
       </div>

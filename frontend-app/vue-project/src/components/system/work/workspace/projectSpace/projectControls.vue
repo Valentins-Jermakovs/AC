@@ -14,7 +14,7 @@
 
     <!-- Members -->
     <button
-      v-if="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role === 'owner'"
+      v-if="projectMemberStore.currentUser && projectMemberStore.currentUser.role === 'owner'"
       class="btn flex-1 sm:flex-none"
       :class="activeView === 'members' ? 'btn-primary' : 'btn-neutral'"
       @click="$emit('update:activeView', 'members')"
@@ -26,7 +26,11 @@
     </button>
 
     <!-- Edit -->
-    <button class="btn btn-neutral flex-1 sm:flex-none sm:ml-auto" @click="openEdit">
+    <button
+      class="btn btn-neutral flex-1 sm:flex-none sm:ml-auto"
+      @click="openEdit"
+      v-if="projectMemberStore.currentUser && projectMemberStore.currentUser.role === 'owner'"
+    >
       <font-awesome-icon icon="fa-solid fa-pen-to-square" />
       <span class="hidden md:inline">
         {{ $t('work.projects.controls.edit_project') }}
@@ -34,7 +38,7 @@
     </button>
     <!-- Delete -->
     <button
-      v-if="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role === 'owner'"
+      v-if="projectMemberStore.currentUser && projectMemberStore.currentUser.role === 'owner'"
       class="btn btn-neutral flex-1 sm:flex-none"
       @click="showDelete = true"
     >
@@ -46,7 +50,8 @@
 
     <!-- Leave -->
     <button
-      v-if="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role !== 'owner'"
+      v-if="projectMemberStore.currentUser && projectMemberStore.currentUser.role !== 'owner'"
+      @click="showLeave = true"
       class="btn btn-neutral flex-1 sm:flex-none sm:ml-auto"
     >
       <font-awesome-icon icon="fa-solid fa-arrow-right-from-bracket" />
@@ -114,6 +119,19 @@
       {{ $t('work.projects.modals.delete_project.content') }}
     </p>
   </base-dialog>
+
+  <!-- Leave dialog -->
+  <base-dialog
+    v-model="showLeave"
+    :title="$t('work.projects.modals.leave_project.title')"
+    :confirmText="$t('common.delete')"
+    :cancelText="$t('common.cancel')"
+    @confirm="leaveProject"
+  >
+    <p>
+      {{ $t('work.projects.modals.leave_project.content') }}
+    </p>
+  </base-dialog>
 </template>
 
 <script>
@@ -134,12 +152,14 @@ export default {
 
   data() {
     return {
-      kanbanMembersStore: useWorkspaceProjectMembersStore(),
+      projectMemberStore: useWorkspaceProjectMembersStore(),
       store: useWorkspaceProjectsStore(),
       selectedProjectStore: useSelectedProjectStore(),
 
       showDelete: false,
       showEdit: false,
+      showLeave: false,
+      error: '',
 
       editProject: {
         title: '',
@@ -152,7 +172,7 @@ export default {
   methods: {
     goToProjects() {
       this.store.selectedProject = null
-      this.kanbanMembersStore.projectId = null
+      this.projectMemberStore.projectId = null
     },
     async deleteProject() {
       await this.store.deleteProject({
@@ -199,10 +219,21 @@ export default {
         console.error(err)
       }
     },
+    async leaveProject() {
+      const payload = {
+        userId: this.projectMemberStore.currentUser.userId,
+        projectId: this.store.selectedProject.id,
+      }
+
+      await this.projectMemberStore.deleteMember(payload)
+      this.showLeave = false
+      this.goToProjects()
+      this.store.getAllProjects()
+    },
   },
 
   mounted() {
-    this.kanbanMembersStore.fetchMe()
+    this.projectMemberStore.fetchMe()
   },
 }
 </script>

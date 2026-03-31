@@ -203,7 +203,7 @@ async def delete_project_member_endpoint(
     return await delete_project_member(
         project_id=data.projectId,
         user_id=data.userId,
-        user_id_creator=user_id_from_token
+        user_id_requester=user_id_from_token
     )
 
 

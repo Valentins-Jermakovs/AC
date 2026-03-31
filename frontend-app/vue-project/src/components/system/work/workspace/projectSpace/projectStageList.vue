@@ -7,8 +7,39 @@
       </div>
 
       <!-- Create stage -->
-      <div class="w-full flex justify-center pt-2">
-        <button class="btn btn-primary w-full sm:w-auto" @click="showDialog = true">
+      <div class="w-full flex flex-col gap-2 justify-center pt-2">
+        <!-- Empty state -->
+        <div
+          v-if="!stagesStore.loading && stagesStore.projectStages.length === 0"
+          class="flex flex-col items-center gap-3 text-base-content/60 p-6 border border-base-300 w-full bg-base-100"
+        >
+          <!-- Icon -->
+          <div class="relative">
+            <font-awesome-icon
+              icon="fa-solid fa-flag-checkered"
+              class="text-6xl text-base-content/20"
+            />
+
+            <font-awesome-icon
+              icon="fa-solid fa-circle-exclamation"
+              class="text-warning text-xl absolute -top-1 -right-2"
+              bounce
+            />
+          </div>
+
+          <!-- Text -->
+          <div class="flex flex-col items-center text-center">
+            <h3 class="font-semibold text-lg flex items-center gap-2">
+              <font-awesome-icon icon="fa-solid fa-list" />
+              {{ $t('work.projects.errors.no_sprints') }}
+            </h3>
+          </div>
+
+          <!-- Animated progress -->
+          <progress class="progress progress-primary w-32"></progress>
+        </div>
+
+        <button class="btn btn-primary w-full md:w-auto" @click="showDialog = true">
           <font-awesome-icon icon="fa-solid fa-plus" />
 
           <span class="hidden sm:inline">

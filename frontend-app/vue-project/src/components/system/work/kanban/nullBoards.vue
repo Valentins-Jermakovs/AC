@@ -1,13 +1,37 @@
 <template>
-  <div class="w-full h-full flex items-center justify-center flex-col gap-5 p-1 flex-1">
-    <div class="flex items-center justify-center gap-2 text-red text-2xl">
-      <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2xl" />
-      <h1>{{ $t('work.kanban.errors.boards_not_found') }}</h1>
+  <div class="w-full h-full flex items-center justify-center flex-col gap-6 flex-1">
+    <!-- Icon block -->
+    <div
+      class="flex flex-col items-center gap-4 p-8 bg-base-200 border border-base-300 w-full max-w-md"
+    >
+      <!-- Animated icon -->
+      <div class="relative">
+        <font-awesome-icon icon="fa-solid fa-layer-group" class="text-6xl text-base-content/20" />
+
+        <font-awesome-icon
+          icon="fa-solid fa-triangle-exclamation"
+          class="text-error text-2xl absolute -top-2 -right-3"
+          bounce
+        />
+      </div>
+
+      <!-- Text -->
+      <div class="text-center flex flex-col gap-2">
+        <h1 class="text-xl font-semibold text-error flex items-center gap-2 justify-center">
+          <font-awesome-icon icon="fa-solid fa-circle-exclamation" />
+          {{ $t('work.kanban.errors.boards_not_found') }}
+        </h1>
+      </div>
+
+      <div class="divider my-1"></div>
+
+      <!-- Action -->
+      <button class="btn btn-primary gap-2" @click="openCreateBoardModal">
+        <font-awesome-icon icon="fa-solid fa-plus" />
+
+        {{ $t('work.kanban.controls.create_board') }}
+      </button>
     </div>
-    <button class="btn btn-primary" @click="openCreateBoardModal">
-      <font-awesome-icon icon="fa-solid fa-plus" />
-      {{ $t('work.kanban.controls.create_board') }}
-    </button>
   </div>
 
   <!-- Create board modal -->

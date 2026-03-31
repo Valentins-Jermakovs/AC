@@ -11,7 +11,7 @@
 
         <!-- SEARCH -->
         <div
-          class="w-full flex flex-col sm:flex-row gap-2 border border-base-300 bg-base-100 p-2 wrap-break-word"
+          class="w-full flex flex-col sm:flex-row gap-2 border border-base-300 bg-base-200 p-2 wrap-break-word"
         >
           <input
             type="text"
@@ -36,7 +36,7 @@
             @click="searchMembers"
             :disabled="
               workspaceProjectMembersStore.searchType !== 'all' &&
-              !workspaceProjectMembersStore.searchQuery.trim()
+              workspaceProjectMembersStore.searchQuery.length < 3
             "
           >
             <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
@@ -95,16 +95,26 @@
           </div>
         </div>
 
-        <!-- EMPTY -->
+        <!-- EMPTY MEMBERS -->
         <div
           v-if="
             !workspaceProjectMembersStore.loading &&
             workspaceProjectMembersStore.projectMembers.length === 0
           "
-          class="p-4 text-center text-base-content/60 flex items-center justify-center gap-2"
+          class="flex flex-col items-center justify-center gap-4 text-center p-6"
         >
-          <font-awesome-icon icon="fa-solid fa-users" class="text-3xl" />
-          {{ $t('work.kanban.errors.members_not_found') }}
+          <font-awesome-icon
+            icon="fa-solid fa-users"
+            size="3x"
+            class="text-error animate-spin-slow"
+          />
+
+          <h2 class="text-lg font-semibold flex items-center gap-2 text-base-content/80">
+            <font-awesome-icon icon="fa-solid fa-user-slash" class="text-error" bounce />
+            {{ $t('work.kanban.errors.members_not_found') }}
+          </h2>
+
+          <progress class="progress progress-error w-32"></progress>
         </div>
       </div>
 

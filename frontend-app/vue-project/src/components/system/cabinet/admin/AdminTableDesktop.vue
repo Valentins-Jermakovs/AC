@@ -5,7 +5,12 @@
         <tr>
           <th>
             <!-- Select All Checkbox -->
-            <input type="checkbox" class="checkbox checkbox-neutral" :checked="selectAllLocal" @change="toggleAll" />
+            <input
+              type="checkbox"
+              class="checkbox checkbox-neutral"
+              :checked="selectAllLocal"
+              @change="toggleAll"
+            />
           </th>
           <th>{{ $t('cabinet.admin.table_top.username') }}</th>
           <th>{{ $t('cabinet.admin.table_top.email') }}</th>
@@ -43,11 +48,19 @@
 
       <!-- Users list -->
       <tbody v-else>
-        <tr v-for="user in store.users" :key="user.id"
-          :class="{ 'bg-base-300': selectedUserIdsLocal.includes(user.id) }">
+        <tr
+          v-for="user in store.users"
+          :key="user.id"
+          :class="{ 'bg-base-300': selectedUserIdsLocal.includes(user.id) }"
+        >
           <td>
-            <input type="checkbox" class="checkbox checkbox-neutral" :value="user.id"
-              :checked="selectedUserIdsLocal.includes(user.id)" @change="toggleUser(user.id)" />
+            <input
+              type="checkbox"
+              class="checkbox checkbox-neutral"
+              :value="user.id"
+              :checked="selectedUserIdsLocal.includes(user.id)"
+              @change="toggleUser(user.id)"
+            />
           </td>
           <td>{{ user.username }}</td>
           <td class="truncate max-w-50" :title="user.email">{{ user.email }}</td>

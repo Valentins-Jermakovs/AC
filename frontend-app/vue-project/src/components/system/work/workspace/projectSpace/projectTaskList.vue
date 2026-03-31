@@ -10,7 +10,25 @@
     </div>
 
     <!-- Create -->
-    <div class="w-full flex justify-center pt-2">
+    <div class="w-full flex flex-col justify-center pt-2">
+      <div
+        v-if="tasksStore.getTasksByStage(stage.id).length === 0"
+        class="flex flex-col items-center justify-center gap-4 text-center p-4"
+      >
+        <font-awesome-icon
+          bounce
+          icon="fa-solid fa-triangle-exclamation"
+          size="3x"
+          class="text-warning animate-spin-slow"
+        />
+
+        <h2 class="text-lg font-semibold flex items-center gap-2 text-base-content/80">
+          <font-awesome-icon icon="fa-solid fa-list-check" />
+          {{ $t('work.projects.errors.no_user_stories') }}
+        </h2>
+
+        <progress class="progress progress-primary w-32"></progress>
+      </div>
       <button class="btn btn-primary w-full sm:w-auto" @click="openCreateDialog">
         <font-awesome-icon icon="fa-solid fa-plus" />
 

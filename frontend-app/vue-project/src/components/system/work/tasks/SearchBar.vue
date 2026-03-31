@@ -22,7 +22,7 @@
     <button
       class="btn btn-primary"
       @click="emitSearch"
-      :disabled="filter !== 'all' && query.trim() === ''"
+      :disabled="filter !== 'all' && query.length < 3"
     >
       <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
     </button>

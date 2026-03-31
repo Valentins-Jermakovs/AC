@@ -211,21 +211,12 @@
         },
         "card_two": {
           "title": "Available modes:",
-          "content": [
-            "select/search users",
-            "modify user roles",
-            "change activity status"
-          ]
+          "content": ["select/search users", "modify user roles", "change activity status"]
         }
       },
       "admin_top": {
         "search": "Search data...",
-        "filters": [
-          "All users",
-          "By ID",
-          "By username/email",
-          "By role"
-        ]
+        "filters": ["All users", "By ID", "By username/email", "By role"]
       },
       "table_top": {
         "username": "Username",
@@ -288,6 +279,10 @@
       "create_task": {
         "title": "Create task"
       }
+    },
+    "errors": {
+      "task_not_found": "Task not found/selected",
+      "not_found_description": "Create a task to start working"
     },
     "kanban": {
       "board_view": "Board",
@@ -417,7 +412,9 @@
         "projects_not_found": "You don't have any projects",
         "project_not_selected": "You don't have selected any project",
         "no_dates": "No data",
-        "no_data_for_project": "No project data"
+        "no_data_for_project": "No project data",
+        "no_sprints": "This project has no sprints",
+        "no_user_stories": "This sprint has no user stories"
       },
       "common": {
         "create_project": "Create project",
@@ -521,6 +518,10 @@
         "delete_user_story": {
           "title": "Delete user story",
           "content": "Are you sure you want to delete this user story?"
+        },
+        "leave_project": {
+          "title": "Leave project",
+          "content": "Are you sure you want to leave this project?"
         }
       }
     }

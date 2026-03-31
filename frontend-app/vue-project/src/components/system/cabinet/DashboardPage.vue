@@ -2,6 +2,9 @@
   <div class="flex flex-col p-5 w-full h-full gap-2">
     <!-- KPI cards -->
     <div class="grid grid-cols-1 sm:grid-cols-4 gap-2">
+      <div class="col-span-1 sm:col-span-4">
+        <EventWidget></EventWidget>
+      </div>
       <div
         class="flex-1 flex flex-col gap-3 bg-base-200 border border-base-300 p-5 items-center justify-center"
       >
@@ -66,6 +69,7 @@ import UserProgressCard from './UserProgressCard.vue'
 import { usePrivateTasksStore } from '@/stores/privateTasks'
 import { useUserStore } from '@/stores/user'
 import { useSelectedProjectStore } from '@/stores/selectedProject'
+import EventWidget from '@/components/common/EventWidget.vue'
 
 export default {
   name: 'DashboardPage',
@@ -73,6 +77,7 @@ export default {
     TasksTable,
     kpiCard,
     UserProgressCard,
+    EventWidget,
   },
 
   data() {

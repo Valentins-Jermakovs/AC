@@ -44,12 +44,14 @@ async def update_event(
     if end_date and end_date.tzinfo is None:
         end_date = end_date.replace(tzinfo=timezone.utc)
 
+    today = get_current_date().date()
+
     # Check if start date is in the past
-    if start_date and start_date < get_current_date():
+    if start_date and start_date.date() < today:
         raise HTTPException(status_code=400, detail="Start date cannot be in the past")
     
     # Check if end date is in the past
-    if end_date and end_date < get_current_date():
+    if end_date and end_date.date() < today:
         raise HTTPException(status_code=400, detail="End date cannot be in the past")
         
     # Check title uniqueness except for current event

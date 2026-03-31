@@ -1,5 +1,5 @@
 <template>
-  <LoadingScreen v-if="eventsStore.isLoading" />
+  <LoadingScreen v-if="eventsStore.loading || userStore.loading || eventParticipantsStore.loading" />
 
   <div
     v-if="!eventsStore.selectedEvent"

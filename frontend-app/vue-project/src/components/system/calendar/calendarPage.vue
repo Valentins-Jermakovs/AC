@@ -7,23 +7,40 @@
         :months="months"
         @prev="prevMonth"
         @next="nextMonth"
-      >
-      </CalendarHeader>
-
+      />
       <CalendarGrid
         :days="calendarDays"
         :isToday="isToday"
         :events="eventsStore.events"
         :currentMonth="currentMonth"
         :currentYear="currentYear"
-      >
-      </CalendarGrid>
+      />
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-base-200 p-3 border border-base-300">
-      <EventCard v-for="event in eventsStore.events" :key="event.id" :event="event"></EventCard>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-base-200 p-3 border border-base-300 min-h-38">
+      <!-- Ja nav notikumu -->
+      <div
+        v-if="eventsStore.events.length === 0"
+        class="col-span-full flex flex-col items-center justify-center gap-3 p-10 rounded-box animate-pulse"
+      >
+        <font-awesome-icon 
+          icon="fa-solid fa-calendar-xmark" 
+          class="text-5xl text-base-content/40 animate-bounce"
+        />
+        <p class="text-base-content/60 italic">
+          {{ $t('calendar.errors.no_events') }}
+        </p>
+      </div>
+
+      <!-- Ja ir notikumi -->
+      <EventCard 
+        v-for="event in eventsStore.events" 
+        :key="event.id" 
+        :event="event"
+      />
     </div>
   </div>
+  <LoadingScreen v-if="eventsStore.loading"></LoadingScreen>
 </template>
 
 <script>
@@ -31,20 +48,16 @@ import EventCard from '@/components/common/EventCard.vue'
 import CalendarHeader from '@/components/common/CalendarHeader.vue'
 import CalendarGrid from '@/components/common/CalendarGrid.vue'
 import { useEventsStore } from '@/stores/events'
+import LoadingScreen from '@/components/common/LoadingScreen.vue';
 
 export default {
-  components: {
-    EventCard,
-    CalendarHeader,
-    CalendarGrid,
-  },
+  components: { EventCard, CalendarHeader, CalendarGrid, LoadingScreen },
 
   data() {
     return {
       eventsStore: useEventsStore(),
       currentMonth: new Date().getMonth(),
       currentYear: new Date().getFullYear(),
-
     }
   },
 
@@ -67,9 +80,8 @@ export default {
       if (this.currentMonth === 0) {
         this.currentMonth = 11
         this.currentYear -= 1
-      } else {
-        this.currentMonth -= 1
-      }
+      } else this.currentMonth -= 1
+
       this.eventsStore.getEventsByMonth(this.currentMonth + 1, this.currentYear)
     },
 
@@ -77,9 +89,8 @@ export default {
       if (this.currentMonth === 11) {
         this.currentMonth = 0
         this.currentYear += 1
-      } else {
-        this.currentMonth += 1
-      }
+      } else this.currentMonth += 1
+
       this.eventsStore.getEventsByMonth(this.currentMonth + 1, this.currentYear)
     },
   },
@@ -115,7 +126,7 @@ export default {
         this.$t('calendar.month.november'),
         this.$t('calendar.month.december'),
       ]
-    }
+    },
   },
 }
 </script>

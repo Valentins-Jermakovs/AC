@@ -21,9 +21,6 @@
       ></UserModificationCard>
     </div>
 
-    <!-- Loading screen while user data is not loaded -->
-    <LoadingScreen v-else></LoadingScreen>
-
     <!-- Modals for changing username, email, password -->
     <UsernameModal v-model="openUsernameModal" :error="error" @submit="submitUsernameChange" />
 
@@ -35,6 +32,8 @@
       @submit="submitPasswordChange"
     />
   </div>
+  <!-- Loading screen while user data is not loaded -->
+  <LoadingScreen v-if="taskStore.loading || userStore.loading"></LoadingScreen>
 </template>
 
 <script>

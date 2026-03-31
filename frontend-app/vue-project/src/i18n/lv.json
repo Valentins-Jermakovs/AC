@@ -541,6 +541,9 @@
       "calendar": "Kalendārs",
       "events": "Notikumi"
     },
+    "errors": {
+      "no_events": "Nav notikumu"
+    },
     "month": {
       "january": "Janvāris",
       "february": "Februāris",

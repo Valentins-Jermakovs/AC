@@ -546,6 +546,9 @@
       "calendar": "Calendar",
       "events": "Events"
     },
+    "errors": {
+      "no_events": "No events"
+    },
     "month": {
       "january": "January",
       "february": "February",
@@ -577,7 +580,7 @@
     "color": {
       "primary": "Primary",
       "success": "Success",
-      "error": "Error",
+      "error": "Important",
       "warning": "Warning"
     },
     "description": "Description",

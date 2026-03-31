@@ -14,7 +14,7 @@
         </template>
         <template v-else>
           <font-awesome-icon icon="fa-solid fa-folder-open" class="text-4xl text-base-content/40 mb-2" />
-          <h2 class="text-xl font-semibold text-base-content/60">
+          <h2 class="text-lg font-semibold text-base-content/60">
             {{ $t('work.projects.errors.project_not_selected') }}
           </h2>
         </template>
@@ -62,6 +62,7 @@
     </div>
     <TasksTable></TasksTable>
   </div>
+  <LoadingScreen v-if="taskStore.loading || userStore.loading || selectedProjectStore.loading"></LoadingScreen>
 </template>
 
 <script>
@@ -72,6 +73,7 @@ import { usePrivateTasksStore } from '@/stores/privateTasks'
 import { useUserStore } from '@/stores/user'
 import { useSelectedProjectStore } from '@/stores/selectedProject'
 import EventWidget from '@/components/common/EventWidget.vue'
+import LoadingScreen from '@/components/common/LoadingScreen.vue'
 
 export default {
   name: 'DashboardPage',
@@ -80,6 +82,7 @@ export default {
     kpiCard,
     UserProgressCard,
     EventWidget,
+    LoadingScreen
   },
 
   data() {

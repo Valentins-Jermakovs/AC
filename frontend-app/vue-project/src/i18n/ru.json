@@ -546,6 +546,9 @@
       "calendar": "Календарь",
       "events": "События"
     },
+    "errors": {
+      "no_events": "Нет событий"
+    },
     "month": {
       "january": "Январь",
       "february": "Февраль",
@@ -577,7 +580,7 @@
     "color": {
       "primary": "Основной",
       "success": "Успех",
-      "error": "Ошибка",
+      "error": "Важное",
       "warning": "Внимание"
     },
     "description": "Описание",

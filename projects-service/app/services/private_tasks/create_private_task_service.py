@@ -24,6 +24,9 @@ async def create_private_task(
     if not data.title:
         raise HTTPException(status_code=400, detail="Title is required")
     
+    if data.title.strip() == "":
+        raise HTTPException(status_code=400, detail="Title cannot be empty")
+    
     # Raise if title is too long
     if len(data.title) > 100:
         raise HTTPException(status_code=400, detail="Title is too long")
@@ -31,6 +34,16 @@ async def create_private_task(
     # Raise if title is too short
     if len(data.title) < 3:
         raise HTTPException(status_code=400, detail="Title is too short")
+    
+    if data.description is not None:
+        if data.description.strip() == "":
+            raise HTTPException(status_code=400, detail="Description cannot be empty")
+        # Raise if description is too long
+        if len(data.description) > 1000:
+            raise HTTPException(status_code=400, detail="Description is too long")
+        # Raise if description is too short
+        if len(data.description) < 3:
+            raise HTTPException(status_code=400, detail="Description is too short")
     
     # Raise if title is not unique
     # Find task with user_id and title

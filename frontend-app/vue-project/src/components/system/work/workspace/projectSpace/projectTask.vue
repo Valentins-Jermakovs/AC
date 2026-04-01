@@ -57,7 +57,7 @@
         <!-- OPEN -->
         <div class="flex sm:flex-col justify-end">
           <label :for="'task-info-drawer-' + task.id" class="btn btn-neutral btn-circle">
-            <font-awesome-icon icon="fa-solid fa-link" />
+            <font-awesome-icon icon="fa-solid fa-ellipsis-vertical" />
           </label>
         </div>
       </div>

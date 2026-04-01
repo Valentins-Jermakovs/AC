@@ -1,14 +1,19 @@
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 // Reactive variable to track if the sidebar is open or closed
-const isSideBarOpen = ref(false)
+const storedState = localStorage.getItem('isSideBarOpen')
+const isSideBarOpen = ref(storedState ? JSON.parse(storedState) : false)
 
 // Function to toggle sidebar state
 const toggleSideBar = () => {
   isSideBarOpen.value = !isSideBarOpen.value
 }
 
-// Composable function to use sidebar state and toggle function
+// Watcher to save state to localStorage whenever it changes
+watch(isSideBarOpen, (newValue) => {
+  localStorage.setItem('isSideBarOpen', JSON.stringify(newValue))
+})
+
 export function useSideBar() {
   return { isSideBarOpen, toggleSideBar }
 }

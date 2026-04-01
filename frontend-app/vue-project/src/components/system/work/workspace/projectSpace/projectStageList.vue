@@ -36,7 +36,7 @@
           </div>
 
           <!-- Animated progress -->
-          <progress class="progress progress-primary w-32"></progress>
+          <progress class="progress progress-warning w-32"></progress>
         </div>
 
         <button class="btn btn-primary w-full md:w-auto" @click="showDialog = true">

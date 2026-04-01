@@ -75,7 +75,6 @@
     :confirmText="$t('common.confirm')"
     :cancelText="$t('common.cancel')"
     @confirm="updateProject"
-    @cancel="resetEdit"
   >
     <div class="flex flex-col w-full gap-2">
       <Transition name="error-slide">

@@ -68,7 +68,7 @@
       <!-- Saraksts tukšs -->
       <div v-else class="flex flex-col items-center justify-center h-full gap-4 bg-base-100 rounded p-4">
         <div class="flex flex-col items-center gap-2 font-semibold text-2xl text-base-content/60">
-          <font-awesome-icon icon="fa-solid fa-file-pen" size="2xl text-base-content/40 animate-bounce" />
+          <font-awesome-icon icon="fa-solid fa-file-pen" size="2xl" class="text-base-content/40 animate-bounce" />
           <p class="text-lg text-base-content/40">
             {{ $t('work.errors.not_found_description') }}
           </p>

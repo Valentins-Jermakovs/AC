@@ -39,7 +39,8 @@
           <progress class="progress progress-warning w-32"></progress>
         </div>
 
-        <button class="btn btn-primary w-full md:w-auto" @click="showDialog = true">
+        <button class="btn btn-primary w-full md:w-auto" @click="showDialog = true"
+        :disabled="membersStore.currentUser?.role === 'viewer'">
           <font-awesome-icon icon="fa-solid fa-plus" />
 
           <span class="hidden sm:inline">
@@ -123,6 +124,7 @@ import BaseDialog from '@/components/common/BaseDialog.vue'
 import ProjectStage from './projectStage.vue'
 import { useWorkspaceProjectStagesStore } from '@/stores/workspace/projectStages'
 import { useWorkspaceProjectsStore } from '@/stores/workspace/projects'
+import { useWorkspaceProjectMembersStore } from '@/stores/workspace/projectsMembers'
 import LoadingScreen from '@/components/common/LoadingScreen.vue'
 
 export default {
@@ -133,6 +135,7 @@ export default {
     return {
       stagesStore: useWorkspaceProjectStagesStore(),
       projectsStore: useWorkspaceProjectsStore(),
+      membersStore: useWorkspaceProjectMembersStore(),
 
       showDialog: false,
       newStage: {

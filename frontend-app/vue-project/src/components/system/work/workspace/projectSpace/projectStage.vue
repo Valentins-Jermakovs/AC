@@ -58,7 +58,8 @@
         </div>
 
         <!-- ACTIONS -->
-        <div class="bg-base-100 border border-base-300 w-full">
+        <div class="bg-base-100 border border-base-300 w-full"
+        v-if="membersStore.currentUser?.role !== 'viewer'">
           <ul class="menu w-full">
             <li>
               <button class="flex gap-3 items-center" @click="showCreateDialog = true">
@@ -321,6 +322,7 @@
 import BaseDialog from '@/components/common/BaseDialog.vue'
 import ProjectTaskList from './projectTaskList.vue'
 import { useWorkspaceProjectStagesStore } from '@/stores/workspace/projectStages'
+import { useWorkspaceProjectMembersStore } from '@/stores/workspace/projectsMembers';
 
 export default {
   name: 'KanbanStageInfoDrawer',
@@ -336,6 +338,7 @@ export default {
       showEditDialog: false,
       showRelativeDialog: false,
       stagesStore: useWorkspaceProjectStagesStore(),
+      membersStore: useWorkspaceProjectMembersStore(),
       newStage: {
         title: '',
         description: '',

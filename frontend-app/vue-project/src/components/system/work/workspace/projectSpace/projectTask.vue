@@ -82,7 +82,8 @@
         </div>
 
         <!-- ACTIONS -->
-        <div class="bg-base-200 border border-base-300">
+        <div class="bg-base-200 border border-base-300"
+        v-if="membersStore.currentUser?.role !== 'viewer'">
           <ul class="menu w-full">
             <li>
               <button class="flex gap-3 items-center" @click="openCreateDialog">
@@ -358,6 +359,7 @@
 import BaseDialog from '@/components/common/BaseDialog.vue'
 import { useWorkspaceProjectsTasksStore } from '@/stores/workspace/projectsTasks'
 import { useWorkspaceProjectsStore } from '@/stores/workspace/projects'
+import { useWorkspaceProjectMembersStore } from '@/stores/workspace/projectsMembers';
 
 export default {
   name: 'ProjectTask',
@@ -370,6 +372,7 @@ export default {
       editDialog: false,
       tasksStore: useWorkspaceProjectsTasksStore(),
       projectsStore: useWorkspaceProjectsStore(),
+      membersStore: useWorkspaceProjectMembersStore(),
       form: {
         title: '',
         description: '',

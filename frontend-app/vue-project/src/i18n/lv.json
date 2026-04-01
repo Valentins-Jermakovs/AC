@@ -241,8 +241,8 @@
     }
   },
   "errors": {
-    "404": "Šī vieta eksistē tikai tavos sapņos… vai arī mēs to vienkārši pazaudējām. (404)",
-    "tasks_not_found": "Uzdevumi nav atrasti/izvēleti, vai saraksts ir tukšs. (404)"
+    "404": "Šī vieta eksistē tikai tavos sapņos… vai arī mēs to vienkārši pazaudējām (404)",
+    "tasks_not_found": "Neviens uzdevums nav izvēlēts"
   },
   "work": {
     "title": "Projekti, uzdevumi...",
@@ -552,7 +552,9 @@
       "events": "Notikumi"
     },
     "errors": {
-      "no_events": "Nav notikumu"
+      "no_events": "Nav notikumu",
+      "no_description_title": "Nav apraksta",
+      "no_description": "Šim notikumam nav apraksta"
     },
     "month": {
       "january": "Janvāris",
@@ -596,7 +598,7 @@
     "duration": "Ilgums",
     "all_day": "Visa diena",
     "timed_event": "Laikā ierobežots notikums",
-    "no_events_in_month": "Šomēness notikumu nav",
+    "no_events_in_month": "Šo mēness notikumu nav",
     "no_events_in_month_description": "Nekas nav ieplānots",
     "more": "Vairāk",
     "add_event": "Pievienot notikumu",
@@ -641,6 +643,10 @@
       "leave_event": {
         "title": "Iziet no notikuma",
         "content": "Vai tiešām vēlaties iziet no notikuma?"
+      },
+      "delete_event": {
+        "title": "Dzēst notikumu",
+        "content": "Vai tiešām vēlaties dzēst notikumu?"
       }
     }
   }

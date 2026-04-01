@@ -21,7 +21,7 @@
       </p>
 
       <!-- Animated progress -->
-      <progress class="progress progress-primary w-40"></progress>
+      <progress class="progress progress-neutral w-40"></progress>
 
       <!-- Small hint -->
       <p class="text-sm text-base-content/40">

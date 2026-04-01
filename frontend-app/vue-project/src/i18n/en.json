@@ -238,7 +238,7 @@
   },
   "errors": {
     "404": "This place exists only in your imagination... or maybe we will forget about it. (404)",
-    "tasks_not_found": "No tasks found/selected or your task list is empty (404)"
+    "tasks_not_found": "No task selected"
   },
   "work": {
     "title": "Projects, tasks...",
@@ -548,7 +548,9 @@
       "events": "Events"
     },
     "errors": {
-      "no_events": "No events"
+      "no_events": "No events",
+      "no_description_title": "No description",
+      "no_description": "This event has no description"
     },
     "month": {
       "january": "January",
@@ -637,6 +639,10 @@
       "leave_event": {
         "title": "Leave Event",
         "content": "Are you sure you want to leave this event?"
+      },
+      "delete_event": {
+        "title": "Delete Event",
+        "content": "Are you sure you want to delete this event?"
       }
     }
   }

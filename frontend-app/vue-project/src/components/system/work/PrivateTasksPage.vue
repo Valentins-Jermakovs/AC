@@ -70,6 +70,7 @@
           icon="fa-solid fa-triangle-exclamation"
           size="4x"
           class="text-warning animate-spin-slow"
+          bounce
         />
 
         <!-- Teksts ar papildikonu -->
@@ -79,7 +80,7 @@
         </h2>
 
         <!-- Mūžīgais progress bar animācijai -->
-        <progress class="progress progress-primary w-32"></progress>
+        <progress class="progress progress-warning w-32"></progress>
       </div>
 
       <!-- Saraksts tukšs -->

@@ -184,8 +184,8 @@
     >
       <div class="w-full flex flex-col gap-2">
         <Transition name="error-slide">
-          <div v-if="error">
-            <h1 class="text-error mb-2">{{ error }}</h1>
+          <div v-if="memberError">
+            <h1 class="text-error mb-2">{{ memberError }}</h1>
           </div>
         </Transition>
         <p>{{ $t('calendar.modals.delete_event_member.content') }}</p>
@@ -212,10 +212,18 @@ export default {
       addMemberModal: false,
       deleteMemberModal: false,
       newMemberEmail: '',
-      error: '',
       adminStore: useAdminStore(),
       member: {},
     }
+  },
+
+  computed: {
+    error() {
+      return this.adminStore.error
+    },
+    memberError() {
+      return this.eventParticipantsStore.error
+    },
   },
 
   mounted() {
@@ -288,6 +296,7 @@ export default {
     },
     closeDeleteMemberModal() {
       this.deleteMemberModal = false
+      this.eventParticipantsStore.clearError()
     },
     async confirmDeleteMember() {
       const payload = {

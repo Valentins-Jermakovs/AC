@@ -34,13 +34,28 @@
         <tr>
           <td colspan="7" class="text-center">
             <div class="flex flex-col items-center gap-4 py-6">
-              <!-- Progress bar -->
-              <progress class="progress w-1/3 progress-neutral" max="100"></progress>
+              <div class="relative flex items-center justify-center">
+                <font-awesome-icon icon="fa-solid fa-users" class="text-6xl text-base-content/20" />
 
-              <!-- Teksts -->
-              <div class="alert alert-error w-auto px-4 py-2">
-                {{ $t('common.no_data') }}
+                <font-awesome-icon
+                  icon="fa-solid fa-circle-exclamation"
+                  class="text-error text-xl absolute -top-1 -right-2"
+                  fade
+                />
               </div>
+
+              <!-- Text block -->
+              <div class="text-center flex flex-col gap-1">
+                <h3
+                  class="text-lg font-semibold text-base-content/80 flex items-center gap-2 justify-center"
+                >
+                  <font-awesome-icon icon="fa-solid fa-user-slash" class="text-error" bounce />
+                  {{ $t('work.kanban.errors.members_not_found') }}
+                </h3>
+              </div>
+
+              <!-- Progress bar -->
+              <progress class="progress w-1/3 progress-error" max="100"></progress>
             </div>
           </td>
         </tr>

@@ -21,6 +21,9 @@ async def create_event(
     user_id: str
 ) -> SingleEventSchema:
 
+    if not data.startDate or not data.endDate:
+        raise HTTPException(status_code=400, detail="Start date and end date are required")
+
     # ===== Validation =====
     # Check if start date is before end date
     start_date = await convert_to_datetime(data.startDate)

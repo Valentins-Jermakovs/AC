@@ -27,7 +27,7 @@
           {{ $t('work.projects.errors.no_user_stories') }}
         </h2>
 
-        <progress class="progress progress-primary w-32"></progress>
+        <progress class="progress progress-warning w-32"></progress>
       </div>
       <button class="btn btn-primary w-full sm:w-auto" @click="openCreateDialog">
         <font-awesome-icon icon="fa-solid fa-plus" />

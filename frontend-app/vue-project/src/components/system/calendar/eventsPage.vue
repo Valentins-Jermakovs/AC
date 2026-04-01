@@ -65,7 +65,25 @@
         <div
           class="text-sm text-base-content/70 p-2 bg-base-200/50 border border-base-300 wrap-break-word"
         >
-          <pre>{{ event.description }}</pre>
+          <pre v-if="event.description">{{ event.description }}</pre>
+          <div
+            v-else
+            class="flex items-center gap-3 p-4 bg-base-100 border border-base-300 animate-fadeIn"
+          >
+            <div class="text-warning text-xl animate-pulse">
+              <font-awesome-icon icon="fa-solid fa-circle-exclamation" />
+            </div>
+
+            <div class="flex flex-col">
+              <span class="font-semibold text-base-content">
+                {{ $t('calendar.errors.no_description_title') }}
+              </span>
+
+              <span class="text-xs text-base-content/60">
+                {{ $t('calendar.errors.no_description') }}
+              </span>
+            </div>
+          </div>
         </div>
 
         <!-- DATE & TIME -->
@@ -79,7 +97,8 @@
             </div>
             <div class="flex items-center gap-1">
               <font-awesome-icon icon="fa-solid fa-clock" class="text-warning" />
-              <span>{{ event.startTime }}</span>
+              <span v-if="event.startTime">{{ event.startTime }}</span>
+              <font-awesome-icon v-else icon="fa-solid fa-xmark" class="text-error" />
             </div>
           </div>
 
@@ -92,7 +111,8 @@
             </div>
             <div class="flex items-center gap-1">
               <font-awesome-icon icon="fa-solid fa-clock" class="text-warning" />
-              <span>{{ event.endTime }}</span>
+              <span v-if="event.endTime">{{ event.endTime }}</span>
+              <font-awesome-icon v-else icon="fa-solid fa-xmark" class="text-error" />
             </div>
           </div>
 
@@ -331,9 +351,9 @@
   <!-- Delete event modal -->
   <base-dialog
     v-model="deleteEventModal"
-    title="Delete event"
-    confirmText="Delete"
-    cancelText="Cancel"
+    :title="$t('calendar.modals.delete_event.title')"
+    :confirmText="$t('common.delete')"
+    :cancelText="$t('common.cancel')"
     @confirm="confirmDeleteEvent"
     @cancel="closeAddEventModal"
   >
@@ -344,7 +364,7 @@
         </div>
       </Transition>
 
-      <p>Are you sure you want to delete this event?</p>
+      <p>{{ $t('calendar.modals.delete_event.content') }}</p>
     </div>
   </base-dialog>
 
@@ -358,9 +378,28 @@
             {{ eventsStore.selectedEvent.title }}
           </h1>
           <pre
+            v-if="eventsStore.selectedEvent.description"
             class="bg-base-200/50 p-4 text-sm border border-base-300 flex-1 text-base-content/70 whitespace-pre-wrap wrap-break-word"
             >{{ eventsStore.selectedEvent.description }}</pre
           >
+          <div
+            v-else
+            class="flex items-center w-full flex-1 gap-3 p-4 bg-base-200 animate-fadeIn border border-base-300"
+          >
+            <div class="text-warning text-xl animate-pulse">
+              <font-awesome-icon icon="fa-solid fa-circle-exclamation" />
+            </div>
+
+            <div class="flex flex-col">
+              <span class="font-semibold text-base-content">
+                {{ $t('calendar.errors.no_description_title') }}
+              </span>
+
+              <span class="text-xs text-base-content/60">
+                {{ $t('calendar.errors.no_description') }}
+              </span>
+            </div>
+          </div>
         </div>
 
         <!-- Right column: Details -->
@@ -375,7 +414,10 @@
             </div>
             <div class="flex gap-2 items-center">
               <font-awesome-icon icon="fa-solid fa-clock" />
-              <span>{{ eventsStore.selectedEvent.startTime }}</span>
+              <span v-if="eventsStore.selectedEvent.startTime">{{
+                eventsStore.selectedEvent.startTime
+              }}</span>
+              <font-awesome-icon v-else icon="fa-solid fa-xmark" class="text-error" />
             </div>
           </div>
 
@@ -389,7 +431,10 @@
             </div>
             <div class="flex gap-2 items-center">
               <font-awesome-icon icon="fa-solid fa-clock" />
-              <span>{{ eventsStore.selectedEvent.endTime }}</span>
+              <span v-if="eventsStore.selectedEvent.endTime">{{
+                eventsStore.selectedEvent.endTime
+              }}</span>
+              <font-awesome-icon v-else icon="fa-solid fa-xmark" class="text-error" />
             </div>
           </div>
           <div class="flex items-center gap-2">
@@ -682,6 +727,11 @@ export default {
     },
 
     async confirmUpdateEvent() {
+      if (this.updateEvent.title === '') {
+        this.updateEvent.title = this.eventsStore.selectedEvent.title
+        this.eventsStore.error = 'Title cannot be empty'
+        return
+      }
       try {
         const event = {
           eventId: this.updateEvent.eventId,
@@ -728,6 +778,7 @@ export default {
     },
 
     closeUpdateEventModal() {
+      this.eventsStore.error = ''
       this.updateEventModal = false
 
       // reset form

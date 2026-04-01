@@ -134,13 +134,13 @@
             <h3
               class="text-lg font-semibold text-base-content/80 flex items-center gap-2 justify-center"
             >
-              <font-awesome-icon icon="fa-solid fa-user-slash" class="text-error" />
+              <font-awesome-icon icon="fa-solid fa-user-slash" class="text-error" bounce />
               {{ $t('work.kanban.errors.members_not_found') }}
             </h3>
           </div>
 
           <!-- Visual element -->
-          <progress class="progress progress-primary w-32"></progress>
+          <progress class="progress progress-error w-32"></progress>
         </div>
       </div>
 

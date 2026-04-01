@@ -54,7 +54,7 @@
       <div v-if="!loaded" class="skeleton absolute inset-0"></div>
 
       <img
-        src="@/assets/images/aaron-burden-n3OZeX6bR0g-unsplash.jpg"
+        src="@/assets/images/jeremy-bishop-GoEWA8YCQJ0-unsplash.jpg"
         class="w-full h-full object-cover transition-opacity duration-700"
         :class="loaded ? 'opacity-100' : 'opacity-0'"
       />
@@ -88,14 +88,32 @@
     <div class="p-5 flex flex-col gap-5">
       <!-- DESCRIPTION -->
       <div class="flex gap-3 bg-base-100 border border-base-300 p-4">
-        <font-awesome-icon icon="fa-regular fa-bookmark" class="text-xl text-primary mt-1" />
+        <div v-if="closestEvent.description">
+          <font-awesome-icon icon="fa-regular fa-bookmark" class="text-xl text-primary mt-1" />
 
-        <div class="flex flex-col gap-1">
-          <span class="text-sm text-base-content/60">
-            {{ $t('calendar.description') }}
-          </span>
+          <div class="flex flex-col gap-1">
+            <span class="text-sm text-base-content/60">
+              {{ $t('calendar.description') }}
+            </span>
 
-          <pre class="text-base-content/80">{{ closestEvent.description }}</pre>
+            <pre class="text-base-content/80">{{ closestEvent.description }}</pre>
+          </div>
+        </div>
+
+        <div v-else class="flex items-center w-full gap-3 p-4 bg-base-100 animate-fadeIn">
+          <div class="text-warning text-xl animate-pulse">
+            <font-awesome-icon icon="fa-solid fa-circle-exclamation" />
+          </div>
+
+          <div class="flex flex-col">
+            <span class="font-semibold text-base-content">
+              {{ $t('calendar.errors.no_description_title') }}
+            </span>
+
+            <span class="text-xs text-base-content/60">
+              {{ $t('calendar.errors.no_description') }}
+            </span>
+          </div>
         </div>
       </div>
 
@@ -114,9 +132,10 @@
               {{ closestEvent.startDate }}
             </span>
 
-            <span class="text-sm text-base-content/70">
+            <span class="text-sm text-base-content/70 flex items-center">
               <font-awesome-icon icon="fa-solid fa-clock" class="mr-1" />
-              {{ closestEvent.startTime }}
+              <p v-if="closestEvent.startTime">{{ closestEvent.startTime }}</p>
+              <font-awesome-icon v-else icon="fa-solid fa-xmark" class="text-error" />
             </span>
           </div>
         </div>
@@ -134,16 +153,20 @@
               {{ closestEvent.endDate }}
             </span>
 
-            <span class="text-sm text-base-content/70">
+            <span class="text-sm text-base-content/70 flex items-center">
               <font-awesome-icon icon="fa-solid fa-clock" class="mr-1" />
-              {{ closestEvent.endTime }}
+              <p v-if="closestEvent.endTime">{{ closestEvent.endTime }}</p>
+              <font-awesome-icon v-else icon="fa-solid fa-xmark" class="text-error" />
             </span>
           </div>
         </div>
       </div>
 
       <!-- EXTRA -->
-      <div class="flex gap-3 bg-base-100 border border-base-300 p-4">
+      <div
+        class="flex gap-3 bg-base-100 border border-base-300 p-4"
+        v-if="closestEvent.startTime || closestEvent.endTime"
+      >
         <font-awesome-icon icon="fa-solid fa-clock" class="text-warning text-xl" />
 
         <div class="flex flex-col">

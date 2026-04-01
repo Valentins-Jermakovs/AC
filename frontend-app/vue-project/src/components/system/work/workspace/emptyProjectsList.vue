@@ -36,15 +36,15 @@
       </button>
 
       <!-- Visual animation -->
-      <progress class="progress progress-primary w-40"></progress>
+      <progress class="progress progress-warning w-40"></progress>
     </div>
   </div>
 
   <base-dialog
     v-model="showCreateDialog"
-    title="Create project"
-    confirmText="Create"
-    cancelText="Cancel"
+    :title="$t('work.projects.modals.create_project.title')"
+    :confirmText="$t('common.create')"
+    :cancelText="$t('common.cancel')"
     @confirm="createProject"
     @cancel="resetForm"
   >
@@ -54,18 +54,22 @@
           <h1 class="text-error mb-2">{{ error }}</h1>
         </div>
       </Transition>
-      <label for="projectTitle" class="label">Project title</label>
+      <label for="projectTitle" class="label">{{
+        $t('work.projects.modals.create_project.name')
+      }}</label>
       <input
         v-model="newProject.title"
         type="text"
         class="input input-bordered w-full"
-        placeholder="Project title"
+        :placeholder="$t('work.projects.modals.create_project.name_placeholder')"
       />
-      <label for="projectDescription" class="label">Project description</label>
+      <label for="projectDescription" class="label">{{
+        $t('work.projects.modals.create_project.description')
+      }}</label>
       <textarea
         v-model="newProject.description"
         class="textarea textarea-bordered w-full min-h-52"
-        placeholder="Project description"
+        :placeholder="$t('work.projects.modals.create_project.description_placeholder')"
       ></textarea>
     </div>
   </base-dialog>

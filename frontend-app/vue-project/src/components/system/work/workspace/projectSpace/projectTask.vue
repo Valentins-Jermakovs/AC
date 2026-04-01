@@ -83,7 +83,7 @@
 
         <!-- ACTIONS -->
         <div class="bg-base-200 border border-base-300"
-        v-if="membersStore.currentUser?.role !== 'viewer'">
+        v-if="membersStore.currentUser && membersStore.currentUser.role !== 'viewer'">
           <ul class="menu w-full">
             <li>
               <button class="flex gap-3 items-center" @click="openCreateDialog">
@@ -178,8 +178,8 @@
           {{ $t('work.projects.modals.create_user_story.description') }}
         </label>
         <textarea
-          v-model="form.description"
-          class="textarea textarea-bordered w-full min-h-52"
+          v-model="form.description" maxlength="1000"
+          class="textarea textarea-bordered w-full"
           :placeholder="$t('work.projects.modals.create_user_story.description_placeholder')"
         ></textarea>
         <div class="flex gap-2 w-full">
@@ -284,7 +284,7 @@
         </label>
         <textarea
           v-model="form.description"
-          class="textarea textarea-bordered w-full min-h-52"
+          class="textarea textarea-bordered w-full" maxlength="1000"
           :placeholder="$t('work.projects.modals.create_user_story.description_placeholder')"
         ></textarea>
         <div class="flex gap-2">

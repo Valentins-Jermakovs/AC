@@ -109,7 +109,7 @@
           <label class="label">
             <span class="label-text">{{ $t('work.task_form.description') }}:</span>
           </label>
-          <textarea class="textarea textarea-bordered w-full min-h-52" v-model="editForm.description"
+          <textarea class="textarea textarea-bordered w-full" maxlength="1000" v-model="editForm.description"
             :placeholder="$t('work.task_form.description_placeholder')">
           </textarea>
         </div>
@@ -156,7 +156,11 @@
           <label class="label">
             <span class="label-text">{{ $t('work.task_form.description') }}:</span>
           </label>
-          <textarea class="textarea textarea-bordered w-full min-h-52"
+          <!-- Character counter -->
+        <div class="w-full flex justify-end text-sm opacity-70 pr-1">
+          {{ descriptionRemainingChars }} / {{ descriptionMaxLength }}
+        </div>
+          <textarea class="textarea textarea-bordered w-full" maxlength="1000"
             :placeholder="$t('work.task_form.description_placeholder')" v-model="createForm.description"></textarea>
         </div>
         <!-- Due date -->
@@ -189,6 +193,8 @@ export default {
       showEdit: false,
       showCreate: false,
 
+      descriptionMaxLength: 1000,
+
       editForm: {
         title: '',
         description: '',
@@ -208,6 +214,9 @@ export default {
     },
   },
   computed: {
+    descriptionRemainingChars() {
+      return this.descriptionMaxLength - (this.createForm.description?.length || 0)
+    },
     error() {
       return this.privateTasksStore.error
     },

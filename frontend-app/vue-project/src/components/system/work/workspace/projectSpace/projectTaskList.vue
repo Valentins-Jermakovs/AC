@@ -75,10 +75,13 @@
         <label class="label">
           {{ $t('work.projects.modals.create_user_story.description') }}
         </label>
-
+        <div class="w-full flex justify-end text-sm opacity-70 pr-1">
+          {{ descriptionRemainingChars }} / {{ descriptionMaxLength }}
+        </div>
         <textarea
+          maxlength="1000"
           v-model="form.description"
-          class="textarea textarea-bordered w-full min-h-30 sm:min-h-52"
+          class="textarea textarea-bordered w-full"
           :placeholder="$t('work.projects.modals.create_user_story.description_placeholder')"
         ></textarea>
       </div>
@@ -191,6 +194,7 @@ export default {
       tasksStore: useWorkspaceProjectsTasksStore(),
       projectsStore: useWorkspaceProjectsStore(),
       membersStore: useWorkspaceProjectMembersStore(),
+      descriptionMaxLength: 1000,
 
       createDialog: false,
 
@@ -209,6 +213,9 @@ export default {
   computed: {
     error() {
       return this.tasksStore.error
+    },
+    descriptionRemainingChars() {
+      return this.descriptionMaxLength - (this.form.description?.length || 0)
     },
   },
 

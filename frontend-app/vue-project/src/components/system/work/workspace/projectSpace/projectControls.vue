@@ -100,7 +100,8 @@
       </label>
       <textarea
         v-model="editProject.description"
-        class="textarea textarea-bordered w-full min-h-40 sm:min-h-52"
+        maxlength="1000"
+        class="textarea textarea-bordered w-full"
         :placeholder="$t('work.projects.modals.edit_project.description_placeholder')"
       ></textarea>
     </div>

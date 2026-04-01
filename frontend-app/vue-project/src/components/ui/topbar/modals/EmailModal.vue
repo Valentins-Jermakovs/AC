@@ -95,6 +95,7 @@
           <span class="label-text">{{ $t('modals.email.form_content') }}</span>
         </label>
         <textarea
+          maxlength="2000"
           id="message"
           name="message"
           v-model="message"

@@ -79,7 +79,8 @@
           {{ $t('work.kanban.modals.update_task.description_name') }}
         </label>
         <textarea
-          class="input w-full min-h-52"
+          class="input w-full"
+          maxlength="1000"
           v-model="newTaskDescription"
           :placeholder="$t('work.kanban.modals.update_task.description_name_placeholder')"
         ></textarea>

@@ -107,8 +107,12 @@
         <label class="label">
           <span class="label-text">{{ $t('work.task_form.description') }}:</span>
         </label>
-        <textarea class="textarea textarea-bordered w-full h-40 resize-none"
-          :placeholder="$t('work.task_form.description_placeholder')" v-model="createForm.description"></textarea>
+        <!-- Character counter -->
+        <div class="w-full flex justify-end text-sm opacity-70 pr-1">
+          {{ descriptionRemainingChars }} / {{ descriptionMaxLength }}
+        </div>
+        <textarea class="textarea textarea-bordered w-full" maxlength="1000" :placeholder="$t('work.task_form.description_placeholder')"
+          v-model="createForm.description"></textarea>
       </div>
       <!-- Due date -->
       <div>
@@ -141,12 +145,16 @@ export default {
       selectedTask: null,
       showCreate: false,
       createForm: { title: '', description: '', dueDate: '' },
+      descriptionMaxLength: 1000
     }
   },
   mounted() {
     this.privateTasksStore.fetchPrivateTasks()
   },
   computed: {
+    descriptionRemainingChars() {
+      return this.descriptionMaxLength - (this.createForm.description?.length || 0)
+    },
     page() {
       return this.privateTasksStore.meta.page
     },

@@ -188,9 +188,9 @@
       <label for="stageDescription" class="label">
         {{ $t('work.projects.modals.create_new_sprint.description') }}
       </label>
-      <textarea
+      <textarea maxlength="1000"
         v-model="newStage.description"
-        class="textarea w-full min-h-52"
+        class="textarea w-full"
         :placeholder="$t('work.projects.modals.create_new_sprint.description_placeholder')"
       ></textarea>
       <div class="flex flex-col gap-1">
@@ -247,7 +247,7 @@
       </label>
       <textarea
         v-model="editStage.description"
-        class="textarea w-full min-h-52"
+        class="textarea w-full" maxlength="1000"
         :placeholder="$t('work.projects.modals.edit_sprint.description_placeholder')"
       ></textarea>
       <label for="stageDueDate" class="label">
@@ -289,8 +289,9 @@
         {{ $t('work.projects.modals.create_sprint_relative.description') }}
       </label>
       <textarea
+        maxlength="1000"
         v-model="relativeStage.description"
-        class="textarea w-full min-h-52"
+        class="textarea w-full"
         :placeholder="$t('work.projects.modals.create_sprint_relative.description_placeholder')"
       ></textarea>
       <div class="flex flex-col gap-1">

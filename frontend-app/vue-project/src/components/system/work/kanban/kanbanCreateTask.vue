@@ -36,7 +36,8 @@
           {{ $t('work.kanban.modals.create_task.description_name') }}
         </label>
         <textarea
-          class="textarea w-full min-h-52"
+          class="textarea w-full"
+          maxlength="200"
           v-model="newTaskDescription"
           :placeholder="$t('work.kanban.modals.create_task.description_name_placeholder')"
         ></textarea>

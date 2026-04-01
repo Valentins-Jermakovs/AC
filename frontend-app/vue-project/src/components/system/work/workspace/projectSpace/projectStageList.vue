@@ -90,10 +90,13 @@
         <label class="label">
           {{ $t('work.projects.modals.create_new_sprint.description') }}
         </label>
-
+        <div class="w-full flex justify-end text-sm opacity-70 pr-1">
+          {{ descriptionRemainingChars }} / {{ descriptionMaxLength }}
+        </div>
         <textarea
+          maxlength="1000"
           v-model="newStage.description"
-          class="textarea w-full min-h-52"
+          class="textarea w-full"
           :placeholder="$t('work.projects.modals.create_new_sprint.description_placeholder')"
         ></textarea>
       </div>
@@ -136,6 +139,7 @@ export default {
       stagesStore: useWorkspaceProjectStagesStore(),
       projectsStore: useWorkspaceProjectsStore(),
       membersStore: useWorkspaceProjectMembersStore(),
+      descriptionMaxLength: 1000,
 
       showDialog: false,
       newStage: {
@@ -190,6 +194,9 @@ export default {
     },
   },
   computed: {
+    descriptionRemainingChars() {
+      return this.descriptionMaxLength - (this.newStage.description?.length || 0)
+    },
     error() {
       return this.stagesStore.error
     },

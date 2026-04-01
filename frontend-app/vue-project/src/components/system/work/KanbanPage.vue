@@ -53,6 +53,7 @@
 </template>
 
 <script>
+import { watch } from 'vue'
 import LoadingScreen from '@/components/common/LoadingScreen.vue'
 import KanbanSideBar from './kanban/kanbanSideBar.vue'
 import KanbanStage from './kanban/kanbanStage.vue'
@@ -79,9 +80,17 @@ export default {
       activeView: 'board',
     }
   },
-  async mounted() {
-    this.kanbanMembersStore.boardId = this.kanbanBoardStore.selectedBoard.id
-    await this.kanbanMembersStore.fetchMe()
+  mounted() {
+    watch(
+      () => this.kanbanBoardStore.selectedBoard,
+      async (newBoard) => {
+        if (newBoard) {
+          this.kanbanMembersStore.boardId = newBoard.id
+          await this.kanbanMembersStore.fetchMe()
+        }
+      },
+      { immediate: true }
+    )
   },
 }
 </script>

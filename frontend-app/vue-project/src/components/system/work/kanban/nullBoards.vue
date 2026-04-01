@@ -1,13 +1,18 @@
 <template>
   <div class="w-full h-full flex items-center justify-center flex-col gap-6 flex-1">
     <!-- Icon block -->
-    <div class="flex flex-col items-center gap-4 p-8 bg-base-200 border border-base-300 w-full max-w-md">
+    <div
+      class="flex flex-col items-center gap-4 p-8 bg-base-200 border border-base-300 w-full max-w-md"
+    >
       <!-- Animated icon -->
       <div class="relative">
         <font-awesome-icon icon="fa-solid fa-layer-group" class="text-6xl text-base-content/20" />
 
-        <font-awesome-icon icon="fa-solid fa-triangle-exclamation" class="text-error text-2xl absolute -top-2 -right-3"
-          bounce />
+        <font-awesome-icon
+          icon="fa-solid fa-triangle-exclamation"
+          class="text-error text-2xl absolute -top-2 -right-3"
+          bounce
+        />
       </div>
 
       <!-- Text -->
@@ -30,9 +35,14 @@
   </div>
 
   <!-- Create board modal -->
-  <base-dialog v-model="createModal" :title="$t('work.kanban.modals.create_board.title')"
-    :confirmText="$t('common.create')" :cancelText="$t('common.cancel')" @confirm="confirmCreateBoard"
-    @cancel="closeCreateModal">
+  <base-dialog
+    v-model="createModal"
+    :title="$t('work.kanban.modals.create_board.title')"
+    :confirmText="$t('common.create')"
+    :cancelText="$t('common.cancel')"
+    @confirm="confirmCreateBoard"
+    @cancel="closeCreateModal"
+  >
     <div class="flex flex-col gap-2 w-full">
       <Transition name="error-slide">
         <div v-if="error">
@@ -40,8 +50,12 @@
         </div>
       </Transition>
       <label for="boardTitle" class="label">{{ $t('work.kanban.modals.create_board.name') }}</label>
-      <input type="text" class="input w-full" v-model="newBoardTitle"
-        :placeholder="$t('work.kanban.modals.create_board.name_placeholder')" />
+      <input
+        type="text"
+        class="input w-full"
+        v-model="newBoardTitle"
+        :placeholder="$t('work.kanban.modals.create_board.name_placeholder')"
+      />
     </div>
   </base-dialog>
 </template>
@@ -90,7 +104,7 @@ export default {
 
         // Atrodam jauno board: tas būs tas, kas nav vecajā sarakstā
         const newBoard = this.kanbanBoardStore.boards.find(
-          b => !oldBoards.some(ob => ob.id === b.id)
+          (b) => !oldBoards.some((ob) => ob.id === b.id),
         )
 
         // Uzreiz atlasām to kā selected

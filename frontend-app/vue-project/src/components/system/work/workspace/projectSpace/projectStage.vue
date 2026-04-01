@@ -58,8 +58,10 @@
         </div>
 
         <!-- ACTIONS -->
-        <div class="bg-base-100 border border-base-300 w-full"
-        v-if="membersStore.currentUser?.role !== 'viewer'">
+        <div
+          class="bg-base-100 border border-base-300 w-full"
+          v-if="membersStore.currentUser?.role !== 'viewer'"
+        >
           <ul class="menu w-full">
             <li>
               <button class="flex gap-3 items-center" @click="showCreateDialog = true">
@@ -188,7 +190,8 @@
       <label for="stageDescription" class="label">
         {{ $t('work.projects.modals.create_new_sprint.description') }}
       </label>
-      <textarea maxlength="1000"
+      <textarea
+        maxlength="1000"
         v-model="newStage.description"
         class="textarea w-full"
         :placeholder="$t('work.projects.modals.create_new_sprint.description_placeholder')"
@@ -247,7 +250,8 @@
       </label>
       <textarea
         v-model="editStage.description"
-        class="textarea w-full" maxlength="1000"
+        class="textarea w-full"
+        maxlength="1000"
         :placeholder="$t('work.projects.modals.edit_sprint.description_placeholder')"
       ></textarea>
       <label for="stageDueDate" class="label">
@@ -323,7 +327,7 @@
 import BaseDialog from '@/components/common/BaseDialog.vue'
 import ProjectTaskList from './projectTaskList.vue'
 import { useWorkspaceProjectStagesStore } from '@/stores/workspace/projectStages'
-import { useWorkspaceProjectMembersStore } from '@/stores/workspace/projectsMembers';
+import { useWorkspaceProjectMembersStore } from '@/stores/workspace/projectsMembers'
 
 export default {
   name: 'KanbanStageInfoDrawer',

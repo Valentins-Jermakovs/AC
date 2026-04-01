@@ -82,8 +82,10 @@
         </div>
 
         <!-- ACTIONS -->
-        <div class="bg-base-200 border border-base-300"
-        v-if="membersStore.currentUser && membersStore.currentUser.role !== 'viewer'">
+        <div
+          class="bg-base-200 border border-base-300"
+          v-if="membersStore.currentUser && membersStore.currentUser.role !== 'viewer'"
+        >
           <ul class="menu w-full">
             <li>
               <button class="flex gap-3 items-center" @click="openCreateDialog">
@@ -178,7 +180,8 @@
           {{ $t('work.projects.modals.create_user_story.description') }}
         </label>
         <textarea
-          v-model="form.description" maxlength="1000"
+          v-model="form.description"
+          maxlength="1000"
           class="textarea textarea-bordered w-full"
           :placeholder="$t('work.projects.modals.create_user_story.description_placeholder')"
         ></textarea>
@@ -284,7 +287,8 @@
         </label>
         <textarea
           v-model="form.description"
-          class="textarea textarea-bordered w-full" maxlength="1000"
+          class="textarea textarea-bordered w-full"
+          maxlength="1000"
           :placeholder="$t('work.projects.modals.create_user_story.description_placeholder')"
         ></textarea>
         <div class="flex gap-2">
@@ -359,7 +363,7 @@
 import BaseDialog from '@/components/common/BaseDialog.vue'
 import { useWorkspaceProjectsTasksStore } from '@/stores/workspace/projectsTasks'
 import { useWorkspaceProjectsStore } from '@/stores/workspace/projects'
-import { useWorkspaceProjectMembersStore } from '@/stores/workspace/projectsMembers';
+import { useWorkspaceProjectMembersStore } from '@/stores/workspace/projectsMembers'
 
 export default {
   name: 'ProjectTask',

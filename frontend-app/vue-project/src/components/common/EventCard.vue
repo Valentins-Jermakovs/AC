@@ -1,10 +1,12 @@
 <template>
-  <div class="bg-base-100 border border-base-300 border-l-2 p-4 flex flex-col gap-3 transition" :class="colorBorder">
+  <div
+    class="bg-base-100 border border-base-300 border-l-2 p-4 flex flex-col gap-3 transition"
+    :class="colorBorder"
+  >
     <!-- HEADER -->
     <div class="flex items-start justify-between">
       <div class="flex flex-col">
-        <h3 class="font-semibold text-base-content text-lg leading-tight wrap-break-word
-        text-wrap">
+        <h3 class="font-semibold text-base-content text-lg leading-tight wrap-break-word text-wrap">
           {{ shortTitle }}
         </h3>
 
@@ -98,9 +100,7 @@ export default {
     shortTitle() {
       if (!this.event.title) return ''
 
-      return this.event.title.length > 20
-        ? this.event.title.slice(0, 20) + '...'
-        : this.event.title
+      return this.event.title.length > 20 ? this.event.title.slice(0, 20) + '...' : this.event.title
     },
 
     shortDescription() {
@@ -111,7 +111,6 @@ export default {
         : this.event.description
     },
     colorClass() {
-
       const colors = {
         primary: 'bg-primary',
         secondary: 'bg-secondary',

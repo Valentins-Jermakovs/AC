@@ -68,7 +68,8 @@
       }}</label>
       <textarea
         v-model="newProject.description"
-        class="textarea textarea-bordered w-full" maxlength="1000"
+        class="textarea textarea-bordered w-full"
+        maxlength="1000"
         :placeholder="$t('work.projects.modals.create_project.description_placeholder')"
       ></textarea>
     </div>

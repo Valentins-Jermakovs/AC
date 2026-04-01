@@ -4,17 +4,28 @@
     <!-- Main content: board + members -->
     <div class="flex flex-col flex-1 w-full h-full overflow-hidden order-1 md:order-1">
       <!-- View switch panel -->
-      <div v-if="kanbanBoardStore.selectedBoard"
-        class="w-full bg-base-100 border border-base-300 flex flex-wrap sm:flex-nowrap p-2 gap-2">
-        <button class="btn flex-1 sm:flex-none" :class="activeView === 'board' ? 'btn-primary' : 'btn-neutral'"
-          @click="activeView = 'board'">
+      <div
+        v-if="kanbanBoardStore.selectedBoard"
+        class="w-full bg-base-100 border border-base-300 flex flex-wrap sm:flex-nowrap p-2 gap-2"
+      >
+        <button
+          class="btn flex-1 sm:flex-none"
+          :class="activeView === 'board' ? 'btn-primary' : 'btn-neutral'"
+          @click="activeView = 'board'"
+        >
           <font-awesome-icon icon="fa-solid fa-table-cells" />
           <span class="hidden sm:inline">{{ $t('work.kanban.board_view') }}</span>
         </button>
 
-        <button class="btn flex-1 sm:flex-none" :class="activeView === 'members' ? 'btn-primary' : 'btn-neutral'"
-          @click="activeView = 'members'" 
-          :disabled="(kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role === 'viewer') ||kanbanMembersStore.currentUser.role === 'editor'">
+        <button
+          class="btn flex-1 sm:flex-none"
+          :class="activeView === 'members' ? 'btn-primary' : 'btn-neutral'"
+          @click="activeView = 'members'"
+          :disabled="
+            (kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role === 'viewer') ||
+            kanbanMembersStore.currentUser.role === 'editor'
+          "
+        >
           <font-awesome-icon icon="fa-solid fa-users" />
           <span class="hidden sm:inline">{{ $t('work.kanban.member_view') }}</span>
         </button>
@@ -82,7 +93,7 @@ export default {
           }
         }
       },
-      { immediate: true }
+      { immediate: true },
     )
   },
 }

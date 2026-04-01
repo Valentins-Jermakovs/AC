@@ -3,11 +3,16 @@
     <!-- Left screen: task list with search bar and pagination -->
     <div class="w-full lg:w-1/2 bg-base-200 border border-base-300 flex flex-col gap-1 p-1">
       <SearchBar @search="handleSearch" />
-      <TaskList :tasks="privateTasksStore.privateTasks" @select-task="selectTask" :selectedTask="selectedTask" />
+      <TaskList
+        :tasks="privateTasksStore.privateTasks"
+        @select-task="selectTask"
+        :selectedTask="selectedTask"
+      />
 
       <!-- Pagination -->
       <div
-        class="w-full p-4 border border-base-300 bg-base-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        class="w-full p-4 border border-base-300 bg-base-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+      >
         <div class="flex flex-col sm:flex-row sm:items-center sm:gap-6 w-full sm:w-auto">
           <div class="flex flex-col sm:flex-row sm:items-center gap-2">
             <label class="text-sm opacity-70">{{ $t('cabinet.admin.table_footer.limit') }}</label>
@@ -30,11 +35,18 @@
         </div>
 
         <div class="flex flex-col sm:flex-row sm:gap-3 gap-2 w-full sm:w-auto">
-          <button class="btn btn-neutral hover:btn-primary flex-1 p-2" @click="prevPage" :disabled="page <= 1">
+          <button
+            class="btn btn-neutral hover:btn-primary flex-1 p-2"
+            @click="prevPage"
+            :disabled="page <= 1"
+          >
             <font-awesome-icon icon="fa-solid fa-arrow-left" />
           </button>
-          <button class="btn btn-neutral hover:btn-primary flex-1 p-2" @click="nextPage"
-            :disabled="page >= totalPages || totalPages === 0">
+          <button
+            class="btn btn-neutral hover:btn-primary flex-1 p-2"
+            @click="nextPage"
+            :disabled="page >= totalPages || totalPages === 0"
+          >
             <font-awesome-icon icon="fa-solid fa-arrow-right" />
           </button>
         </div>
@@ -42,16 +54,24 @@
     </div>
 
     <!-- Right screen: task details / empty states -->
-    <div class="w-full lg:w-1/2 bg-base-200 border border-base-300 flex flex-col gap-1 p-1 h-1/2 md:h-full">
+    <div
+      class="w-full lg:w-1/2 bg-base-200 border border-base-300 flex flex-col gap-1 p-1 h-1/2 md:h-full"
+    >
       <!-- Atlasīts uzdevums -->
       <TaskDetails v-if="selectedTask" :task="selectedTask" @delete-task="handleDelete" />
 
       <!-- Saraksts nav tukšs, bet nav atlasīts uzdevums -->
-      <div v-else-if="privateTasksStore.privateTasks.length > 0"
-        class="flex flex-col items-center justify-center h-full text-base-content/50 gap-3 text-center">
+      <div
+        v-else-if="privateTasksStore.privateTasks.length > 0"
+        class="flex flex-col items-center justify-center h-full text-base-content/50 gap-3 text-center"
+      >
         <!-- Rotējoša brīdinājuma ikona -->
-        <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="4x" class="text-warning animate-spin-slow"
-          bounce />
+        <font-awesome-icon
+          icon="fa-solid fa-triangle-exclamation"
+          size="4x"
+          class="text-warning animate-spin-slow"
+          bounce
+        />
 
         <!-- Teksts ar papildikonu -->
         <h2 class="text-xl font-semibold text-base-content/80 flex items-center gap-2">
@@ -66,9 +86,16 @@
       </div>
 
       <!-- Saraksts tukšs -->
-      <div v-else class="flex flex-col items-center justify-center h-full gap-4 bg-base-100 rounded p-4">
+      <div
+        v-else
+        class="flex flex-col items-center justify-center h-full gap-4 bg-base-100 rounded p-4"
+      >
         <div class="flex flex-col items-center gap-2 font-semibold text-2xl text-base-content/60">
-          <font-awesome-icon icon="fa-solid fa-file-pen" size="2xl" class="text-base-content/40 animate-bounce" />
+          <font-awesome-icon
+            icon="fa-solid fa-file-pen"
+            size="2xl"
+            class="text-base-content/40 animate-bounce"
+          />
           <p class="text-lg text-base-content/40">
             {{ $t('work.errors.not_found_description') }}
           </p>
@@ -77,16 +104,20 @@
         <button class="btn btn-primary btn-md" @click="showCreate = true">
           {{ $t('common.create') }}
         </button>
-
-
       </div>
     </div>
 
     <LoadingScreen v-if="privateTasksStore.loading" />
   </div>
   <!-- CREATE dialog -->
-  <BaseDialog v-model="showCreate" :title="$t('work.modals.create_task.title')" :confirm-text="$t('common.create')"
-    :cancel-text="$t('common.cancel')" @confirm="createTask" @cancel="closeCreate">
+  <BaseDialog
+    v-model="showCreate"
+    :title="$t('work.modals.create_task.title')"
+    :confirm-text="$t('common.create')"
+    :cancel-text="$t('common.cancel')"
+    @confirm="createTask"
+    @cancel="closeCreate"
+  >
     <div class="flex flex-col gap-2 w-full">
       <!-- Error message transition -->
       <Transition name="error-slide">
@@ -99,8 +130,11 @@
         <label class="label">
           <span class="label-text">{{ $t('work.task_form.title') }}:</span>
         </label>
-        <input class="input input-bordered w-full" :placeholder="$t('work.task_form.title_placeholder')"
-          v-model="createForm.title" />
+        <input
+          class="input input-bordered w-full"
+          :placeholder="$t('work.task_form.title_placeholder')"
+          v-model="createForm.title"
+        />
       </div>
       <!-- Description -->
       <div>
@@ -111,8 +145,12 @@
         <div class="w-full flex justify-end text-sm opacity-70 pr-1">
           {{ descriptionRemainingChars }} / {{ descriptionMaxLength }}
         </div>
-        <textarea class="textarea textarea-bordered w-full" maxlength="1000" :placeholder="$t('work.task_form.description_placeholder')"
-          v-model="createForm.description"></textarea>
+        <textarea
+          class="textarea textarea-bordered w-full"
+          maxlength="1000"
+          :placeholder="$t('work.task_form.description_placeholder')"
+          v-model="createForm.description"
+        ></textarea>
       </div>
       <!-- Due date -->
       <div>
@@ -145,7 +183,7 @@ export default {
       selectedTask: null,
       showCreate: false,
       createForm: { title: '', description: '', dueDate: '' },
-      descriptionMaxLength: 1000
+      descriptionMaxLength: 1000,
     }
   },
   mounted() {

@@ -1,34 +1,54 @@
 <template>
   <div
-    class="h-auto sm:h-full flex flex-col w-full sm:w-64 bg-base-200 border border-base-300 p-1 gap-2 order-2 sm:order-2 mt-2 sm:mt-0">
+    class="h-auto sm:h-full flex flex-col w-full sm:w-64 bg-base-200 border border-base-300 p-1 gap-2 order-2 sm:order-2 mt-2 sm:mt-0"
+  >
     <!-- Search bar -->
     <div class="w-full p-1 bg-base-100 border border-base-300 flex flex-col items-center gap-2">
       <div class="w-full">
-        <input type="text" class="input w-full" :placeholder="$t('common.search')"
-          v-model="kanbanBoardStore.searchQuery" @keyup.enter="searchBoards"
-          :disabled="kanbanBoardStore.searchMode === 'all'" />
+        <input
+          type="text"
+          class="input w-full"
+          :placeholder="$t('common.search')"
+          v-model="kanbanBoardStore.searchQuery"
+          @keyup.enter="searchBoards"
+          :disabled="kanbanBoardStore.searchMode === 'all'"
+        />
       </div>
       <div class="w-full flex items-center gap-2">
-        <select class="select bg-neutral text-neutral-content select-bordered flex-1"
-          v-model="kanbanBoardStore.searchMode">
+        <select
+          class="select bg-neutral text-neutral-content select-bordered flex-1"
+          v-model="kanbanBoardStore.searchMode"
+        >
           <option value="all">{{ $t('filters.all') }}</option>
           <option value="title">{{ $t('filters.by_title') }}</option>
         </select>
-        <button class="btn btn-primary" @click="searchBoards" :disabled="kanbanBoardStore.searchMode === 'title' && kanbanBoardStore.searchQuery.length < 3
-          ">
+        <button
+          class="btn btn-primary"
+          @click="searchBoards"
+          :disabled="
+            kanbanBoardStore.searchMode === 'title' && kanbanBoardStore.searchQuery.length < 3
+          "
+        >
           <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
         </button>
       </div>
     </div>
 
     <!-- List of boards -->
-    <div class="w-full flex flex-1 flex-col bg-base-100 border border-base-300 overflow-y-auto p-3 gap-2">
+    <div
+      class="w-full flex flex-1 flex-col bg-base-100 border border-base-300 overflow-y-auto p-3 gap-2"
+    >
       <!-- If list is empty -->
       <div v-if="boards.length === 0" class="w-full h-full flex items-center justify-center">
-        <div class="flex flex-col items-center gap-5 p-8 bg-base-200 border border-base-300 w-full max-w-md">
+        <div
+          class="flex flex-col items-center gap-5 p-8 bg-base-200 border border-base-300 w-full max-w-md"
+        >
           <!-- Icon -->
           <div class="flex flex-col items-center gap-3">
-            <font-awesome-icon icon="fa-solid fa-chess-board" class="text-6xl text-base-content/20" />
+            <font-awesome-icon
+              icon="fa-solid fa-chess-board"
+              class="text-6xl text-base-content/20"
+            />
           </div>
 
           <!-- Text -->
@@ -44,36 +64,56 @@
         </div>
       </div>
 
-      <div v-for="board in boards" :key="board.id" @click="selectBoard(board)"
-        class="w-full h-16 flex items-center p-2 border duration-300 transition-all hover:cursor-pointer" :class="isSelectedBoard(board)
-          ? 'bg-neutral text-neutral-content border-base-300 border-2'
-          : 'border-base-300 bg-base-200 hover:bg-base-300 hover:border-info'">
+      <div
+        v-for="board in boards"
+        :key="board.id"
+        @click="selectBoard(board)"
+        class="w-full h-16 flex items-center p-2 border duration-300 transition-all hover:cursor-pointer"
+        :class="
+          isSelectedBoard(board)
+            ? 'bg-neutral text-neutral-content border-base-300 border-2'
+            : 'border-base-300 bg-base-200 hover:bg-base-300 hover:border-info'
+        "
+      >
         <h1>{{ board.title }}</h1>
       </div>
     </div>
 
     <!-- Footer -->
     <div class="bg-base-100 border border-base-300 flex flex-col p-1 gap-2">
-      <select class="select select-bordered w-full" v-model="kanbanBoardStore.meta.limit"
-        @change="kanbanBoardStore.setLimit($event.target.value)" :disabled="!kanbanBoardStore.hasKanbanBoards">
+      <select
+        class="select select-bordered w-full"
+        v-model="kanbanBoardStore.meta.limit"
+        @change="kanbanBoardStore.setLimit($event.target.value)"
+        :disabled="!kanbanBoardStore.hasKanbanBoards"
+      >
         <option value="5">5</option>
         <option value="10">10</option>
         <option value="20">20</option>
         <option value="30">30</option>
       </select>
 
-      <div class="w-full p-1 flex flex-col items-start bg-base-100 border border-base-300 gap-1 text-base-content/60">
+      <div
+        class="w-full p-1 flex flex-col items-start bg-base-100 border border-base-300 gap-1 text-base-content/60"
+      >
         <p>{{ $t('cabinet.admin.table_footer.page') }} {{ meta.page }} / {{ meta.totalPages }}</p>
         <p>{{ $t('cabinet.admin.table_footer.limit') }} {{ meta.limit }}</p>
       </div>
 
       <div class="w-full gap-1 flex items-center p-1 justify-center">
-        <button class="btn btn-neutral w-1/2" @click="prevPage" :disabled="meta.page === 1 || boards.length === 0">
+        <button
+          class="btn btn-neutral w-1/2"
+          @click="prevPage"
+          :disabled="meta.page === 1 || boards.length === 0"
+        >
           <font-awesome-icon icon="fa-solid fa-arrow-left" />
         </button>
 
-        <button class="btn btn-neutral w-1/2" @click="nextPage"
-          :disabled="meta.page === meta.totalPages || boards.length === 0">
+        <button
+          class="btn btn-neutral w-1/2"
+          @click="nextPage"
+          :disabled="meta.page === meta.totalPages || boards.length === 0"
+        >
           <font-awesome-icon icon="fa-solid fa-arrow-right" />
         </button>
       </div>

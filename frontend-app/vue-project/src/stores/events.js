@@ -99,6 +99,9 @@ export const useEventsStore = defineStore('events', {
     },
 
     async getEventsByMonth(month, year) {
+      if (this.loading) return
+
+      
       const authStore = useAuthStore()
       this.loading = true
       this.error = null

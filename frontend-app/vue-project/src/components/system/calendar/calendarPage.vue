@@ -22,7 +22,7 @@
     >
       <!-- Ja nav notikumu -->
       <div
-        v-if="eventsStore.events.length === 0"
+        v-if="!eventsStore.loading && eventsStore.events.length === 0"
         class="col-span-full flex flex-col items-center justify-center gap-3 p-10 rounded-box animate-pulse"
       >
         <font-awesome-icon

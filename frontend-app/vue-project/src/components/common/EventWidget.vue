@@ -53,16 +53,16 @@
     <div class="w-full h-56 bg-base-10000 relative">
       <div v-if="!loaded" class="skeleton absolute inset-0"></div>
 
-      <img
-        src="@/assets/images/jeremy-bishop-GoEWA8YCQJ0-unsplash.jpg"
+      <img src="@/assets/images/jeremy-bishop-GoEWA8YCQJ0-unsplash.jpg"
         class="w-full h-full object-cover transition-opacity duration-700"
-        :class="loaded ? 'opacity-100' : 'opacity-0'"
-      />
+        :class="loaded ? 'opacity-100' : 'opacity-0'" />
 
-      <div class="absolute inset-0 bg-black/50 flex flex-col justify-end p-5 gap-2">
+      <div class="absolute inset-0 bg-black/50 flex flex-col justify-end p-5 gap-5">
         <h1 class="text-3xl font-bold text-white flex items-center gap-3">
-          <font-awesome-icon icon="fa-solid fa-calendar-days" />
-          {{ closestEvent.title }}
+          <font-awesome-icon icon="fa-solid fa-calendar-days" class="shrink-0" />
+          <span class="min-w-0 wrap-break-word">
+            {{ shortText(closestEvent.title, 30) }}
+          </span>
         </h1>
 
         <div class="flex gap-2">
@@ -88,15 +88,15 @@
     <div class="p-5 flex flex-col gap-5">
       <!-- DESCRIPTION -->
       <div class="flex gap-3 bg-base-100 border border-base-300 p-4">
-        <div v-if="closestEvent.description">
+        <div v-if="closestEvent.description" class="w-full flex gap-3 min-w-0">
           <font-awesome-icon icon="fa-regular fa-bookmark" class="text-xl text-primary mt-1" />
 
-          <div class="flex flex-col gap-1">
+          <div class="flex flex-col gap-1 min-w-0">
             <span class="text-sm text-base-content/60">
               {{ $t('calendar.description') }}
             </span>
 
-            <pre class="text-base-content/80">{{ closestEvent.description }}</pre>
+            <pre class="text-base-content/80 whitespace-pre-wrap wrap-break-word">{{ closestEvent.description }}</pre>
           </div>
         </div>
 
@@ -163,10 +163,8 @@
       </div>
 
       <!-- EXTRA -->
-      <div
-        class="flex gap-3 bg-base-100 border border-base-300 p-4"
-        v-if="closestEvent.startTime || closestEvent.endTime"
-      >
+      <div class="flex gap-3 bg-base-100 border border-base-300 p-4"
+        v-if="closestEvent.startTime || closestEvent.endTime">
         <font-awesome-icon icon="fa-solid fa-clock" class="text-warning text-xl" />
 
         <div class="flex flex-col">
@@ -183,14 +181,9 @@
   </div>
 
   <!-- NO EVENTS IN MONTH -->
-  <div
-    v-else
-    class="w-full bg-base-200 border border-base-300 p-10 flex flex-col items-center justify-center gap-4 text-center"
-  >
-    <font-awesome-icon
-      icon="fa-solid fa-calendar-xmark"
-      class="text-5xl text-base-content/40 animate-bounce"
-    />
+  <div v-else
+    class="w-full bg-base-200 border border-base-300 p-10 flex flex-col items-center justify-center gap-4 text-center">
+    <font-awesome-icon icon="fa-solid fa-calendar-xmark" class="text-5xl text-base-content/40 animate-bounce" />
     <progress class="progress w-1/3 progress-neutral" max="100"></progress>
     <div class="flex flex-col gap-1">
       <h2 class="text-xl font-semibold">
@@ -233,6 +226,15 @@ export default {
     await this.eventsStore.getEventsByMonth(now.getMonth() + 1, now.getFullYear())
     this.loaded = true
   },
+  methods: {
+    shortText(text, limit) {
+      if (!text) return ''
+
+      return text.length > limit
+        ? text.slice(0, limit) + '...'
+        : text
+    }
+  }
 }
 </script>
 

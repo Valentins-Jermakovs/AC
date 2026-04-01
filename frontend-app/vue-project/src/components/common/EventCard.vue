@@ -1,17 +1,15 @@
 <template>
-  <div
-    class="bg-base-100 border border-base-300 border-l-2 p-4 flex flex-col gap-3 transition"
-    :class="colorBorder"
-  >
+  <div class="bg-base-100 border border-base-300 border-l-2 p-4 flex flex-col gap-3 transition" :class="colorBorder">
     <!-- HEADER -->
     <div class="flex items-start justify-between">
       <div class="flex flex-col">
-        <h3 class="font-semibold text-base-content text-lg leading-tight">
-          {{ event.title }}
+        <h3 class="font-semibold text-base-content text-lg leading-tight wrap-break-word
+        text-wrap">
+          {{ shortTitle }}
         </h3>
 
         <p class="text-sm text-base-content/60 line-clamp-2">
-          {{ event.description }}
+          {{ shortDescription }}
         </p>
       </div>
 
@@ -97,7 +95,23 @@ export default {
   },
 
   computed: {
+    shortTitle() {
+      if (!this.event.title) return ''
+
+      return this.event.title.length > 20
+        ? this.event.title.slice(0, 20) + '...'
+        : this.event.title
+    },
+
+    shortDescription() {
+      if (!this.event.description) return ''
+
+      return this.event.description.length > 50
+        ? this.event.description.slice(0, 50) + '...'
+        : this.event.description
+    },
     colorClass() {
+
       const colors = {
         primary: 'bg-primary',
         secondary: 'bg-secondary',

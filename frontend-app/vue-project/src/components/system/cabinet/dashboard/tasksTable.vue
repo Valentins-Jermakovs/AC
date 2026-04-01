@@ -51,7 +51,7 @@
             </thead>
             <tbody>
               <tr v-for="task in privateTasksStore.privateTasks" :key="task.id" class="hover">
-                <td class="font-medium">{{ task.title }}</td>
+                <td class="font-medium max-w-xs truncate">{{ task.title }}</td>
                 <td class="max-w-xs truncate">{{ task.description }}</td>
                 <td>{{ task.createdAt }}</td>
                 <td>{{ task.dueDate }}</td>

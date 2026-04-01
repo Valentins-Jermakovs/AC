@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 
 // Reactive variable to track if the sidebar is open or closed
-const isSideBarOpen = ref(true)
+const isSideBarOpen = ref(false)
 
 // Function to toggle sidebar state
 const toggleSideBar = () => {

@@ -65,7 +65,7 @@
         <div
           class="text-sm text-base-content/70 p-2 bg-base-200/50 border border-base-300 wrap-break-word"
         >
-          <pre v-if="event.description">{{ event.description }}</pre>
+          <pre v-if="event.description" class=" text-wrap">{{ event.description }}</pre>
           <div
             v-else
             class="flex items-center gap-3 p-4 bg-base-100 border border-base-300 animate-fadeIn"
@@ -374,7 +374,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Left column: Title + Description -->
         <div class="flex flex-col gap-3 p-2 border border-base-300 bg-base-100">
-          <h1 class="text-3xl font-bold text-base-content ml-2">
+          <h1 class="text-3xl font-bold text-base-content ml-2 wrap-break-word">
             {{ eventsStore.selectedEvent.title }}
           </h1>
           <pre

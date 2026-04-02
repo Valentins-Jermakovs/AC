@@ -136,6 +136,10 @@
       "label": "Aktivitātes statuss",
       "active": "Aktīvs",
       "blocked": "Bloķēts"
+    },
+    "block_me": {
+      "title": "Bloķēt kontu",
+      "content": "Vai tiešām vēlaties bloķēt kontu?"
     }
   },
   "sidebar": {
@@ -200,7 +204,8 @@
         "title": "Lietotāja modifikācija",
         "edit_username": "Mainīt lietotājvārdu",
         "edit_email": "Mainīt e-pastu",
-        "change_password": "Mainīt paroli"
+        "change_password": "Mainīt paroli",
+        "block_me": "Bloķēt kontu"
       }
     },
     "admin": {

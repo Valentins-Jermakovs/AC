@@ -136,6 +136,10 @@
       "label": "Activity status",
       "active": "Active",
       "blocked": "Blocked"
+    },
+    "block_me": {
+      "title": "Block yourself?",
+      "content": "Are you sure you want to block yourself?"
     }
   },
   "sidebar": {
@@ -200,7 +204,8 @@
         "title": "User Modification",
         "edit_username": "Change Username",
         "edit_email": "Change Email",
-        "change_password": "Change Password"
+        "change_password": "Change Password",
+        "block_me": "Block my account"
       }
     },
     "admin": {

@@ -27,6 +27,7 @@ export const API_ENDPOINTS = {
 
   // Activity
   CHANGE_USER_ACTIVITY: '/activity/',
+  CHANGE_MY_ACTIVITY: '/activity/me',
 
   // Roles
   ADD_ROLES_TO_USER: '/roles/add',

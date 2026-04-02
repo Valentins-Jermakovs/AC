@@ -30,6 +30,24 @@ class UserActivitySchemaData(BaseModel):
         }
     }
 
+class OneUserActivitySchemaData(BaseModel):
+    """
+    Schema representing user activity status.
+
+    Attributes:
+    - user_id (int): User ID
+    - is_active (bool): Whether the user is active (True) or inactive (False)
+    """
+    is_active: bool
+
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "is_active": True
+            }
+        }
+    }
+
 # =========================
 # User activity response
 # =========================

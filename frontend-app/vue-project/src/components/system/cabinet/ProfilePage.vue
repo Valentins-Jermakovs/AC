@@ -26,6 +26,8 @@
 
     <EmailChangeModal v-model="openEmailModal" :error="error" @submit="submitEmailChange" />
 
+    <BlockMeModal v-model="openBlockModal" :error="error" @submit="submitBlockMe" />
+
     <PasswordChangeModal
       v-model="openPasswordModal"
       :error="error"
@@ -44,11 +46,25 @@ import UserModificationCard from './UserModificationCard.vue'
 import LoadingScreen from '@/components/common/LoadingScreen.vue'
 
 import { useUserStore } from '@/stores/user'
+import { useAdminStore } from '@/stores/admin'
 import { usePrivateTasksStore } from '@/stores/privateTasks'
+import { useEventsStore } from '@/stores/events'
+import { useEventParticipantsStore } from '@/stores/eventParticipants'
+import { useKanbanBoardStore } from '@/stores/kanban/kanbanBoards'
+import { useKanbanMembersStore } from '@/stores/kanban/kanbanMembers'
+import { useKanbanStagesStore } from '@/stores/kanban/kanbanStages'
+import { useKanbanTasksStore } from '@/stores/kanban/kanbanTasks'
+import { useWorkspaceProjectMembersStore } from '@/stores/workspace/projectsMembers'
+import { useWorkspaceProjectStagesStore } from '@/stores/workspace/projectStages'
+import { useWorkspaceProjectsStore } from '@/stores/workspace/projects'
+import { useWorkspaceProjectsTasksStore } from '@/stores/workspace/projectsTasks'
+import { useSelectedProjectStore } from '@/stores/selectedProject'
+import { useAuthStore } from '@/stores/auth'
 
 import UsernameModal from './modals/UsernameModal.vue'
 import EmailChangeModal from './modals/EmailChangeModal.vue'
 import PasswordChangeModal from './modals/PasswordChangeModal.vue'
+import BlockMeModal from './modals/BlockMeModal.vue'
 
 export default {
   name: 'UserProfileView',
@@ -63,6 +79,7 @@ export default {
     UsernameModal,
     EmailChangeModal,
     PasswordChangeModal,
+    BlockMeModal,
   },
 
   data() {
@@ -71,8 +88,22 @@ export default {
       openUsernameModal: false,
       openEmailModal: false,
       openPasswordModal: false,
+      openBlockModal: false,
 
       taskStore: usePrivateTasksStore(),
+      adminStore: useAdminStore(),
+      eventsStore: useEventsStore(),
+      eventParticipantsStore: useEventParticipantsStore(),
+      kanbanBoardStore: useKanbanBoardStore(),
+      kanbanMembersStore: useKanbanMembersStore(),
+      kanbanStagesStore: useKanbanStagesStore(),
+      kanbanTasksStore: useKanbanTasksStore(),
+      workspaceProjectMembersStore: useWorkspaceProjectMembersStore(),
+      workspaceProjectStagesStore: useWorkspaceProjectStagesStore(),
+      workspaceProjectsStore: useWorkspaceProjectsStore(),
+      workspaceProjectsTasksStore: useWorkspaceProjectsTasksStore(),
+      selectedProjectStore: useSelectedProjectStore(),
+      authStore: useAuthStore(),
     }
   },
 
@@ -134,6 +165,7 @@ export default {
         { key: 'username', title: this.$t('cabinet.profile.actions.edit_username') },
         { key: 'email', title: this.$t('cabinet.profile.actions.edit_email') },
         { key: 'password', title: this.$t('cabinet.profile.actions.change_password') },
+        { key: 'block', title: this.$t('cabinet.profile.actions.block_me') },
       ]
     },
   },
@@ -154,6 +186,10 @@ export default {
           this.openPasswordModal = false
           this.userStore.error = ''
           break
+        case 'block':
+          this.openBlockModal = false
+          this.userStore.error = ''
+          break
       }
     },
 
@@ -170,6 +206,10 @@ export default {
           break
         case 'password':
           this.openPasswordModal = true
+          this.userStore.clearError()
+          break
+        case 'block':
+          this.openBlockModal = true
           this.userStore.clearError()
           break
       }
@@ -205,6 +245,37 @@ export default {
         this.openPasswordModal = false
       } catch (err) {
         console.error('Failed to change password:', err)
+      }
+    },
+
+    // Block user
+    async submitBlockMe() {
+      try {
+        await this.adminStore.changeMyActivity()
+        this.openBlockModal = false
+
+        await this.authStore.logout()
+
+        // Reset every store
+        this.taskStore.$reset()
+        this.adminStore.$reset()
+        this.eventsStore.$reset()
+        this.eventParticipantsStore.$reset()
+        this.kanbanBoardStore.$reset()
+        this.kanbanMembersStore.$reset()
+        this.kanbanStagesStore.$reset()
+        this.kanbanTasksStore.$reset()
+        this.workspaceProjectMembersStore.$reset()
+        this.workspaceProjectStagesStore.$reset()
+        this.workspaceProjectsStore.$reset()
+        this.workspaceProjectsTasksStore.$reset()
+        this.selectedProjectStore.$reset()
+        this.userStore.$reset()
+
+
+        this.$router.push({ name: 'logout' })
+      } catch (err) {
+        console.error('Failed to block user:', err)
       }
     },
   },

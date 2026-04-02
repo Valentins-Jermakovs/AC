@@ -70,3 +70,22 @@ async def change_users_activity_status(
         )
         for user in users
     ]
+
+# =======================================
+# Change user activity status by theyself
+# =======================================
+async def change_user_activity_status(
+    user_id: int,
+    db: AsyncSession
+) -> UserActivitySchemaResponse:
+    
+    user = await db.get(UserModel, user_id)
+    user.active = False
+    await db.commit()
+
+    return UserActivitySchemaResponse(
+        id=user.id,
+        username=user.username,
+        email=user.email,
+        is_active=user.active
+    )

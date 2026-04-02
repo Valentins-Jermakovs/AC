@@ -324,6 +324,37 @@ export const useAdminStore = defineStore('admin', {
       }
     },
 
+    async changeMyActivity() {
+      const authStore = useAuthStore()
+      const userStore = useUserStore()
+
+      this.loading = true
+      this.error = null
+
+      try {
+        const response = await api.put(
+          API_ENDPOINTS.CHANGE_MY_ACTIVITY,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${authStore.accessToken}`,
+            },
+          },
+        )
+
+        return response.data
+      }
+      catch (err) {
+        this.error = err.response?.data?.detail || err.message || err
+        throw err
+      }
+      finally {
+        this.loading = false
+      }
+
+    },
+
+
     // --------------------------
     // Activate or deactivate users
     // --------------------------

@@ -49,9 +49,21 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
 // Import stores
-import { useAuthStore } from '@/stores/auth'
 import { useUserStore } from '@/stores/user'
 import { useAdminStore } from '@/stores/admin'
+import { usePrivateTasksStore } from '@/stores/privateTasks'
+import { useEventsStore } from '@/stores/events'
+import { useEventParticipantsStore } from '@/stores/eventParticipants'
+import { useKanbanBoardStore } from '@/stores/kanban/kanbanBoards'
+import { useKanbanMembersStore } from '@/stores/kanban/kanbanMembers'
+import { useKanbanStagesStore } from '@/stores/kanban/kanbanStages'
+import { useKanbanTasksStore } from '@/stores/kanban/kanbanTasks'
+import { useWorkspaceProjectMembersStore } from '@/stores/workspace/projectsMembers'
+import { useWorkspaceProjectStagesStore } from '@/stores/workspace/projectStages'
+import { useWorkspaceProjectsStore } from '@/stores/workspace/projects'
+import { useWorkspaceProjectsTasksStore } from '@/stores/workspace/projectsTasks'
+import { useSelectedProjectStore } from '@/stores/selectedProject'
+import { useAuthStore } from '@/stores/auth'
 
 // Import components
 import BurgerButton from './BurgerButton.vue'
@@ -122,6 +134,32 @@ export default {
         const userStore = useUserStore()
         const authStore = useAuthStore()
         const adminStore = useAdminStore()
+        const privateTasksStore = usePrivateTasksStore()
+        const eventsStore = useEventsStore()
+        const eventParticipantsStore = useEventParticipantsStore()
+        const kanbanBoardStore = useKanbanBoardStore()
+        const kanbanMembersStore = useKanbanMembersStore()
+        const kanbanStagesStore = useKanbanStagesStore()
+        const kanbanTasksStore = useKanbanTasksStore()
+        const workspaceProjectMembersStore = useWorkspaceProjectMembersStore()
+        const workspaceProjectStagesStore = useWorkspaceProjectStagesStore()
+        const workspaceProjectsStore = useWorkspaceProjectsStore()
+        const workspaceProjectsTasksStore = useWorkspaceProjectsTasksStore()
+        const selectedProjectStore = useSelectedProjectStore()
+
+        // Reset all stores
+        privateTasksStore.$reset()
+        eventsStore.$reset()
+        eventParticipantsStore.$reset()
+        kanbanBoardStore.$reset()
+        kanbanMembersStore.$reset()
+        kanbanStagesStore.$reset()
+        kanbanTasksStore.$reset()
+        workspaceProjectMembersStore.$reset()
+        workspaceProjectStagesStore.$reset()
+        workspaceProjectsStore.$reset()
+        workspaceProjectsTasksStore.$reset()
+        selectedProjectStore.$reset()
 
         // Reset all stores
         userStore.$reset()

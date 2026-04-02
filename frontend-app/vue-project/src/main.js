@@ -44,7 +44,7 @@ import ru from '@/i18n/ru.json'
 // Create i18n instance
 const i18n = createI18n({
   legacy: false, // Use Composition API style (Vue 3)
-  locale: 'lv', // Default locale
+  locale: localStorage.getItem('locale') || 'lv', // Default locale
   fallbackLocale: 'en', // Fallback if translation missing
   messages: {
     en,

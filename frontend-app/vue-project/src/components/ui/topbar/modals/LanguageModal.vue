@@ -66,6 +66,7 @@ export default {
     // Change app language and close modal
     changeLocale(code) {
       this.$i18n.locale = code
+      localStorage.setItem('locale', code)
       this.localModel = false
     },
   },

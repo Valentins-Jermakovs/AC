@@ -40,6 +40,7 @@ export default {
     changeLocale(code) {
       // Access the global i18n instance via this.$i18n
       this.$i18n.locale = code
+      localStorage.setItem('locale', code)
     },
   },
 }

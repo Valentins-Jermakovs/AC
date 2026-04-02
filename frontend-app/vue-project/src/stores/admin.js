@@ -343,17 +343,13 @@ export const useAdminStore = defineStore('admin', {
         )
 
         return response.data
-      }
-      catch (err) {
+      } catch (err) {
         this.error = err.response?.data?.detail || err.message || err
         throw err
-      }
-      finally {
+      } finally {
         this.loading = false
       }
-
     },
-
 
     // --------------------------
     // Activate or deactivate users

@@ -1,14 +1,22 @@
 <template>
   <div class="w-full bg-base-100 border border-base-300 flex items-center justify-center p-1">
-    <button class="btn btn-primary btn-sm w-full" @click="openCreateModal"
-      :disabled="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role === 'viewer'">
+    <button
+      class="btn btn-primary btn-sm w-full"
+      @click="openCreateModal"
+      :disabled="kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role === 'viewer'"
+    >
       <font-awesome-icon icon="fa-solid fa-plus" /> {{ $t('work.kanban.controls.create_task') }}
     </button>
 
     <!-- Create Task Dialog -->
-    <BaseDialog v-model="createModal" :title="$t('work.kanban.modals.create_task.title')"
-      :confirmText="$t('common.confirm')" :cancelText="$t('common.cancel')" @confirm="confirmCreateTask"
-      @cancel="closeCreateModal">
+    <BaseDialog
+      v-model="createModal"
+      :title="$t('work.kanban.modals.create_task.title')"
+      :confirmText="$t('common.confirm')"
+      :cancelText="$t('common.cancel')"
+      @confirm="confirmCreateTask"
+      @cancel="closeCreateModal"
+    >
       <div class="w-full flex flex-col gap-2">
         <Transition name="error-slide">
           <div v-if="error">
@@ -18,16 +26,24 @@
         <label for="taskTitle" class="label">
           {{ $t('work.kanban.modals.create_task.title_name') }}
         </label>
-        <input type="text" class="input w-full mb-2" v-model="newTaskTitle"
-          :placeholder="$t('work.kanban.modals.create_task.title_name_placeholder')" />
+        <input
+          type="text"
+          class="input w-full mb-2"
+          v-model="newTaskTitle"
+          :placeholder="$t('work.kanban.modals.create_task.title_name_placeholder')"
+        />
         <label for="taskDescription" class="label">
           {{ $t('work.kanban.modals.create_task.description_name') }}
         </label>
         <div class="w-full flex justify-end text-sm opacity-70 pr-1">
           {{ descriptionRemainingChars }} / {{ descriptionMaxLength }}
         </div>
-        <textarea class="textarea w-full" maxlength="200" v-model="newTaskDescription"
-          :placeholder="$t('work.kanban.modals.create_task.description_name_placeholder')"></textarea>
+        <textarea
+          class="textarea w-full"
+          maxlength="200"
+          v-model="newTaskDescription"
+          :placeholder="$t('work.kanban.modals.create_task.description_name_placeholder')"
+        ></textarea>
       </div>
     </BaseDialog>
   </div>
@@ -96,7 +112,6 @@ export default {
     descriptionRemainingChars() {
       return this.descriptionMaxLength - this.newTaskDescription.length
     },
-
   },
 }
 </script>

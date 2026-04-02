@@ -632,9 +632,7 @@ export default {
       return this.descriptionMaxLength - (this.newEvent.description?.length || 0)
     },
     descriptionRemainingCharsUpdate() {
-      return (
-        this.descriptionMaxLength - (this.updateEvent.description?.length || 0)
-      )
+      return this.descriptionMaxLength - (this.updateEvent.description?.length || 0)
     },
     eventError() {
       return this.eventsStore.error

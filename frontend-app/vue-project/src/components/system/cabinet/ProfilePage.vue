@@ -272,7 +272,6 @@ export default {
         this.selectedProjectStore.$reset()
         this.userStore.$reset()
 
-
         this.$router.push({ name: 'logout' })
       } catch (err) {
         console.error('Failed to block user:', err)

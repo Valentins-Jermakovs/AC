@@ -1,20 +1,12 @@
 <template>
   <div class="flex flex-col flex-1 items-center justify-center">
-    <div
-      class="flex flex-col items-center gap-5 p-8 bg-base-100 border border-base-300 w-full max-w-lg"
-    >
+    <div class="flex flex-col items-center gap-5 p-8 bg-base-100 border border-base-300 w-full max-w-lg">
       <!-- Icon composition -->
       <div class="relative">
-        <font-awesome-icon
-          icon="fa-solid fa-diagram-project"
-          class="text-7xl text-base-content/20"
-        />
+        <font-awesome-icon icon="fa-solid fa-diagram-project" class="text-7xl text-base-content/20" />
 
-        <font-awesome-icon
-          icon="fa-solid fa-triangle-exclamation"
-          class="text-warning text-2xl absolute -top-2 -right-3"
-          bounce
-        />
+        <font-awesome-icon icon="fa-solid fa-triangle-exclamation"
+          class="text-warning text-2xl absolute -top-2 -right-3" bounce />
       </div>
 
       <!-- Text -->
@@ -40,14 +32,8 @@
     </div>
   </div>
 
-  <base-dialog
-    v-model="showCreateDialog"
-    :title="$t('work.projects.modals.create_project.title')"
-    :confirmText="$t('common.create')"
-    :cancelText="$t('common.cancel')"
-    @confirm="createProject"
-    @cancel="resetForm"
-  >
+  <base-dialog v-model="showCreateDialog" :title="$t('work.projects.modals.create_project.title')"
+    :confirmText="$t('common.create')" :cancelText="$t('common.cancel')" @confirm="createProject" @cancel="resetForm">
     <div class="flex flex-col w-full gap-2">
       <Transition name="error-slide">
         <div v-if="error">
@@ -56,22 +42,17 @@
       </Transition>
       <label for="projectTitle" class="label">{{
         $t('work.projects.modals.create_project.name')
-      }}</label>
-      <input
-        v-model="newProject.title"
-        type="text"
-        class="input input-bordered w-full"
-        :placeholder="$t('work.projects.modals.create_project.name_placeholder')"
-      />
+        }}</label>
+      <input v-model="newProject.title" type="text" class="input input-bordered w-full"
+        :placeholder="$t('work.projects.modals.create_project.name_placeholder')" />
       <label for="projectDescription" class="label">{{
         $t('work.projects.modals.create_project.description')
-      }}</label>
-      <textarea
-        v-model="newProject.description"
-        class="textarea textarea-bordered w-full"
-        maxlength="1000"
-        :placeholder="$t('work.projects.modals.create_project.description_placeholder')"
-      ></textarea>
+        }}</label>
+      <div class="w-full flex justify-end text-sm opacity-70 pr-1">
+        {{ descriptionRemainingChars }} / {{ descriptionMaxLength }}
+      </div>
+      <textarea v-model="newProject.description" class="textarea textarea-bordered w-full" maxlength="1000"
+        :placeholder="$t('work.projects.modals.create_project.description_placeholder')"></textarea>
     </div>
   </base-dialog>
 </template>
@@ -99,6 +80,7 @@ export default {
         title: '',
         description: '',
       },
+      descriptionMaxLength: 1000,
     }
   },
 
@@ -130,6 +112,10 @@ export default {
   computed: {
     error() {
       return this.store.error
+    },
+
+    descriptionRemainingChars() {
+      return this.descriptionMaxLength - this.newProject.description.length
     },
   },
 }

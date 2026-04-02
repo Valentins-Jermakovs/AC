@@ -1,5 +1,6 @@
 # Imports
 from fastapi import HTTPException
+from datetime import datetime, timezone
 # Schemas
 from app.schemas.response.private_tasks.private_task import PrivateTaskSchema
 from app.schemas.data.private_tasks.private_task_create_schema import PrivateTaskCreateSchema
@@ -57,6 +58,16 @@ async def create_private_task(
 
     # Convert dueDate string to datetime (if exists)
     due_date_dt = await convert_to_datetime(data.dueDate)
+
+    # Validate due date is not in the past
+    if due_date_dt:
+        current_date = datetime.now()
+
+        if due_date_dt < current_date:
+            raise HTTPException(
+                status_code=400,
+                detail="Due date cannot be in the past"
+            )
 
     # Create new private task
     new_private_task = PrivateTaskModel(

@@ -66,6 +66,9 @@
           {{ $t('work.projects.modals.create_project.description') }}
         </span>
       </label>
+      <div class="w-full flex justify-end text-sm opacity-70 pr-1">
+          {{ descriptionRemainingChars }} / {{ descriptionMaxLength }}
+        </div>
       <textarea
         v-model="newProject.description"
         class="textarea textarea-bordered w-full"
@@ -99,6 +102,8 @@ export default {
         title: '',
         description: '',
       },
+
+      descriptionMaxLength: 1000,
     }
   },
 
@@ -154,6 +159,10 @@ export default {
   computed: {
     error() {
       return this.store.error
+    },
+
+    descriptionRemainingChars() {
+      return this.descriptionMaxLength - this.newProject.description.length
     },
   },
 }

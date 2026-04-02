@@ -5,9 +5,7 @@
 
     <!-- CONTENT -->
     <div class="drawer-content">
-      <div
-        class="w-full bg-base-100 border border-base-300 p-3 sm:p-4 flex flex-col gap-4 mt-3 sm:mt-5"
-      >
+      <div class="w-full bg-base-100 border border-base-300 p-3 sm:p-4 flex flex-col gap-4 mt-3 sm:mt-5">
         <!-- HEADER -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div class="flex flex-col sm:flex-row sm:items-center gap-2">
@@ -28,10 +26,8 @@
             </div>
           </div>
 
-          <button
-            class="btn btn-primary btn-circle self-end sm:self-auto"
-            @click="drawerOpen = true"
-          >
+          <button class="btn btn-primary btn-circle self-end sm:self-auto" @click="drawerOpen = true"
+            :disabled="membersStore.currentUser?.role === 'viewer'">
             <font-awesome-icon icon="fa-solid fa-code-branch" />
           </button>
         </div>
@@ -45,9 +41,7 @@
     <div class="drawer-side z-50">
       <label class="drawer-overlay" @click="drawerOpen = false"></label>
 
-      <div
-        class="bg-base-200 min-h-full w-full sm:w-96 p-4 sm:p-6 flex flex-col gap-6 overflow-y-auto"
-      >
+      <div class="bg-base-200 min-h-full w-full sm:w-96 p-4 sm:p-6 flex flex-col gap-6 overflow-y-auto">
         <!-- TITLE -->
         <div class="flex items-center justify-between gap-2">
           <h2 class="text-xl sm:text-2xl font-semibold wrap-break-word">
@@ -58,10 +52,7 @@
         </div>
 
         <!-- ACTIONS -->
-        <div
-          class="bg-base-100 border border-base-300 w-full"
-          v-if="membersStore.currentUser?.role !== 'viewer'"
-        >
+        <div class="bg-base-100 border border-base-300 w-full">
           <ul class="menu w-full">
             <li>
               <button class="flex gap-3 items-center" @click="showCreateDialog = true">
@@ -164,14 +155,9 @@
   </div>
 
   <!-- Create stage dialog -->
-  <BaseDialog
-    v-model="showCreateDialog"
-    :title="$t('work.projects.modals.create_new_sprint.title')"
-    :confirmText="$t('common.create')"
-    :cancelText="$t('common.cancel')"
-    @confirm="handleCreate"
-    @cancel="closeCreateDialog"
-  >
+  <BaseDialog v-model="showCreateDialog" :title="$t('work.projects.modals.create_new_sprint.title')"
+    :confirmText="$t('common.create')" :cancelText="$t('common.cancel')" @confirm="handleCreate"
+    @cancel="closeCreateDialog">
     <div class="flex flex-col gap-2 w-full">
       <Transition name="error-slide">
         <div v-if="error">
@@ -181,21 +167,16 @@
       <label for="stageTitle" class="label">
         {{ $t('work.projects.modals.create_new_sprint.name') }}
       </label>
-      <input
-        v-model="newStage.title"
-        type="text"
-        class="input w-full"
-        :placeholder="$t('work.projects.modals.create_new_sprint.name_placeholder')"
-      />
+      <input v-model="newStage.title" type="text" class="input w-full"
+        :placeholder="$t('work.projects.modals.create_new_sprint.name_placeholder')" />
       <label for="stageDescription" class="label">
         {{ $t('work.projects.modals.create_new_sprint.description') }}
       </label>
-      <textarea
-        maxlength="1000"
-        v-model="newStage.description"
-        class="textarea w-full"
-        :placeholder="$t('work.projects.modals.create_new_sprint.description_placeholder')"
-      ></textarea>
+      <div class="w-full flex justify-end text-sm opacity-70 pr-1">
+        {{ descriptionRemainingChars }} / {{ descriptionMaxLength }}
+      </div>
+      <textarea maxlength="1000" v-model="newStage.description" class="textarea w-full"
+        :placeholder="$t('work.projects.modals.create_new_sprint.description_placeholder')"></textarea>
       <div class="flex flex-col gap-1">
         <label class="label">
           {{ $t('work.projects.modals.create_new_sprint.start_date') }}
@@ -210,26 +191,16 @@
     </div>
   </BaseDialog>
   <!-- Delete confirmation dialog -->
-  <BaseDialog
-    v-model="showDelete"
-    :title="$t('work.projects.modals.delete_sprint.title')"
-    :confirmText="$t('common.delete')"
-    :cancelText="$t('common.cancel')"
-    @confirm="handleDelete"
-  >
+  <BaseDialog v-model="showDelete" :title="$t('work.projects.modals.delete_sprint.title')"
+    :confirmText="$t('common.delete')" :cancelText="$t('common.cancel')" @confirm="handleDelete">
     <p>
       {{ $t('work.projects.modals.delete_sprint.content') }}
     </p>
   </BaseDialog>
   <!-- Edit stage dialog -->
-  <BaseDialog
-    v-model="showEditDialog"
-    :title="$t('work.projects.modals.edit_sprint.title')"
-    :confirmText="$t('common.confirm')"
-    :cancelText="$t('common.cancel')"
-    @confirm="handleUpdate"
-    @cancel="closeEditDialog"
-  >
+  <BaseDialog v-model="showEditDialog" :title="$t('work.projects.modals.edit_sprint.title')"
+    :confirmText="$t('common.confirm')" :cancelText="$t('common.cancel')" @confirm="handleUpdate"
+    @cancel="closeEditDialog">
     <div class="flex flex-col gap-2 w-full">
       <Transition name="error-slide">
         <div v-if="error">
@@ -239,21 +210,16 @@
       <label for="stageTitle" class="label">
         {{ $t('work.projects.modals.edit_sprint.name') }}
       </label>
-      <input
-        v-model="editStage.title"
-        type="text"
-        class="input w-full"
-        :placeholder="$t('work.projects.modals.edit_sprint.name_placeholder')"
-      />
+      <input v-model="editStage.title" type="text" class="input w-full"
+        :placeholder="$t('work.projects.modals.edit_sprint.name_placeholder')" />
       <label for="stageDescription" class="label">
         {{ $t('work.projects.modals.edit_sprint.description') }}
       </label>
-      <textarea
-        v-model="editStage.description"
-        class="textarea w-full"
-        maxlength="1000"
-        :placeholder="$t('work.projects.modals.edit_sprint.description_placeholder')"
-      ></textarea>
+      <div class="w-full flex justify-end text-sm opacity-70 pr-1">
+        {{ descriptionRemainingCharsEdit }} / {{ descriptionMaxLength }}
+      </div>
+      <textarea v-model="editStage.description" class="textarea w-full" maxlength="1000"
+        :placeholder="$t('work.projects.modals.edit_sprint.description_placeholder')"></textarea>
       <label for="stageDueDate" class="label">
         {{ $t('work.projects.modals.edit_sprint.due_date') }}
       </label>
@@ -266,14 +232,9 @@
   </BaseDialog>
 
   <!-- Relative stage dialog -->
-  <BaseDialog
-    v-model="showRelativeDialog"
-    :title="$t('work.projects.modals.create_sprint_relative.title')"
-    :confirmText="$t('common.create')"
-    :cancelText="$t('common.cancel')"
-    @confirm="handleCreateRelative"
-    @cancel="closeRelativeDialog"
-  >
+  <BaseDialog v-model="showRelativeDialog" :title="$t('work.projects.modals.create_sprint_relative.title')"
+    :confirmText="$t('common.create')" :cancelText="$t('common.cancel')" @confirm="handleCreateRelative"
+    @cancel="closeRelativeDialog">
     <div class="flex flex-col gap-2 w-full">
       <Transition name="error-slide">
         <div v-if="error">
@@ -283,21 +244,16 @@
       <label for="stageTitle" class="label">
         {{ $t('work.projects.modals.create_sprint_relative.name') }}
       </label>
-      <input
-        v-model="relativeStage.title"
-        type="text"
-        class="input w-full"
-        :placeholder="$t('work.projects.modals.create_sprint_relative.name_placeholder')"
-      />
+      <input v-model="relativeStage.title" type="text" class="input w-full"
+        :placeholder="$t('work.projects.modals.create_sprint_relative.name_placeholder')" />
       <label for="stageDescription" class="label">
         {{ $t('work.projects.modals.create_sprint_relative.description') }}
       </label>
-      <textarea
-        maxlength="1000"
-        v-model="relativeStage.description"
-        class="textarea w-full"
-        :placeholder="$t('work.projects.modals.create_sprint_relative.description_placeholder')"
-      ></textarea>
+      <div class="w-full flex justify-end text-sm opacity-70 pr-1">
+        {{ descriptionRemainingCharsRelative }} / {{ descriptionMaxLength }}
+      </div>
+      <textarea maxlength="1000" v-model="relativeStage.description" class="textarea w-full"
+        :placeholder="$t('work.projects.modals.create_sprint_relative.description_placeholder')"></textarea>
       <div class="flex flex-col gap-1">
         <label class="label">
           {{ $t('work.projects.modals.create_new_sprint.start_date') }}
@@ -365,6 +321,7 @@ export default {
         createdAt: '',
         position: 'after', // default: after
       },
+      descriptionMaxLength: 1000,
     }
   },
   methods: {
@@ -518,6 +475,15 @@ export default {
   computed: {
     error() {
       return this.stagesStore.error
+    },
+    descriptionRemainingChars() {
+      return this.descriptionMaxLength - this.newStage.description.length
+    },
+    descriptionRemainingCharsEdit() {
+      return this.descriptionMaxLength - this.editStage.description.length
+    },
+    descriptionRemainingCharsRelative() {
+      return this.descriptionMaxLength - this.relativeStage.description.length
     },
   },
 }

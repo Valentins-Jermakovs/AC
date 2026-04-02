@@ -40,9 +40,9 @@
         </div>
 
         <button
+          :disabled="membersStore.currentUser?.role === 'viewer'"
           class="btn btn-primary w-full md:w-auto"
           @click="showDialog = true"
-          :disabled="membersStore.currentUser?.role === 'viewer'"
         >
           <font-awesome-icon icon="fa-solid fa-plus" />
 

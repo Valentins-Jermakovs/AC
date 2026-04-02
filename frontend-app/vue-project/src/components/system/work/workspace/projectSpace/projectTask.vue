@@ -4,9 +4,7 @@
 
     <!-- CONTENT -->
     <div class="drawer-content">
-      <div
-        class="w-full bg-base-100 border border-base-300 rounded-box p-3 sm:p-4 flex flex-col sm:flex-row gap-3"
-      >
+      <div class="w-full bg-base-100 border border-base-300 rounded-box p-3 sm:p-4 flex flex-col sm:flex-row gap-3">
         <!-- LEFT -->
         <div class="flex flex-col gap-3 flex-1">
           <div class="flex items-start sm:items-center gap-3">
@@ -56,9 +54,10 @@
 
         <!-- OPEN -->
         <div class="flex sm:flex-col justify-end">
-          <label :for="'task-info-drawer-' + task.id" class="btn btn-neutral btn-circle">
+          <button class="btn btn-neutral btn-circle" @click="openDrawer"
+            :disabled="membersStore.currentUser?.role === 'viewer'">
             <font-awesome-icon icon="fa-solid fa-ellipsis-vertical" />
-          </label>
+          </button>
         </div>
       </div>
     </div>
@@ -68,8 +67,7 @@
       <label :for="'task-info-drawer-' + task.id" class="drawer-overlay"></label>
 
       <div
-        class="bg-base-100 border border-base-300 min-h-full w-full sm:w-96 p-4 sm:p-6 flex flex-col gap-6 overflow-y-auto"
-      >
+        class="bg-base-100 border border-base-300 min-h-full w-full sm:w-96 p-4 sm:p-6 flex flex-col gap-6 overflow-y-auto">
         <!-- HEADER -->
         <div class="flex justify-between items-start gap-3">
           <h2 class="text-lg sm:text-xl font-semibold wrap-break-word">
@@ -82,10 +80,7 @@
         </div>
 
         <!-- ACTIONS -->
-        <div
-          class="bg-base-200 border border-base-300"
-          v-if="membersStore.currentUser && membersStore.currentUser.role !== 'viewer'"
-        >
+        <div class="bg-base-200 border border-base-300">
           <ul class="menu w-full">
             <li>
               <button class="flex gap-3 items-center" @click="openCreateDialog">
@@ -111,11 +106,7 @@
         </div>
 
         <!-- DETAILS -->
-        <div
-          v-for="section in detailsSections"
-          :key="section.title"
-          class="bg-base-200 border border-base-300"
-        >
+        <div v-for="section in detailsSections" :key="section.title" class="bg-base-200 border border-base-300">
           <div class="p-4">
             <h3 class="text-sm font-semibold opacity-70 mb-2">
               {{ section.title }}
@@ -154,14 +145,8 @@
     </div>
 
     <!-- CREATE TASK DIALOG -->
-    <BaseDialog
-      v-model="createDialog"
-      :title="$t('work.projects.modals.create_user_story.title')"
-      :confirmText="$t('common.create')"
-      :cancelText="$t('common.cancel')"
-      @confirm="createTask"
-      @cancel="closeCreate"
-    >
+    <BaseDialog v-model="createDialog" :title="$t('work.projects.modals.create_user_story.title')"
+      :confirmText="$t('common.create')" :cancelText="$t('common.cancel')" @confirm="createTask" @cancel="closeCreate">
       <div class="flex flex-col gap-2 w-full">
         <Transition name="error-slide">
           <div v-if="error">
@@ -171,20 +156,16 @@
         <label class="label" for="title">
           {{ $t('work.projects.modals.create_user_story.name') }}
         </label>
-        <input
-          v-model="form.title"
-          class="input input-bordered w-full"
-          :placeholder="$t('work.projects.modals.create_user_story.name_placeholder')"
-        />
+        <input v-model="form.title" class="input input-bordered w-full"
+          :placeholder="$t('work.projects.modals.create_user_story.name_placeholder')" />
         <label class="label" for="description">
           {{ $t('work.projects.modals.create_user_story.description') }}
         </label>
-        <textarea
-          v-model="form.description"
-          maxlength="1000"
-          class="textarea textarea-bordered w-full"
-          :placeholder="$t('work.projects.modals.create_user_story.description_placeholder')"
-        ></textarea>
+        <div class="w-full flex justify-end text-sm opacity-70 pr-1">
+          {{ descriptionRemainingChars }} / {{ descriptionMaxLength }}
+        </div>
+        <textarea v-model="form.description" maxlength="1000" class="textarea textarea-bordered w-full"
+          :placeholder="$t('work.projects.modals.create_user_story.description_placeholder')"></textarea>
         <div class="flex gap-2 w-full">
           <div class="flex-1">
             <label class="label" for="priority">
@@ -247,27 +228,16 @@
     </BaseDialog>
 
     <!-- Delete -->
-    <BaseDialog
-      v-model="deleteDialog"
-      :title="$t('work.projects.modals.delete_user_story.title')"
-      :confirmText="$t('common.delete')"
-      :cancelText="$t('common.cancel')"
-      @confirm="confirmDelete"
-    >
+    <BaseDialog v-model="deleteDialog" :title="$t('work.projects.modals.delete_user_story.title')"
+      :confirmText="$t('common.delete')" :cancelText="$t('common.cancel')" @confirm="confirmDelete">
       <p>
         {{ $t('work.projects.modals.delete_user_story.content') }}
       </p>
     </BaseDialog>
 
     <!-- Edit -->
-    <BaseDialog
-      v-model="editDialog"
-      :title="$t('work.projects.modals.edit_user_story.title')"
-      :confirmText="$t('common.confirm')"
-      :cancelText="$t('common.cancel')"
-      @confirm="updateTask"
-      @cancel="closeEdit"
-    >
+    <BaseDialog v-model="editDialog" :title="$t('work.projects.modals.edit_user_story.title')"
+      :confirmText="$t('common.confirm')" :cancelText="$t('common.cancel')" @confirm="updateTask" @cancel="closeEdit">
       <div class="flex flex-col gap-2 w-full">
         <Transition name="error-slide">
           <div v-if="error">
@@ -277,20 +247,16 @@
         <label class="label" for="title">
           {{ $t('work.projects.modals.create_user_story.name') }}
         </label>
-        <input
-          v-model="form.title"
-          class="input input-bordered w-full"
-          :placeholder="$t('work.projects.modals.create_user_story.name_placeholder')"
-        />
+        <input v-model="form.title" class="input input-bordered w-full"
+          :placeholder="$t('work.projects.modals.create_user_story.name_placeholder')" />
         <label class="label" for="description">
           {{ $t('work.projects.modals.create_user_story.description') }}
         </label>
-        <textarea
-          v-model="form.description"
-          class="textarea textarea-bordered w-full"
-          maxlength="1000"
-          :placeholder="$t('work.projects.modals.create_user_story.description_placeholder')"
-        ></textarea>
+        <div class="w-full flex justify-end text-sm opacity-70 pr-1">
+          {{ descriptionRemainingChars }} / {{ descriptionMaxLength }}
+        </div>
+        <textarea v-model="form.description" class="textarea textarea-bordered w-full" maxlength="1000"
+          :placeholder="$t('work.projects.modals.create_user_story.description_placeholder')"></textarea>
         <div class="flex gap-2">
           <div class="flex-1">
             <label class="label" for="priority">
@@ -386,9 +352,13 @@ export default {
         dueDate: null,
         createdAt: null,
       },
+      descriptionMaxLength: 1000,
     }
   },
   computed: {
+    descriptionRemainingChars() {
+      return this.descriptionMaxLength - this.form.description.length
+    },
     error() {
       return this.tasksStore.error
     },
@@ -440,6 +410,10 @@ export default {
     },
   },
   methods: {
+    openDrawer() {
+      const drawer = document.getElementById('task-info-drawer-' + this.task.id)
+      if (drawer) drawer.checked = true
+    },
     closeCreate() {
       this.createDialog = false
       this.tasksStore.clearError()

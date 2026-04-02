@@ -78,6 +78,9 @@
         <label for="taskDescription" class="label">
           {{ $t('work.kanban.modals.update_task.description_name') }}
         </label>
+        <div class="w-full flex justify-end text-sm opacity-70 pr-1">
+          {{ descriptionRemainingChars }} / {{ descriptionMaxLength }}
+        </div>
         <textarea
           class="input w-full"
           maxlength="1000"
@@ -165,6 +168,7 @@ export default {
       targetStageId: null,
       kanbanMembersStore: useKanbanMembersStore(),
       stages: boardStore.selectedBoard ? [] : [],
+      descriptionMaxLength: 1000,
     }
   },
   mounted() {
@@ -258,6 +262,9 @@ export default {
   computed: {
     error() {
       return this.tasksStore.error
+    },
+    descriptionRemainingChars() {
+      return this.descriptionMaxLength - this.newTaskDescription.length
     },
   },
 }

@@ -320,6 +320,9 @@
         v-model="updateEvent.title"
       />
       <label class="label w-full">{{ $t('calendar.modals.update_event.description') }}</label>
+      <div class="w-full flex justify-end text-sm opacity-70 pr-1">
+        {{ descriptionRemainingCharsUpdate }} / {{ descriptionMaxLength }}
+      </div>
       <textarea
         class="textarea w-full"
         maxlength="1000"
@@ -627,6 +630,11 @@ export default {
   computed: {
     descriptionRemainingChars() {
       return this.descriptionMaxLength - (this.newEvent.description?.length || 0)
+    },
+    descriptionRemainingCharsUpdate() {
+      return (
+        this.descriptionMaxLength - (this.updateEvent.description?.length || 0)
+      )
     },
     eventError() {
       return this.eventsStore.error

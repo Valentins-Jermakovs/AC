@@ -1,16 +1,36 @@
+# =========================
+# IMPORTS
+# =========================
 from pydantic import BaseModel
 from typing import Optional
 
+# =========================
+# NEWS RESPONSE SCHEMA
+# =========================
 class NewsResponseSchema(BaseModel):
+    """
+    Schema for a single news item response.
+    
+    Fields:
+    - id: str - unique identifier of the news
+    - title: str - news title
+    - content: str - news content
+    - coverImage: Optional[str] - cover image URL (optional)
+    - status: str - news status ('draft' or 'published')
+    - tags: list[str] - list of tags
+    - createdAt: str - creation date
+    - publishedAt: Optional[str] - published date (optional)
+    """
     id: str
     title: str
     content: str
-    coverImage: Optional[str]
+    coverImage: Optional[str] = None
     status: str
     tags: list[str]
     createdAt: str
-    publishedAt: Optional[str]
+    publishedAt: Optional[str] = None
 
+    # JSON schema example for documentation
     model_config = {
         "json_schema_extra": {
             "examples": [
@@ -28,7 +48,20 @@ class NewsResponseSchema(BaseModel):
         }
     }
 
+
+# =========================
+# PAGINATION META SCHEMA
+# =========================
 class Meta(BaseModel):
+    """
+    Pagination metadata for paginated responses.
+    
+    Fields:
+    - page: int - current page number
+    - limit: int - items per page
+    - total_pages: int - total number of pages
+    - total_items: int - total number of items
+    """
     page: int
     limit: int
     total_pages: int
@@ -47,7 +80,18 @@ class Meta(BaseModel):
         }
     }
 
+
+# =========================
+# NEWS RESPONSE PAGINATED SCHEMA
+# =========================
 class NewsResponseSchemaPaginated(BaseModel):
+    """
+    Schema for paginated list of news items.
+    
+    Fields:
+    - data: list[NewsResponseSchema] - list of news items
+    - meta: Meta - pagination metadata
+    """
     data: list[NewsResponseSchema]
     meta: Meta
 

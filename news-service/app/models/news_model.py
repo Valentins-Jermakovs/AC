@@ -1,36 +1,64 @@
-# Imports
+# =========================
+# IMPORTS
+# =========================
 from enum import Enum
 from beanie import Document
 from datetime import datetime
 from pydantic import Field
 from typing import Optional
+
 # Utilities
 from app.utils.current_date import get_current_date
 
-'''
-News models
+# =========================
+# MODULE DESCRIPTION
+# =========================
+"""
+News Models
 
-- NewsModel: describe a news
+- NewsModel: Represents a news item in the database
 
-Models are used to define the structure of the data stored in the database, 
-and can be used to validate the data before it is saved.
-'''
+Purpose:
+- Defines the structure of news data
+- Validates data before saving to MongoDB
+- Used by Beanie ODM to map Python objects to database documents
+"""
 
-# ===========================
-# Satus Enum
-# ===========================
+# =========================
+# STATUS ENUM
+# =========================
 class StatusEnum(str, Enum):
+    """
+    Status of a news item:
+    - draft: not published yet
+    - published: visible to users
+    """
     draft = "draft"
     published = "published"
 
 
-# ===========================
-# News Model
-# ===========================
+# =========================
+# NEWS MODEL
+# =========================
 class NewsModel(Document):
+    """
+    Main News document model for MongoDB.
+    
+    Fields:
+    - title: Title of the news
+    - content: HTML content of the news
+    - coverImage: Optional URL of the cover image
+    - status: Draft or published
+    - tags: List of tags (lowercased)
+    - createdAt: Date when news was created
+    - publishedAt: Date when news was published (if published)
+    - authorId: ID of the author
+    - authorEmail: Email of the author
+    """
+
     title: str
     content: str
-    coverImage: Optional[str]
+    coverImage: Optional[str] = None
     status: StatusEnum = StatusEnum.draft
     tags: Optional[list[str]] = Field(default_factory=list)
     createdAt: datetime = Field(default_factory=get_current_date)
@@ -38,12 +66,18 @@ class NewsModel(Document):
     authorId: str
     authorEmail: str
 
+    # =========================
+    # BEANIE SETTINGS
+    # =========================
     class Settings:
+        # MongoDB collection name
         name = "news"
+
+        # Indexes for faster queries
         indexes = [
-            # Index for status and title
+            # Compound index: status + title
             [
-                ("status", 1),      # Compound index for status
-                ("title", 1)        # and title
+                ("status", 1),  # 1 = ascending
+                ("title", 1)
             ]
         ]

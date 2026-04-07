@@ -5,7 +5,7 @@
     <!-- CONTENT -->
     <div class="drawer-content">
       <div
-        class="w-full bg-base-100 border border-base-300 rounded-box p-3 sm:p-4 flex flex-col sm:flex-row gap-3"
+        class="w-full bg-base-100 border border-base-300 p-3 sm:p-4 flex flex-col sm:flex-row gap-3"
       >
         <!-- LEFT -->
         <div class="flex flex-col gap-3 flex-1">
@@ -49,7 +49,7 @@
           </div>
 
           <!-- DESCRIPTION -->
-          <div class="p-3 sm:p-4 bg-base-200 border border-base-300 rounded-box">
+          <div class="p-3 sm:p-4 bg-base-200 border border-base-300">
             <pre class="text-sm line-clamp-3 wrap-break-word">{{ task.description }}</pre>
           </div>
         </div>

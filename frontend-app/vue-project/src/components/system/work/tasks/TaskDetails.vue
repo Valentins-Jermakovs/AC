@@ -363,8 +363,6 @@ export default {
 
       // clean form data
       this.createForm = { title: '', description: '', dueDate: '' }
-
-      
     },
 
     openEdit() {

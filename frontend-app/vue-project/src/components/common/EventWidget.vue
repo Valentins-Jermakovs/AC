@@ -225,9 +225,33 @@ export default {
     closestEvent() {
       if (!this.eventsStore.events.length) return null
 
-      return [...this.eventsStore.events].sort(
-        (a, b) => new Date(a.startDate) - new Date(b.startDate),
-      )[0]
+      const now = new Date()
+
+      const upcomingEvents = this.eventsStore.events.filter((event) => {
+        const start = new Date(
+          event.startTime ? `${event.startDate}T${event.startTime}` : `${event.startDate}T00:00`,
+        )
+
+        const end = new Date(
+          event.endTime ? `${event.endDate}T${event.endTime}` : `${event.endDate}T23:59`,
+        )
+
+        return end >= now
+      })
+
+      if (!upcomingEvents.length) return null
+
+      return upcomingEvents.sort((a, b) => {
+        const aDate = new Date(
+          a.startTime ? `${a.startDate}T${a.startTime}` : `${a.startDate}T00:00`,
+        )
+
+        const bDate = new Date(
+          b.startTime ? `${b.startDate}T${b.startTime}` : `${b.startDate}T00:00`,
+        )
+
+        return aDate - bDate
+      })[0]
     },
   },
 

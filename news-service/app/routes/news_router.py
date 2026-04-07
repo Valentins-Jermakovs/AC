@@ -4,6 +4,7 @@ from app.schemas.data.create_news_schema import CreateNews
 from app.schemas.data.update_news_schema import UpdateNewsSchema
 from app.services.create_news_service import create_news
 from app.services.update_news_service import update_news
+from app.services.delete_news_service import delete_news
 from app.schemas.response.get_news_schema import NewsResponseSchema
 # Utils
 from app.utils.check_access_token import check_access_token
@@ -53,4 +54,18 @@ async def update_news_route(
         tags=data.tags,
         title=data.title,
         newsId=data.id
+    )
+
+
+@router.delete("/delete")
+async def delete_news_route(
+    newsId: str, 
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+):
+    
+    access_token = credentials.credentials
+    user_id = await check_access_token(access_token)
+
+    return await delete_news(
+        newsId=newsId
     )

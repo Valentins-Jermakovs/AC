@@ -2,6 +2,7 @@ from pydantic import BaseModel, Field
 from typing import Optional
 
 class CreateNews(BaseModel):
+    authorEmail: str
     title: str
     content: str
     coverImage: Optional[str]=None
@@ -12,6 +13,7 @@ class CreateNews(BaseModel):
         "json_schema_extra": {
             "examples": [
                 {
+                    "authorEmail": "2V2E3@example.com",
                     "title": "News title",
                     "content": "News content",
                     "coverImage": "https://example.com/image.jpg",

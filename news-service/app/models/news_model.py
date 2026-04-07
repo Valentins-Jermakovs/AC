@@ -34,8 +34,9 @@ class NewsModel(Document):
     status: StatusEnum = StatusEnum.draft
     tags: Optional[list[str]] = Field(default_factory=list)
     createdAt: datetime = Field(default_factory=get_current_date)
-    publishedAt: datetime
+    publishedAt: Optional[datetime] = None
     authorId: str
+    authorEmail: str
 
     class Settings:
         name = "news"

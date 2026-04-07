@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from app.dependencies.database import init_db
 
+from app.routes import news_router
+
 # =========================
 # Application lifespan
 # =========================
@@ -19,7 +21,8 @@ async def lifespan(app: FastAPI):
 # Create FastAPI app with custom lifespan logic
 app = FastAPI(lifespan=lifespan)
 
-
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+# =========================
+# API endpoints
+# =========================
+# Each router adds its own endpoints to the app
+app.include_router(news_router.router)

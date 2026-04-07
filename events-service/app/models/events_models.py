@@ -1,7 +1,7 @@
 # Imports
 from enum import Enum
 from beanie import Document
-from datetime import datetime, time
+from datetime import datetime
 from pydantic import Field
 from typing import Optional
 # Utilities

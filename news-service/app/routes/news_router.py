@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException, status, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from app.schemas.data.create_news_schema import CreateNews
 from app.services.create_news_service import create_news
+from app.schemas.response.get_news_schema import NewsResponseSchema
 # Utils
 from app.utils.check_access_token import check_access_token
 
@@ -14,7 +15,7 @@ router = APIRouter(
 security = HTTPBearer()
 
 
-@router.post("/create")
+@router.post("/create", response_model=NewsResponseSchema)
 async def create_news_route(
     data: CreateNews, 
     credentials: HTTPAuthorizationCredentials = Depends(security)

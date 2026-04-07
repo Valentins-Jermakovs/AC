@@ -4,6 +4,7 @@ from app.utils.current_date import get_current_date
 from typing import Optional
 from pydantic import Field
 from fastapi import HTTPException
+from app.schemas.response.get_news_schema import NewsResponseSchema
 
 async def create_news(
     title: str,
@@ -13,7 +14,7 @@ async def create_news(
     status: str = "draft",
     coverImage: Optional[str] = None,
     tags: Optional[list[str]] = Field(default_factory=list),
-):
+) -> NewsResponseSchema:
     tags = [tag.lower() for tag in tags] or []
 
     # clean, safe content
@@ -77,5 +78,14 @@ async def create_news(
 
     await news_doc.save()
 
-    return news_doc
+    return NewsResponseSchema(
+        id=str(news_doc.id),
+        title=news_doc.title,
+        content=news_doc.content,
+        coverImage=news_doc.coverImage,
+        status=news_doc.status,
+        tags=news_doc.tags,
+        createdAt=str(news_doc.createdAt),
+        publishedAt=str(news_doc.publishedAt) if news_doc.publishedAt else None
+    )
 

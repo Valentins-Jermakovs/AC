@@ -47,7 +47,7 @@ class Meta(BaseModel):
         }
     }
 
-class GetNewsResponseSchema(BaseModel):
+class NewsResponseSchemaPaginated(BaseModel):
     data: list[NewsResponseSchema]
     meta: Meta
 

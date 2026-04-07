@@ -2,7 +2,8 @@
 from enum import Enum
 from beanie import Document
 from datetime import datetime
-from pydantic import Field, Optional
+from pydantic import Field
+from typing import Optional
 # Utilities
 from app.utils.current_date import get_current_date
 

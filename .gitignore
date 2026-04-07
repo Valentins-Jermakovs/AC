@@ -2,6 +2,7 @@
 /auth-service/auth-venv
 /projects-service/projects-venv
 /events-service/events-venv
+/news-service/news-venv
 
 # Python cache
 __pycache__/

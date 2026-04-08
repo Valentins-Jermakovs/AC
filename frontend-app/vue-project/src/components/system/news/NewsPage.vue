@@ -48,7 +48,7 @@
 import NewsSearch from './NewsSearch.vue'
 import NewsGrid from './NewsGrid.vue'
 import { useNewsStore } from '@/stores/news'
-import LoadingScreen from '@/components/common/LoadingScreen.vue';
+import LoadingScreen from '@/components/common/LoadingScreen.vue'
 
 export default {
   name: 'NewsManagerPage',

@@ -24,46 +24,46 @@ export default {
     NewsManagerPage,
   },
   data() {
-  return {
-    image: headerImage,
-    activePage: 'news',
-  }
-},
-  async mounted() {
-  await this.userStore.fetchMe()
-  this.newsStore.getAllNews()
-},
-  computed: {
-  newsStore() {
-    return useNewsStore()
-  },
-
-  userStore() {
-    return useUserStore()
-  },
-
-  title() {
-    return this.$t('news.title')
-  },
-
-  navButtons() {
-    let navButtons = [
-      {
-        key: 'news',
-        title: this.$t('news.titles.news'),
-      }
-    ]
-
-    if (this.userStore.isManager) {
-      navButtons.push({
-        key: 'newsManager',
-        title: this.$t('news.titles.news_manager'),
-      })
+    return {
+      image: headerImage,
+      activePage: 'news',
     }
-
-    return navButtons
   },
-},
+  async mounted() {
+    await this.userStore.fetchMe()
+    this.newsStore.getAllNews()
+  },
+  computed: {
+    newsStore() {
+      return useNewsStore()
+    },
+
+    userStore() {
+      return useUserStore()
+    },
+
+    title() {
+      return this.$t('news.title')
+    },
+
+    navButtons() {
+      let navButtons = [
+        {
+          key: 'news',
+          title: this.$t('news.titles.news'),
+        },
+      ]
+
+      if (this.userStore.isManager) {
+        navButtons.push({
+          key: 'newsManager',
+          title: this.$t('news.titles.news_manager'),
+        })
+      }
+
+      return navButtons
+    },
+  },
 }
 </script>
 

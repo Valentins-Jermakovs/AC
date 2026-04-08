@@ -1,13 +1,15 @@
 <template>
   <div class="card bg-base-100 rounded-none border border-base-300">
     <figure class="h-40 overflow-hidden">
-      <img v-if="news.coverImage && !imageError" :src="news.coverImage" @error="imageError = true"
-        class="w-full h-full object-cover" />
+      <img
+        v-if="news.coverImage && !imageError"
+        :src="news.coverImage"
+        @error="imageError = true"
+        class="w-full h-full object-cover"
+      />
 
       <div v-else class="flex flex-col items-center justify-center text-base-content/40">
-
         <font-awesome-icon icon="fa-solid fa-newspaper" class="text-4xl mb-2" bounce />
-
       </div>
     </figure>
 

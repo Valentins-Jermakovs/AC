@@ -1,9 +1,13 @@
 <template>
   <div class="w-full border border-base-300 bg-base-200 p-2 sm:p-4">
-
-    <div v-if="newsStore.news.length === 0"
-      class="w-full flex flex-col items-center justify-center gap-3 p-6 border-2 border-dashed border-base-300 bg-base-100 rounded-lg animate-pulse">
-      <font-awesome-icon icon="fa-solid fa-magnifying-glass" class="text-4xl text-error animate-bounce" />
+    <div
+      v-if="newsStore.news.length === 0"
+      class="w-full flex flex-col items-center justify-center gap-3 p-6 border-2 border-dashed border-base-300 bg-base-100 rounded-lg animate-pulse"
+    >
+      <font-awesome-icon
+        icon="fa-solid fa-magnifying-glass"
+        class="text-4xl text-error animate-bounce"
+      />
       <p class="text-center text-base-content/70 font-medium">
         {{ $t('errors.news_not_found') }}
       </p>
@@ -44,7 +48,6 @@
                 </button>
               </div>
             </td>
-
           </tr>
         </tbody>
       </table>
@@ -52,10 +55,11 @@
 
     <!-- Mobile cards -->
     <div class="flex flex-col gap-3 lg:hidden">
-
-      <div v-for="(row, index) in newsStore.news" :key="index"
-        class="bg-base-100 border border-base-300 p-3 rounded-lg flex flex-col gap-2">
-
+      <div
+        v-for="(row, index) in newsStore.news"
+        :key="index"
+        class="bg-base-100 border border-base-300 p-3 rounded-lg flex flex-col gap-2"
+      >
         <div class="text-xs opacity-70">
           {{ row.createdAt.split(' ')[0] }}
         </div>
@@ -69,7 +73,6 @@
         </div>
 
         <div class="flex gap-2 pt-2">
-
           <button class="btn btn-sm btn-info flex-1" @click="selectNews(row)">
             {{ $t('common.edit') }}
           </button>
@@ -77,21 +80,22 @@
           <button class="btn btn-sm btn-error flex-1" @click="openDelete(row.id)">
             {{ $t('common.delete') }}
           </button>
-
         </div>
-
       </div>
-
     </div>
 
     <!-- Modal -->
-    <BaseDialog :title="$t('news.editor.delete_modal.title')" :cancel-text="$t('common.cancel')"
-      :confirm-text="$t('common.delete')" v-model="openDeleteModal" @confirm="deleteNews">
+    <BaseDialog
+      :title="$t('news.editor.delete_modal.title')"
+      :cancel-text="$t('common.cancel')"
+      :confirm-text="$t('common.delete')"
+      v-model="openDeleteModal"
+      @confirm="deleteNews"
+    >
       <p>
         {{ $t('news.editor.delete_modal.content') }}
       </p>
     </BaseDialog>
-
   </div>
 </template>
 

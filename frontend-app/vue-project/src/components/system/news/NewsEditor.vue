@@ -1,6 +1,5 @@
 <template>
   <div class="p-3 sm:p-6 border border-base-300 bg-base-200 flex flex-col gap-4">
-
     <!-- Title -->
     <label class="label">
       <span class="label-text">
@@ -46,26 +45,19 @@
 
     <!-- Tags list -->
     <div class="flex gap-2 flex-wrap py-2">
-
       <div
-        v-for="(tag,idx) in form.tags"
+        v-for="(tag, idx) in form.tags"
         :key="idx"
         class="bg-base-100 border border-base-300 flex items-center rounded px-2 py-1 gap-2"
       >
-
         <p class="truncate max-w-30 sm:max-w-none">
           {{ tag }}
         </p>
 
-        <button
-          @click="removeTag(idx)"
-          class="btn btn-xs btn-neutral"
-        >
-          <font-awesome-icon icon="fa-solid fa-trash"/>
+        <button @click="removeTag(idx)" class="btn btn-xs btn-neutral">
+          <font-awesome-icon icon="fa-solid fa-trash" />
         </button>
-
       </div>
-
     </div>
 
     <!-- Status -->
@@ -75,10 +67,7 @@
       </span>
     </label>
 
-    <select
-      v-model="form.status"
-      class="select select-bordered w-full sm:w-64"
-    >
+    <select v-model="form.status" class="select select-bordered w-full sm:w-64">
       <option value="draft">
         {{ $t('news.editor.status.draft') }}
       </option>
@@ -86,78 +75,54 @@
       <option value="published">
         {{ $t('news.editor.status.published') }}
       </option>
-
     </select>
 
-    <div class=" divider divider-neutral/50">
-
-    </div>
+    <div class="divider divider-neutral/50"></div>
 
     <!-- Toolbar -->
     <div class="flex flex-wrap gap-1">
-
       <button type="button" class="btn btn-sm btn-neutral" @click="toggleBold">
-        <font-awesome-icon icon="fa-solid fa-bold"/>
+        <font-awesome-icon icon="fa-solid fa-bold" />
       </button>
 
       <button type="button" class="btn btn-sm btn-neutral" @click="toggleItalic">
-        <font-awesome-icon icon="fa-solid fa-italic"/>
+        <font-awesome-icon icon="fa-solid fa-italic" />
       </button>
 
-      <button type="button" class="btn btn-sm btn-neutral" @click="toggleHeading1">
-        H1
-      </button>
+      <button type="button" class="btn btn-sm btn-neutral" @click="toggleHeading1">H1</button>
 
-      <button type="button" class="btn btn-sm btn-neutral" @click="toggleHeading2">
-        H2
-      </button>
+      <button type="button" class="btn btn-sm btn-neutral" @click="toggleHeading2">H2</button>
 
       <button type="button" class="btn btn-sm btn-neutral" @click="toggleBulletList">
-        <font-awesome-icon icon="fa-solid fa-list"/>
+        <font-awesome-icon icon="fa-solid fa-list" />
       </button>
 
       <button type="button" class="btn btn-sm btn-neutral" @click="toggleOrderedList">
-        <font-awesome-icon icon="fa-solid fa-list-ol"/>
+        <font-awesome-icon icon="fa-solid fa-list-ol" />
       </button>
 
       <button type="button" class="btn btn-sm btn-neutral" @click="addLink">
-        <font-awesome-icon icon="fa-solid fa-link"/>
+        <font-awesome-icon icon="fa-solid fa-link" />
       </button>
-
     </div>
 
     <!-- Content -->
     <label class="label">
-
       <span class="label-text flex justify-between w-full">
-
         {{ $t('news.editor.content') }}
 
-        <small>
-          {{ remainingCharacters }} / {{ maxCharacters }}
-        </small>
-
+        <small> {{ remainingCharacters }} / {{ maxCharacters }} </small>
       </span>
-
     </label>
 
     <!-- Editor -->
     <EditorContent
       :editor="editor"
-      class="prose prose-sm sm:prose-base
-      max-w-none
-      prose-a:text-blue-600
-      hover:prose-a:underline
-      border border-base-300
-      bg-base-100
-      p-2 sm:p-4
-      rounded
-      overflow-auto"
+      class="prose prose-sm sm:prose-base max-w-none prose-a:text-blue-600 hover:prose-a:underline border border-base-300 bg-base-100 p-2 sm:p-4 rounded overflow-auto"
     />
 
     <!-- Action buttons -->
     <div class="flex flex-col sm:flex-row gap-2">
-
       <button
         class="btn btn-primary w-full sm:w-auto"
         @click="saveNews"
@@ -166,23 +131,15 @@
         {{ form.id ? $t('common.edit') : $t('common.create') }}
       </button>
 
-      <button
-        class="btn btn-secondary w-full sm:w-auto"
-        @click="cancelEdit"
-      >
+      <button class="btn btn-secondary w-full sm:w-auto" @click="cancelEdit">
         {{ $t('common.cancel') }}
       </button>
-
     </div>
 
     <!-- Error -->
-    <div
-      v-if="newsStore.error"
-      class="text-error text-sm"
-    >
+    <div v-if="newsStore.error" class="text-error text-sm">
       {{ newsStore.error }}
     </div>
-
   </div>
 </template>
 

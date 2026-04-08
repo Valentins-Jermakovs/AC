@@ -193,4 +193,15 @@ export const API_ENDPOINTS = {
   //DELETE
   DELETE_PARTICIPANT: (eventId, userId) => `/participants/delete-participant/${eventId}/${userId}`,
   LEAVE_EVENT: (eventId) => `/participants/leave-event/${eventId}`,
+
+  // ===== NEWS MANAGEMENT =====
+
+  // GET
+  GET_ALL_NEWS: '/news/get',
+  // POST
+  CREATE_NEWS: '/news/create',
+  // PUT
+  UPDATE_NEWS: '/news/update',
+  // DELETE
+  DELETE_NEWS: (id) => `/news/delete/${id}`,
 }

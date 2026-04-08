@@ -96,7 +96,7 @@ async def get_news_route(
 # UPDATE NEWS ROUTE
 # =========================
 @router.put(
-    "/update/{id}", 
+    "/update", 
     response_model=NewsResponseSchema
 )
 async def update_news_route(

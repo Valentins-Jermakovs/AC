@@ -37,7 +37,7 @@
 
       <!-- Back Button -->
       <button class="btn btn-secondary mt-4" @click="newsStore.selectedNews = null">
-        Back to all news
+        {{ $t('common.back') }}
       </button>
     </div>
   </div>

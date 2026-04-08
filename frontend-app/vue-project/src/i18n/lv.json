@@ -39,6 +39,11 @@
     }
   },
   "common": {
+    "actions": "Darbības",
+    "content": "Saturs",
+    "created_at": "Izveidots",
+    "title": "Virsraksts",
+    "read_more": "Lasīt",
     "login": "Pieslēgties",
     "register": "Reģistrēties",
     "email": "E-pasts",
@@ -652,6 +657,32 @@
       "delete_event": {
         "title": "Dzēst notikumu",
         "content": "Vai tiešām vēlaties dzēst notikumu?"
+      }
+    }
+  },
+  "news": {
+    "title": "Jaunumi",
+    "titles": {
+      "news": "Ziņas",
+      "news_manager": "Ziņu redaktors"
+    },
+    "editor": {
+      "title": "Raksts",
+      "title_placeholder": "Ievadiet ziņas nosaukumu...",
+      "content": "Ziņas teksts",
+      "content_placeholder": "Ievadiet ziņas tekstu...",
+      "image": "Attēls",
+      "image_placeholder": "Ievadiet attēla URL...",
+      "status": {
+        "title": "Statuss",
+        "draft": "Melnraksts",
+        "published": "Publicēts"
+      },
+      "tags": "Ziņas tagi",
+      "tags_placeholder": "Ievadiet ziņas tagus, atdaliet ar komatu, nospiediet Enter",
+      "delete_modal": {
+        "title": "Dzēst ziņu",
+        "content": "Vai tiešām vēlaties dzēst ziņu?"
       }
     }
   }

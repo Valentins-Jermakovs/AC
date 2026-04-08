@@ -39,6 +39,11 @@
     }
   },
   "common": {
+    "actions": "Actions",
+    "content": "Content",
+    "title": "Title",
+    "created_at": "Created At",
+    "read_more": "Read More",
     "login": "Login",
     "register": "Register",
     "email": "Email",
@@ -216,12 +221,21 @@
         },
         "card_two": {
           "title": "Available modes:",
-          "content": ["select/search users", "modify user roles", "change activity status"]
+          "content": [
+            "select/search users",
+            "modify user roles",
+            "change activity status"
+          ]
         }
       },
       "admin_top": {
         "search": "Search data...",
-        "filters": ["All users", "By ID", "By username/email", "By role"]
+        "filters": [
+          "All users",
+          "By ID",
+          "By username/email",
+          "By role"
+        ]
       },
       "table_top": {
         "username": "Username",
@@ -648,6 +662,32 @@
       "delete_event": {
         "title": "Delete Event",
         "content": "Are you sure you want to delete this event?"
+      }
+    }
+  },
+  "news": {
+    "title": "News",
+    "titles": {
+      "news": "News",
+      "news_manager": "News Editor"
+    },
+    "editor": {
+      "title": "Article",
+      "title_placeholder": "Enter news title...",
+      "content": "News content",
+      "content_placeholder": "Enter news content...",
+      "image": "Image",
+      "image_placeholder": "Enter image URL...",
+      "status": {
+        "title": "Status",
+        "draft": "Draft",
+        "published": "Published"
+      },
+      "tags": "News tags",
+      "tags_placeholder": "Enter news tags, separate with commas, press Enter",
+      "delete_modal": {
+        "title": "Delete news",
+        "content": "Are you sure you want to delete this news?"
       }
     }
   }

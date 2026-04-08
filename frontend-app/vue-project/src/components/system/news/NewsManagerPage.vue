@@ -6,7 +6,7 @@
       <NewsTable :news="newsStore.news" />
       <button class="btn btn-primary mt-2" @click="createNews">
         <font-awesome-icon icon="fa-solid fa-plus" />
-        Add news
+        {{ $t('common.create') }}
       </button>
     </div>
 

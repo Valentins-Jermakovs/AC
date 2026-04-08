@@ -1,5 +1,5 @@
 <template>
-  <div class="card bg-base-200 rounded-none border border-base-300">
+  <div class="card bg-base-100 rounded-none border border-base-300">
     <figure class="h-40 overflow-hidden">
       <img :src="news.coverImage" class="w-full h-full object-cover" />
     </figure>

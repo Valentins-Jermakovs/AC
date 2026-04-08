@@ -3,10 +3,10 @@
     <table class="table w-full">
       <thead>
         <tr>
-          <th>Creation Date</th>
-          <th>Title</th>
-          <th>Content</th>
-          <th>Operations</th>
+          <th>{{ $t('common.created_at') }}</th>
+          <th>{{ $t('common.title') }}</th>
+          <th>{{ $t('common.content') }}</th>
+          <th>{{ $t('common.actions') }}</th>
         </tr>
       </thead>
 
@@ -19,8 +19,12 @@
           </td>
 
           <td class="flex gap-2">
-            <button class="btn btn-sm btn-info" @click="selectNews(row)">Edit</button>
-            <button class="btn btn-sm btn-error" @click="openDelete(row.id)">Delete</button>
+            <button class="btn btn-sm btn-info" @click="selectNews(row)">
+              {{ $t('common.edit') }}
+            </button>
+            <button class="btn btn-sm btn-error" @click="openDelete(row.id)">
+              {{ $t('common.delete') }}
+            </button>
           </td>
         </tr>
       </tbody>
@@ -28,13 +32,13 @@
 
     <!-- Remove News Modal -->
     <BaseDialog
-      title="Delete news"
-      cancel-text="cancel"
-      confirm-text="delete"
+      :title="$t('news.editor.delete_modal.title')"
+      :cancel-text="$t('common.cancel')"
+      :confirm-text="$t('common.delete')"
       v-model="openDeleteModal"
       @confirm="deleteNews"
     >
-      <p>Are you sure you want to delete this news?</p>
+      <p>{{ $t('news.editor.delete_modal.content') }}</p>
     </BaseDialog>
   </div>
 </template>

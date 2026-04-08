@@ -252,7 +252,8 @@
   },
   "errors": {
     "404": "Šī vieta eksistē tikai tavos sapņos… vai arī mēs to vienkārši pazaudējām (404)",
-    "tasks_not_found": "Neviens uzdevums nav izvēlēts"
+    "tasks_not_found": "Neviens uzdevums nav izvēlēts",
+    "news_not_found": "Ziņas nav atrastas"
   },
   "work": {
     "title": "Projekti, uzdevumi...",

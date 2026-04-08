@@ -257,7 +257,8 @@
   },
   "errors": {
     "404": "This place exists only in your imagination... or maybe we will forget about it. (404)",
-    "tasks_not_found": "No task selected"
+    "tasks_not_found": "No task selected",
+    "news_not_found": "News not found"
   },
   "work": {
     "title": "Projects, tasks...",

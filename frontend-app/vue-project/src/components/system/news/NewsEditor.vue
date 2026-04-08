@@ -53,7 +53,7 @@
         class="bg-base-100 border border-base-300 flex items-center rounded px-2 py-1 gap-2"
       >
 
-        <p class="truncate max-w-[120px] sm:max-w-none">
+        <p class="truncate max-w-30 sm:max-w-none">
           {{ tag }}
         </p>
 
@@ -148,8 +148,8 @@
       bg-base-100
       p-2 sm:p-4
       rounded
-      min-h-[200px]
-      sm:min-h-[300px]
+      min-h-50
+      sm:min-h-75
       overflow-auto"
     />
 

@@ -41,16 +41,18 @@
       </button>
     </div>
   </div>
+  <LoadingScreen v-if="newsStore.loading"></LoadingScreen>
 </template>
 
 <script>
 import NewsSearch from './NewsSearch.vue'
 import NewsGrid from './NewsGrid.vue'
 import { useNewsStore } from '@/stores/news'
+import LoadingScreen from '@/components/common/LoadingScreen.vue';
 
 export default {
   name: 'NewsManagerPage',
-  components: { NewsSearch, NewsGrid },
+  components: { NewsSearch, NewsGrid, LoadingScreen },
   data() {
     return {
       newsStore: useNewsStore(),

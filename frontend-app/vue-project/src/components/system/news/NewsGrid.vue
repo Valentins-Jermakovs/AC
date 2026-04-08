@@ -44,17 +44,26 @@
     </div>
 
   </div>
-
+  <LoadingScreen v-if="newsStore.loading"></LoadingScreen>
 </template>
 
 <script>
+import LoadingScreen from '@/components/common/LoadingScreen.vue';
 import NewsCard from './NewsCard.vue'
+
+import { useNewsStore } from '@/stores/news'
 
 export default {
   name: 'NewsList',
 
   components: {
     NewsCard,
+  },
+
+  data() {
+    return {
+      newsStore: useNewsStore(),
+    }
   },
 
   props: {

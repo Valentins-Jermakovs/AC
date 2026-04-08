@@ -15,9 +15,11 @@
       <NewsEditor />
     </div>
   </div>
+  <LoadingScreen v-if="newsStore.loading"></LoadingScreen>
 </template>
 
 <script>
+import LoadingScreen from '@/components/common/LoadingScreen.vue';
 import NewsEditor from './NewsEditor.vue'
 import NewsSearch from './NewsSearch.vue'
 import NewsTable from './NewsTable.vue'
@@ -29,6 +31,7 @@ export default {
     NewsEditor,
     NewsSearch,
     NewsTable,
+    LoadingScreen
   },
   setup() {
     const newsStore = useNewsStore()

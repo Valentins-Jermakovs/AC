@@ -1,5 +1,5 @@
 <template>
-  <div class="p-3 sm:p-6 border border-base-300 bg-base-200 flex flex-col gap-4 rounded-lg">
+  <div class="p-3 sm:p-6 border border-base-300 bg-base-200 flex flex-col gap-4">
 
     <!-- Title -->
     <label class="label">
@@ -89,8 +89,12 @@
 
     </select>
 
+    <div class=" divider divider-neutral/50">
+
+    </div>
+
     <!-- Toolbar -->
-    <div class="flex flex-wrap gap-1 border-b border-base-300 pb-2">
+    <div class="flex flex-wrap gap-1">
 
       <button type="button" class="btn btn-sm btn-neutral" @click="toggleBold">
         <font-awesome-icon icon="fa-solid fa-bold"/>
@@ -148,8 +152,6 @@
       bg-base-100
       p-2 sm:p-4
       rounded
-      min-h-50
-      sm:min-h-75
       overflow-auto"
     />
 

@@ -64,6 +64,9 @@ export default {
       return this.newsStore.news.filter((news) => news.status === 'published')
     },
   },
+  mounted() {
+    this.newsStore.selectedNews = null
+  },
 }
 </script>
 

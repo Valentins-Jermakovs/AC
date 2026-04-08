@@ -10,6 +10,7 @@ import PageHeader from '@/components/ui/PageHeader.vue';
 import headerImage from '@/assets/images/anna-keibalo-oc5Brib1dNY-unsplash.jpg'
 
 import { useNewsStore } from '@/stores/news';
+import { useUserStore } from '@/stores/user';
 import NavigationPanel from '@/components/ui/NavigationPanel.vue';
 import NewsPage from '@/components/system/news/NewsPage.vue';
 import NewsManagerPage from '@/components/system/news/NewsManagerPage.vue';
@@ -27,12 +28,14 @@ export default {
       image: headerImage,
 
       newsStore: useNewsStore(),
+      userStore: useUserStore(),
 
       activePage: 'news',
     };
   },
   mounted() {
     this.newsStore.getAllNews();
+    this.userStore.fetchMe();
   },
   computed: {
     title() {

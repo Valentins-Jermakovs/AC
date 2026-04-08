@@ -20,9 +20,6 @@
 
           <td class="flex gap-2">
             <button class="btn btn-sm btn-info" @click="selectNews(row)">
-              View
-            </button>
-            <button class="btn btn-sm btn-primary">
               Edit
             </button>
             <button class="btn btn-sm btn-error" @click="openDelete(row.id)">

@@ -1,46 +1,52 @@
 <template>
-    <div class="w-full p-5 flex flex-col items-center gap-2" v-if="!newsStore.selectedNews">
-        <NewsSearch></NewsSearch>
-        <NewsTable></NewsTable>
-        <button class="btn btn-primary">
-            <font-awesome-icon icon="fa-solid fa-plus" />
-            Add news
-        </button>
+  <div class="w-full p-5 flex flex-col gap-4">
+    <!-- Show search + table when no selected news -->
+    <div v-if="!newsStore.selectedNews">
+      <NewsSearch />
+      <NewsTable :news="newsStore.news" />
+      <button class="btn btn-primary mt-2" @click="createNews">
+        <font-awesome-icon icon="fa-solid fa-plus" />
+        Add news
+      </button>
     </div>
-    <div v-else class="p-4 border border-base-300 bg-base-200">
-        <h1 class="text-2xl font-bold mb-3">{{ newsStore.selectedNews.title }}</h1>
 
-        <img v-if="newsStore.selectedNews.coverImage" :src="newsStore.selectedNews.coverImage"
-            class="w-full h-64 object-cover mb-3" />
-
-        <!-- Šeit renderējam HTML saturu -->
-        <div v-html="newsStore.selectedNews.content" class="text-base text-base-content/80 mb-3"></div>
-
-        <button class="btn btn-secondary" @click="newsStore.selectedNews = null">
-            Back to all news
-        </button>
+    <!-- Show editor when selectedNews is set -->
+    <div v-else>
+      <NewsEditor />
     </div>
+  </div>
 </template>
 
 <script>
+import NewsEditor from './NewsEditor.vue';
 import NewsSearch from './NewsSearch.vue';
 import NewsTable from './NewsTable.vue';
-
 import { useNewsStore } from '@/stores/news';
 
 export default {
-    name: 'NewsManagerPage',
-    components: {
-        NewsTable,
-        NewsSearch
-    },
+  name: 'NewsManagerPage',
+  components: {
+    NewsEditor,
+    NewsSearch,
+    NewsTable
+  },
+  setup() {
+    const newsStore = useNewsStore();
 
-    data() {
-        return {
-            newsStore: useNewsStore(),
-        }
+    // Function to create a new news item
+    const createNews = () => {
+      newsStore.selectedNews = {
+        id: null,
+        title: '',
+        coverImage: '',
+        tags: [],
+        status: 'draft',
+        content: ''
+      };
     }
 
+    return { newsStore, createNews };
+  }
 }
 </script>
 

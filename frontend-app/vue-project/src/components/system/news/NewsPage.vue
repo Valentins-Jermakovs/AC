@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full p-5 flex flex-col gap-4">
+  <div class="w-full lg:p-5 flex flex-col gap-4">
     <!-- Show search + grid when no selected news -->
     <div v-if="!newsStore.selectedNews">
       <NewsSearch />

@@ -1,10 +1,10 @@
 <template>
-  <div class="w-full p-5 flex flex-col gap-4">
+  <div class="w-full lg:p-5 flex flex-col gap-4">
     <!-- Show search + table when no selected news -->
     <div v-if="!newsStore.selectedNews">
       <NewsSearch />
       <NewsTable :news="newsStore.news" />
-      <button class="btn btn-primary mt-2" @click="createNews">
+      <button class="btn btn-primary w-full" @click="createNews">
         <font-awesome-icon icon="fa-solid fa-plus" />
         {{ $t('common.create') }}
       </button>

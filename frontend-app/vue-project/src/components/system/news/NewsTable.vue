@@ -1,36 +1,97 @@
 <template>
-  <div class="w-full border border-base-300 bg-base-200 p-4">
-    <table class="table w-full">
-      <thead>
-        <tr>
-          <th>{{ $t('common.created_at') }}</th>
-          <th>{{ $t('common.title') }}</th>
-          <th>{{ $t('common.content') }}</th>
-          <th>{{ $t('common.actions') }}</th>
-        </tr>
-      </thead>
+  <div class="w-full border border-base-300 bg-base-200 p-2 sm:p-4">
 
-      <tbody>
-        <tr v-for="(row, index) in newsStore.news" :key="index">
-          <td>{{ row.createdAt.split(' ')[0] }}</td>
-          <td>{{ row.title }}</td>
-          <td>
-            <div>{{ truncateContent(row.content, 100) }}</div>
-          </td>
+    <!-- Desktop table -->
+    <div class="hidden lg:block overflow-x-auto">
+      <table class="table w-full">
+        <thead>
+          <tr>
+            <th>{{ $t('common.created_at') }}</th>
+            <th>{{ $t('common.title') }}</th>
+            <th>{{ $t('common.content') }}</th>
+            <th>{{ $t('common.actions') }}</th>
+          </tr>
+        </thead>
 
-          <td class="flex gap-2">
-            <button class="btn btn-sm btn-info" @click="selectNews(row)">
-              {{ $t('common.edit') }}
-            </button>
-            <button class="btn btn-sm btn-error" @click="openDelete(row.id)">
-              {{ $t('common.delete') }}
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+        <tbody>
+          <tr v-for="(row,index) in newsStore.news" :key="index">
+            <td>{{ row.createdAt.split(' ')[0] }}</td>
 
-    <!-- Remove News Modal -->
+            <td class="font-semibold">
+              {{ row.title }}
+            </td>
+
+            <td class="max-w-md">
+              {{ truncateContent(row.content,100) }}
+            </td>
+
+            <td>
+              <div class="flex gap-2">
+                <button
+                  class="btn btn-sm btn-info"
+                  @click="selectNews(row)"
+                >
+                  {{ $t('common.edit') }}
+                </button>
+
+                <button
+                  class="btn btn-sm btn-error"
+                  @click="openDelete(row.id)"
+                >
+                  {{ $t('common.delete') }}
+                </button>
+              </div>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Mobile cards -->
+    <div class="flex flex-col gap-3 lg:hidden">
+
+      <div
+        v-for="(row,index) in newsStore.news"
+        :key="index"
+        class="bg-base-100 border border-base-300 p-3 rounded-lg flex flex-col gap-2"
+      >
+
+        <div class="text-xs opacity-70">
+          {{ row.createdAt.split(' ')[0] }}
+        </div>
+
+        <div class="font-semibold text-lg">
+          {{ row.title }}
+        </div>
+
+        <div class="text-sm opacity-80">
+          {{ truncateContent(row.content,120) }}
+        </div>
+
+        <div class="flex gap-2 pt-2">
+
+          <button
+            class="btn btn-sm btn-info flex-1"
+            @click="selectNews(row)"
+          >
+            {{ $t('common.edit') }}
+          </button>
+
+          <button
+            class="btn btn-sm btn-error flex-1"
+            @click="openDelete(row.id)"
+          >
+            {{ $t('common.delete') }}
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Modal -->
     <BaseDialog
       :title="$t('news.editor.delete_modal.title')"
       :cancel-text="$t('common.cancel')"
@@ -38,8 +99,11 @@
       v-model="openDeleteModal"
       @confirm="deleteNews"
     >
-      <p>{{ $t('news.editor.delete_modal.content') }}</p>
+      <p>
+        {{ $t('news.editor.delete_modal.content') }}
+      </p>
     </BaseDialog>
+
   </div>
 </template>
 

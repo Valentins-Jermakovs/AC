@@ -1,91 +1,186 @@
 <template>
-  <div class="p-6 border border-base-300 bg-base-200 flex flex-col gap-4">
+  <div class="p-3 sm:p-6 border border-base-300 bg-base-200 flex flex-col gap-4 rounded-lg">
+
     <!-- Title -->
     <label class="label">
-      <span class="label-text">{{ $t('news.editor.title') }}:</span>
+      <span class="label-text">
+        {{ $t('news.editor.title') }}
+      </span>
     </label>
-    <input v-model="form.title" type="text" :placeholder="$t('news.editor.title_placeholder')"
-      class="input input-bordered w-full" />
+
+    <input
+      v-model="form.title"
+      type="text"
+      :placeholder="$t('news.editor.title_placeholder')"
+      class="input input-bordered w-full"
+    />
 
     <!-- Cover Image -->
     <label class="label">
-      <span class="label-text">{{ $t('news.editor.image') }}:</span>
+      <span class="label-text">
+        {{ $t('news.editor.image') }}
+      </span>
     </label>
-    <input v-model="form.coverImage" type="text" :placeholder="$t('news.editor.image_placeholder')"
-      class="input input-bordered w-full" />
+
+    <input
+      v-model="form.coverImage"
+      type="text"
+      :placeholder="$t('news.editor.image_placeholder')"
+      class="input input-bordered w-full"
+    />
 
     <!-- Tags -->
     <label class="label">
-      <span class="label-text">{{ $t('news.editor.tags') }}:</span>
+      <span class="label-text">
+        {{ $t('news.editor.tags') }}
+      </span>
     </label>
-    <input v-model="tagsInput" @keyup.enter="applyTags" type="text" :placeholder="$t('news.editor.tags_placeholder')"
-      class="input input-bordered w-full" />
 
+    <input
+      v-model="tagsInput"
+      @keyup.enter="applyTags"
+      type="text"
+      :placeholder="$t('news.editor.tags_placeholder')"
+      class="input input-bordered w-full"
+    />
+
+    <!-- Tags list -->
     <div class="flex gap-2 flex-wrap py-2">
-      <div v-for="(tag, idx) in form.tags" :key="idx"
-        class="bg-base-100 border border-base-300 gap-1 flex justify-between items-center">
-        <p class="px-2">{{ tag }}</p>
-        <button @click="removeTag(idx)" class="btn btn-xs btn-neutral">
-          <font-awesome-icon icon="fa-solid fa-trash" />
+
+      <div
+        v-for="(tag,idx) in form.tags"
+        :key="idx"
+        class="bg-base-100 border border-base-300 flex items-center rounded px-2 py-1 gap-2"
+      >
+
+        <p class="truncate max-w-[120px] sm:max-w-none">
+          {{ tag }}
+        </p>
+
+        <button
+          @click="removeTag(idx)"
+          class="btn btn-xs btn-neutral"
+        >
+          <font-awesome-icon icon="fa-solid fa-trash"/>
         </button>
+
       </div>
+
+    </div>
+
+    <!-- Status -->
+    <label class="label">
+      <span class="label-text">
+        {{ $t('news.editor.status.title') }}
+      </span>
+    </label>
+
+    <select
+      v-model="form.status"
+      class="select select-bordered w-full sm:w-64"
+    >
+      <option value="draft">
+        {{ $t('news.editor.status.draft') }}
+      </option>
+
+      <option value="published">
+        {{ $t('news.editor.status.published') }}
+      </option>
+
+    </select>
+
+    <!-- Toolbar -->
+    <div class="flex flex-wrap gap-1 border-b border-base-300 pb-2">
+
+      <button type="button" class="btn btn-sm btn-neutral" @click="toggleBold">
+        <font-awesome-icon icon="fa-solid fa-bold"/>
+      </button>
+
+      <button type="button" class="btn btn-sm btn-neutral" @click="toggleItalic">
+        <font-awesome-icon icon="fa-solid fa-italic"/>
+      </button>
+
+      <button type="button" class="btn btn-sm btn-neutral" @click="toggleHeading1">
+        H1
+      </button>
+
+      <button type="button" class="btn btn-sm btn-neutral" @click="toggleHeading2">
+        H2
+      </button>
+
+      <button type="button" class="btn btn-sm btn-neutral" @click="toggleBulletList">
+        <font-awesome-icon icon="fa-solid fa-list"/>
+      </button>
+
+      <button type="button" class="btn btn-sm btn-neutral" @click="toggleOrderedList">
+        <font-awesome-icon icon="fa-solid fa-list-ol"/>
+      </button>
+
+      <button type="button" class="btn btn-sm btn-neutral" @click="addLink">
+        <font-awesome-icon icon="fa-solid fa-link"/>
+      </button>
+
     </div>
 
     <!-- Content -->
     <label class="label">
-      <span class="label-text">{{ $t('news.editor.status.title') }}:</span>
-    </label>
-    <!-- Status -->
-    <select v-model="form.status" class="select select-bordered w-full">
-      <option value="draft">{{ $t('news.editor.status.draft') }}</option>
-      <option value="published">{{ $t('news.editor.status.published') }}</option>
-    </select>
 
-    <!-- Toolbar -->
-    <div class="flex gap-1 border-b border-base-300 pb-2">
-      <button type="button" class="btn btn-neutral" @click="toggleBold">
-        <font-awesome-icon icon="fa-solid fa-bold" />
-      </button>
-      <button type="button" class="btn btn-neutral" @click="toggleItalic">
-        <font-awesome-icon icon="fa-solid fa-italic" />
-      </button>
-      <button type="button" class="btn btn-neutral" @click="toggleHeading1">H1</button>
-      <button type="button" class="btn btn-neutral" @click="toggleHeading2">H2</button>
-      <button type="button" class="btn btn-neutral" @click="toggleBulletList">
-        <font-awesome-icon icon="fa-solid fa-list" />
-      </button>
-      <button type="button" class="btn btn-neutral" @click="toggleOrderedList">
-        <font-awesome-icon icon="fa-solid fa-list-ol" />
-      </button>
-      <button type="button" class="btn btn-neutral" @click="addLink">
-        <font-awesome-icon icon="fa-solid fa-link" />
-      </button>
-    </div>
+      <span class="label-text flex justify-between w-full">
 
-    <label class="label">
-      <span class="label-text">
-        {{ $t('news.editor.content') }}:
-        <small class="">{{ remainingCharacters }} / {{ maxCharacters }}</small>
+        {{ $t('news.editor.content') }}
+
+        <small>
+          {{ remainingCharacters }} / {{ maxCharacters }}
+        </small>
+
       </span>
-    </label>
-    <!-- Editor -->
-    <EditorContent :editor="editor"
-      class="prose max-w-none prose-a:text-blue-600 hover:prose-a:underline border border-base-300 bg-base-100 p-2 rounded" />
 
-    <!-- Action Buttons -->
-    <div class="flex gap-2">
-      <button class="btn btn-primary" @click="saveNews" :disabled="newsStore.loading">
-        {{ form.id ? $t('common.update') : $t('common.create') }}
+    </label>
+
+    <!-- Editor -->
+    <EditorContent
+      :editor="editor"
+      class="prose prose-sm sm:prose-base
+      max-w-none
+      prose-a:text-blue-600
+      hover:prose-a:underline
+      border border-base-300
+      bg-base-100
+      p-2 sm:p-4
+      rounded
+      min-h-[200px]
+      sm:min-h-[300px]
+      overflow-auto"
+    />
+
+    <!-- Action buttons -->
+    <div class="flex flex-col sm:flex-row gap-2">
+
+      <button
+        class="btn btn-primary w-full sm:w-auto"
+        @click="saveNews"
+        :disabled="newsStore.loading"
+      >
+        {{ form.id ? $t('common.edit') : $t('common.create') }}
       </button>
-      <button class="btn btn-secondary" @click="cancelEdit">
+
+      <button
+        class="btn btn-secondary w-full sm:w-auto"
+        @click="cancelEdit"
+      >
         {{ $t('common.cancel') }}
       </button>
+
     </div>
 
-    <!-- Error Message -->
-    <div v-if="newsStore.error" class="text-red-500 text-sm">
+    <!-- Error -->
+    <div
+      v-if="newsStore.error"
+      class="text-error text-sm"
+    >
       {{ newsStore.error }}
     </div>
+
   </div>
 </template>
 

@@ -39,6 +39,7 @@ export const useUserStore = defineStore('user', {
 
     // Check if user has admin role
     isAdmin: (state) => state.user?.roles.includes('admin') || false,
+    isManager: (state) => state.user?.roles.includes('manager') || false,
   },
 
   // ==========================

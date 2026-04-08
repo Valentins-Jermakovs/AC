@@ -62,7 +62,7 @@ export const useNewsStore = defineStore('news', {
                 "authorEmail": "2V2E3@example.com",
                 "content": "News content",
                 "coverImage": "https://example.com/image.jpg",
-                "status": "draft",
+                "status": "draft | published",
                 "tags": [
                     "tag1",
                     "tag2"
@@ -95,7 +95,7 @@ export const useNewsStore = defineStore('news', {
                 "authorEmail": "2V2E3@example.com",
                 "content": "News content",
                 "coverImage": "https://example.com/image.jpg",
-                "status": "draft",
+                "status": "draft | published",
                 "tags": [
                     "tag1",
                     "tag2"

@@ -126,7 +126,7 @@ async def update_news_route(
 # =========================
 # DELETE NEWS ROUTE
 # =========================
-@router.delete("/delete/{id}")
+@router.delete("/delete/{newsId}")
 async def delete_news_route(
     newsId: str,
     credentials: HTTPAuthorizationCredentials = Depends(security)

@@ -203,5 +203,5 @@ export const API_ENDPOINTS = {
   // PUT
   UPDATE_NEWS: '/news/update',
   // DELETE
-  DELETE_NEWS: (id) => `/news/delete/${id}`,
+  DELETE_NEWS: (newsId) => `/news/delete/${newsId}`,
 }

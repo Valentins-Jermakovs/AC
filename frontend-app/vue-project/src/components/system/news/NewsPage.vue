@@ -53,30 +53,61 @@ export default {
   components: { NewsSearch, NewsGrid },
   data() {
     return {
-      newsStore: useNewsStore()
+      newsStore: useNewsStore(),
     }
   },
   computed: {
     // Filtrē tikai publicētās ziņas
     publishedNews() {
-      return this.newsStore.news.filter(news => news.status === 'published')
-    }
-  }
+      return this.newsStore.news.filter((news) => news.status === 'published')
+    },
+  },
 }
 </script>
 
 <style>
 /* Tailwind Prose stili */
-.prose h1 { font-size: 2rem; font-weight: 700; margin-bottom: 1rem; }
-.prose h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.75rem; }
-.prose h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; }
+.prose h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+.prose h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+.prose h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
 
-.prose p { font-size: 1rem; line-height: 1.6; margin-bottom: 1rem; }
+.prose p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
 
-.prose ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
-.prose ol { list-style: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
-.prose li { margin-bottom: 0.5rem; }
+.prose ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+.prose ol {
+  list-style: decimal;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+.prose li {
+  margin-bottom: 0.5rem;
+}
 
-.prose a { color: #2563eb; text-decoration: underline; }
-.prose a:hover { color: #1e40af; }
+.prose a {
+  color: #2563eb;
+  text-decoration: underline;
+}
+.prose a:hover {
+  color: #1e40af;
+}
 </style>

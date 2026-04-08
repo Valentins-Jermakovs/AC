@@ -19,12 +19,8 @@
           </td>
 
           <td class="flex gap-2">
-            <button class="btn btn-sm btn-info" @click="selectNews(row)">
-              Edit
-            </button>
-            <button class="btn btn-sm btn-error" @click="openDelete(row.id)">
-              Delete
-            </button>
+            <button class="btn btn-sm btn-info" @click="selectNews(row)">Edit</button>
+            <button class="btn btn-sm btn-error" @click="openDelete(row.id)">Delete</button>
           </td>
         </tr>
       </tbody>
@@ -44,8 +40,8 @@
 </template>
 
 <script>
-import BaseDialog from '@/components/common/BaseDialog.vue';
-import { useNewsStore } from '@/stores/news';
+import BaseDialog from '@/components/common/BaseDialog.vue'
+import { useNewsStore } from '@/stores/news'
 
 export default {
   name: 'NewsTable',
@@ -54,7 +50,7 @@ export default {
     return {
       newsStore: useNewsStore(),
       openDeleteModal: false,
-      deleteId: null
+      deleteId: null,
     }
   },
   methods: {
@@ -67,22 +63,22 @@ export default {
       this.openDeleteModal = false
     },
     selectNews(row) {
-      this.newsStore.selectedNews = row;
+      this.newsStore.selectedNews = row
     },
 
     // -----------------------
     // truncate content and remove HTML tags
     // -----------------------
     truncateContent(content, length = 100) {
-      const textOnly = content.replace(/<\/?[^>]+(>|$)/g, ""); // no HTML
-      if (textOnly.length <= length) return textOnly;
-      return textOnly.substring(0, length) + '...';
-    }
+      const textOnly = content.replace(/<\/?[^>]+(>|$)/g, '') // no HTML
+      if (textOnly.length <= length) return textOnly
+      return textOnly.substring(0, length) + '...'
+    },
   },
   mounted() {
-    this.newsStore.getAllNews();
-    this.newsStore.selectedNews = null;
-  }
+    this.newsStore.getAllNews()
+    this.newsStore.selectedNews = null
+  },
 }
 </script>
 

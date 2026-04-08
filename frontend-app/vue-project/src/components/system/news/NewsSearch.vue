@@ -22,8 +22,8 @@ export default {
     }
   },
   mounted() {
-    this.store.searchQuery = '';
-  }
+    this.store.searchQuery = ''
+  },
 }
 </script>
 

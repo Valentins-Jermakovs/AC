@@ -6,14 +6,14 @@
 </template>
 
 <script>
-import PageHeader from '@/components/ui/PageHeader.vue';
+import PageHeader from '@/components/ui/PageHeader.vue'
 import headerImage from '@/assets/images/anna-keibalo-oc5Brib1dNY-unsplash.jpg'
 
-import { useNewsStore } from '@/stores/news';
-import { useUserStore } from '@/stores/user';
-import NavigationPanel from '@/components/ui/NavigationPanel.vue';
-import NewsPage from '@/components/system/news/NewsPage.vue';
-import NewsManagerPage from '@/components/system/news/NewsManagerPage.vue';
+import { useNewsStore } from '@/stores/news'
+import { useUserStore } from '@/stores/user'
+import NavigationPanel from '@/components/ui/NavigationPanel.vue'
+import NewsPage from '@/components/system/news/NewsPage.vue'
+import NewsManagerPage from '@/components/system/news/NewsManagerPage.vue'
 
 export default {
   name: 'NewsView',
@@ -21,7 +21,7 @@ export default {
     PageHeader,
     NavigationPanel,
     NewsPage,
-    NewsManagerPage
+    NewsManagerPage,
   },
   data() {
     return {
@@ -31,15 +31,15 @@ export default {
       userStore: useUserStore(),
 
       activePage: 'news',
-    };
+    }
   },
   mounted() {
-    this.newsStore.getAllNews();
-    this.userStore.fetchMe();
+    this.newsStore.getAllNews()
+    this.userStore.fetchMe()
   },
   computed: {
     title() {
-      return this.$t('news.title');
+      return this.$t('news.title')
     },
     navButtons() {
       // Basic navigation buttons
@@ -57,7 +57,7 @@ export default {
       return navButtons
     },
   },
-};
+}
 </script>
 
 <style scoped></style>

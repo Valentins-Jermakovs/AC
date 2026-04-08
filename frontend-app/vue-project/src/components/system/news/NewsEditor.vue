@@ -1,6 +1,5 @@
 <template>
-  <div class="p-6 border border-base-300 
-  bg-base-200 flex flex-col gap-4">
+  <div class="p-6 border border-base-300 bg-base-200 flex flex-col gap-4">
     <!-- Title -->
     <input
       v-model="form.title"
@@ -29,14 +28,13 @@
       <div
         v-for="(tag, idx) in form.tags"
         :key="idx"
-        class="bg-base-100 border border-base-300  gap-1 flex justify-between items-center"
+        class="bg-base-100 border border-base-300 gap-1 flex justify-between items-center"
       >
         <p class="px-2">{{ tag }}</p>
         <button @click="removeTag(idx)" class="btn btn-xs btn-neutral">
           <font-awesome-icon icon="fa-solid fa-trash" />
-        </button>    
-    </div>
-      
+        </button>
+      </div>
     </div>
 
     <!-- Status -->
@@ -53,12 +51,8 @@
       <button type="button" class="btn btn-neutral" @click="toggleItalic">
         <font-awesome-icon icon="fa-solid fa-italic" />
       </button>
-      <button type="button" class="btn btn-neutral" @click="toggleHeading1">
-        H1
-      </button>
-      <button type="button" class="btn btn-neutral" @click="toggleHeading2">
-        H2
-      </button>
+      <button type="button" class="btn btn-neutral" @click="toggleHeading1">H1</button>
+      <button type="button" class="btn btn-neutral" @click="toggleHeading2">H2</button>
       <button type="button" class="btn btn-neutral" @click="toggleBulletList">
         <font-awesome-icon icon="fa-solid fa-list" />
       </button>
@@ -71,16 +65,17 @@
     </div>
 
     <!-- Editor -->
-    <EditorContent :editor="editor" class="prose max-w-none prose-a:text-blue-600 hover:prose-a:underline border border-base-300 bg-base-100 p-2 rounded" />
+    <EditorContent
+      :editor="editor"
+      class="prose max-w-none prose-a:text-blue-600 hover:prose-a:underline border border-base-300 bg-base-100 p-2 rounded"
+    />
 
     <!-- Action Buttons -->
     <div class="flex gap-2">
       <button class="btn btn-primary" @click="saveNews" :disabled="newsStore.loading">
         {{ form.id ? 'Update News' : 'Create News' }}
       </button>
-      <button class="btn btn-secondary" @click="cancelEdit">
-        Cancel
-      </button>
+      <button class="btn btn-secondary" @click="cancelEdit">Cancel</button>
     </div>
 
     <!-- Error Message -->
@@ -134,7 +129,7 @@ export default {
     'newsStore.selectedNews'(val) {
       if (val) this.populateForm(val)
       else this.resetForm()
-    }
+    },
   },
   methods: {
     populateForm(news) {
@@ -147,11 +142,16 @@ export default {
     },
     applyTags() {
       if (!this.tagsInput.trim()) return
-      const newTags = this.tagsInput.split(',').map(t => t.trim()).filter(Boolean)
+      const newTags = this.tagsInput
+        .split(',')
+        .map((t) => t.trim())
+        .filter(Boolean)
       this.form.tags.push(...newTags)
       this.tagsInput = ''
     },
-    removeTag(idx) { this.form.tags.splice(idx, 1) },
+    removeTag(idx) {
+      this.form.tags.splice(idx, 1)
+    },
     async saveNews() {
       const payload = { authorEmail: this.userStore.email, ...this.form }
       if (this.form.id) {
@@ -168,17 +168,35 @@ export default {
       this.resetForm()
     },
     // Toolbar actions
-    toggleBold() { this.editor.chain().focus().toggleBold().run() },
-    toggleItalic() { this.editor.chain().focus().toggleItalic().run() },
-    toggleHeading1() { this.editor.chain().focus().toggleHeading({ level: 1 }).run() },
-    toggleHeading2() { this.editor.chain().focus().toggleHeading({ level: 2 }).run() },
-    toggleBulletList() { this.editor.chain().focus().toggleBulletList().run() },
-    toggleOrderedList() { this.editor.chain().focus().toggleOrderedList().run() },
+    toggleBold() {
+      this.editor.chain().focus().toggleBold().run()
+    },
+    toggleItalic() {
+      this.editor.chain().focus().toggleItalic().run()
+    },
+    toggleHeading1() {
+      this.editor.chain().focus().toggleHeading({ level: 1 }).run()
+    },
+    toggleHeading2() {
+      this.editor.chain().focus().toggleHeading({ level: 2 }).run()
+    },
+    toggleBulletList() {
+      this.editor.chain().focus().toggleBulletList().run()
+    },
+    toggleOrderedList() {
+      this.editor.chain().focus().toggleOrderedList().run()
+    },
     addLink() {
       const url = prompt('Enter URL')
-      if (url) this.editor.chain().focus().extendMarkRange('link').setLink({ href: url, target: '_blank' }).run()
-    }
-  }
+      if (url)
+        this.editor
+          .chain()
+          .focus()
+          .extendMarkRange('link')
+          .setLink({ href: url, target: '_blank' })
+          .run()
+    },
+  },
 }
 </script>
 
@@ -193,19 +211,50 @@ export default {
 }
 
 /* Headings */
-.editor-content h1 { font-size: 2rem; font-weight: 700; margin-bottom: 1rem; }
-.editor-content h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.75rem; }
-.editor-content h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; }
+.editor-content h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+.editor-content h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+.editor-content h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
 
 /* Paragraphs */
-.editor-content p { font-size: 1rem; line-height: 1.6; margin-bottom: 1rem; }
+.editor-content p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
 
 /* Lists */
-.editor-content ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
-.editor-content ol { list-style: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
-.editor-content li { margin-bottom: 0.5rem; }
+.editor-content ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+.editor-content ol {
+  list-style: decimal;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+.editor-content li {
+  margin-bottom: 0.5rem;
+}
 
 /* Links */
-.editor-content a { color: #2563eb; text-decoration: underline; }
-.editor-content a:hover { color: #1e40af; }
+.editor-content a {
+  color: #2563eb;
+  text-decoration: underline;
+}
+.editor-content a:hover {
+  color: #1e40af;
+}
 </style>

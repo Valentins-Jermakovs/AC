@@ -18,20 +18,20 @@
 </template>
 
 <script>
-import NewsEditor from './NewsEditor.vue';
-import NewsSearch from './NewsSearch.vue';
-import NewsTable from './NewsTable.vue';
-import { useNewsStore } from '@/stores/news';
+import NewsEditor from './NewsEditor.vue'
+import NewsSearch from './NewsSearch.vue'
+import NewsTable from './NewsTable.vue'
+import { useNewsStore } from '@/stores/news'
 
 export default {
   name: 'NewsManagerPage',
   components: {
     NewsEditor,
     NewsSearch,
-    NewsTable
+    NewsTable,
   },
   setup() {
-    const newsStore = useNewsStore();
+    const newsStore = useNewsStore()
 
     // Function to create a new news item
     const createNews = () => {
@@ -41,12 +41,12 @@ export default {
         coverImage: '',
         tags: [],
         status: 'draft',
-        content: ''
-      };
+        content: '',
+      }
     }
 
-    return { newsStore, createNews };
-  }
+    return { newsStore, createNews }
+  },
 }
 </script>
 

@@ -1,14 +1,8 @@
 <template>
   <div class="flex-1 bg-base-100 p-5">
-
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-      <NewsCard 
-        v-for="item in news" 
-        :key="item.id" 
-        :news="item" 
-      />
+      <NewsCard v-for="item in news" :key="item.id" :news="item" />
     </div>
-
   </div>
 </template>
 
@@ -26,8 +20,8 @@ export default {
     news: {
       type: Array,
       required: true,
-      default: () => []
-    }
-  }
+      default: () => [],
+    },
+  },
 }
 </script>

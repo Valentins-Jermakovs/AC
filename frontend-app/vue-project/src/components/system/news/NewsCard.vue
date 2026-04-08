@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { useNewsStore } from '@/stores/news';
+import { useNewsStore } from '@/stores/news'
 
 export default {
   name: 'NewsCard',
@@ -30,8 +30,8 @@ export default {
     news: {
       type: Object,
       required: true,
-      default: () => ({})
-    }
+      default: () => ({}),
+    },
   },
 
   data() {
@@ -42,17 +42,17 @@ export default {
 
   methods: {
     selectNews() {
-      this.newsStore.selectedNews = this.news;
+      this.newsStore.selectedNews = this.news
     },
 
     // Truncate content and strip HTML tags
     truncateContent(content, length = 150) {
       // No HTML tags
-      const textOnly = content.replace(/<\/?[^>]+(>|$)/g, "");
-      if (textOnly.length <= length) return textOnly;
-      return textOnly.substring(0, length) + '...';
-    }
-  }
+      const textOnly = content.replace(/<\/?[^>]+(>|$)/g, '')
+      if (textOnly.length <= length) return textOnly
+      return textOnly.substring(0, length) + '...'
+    },
+  },
 }
 </script>
 

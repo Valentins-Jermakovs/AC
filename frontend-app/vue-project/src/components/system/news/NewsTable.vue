@@ -58,7 +58,7 @@
       <div
         v-for="(row, index) in newsStore.news"
         :key="index"
-        class="bg-base-100 border border-base-300 p-3 rounded-lg flex flex-col gap-2"
+        class="bg-base-100 border border-base-300 p-3 flex flex-col gap-2"
       >
         <div class="text-xs opacity-70">
           {{ row.createdAt.split(' ')[0] }}

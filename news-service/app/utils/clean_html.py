@@ -47,11 +47,19 @@ async def clean_html(html):
             'h1', 'h2', 'h3', 'h4', 'h5', 'h6',  # headings
             'p',                                 # paragraph
             'b', 'i',                            # basic formatting
+            'br',                                # line breaks
+            'em', 'strong',                      # emphasis
             'ul', 'ol', 'li',                    # lists
             'a',                                 # links
             'code',                              # code blocks
             'img'                                # images
         ],
+
+        # Allowed HTML attributes
+        attributes={
+            'a': ['href', 'target', 'rel'],
+            'img': ['src', 'alt']
+        },
 
         # Remove disallowed tags completely
         strip=True

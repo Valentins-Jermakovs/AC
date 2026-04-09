@@ -3,6 +3,9 @@
     <!-- KPI cards -->
     <div class="grid grid-cols-1 sm:grid-cols-4 gap-2">
       <div class="col-span-1 sm:col-span-4">
+        <NewsWidget></NewsWidget>
+      </div>
+      <div class="col-span-1 sm:col-span-4">
         <EventWidget></EventWidget>
       </div>
       <div
@@ -116,6 +119,7 @@ import { useUserStore } from '@/stores/user'
 import { useSelectedProjectStore } from '@/stores/selectedProject'
 import EventWidget from '@/components/common/EventWidget.vue'
 import LoadingScreen from '@/components/common/LoadingScreen.vue'
+import NewsWidget from './dashboard/NewsWidget.vue'
 
 export default {
   name: 'DashboardPage',
@@ -125,6 +129,7 @@ export default {
     UserProgressCard,
     EventWidget,
     LoadingScreen,
+    NewsWidget,
   },
 
   data() {

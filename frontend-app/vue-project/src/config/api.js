@@ -204,4 +204,10 @@ export const API_ENDPOINTS = {
   UPDATE_NEWS: '/news/update',
   // DELETE
   DELETE_NEWS: (newsId) => `/news/delete/${newsId}`,
+
+  // ===== VISIT MANAGEMENT =====
+  REGISTER_VISIT: '/visit/register',
+  START_SESSION: '/visit/start',
+  END_SESSION: '/visit/end',
+  WEEK_STATS: '/visit/stats',
 }

@@ -9,6 +9,7 @@ import { API_ENDPOINTS } from '@/config/api'
 
 // User store (used to clear user data on logout)
 import { useUserStore } from '@/stores/user'
+import { useVisitsStore } from './visits'
 
 // Create authentication store
 export const useAuthStore = defineStore('auth', {
@@ -46,6 +47,10 @@ export const useAuthStore = defineStore('auth', {
         // Save tokens and update state
         this.setAuthData(access_token, refresh_token)
 
+        const visitsStore = useVisitsStore()
+        await visitsStore.registerVisit()
+        await visitsStore.startSession()
+
         return true
       } catch (error) {
         console.error('Login error:', error)
@@ -71,6 +76,10 @@ export const useAuthStore = defineStore('auth', {
         // Save authentication data
         this.setAuthData(access_token, refresh_token)
 
+        const visitsStore = useVisitsStore()
+        await visitsStore.registerVisit()
+        await visitsStore.startSession()
+
         return true
       } catch (error) {
         console.error('Registration error:', error)
@@ -82,7 +91,11 @@ export const useAuthStore = defineStore('auth', {
     // Logout user
     // --------------------------
     async logout() {
+      const visitsStore = useVisitsStore()
       try {
+        if (this.accessToken) {
+          await visitsStore.endSession()
+        }
         // If refresh token exists, inform backend
         if (this.refreshToken) {
           await api.post(API_ENDPOINTS.LOGOUT, null, {

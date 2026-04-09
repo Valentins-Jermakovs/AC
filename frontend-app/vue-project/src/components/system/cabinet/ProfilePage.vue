@@ -60,6 +60,7 @@ import { useWorkspaceProjectsStore } from '@/stores/workspace/projects'
 import { useWorkspaceProjectsTasksStore } from '@/stores/workspace/projectsTasks'
 import { useSelectedProjectStore } from '@/stores/selectedProject'
 import { useAuthStore } from '@/stores/auth'
+import { useVisitsStore } from '@/stores/visits'
 
 import UsernameModal from './modals/UsernameModal.vue'
 import EmailChangeModal from './modals/EmailChangeModal.vue'
@@ -104,6 +105,7 @@ export default {
       workspaceProjectsTasksStore: useWorkspaceProjectsTasksStore(),
       selectedProjectStore: useSelectedProjectStore(),
       authStore: useAuthStore(),
+      visitsStore: useVisitsStore(),
     }
   },
 
@@ -150,9 +152,9 @@ export default {
         },
         {
           title: this.$t('cabinet.profile.kpi.week_activity'),
-          value: 5,
+          value: this.visitsStore.visits.active_days || 0,
           max: 7,
-          percent: 71,
+          percent: Math.round((this.visitsStore.visits.active_days / 7) * 100 || 0),
           colorClass: 'text-warning',
           progressClass: 'progress-warning',
         },
@@ -289,6 +291,7 @@ export default {
     await this.taskStore.fetchTasksAllCompleted()
     await this.taskStore.fetchTasksAllInMonth()
     await this.taskStore.fetchTasksAllCompletedInMonth()
+    await this.visitsStore.getWeekStats()
   },
 }
 </script>

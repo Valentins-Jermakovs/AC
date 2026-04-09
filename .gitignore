@@ -3,6 +3,7 @@
 /projects-service/projects-venv
 /events-service/events-venv
 /news-service/news-venv
+/visit-service/visit-venv
 
 # Python cache
 __pycache__/

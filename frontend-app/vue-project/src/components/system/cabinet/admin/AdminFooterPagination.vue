@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-full p-4 rounded-box border border-base-300 bg-base-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+    class="w-full p-4 border border-base-300 bg-base-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
   >
     <!-- Left section: Limit selector, total users, current page info -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:gap-6 w-full sm:w-auto">

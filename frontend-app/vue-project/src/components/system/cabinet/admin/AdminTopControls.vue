@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col xl:flex-row w-full bg-base-100 border border-base-300 rounded-box">
+  <div class="flex flex-col xl:flex-row w-full bg-base-100 border border-base-300">
     <!-- Search input + button -->
     <div class="flex flex-col lg:flex-row flex-1">
       <div class="flex flex-col sm:flex-row flex-1 p-4 gap-3 items-stretch sm:items-center">

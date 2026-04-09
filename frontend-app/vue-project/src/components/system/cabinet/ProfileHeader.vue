@@ -1,6 +1,6 @@
 <template>
   <!-- Container for user profile header -->
-  <div class="flex items-center gap-5 p-5 bg-base-200 border border-base-300 rounded-box">
+  <div class="flex items-center gap-5 p-5 bg-base-200 border border-base-300">
     <!-- User avatar icon -->
     <font-awesome-icon icon="user-circle" class="text-6xl" />
 

@@ -1,6 +1,21 @@
 import axios from 'axios'
-import { useAuthStore } from '@/stores/auth'
+// Import stores
 import { useUserStore } from '@/stores/user'
+import { useAdminStore } from '@/stores/admin'
+import { usePrivateTasksStore } from '@/stores/privateTasks'
+import { useEventsStore } from '@/stores/events'
+import { useEventParticipantsStore } from '@/stores/eventParticipants'
+import { useKanbanBoardStore } from '@/stores/kanban/kanbanBoards'
+import { useKanbanMembersStore } from '@/stores/kanban/kanbanMembers'
+import { useKanbanStagesStore } from '@/stores/kanban/kanbanStages'
+import { useKanbanTasksStore } from '@/stores/kanban/kanbanTasks'
+import { useWorkspaceProjectMembersStore } from '@/stores/workspace/projectsMembers'
+import { useWorkspaceProjectStagesStore } from '@/stores/workspace/projectStages'
+import { useWorkspaceProjectsStore } from '@/stores/workspace/projects'
+import { useWorkspaceProjectsTasksStore } from '@/stores/workspace/projectsTasks'
+import { useSelectedProjectStore } from '@/stores/selectedProject'
+import { useAuthStore } from '@/stores/auth'
+import { useNewsStore } from '@/stores/news'
 
 // Create an Axios instance with base URL and credentials
 export const api = axios.create({
@@ -30,7 +45,23 @@ api.interceptors.response.use(
   (response) => response, // Pass through successful responses
   async (error) => {
     const originalRequest = error.config
-    const authStore = useAuthStore() // Get auth store
+
+    const userStore = useUserStore()
+    const authStore = useAuthStore()
+    const adminStore = useAdminStore()
+    const privateTasksStore = usePrivateTasksStore()
+    const eventsStore = useEventsStore()
+    const eventParticipantsStore = useEventParticipantsStore()
+    const kanbanBoardStore = useKanbanBoardStore()
+    const kanbanMembersStore = useKanbanMembersStore()
+    const kanbanStagesStore = useKanbanStagesStore()
+    const kanbanTasksStore = useKanbanTasksStore()
+    const workspaceProjectMembersStore = useWorkspaceProjectMembersStore()
+    const workspaceProjectStagesStore = useWorkspaceProjectStagesStore()
+    const workspaceProjectsStore = useWorkspaceProjectsStore()
+    const workspaceProjectsTasksStore = useWorkspaceProjectsTasksStore()
+    const selectedProjectStore = useSelectedProjectStore()
+    const newsStore = useNewsStore()
 
     if (!error.response) {
       return Promise.reject(error) // Network error
@@ -75,6 +106,24 @@ api.interceptors.response.use(
         processQueue(err, null) // Reject all queued requests
 
         authStore.fullReset() // Clear auth store
+
+        // Reset all stores
+        privateTasksStore.$reset()
+        eventsStore.$reset()
+        eventParticipantsStore.$reset()
+        kanbanBoardStore.$reset()
+        kanbanMembersStore.$reset()
+        kanbanStagesStore.$reset()
+        kanbanTasksStore.$reset()
+        workspaceProjectMembersStore.$reset()
+        workspaceProjectStagesStore.$reset()
+        workspaceProjectsStore.$reset()
+        workspaceProjectsTasksStore.$reset()
+        selectedProjectStore.$reset()
+        newsStore.$reset()
+        userStore.$reset()
+        adminStore.$reset()
+
 
         isRefreshing = false
 

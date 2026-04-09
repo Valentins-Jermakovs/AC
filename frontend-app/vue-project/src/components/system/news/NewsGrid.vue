@@ -20,9 +20,10 @@
     </div>
 
     <!-- List -->
-    <div v-else class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+    <div v-else class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 mb-2">
       <NewsCard v-for="item in news" :key="item.id" :news="item" />
     </div>
+    <NewsFooter></NewsFooter>
   </div>
   <LoadingScreen v-if="newsStore.loading"></LoadingScreen>
 </template>
@@ -32,12 +33,15 @@ import LoadingScreen from '@/components/common/LoadingScreen.vue'
 import NewsCard from './NewsCard.vue'
 
 import { useNewsStore } from '@/stores/news'
+import NewsFooter from './NewsFooter.vue';
 
 export default {
   name: 'NewsList',
 
   components: {
     NewsCard,
+    LoadingScreen,
+    NewsFooter
   },
 
   data() {

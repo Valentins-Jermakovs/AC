@@ -4,6 +4,7 @@
     <div v-if="!newsStore.selectedNews">
       <NewsSearch />
       <NewsTable :news="newsStore.news" />
+      <NewsFooter></NewsFooter>
       <button class="btn btn-primary w-full" @click="createNews">
         <font-awesome-icon icon="fa-solid fa-plus" />
         {{ $t('common.create') }}
@@ -24,6 +25,7 @@ import NewsEditor from './NewsEditor.vue'
 import NewsSearch from './NewsSearch.vue'
 import NewsTable from './NewsTable.vue'
 import { useNewsStore } from '@/stores/news'
+import NewsFooter from './NewsFooter.vue'
 
 export default {
   name: 'NewsManagerPage',
@@ -32,6 +34,7 @@ export default {
     NewsSearch,
     NewsTable,
     LoadingScreen,
+    NewsFooter,
   },
   setup() {
     const newsStore = useNewsStore()

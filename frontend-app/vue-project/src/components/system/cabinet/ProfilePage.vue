@@ -61,6 +61,8 @@ import { useWorkspaceProjectsTasksStore } from '@/stores/workspace/projectsTasks
 import { useSelectedProjectStore } from '@/stores/selectedProject'
 import { useAuthStore } from '@/stores/auth'
 import { useVisitsStore } from '@/stores/visits'
+import { useNewsStore } from '@/stores/news'
+
 
 import UsernameModal from './modals/UsernameModal.vue'
 import EmailChangeModal from './modals/EmailChangeModal.vue'
@@ -106,6 +108,7 @@ export default {
       selectedProjectStore: useSelectedProjectStore(),
       authStore: useAuthStore(),
       visitsStore: useVisitsStore(),
+      newsStore: useNewsStore(),
     }
   },
 
@@ -273,6 +276,8 @@ export default {
         this.workspaceProjectsTasksStore.$reset()
         this.selectedProjectStore.$reset()
         this.userStore.$reset()
+        this.newsStore.$reset()
+        this.visitsStore.$reset()
 
         this.$router.push({ name: 'logout' })
       } catch (err) {

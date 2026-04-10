@@ -1,7 +1,7 @@
 <template>
   <!-- Modal dialog component -->
   <dialog class="modal" :open="modelValue">
-    <div class="modal-box flex flex-col gap-3">
+    <div class="modal-box rounded-none flex flex-col gap-3">
       <!-- Title section (optional) -->
       <h3 v-if="title" class="text-lg font-bold text-start">
         {{ title }}

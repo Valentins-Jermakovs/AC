@@ -65,6 +65,7 @@ import { useWorkspaceProjectsTasksStore } from '@/stores/workspace/projectsTasks
 import { useSelectedProjectStore } from '@/stores/selectedProject'
 import { useAuthStore } from '@/stores/auth'
 import { useNewsStore } from '@/stores/news'
+import { useVisitsStore } from '@/stores/visits'
 
 // Import components
 import BurgerButton from './BurgerButton.vue'
@@ -148,6 +149,7 @@ export default {
         const workspaceProjectsTasksStore = useWorkspaceProjectsTasksStore()
         const selectedProjectStore = useSelectedProjectStore()
         const newsStore = useNewsStore()
+        const visitsStore = useVisitsStore()
 
         // Reset all stores
         privateTasksStore.$reset()
@@ -163,6 +165,7 @@ export default {
         workspaceProjectsTasksStore.$reset()
         selectedProjectStore.$reset()
         newsStore.$reset()
+        visitsStore.$reset()
 
         // Reset all stores
         userStore.$reset()

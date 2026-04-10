@@ -99,6 +99,7 @@
       </kpiCard>
     </div>
     <VisitWidgets></VisitWidgets>
+    <VisitCharts></VisitCharts>
     <!-- Progress cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
       <UserProgressCard v-for="(item, index) in progressItems" :key="index" v-bind="item">
@@ -122,6 +123,7 @@ import EventWidget from '@/components/common/EventWidget.vue'
 import LoadingScreen from '@/components/common/LoadingScreen.vue'
 import NewsWidget from './dashboard/NewsWidget.vue'
 import VisitWidgets from './dashboard/visitWidgets.vue'
+import VisitCharts from './dashboard/visitCharts.vue'
 
 export default {
   name: 'DashboardPage',
@@ -133,6 +135,7 @@ export default {
     LoadingScreen,
     NewsWidget,
     VisitWidgets,
+    VisitCharts,
   },
 
   data() {

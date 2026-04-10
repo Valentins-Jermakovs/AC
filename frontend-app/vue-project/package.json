@@ -20,6 +20,7 @@
     "@tiptap/starter-kit": "^3.22.2",
     "@tiptap/vue-3": "^3.22.2",
     "axios": "^1.13.5",
+    "chart.js": "^4.5.1",
     "pinia": "^3.0.4",
     "tailwindcss": "^4.1.18",
     "vue": "^3.5.27",

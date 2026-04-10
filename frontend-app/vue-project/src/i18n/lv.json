@@ -686,5 +686,12 @@
         "content": "Vai tiešām vēlaties dzēst ziņu?"
       }
     }
+  },
+  "visits": {
+    "active_days": "Aktīvas dienas",
+    "total_visits": "Maksimāls apmeklējumu daudzums",
+    "total_time": "Maksimāls apmeklājuma laiks",
+    "average_time_per_visit": "Vidējs apmeklējuma laiks (min)",
+    "total_time_per_day": "Maksimāls apmeklājuma laiks dienā (min)"
   }
 }

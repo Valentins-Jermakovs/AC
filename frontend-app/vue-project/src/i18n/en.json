@@ -221,12 +221,21 @@
         },
         "card_two": {
           "title": "Available modes:",
-          "content": ["select/search users", "modify user roles", "change activity status"]
+          "content": [
+            "select/search users",
+            "modify user roles",
+            "change activity status"
+          ]
         }
       },
       "admin_top": {
         "search": "Search data...",
-        "filters": ["All users", "By ID", "By username/email", "By role"]
+        "filters": [
+          "All users",
+          "By ID",
+          "By username/email",
+          "By role"
+        ]
       },
       "table_top": {
         "username": "Username",
@@ -682,5 +691,12 @@
         "content": "Are you sure you want to delete this news?"
       }
     }
+  },
+  "visits": {
+    "active_days": "Active days",
+    "total_visits": "Total visits",
+    "total_time": "Total visit time",
+    "average_time_per_visit": "Average visit time (min)",
+    "total_time_per_day": "Total visit time per day (min)"
   }
 }

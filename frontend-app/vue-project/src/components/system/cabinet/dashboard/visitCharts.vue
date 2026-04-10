@@ -6,7 +6,7 @@
         <div class="card bg-base-200 border border-base-300 rounded-none p-4">
 
             <h3 class="text-lg font-semibold mb-2">
-                Avg Time per Visit (min)
+                {{ $t('visits.average_time_per_visit') }}
             </h3>
 
             <!-- No data -->
@@ -34,7 +34,7 @@
         <div class="card bg-base-200 border border-base-300 rounded-none p-4">
 
             <h3 class="text-lg font-semibold mb-2">
-                Total Time per Day (min)
+                {{ $t('visits.total_time_per_day') }}
             </h3>
 
             <!-- No data -->

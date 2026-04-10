@@ -3,7 +3,7 @@
   <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
     <!-- Active Days Card -->
     <div class="card bg-base-200 border border-base-300 rounded-none p-4 flex flex-col items-center justify-center">
-      <div class="text-sm">Active Days</div>
+      <div class="text-sm">{{ $t('visits.active_days') }}</div>
       <div class="text-2xl font-bold mt-2">
         <template v-if="visitsStore.visits && visitsStore.visits.active_days !== undefined">
           {{ visitsStore.visits.active_days }}
@@ -17,7 +17,7 @@
 
     <!-- Total Visits Card -->
     <div class="card bg-base-200 border border-base-300 rounded-none p-4 flex flex-col items-center justify-center">
-      <div class="text-sm">Total Visits</div>
+      <div class="text-sm">{{ $t('visits.total_visits') }}</div>
       <div class="text-2xl font-bold mt-2">
         <template v-if="visitsStore.visits && visitsStore.visits.total_visits !== undefined">
           {{ visitsStore.visits.total_visits }}
@@ -31,7 +31,7 @@
 
     <!-- Total Time Card -->
     <div class="card bg-base-200 border border-base-300 rounded-none p-4 flex flex-col items-center justify-center">
-      <div class="text-sm">Total Time</div>
+      <div class="text-sm">{{ $t('visits.total_time') }}</div>
       <div class="text-2xl font-bold mt-2">
         <template v-if="visitsStore.visits && visitsStore.visits.total_time !== undefined">
           {{ formatTime(visitsStore.visits.total_time) }}

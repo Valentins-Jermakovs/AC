@@ -11,7 +11,8 @@ from app.services.expense_service import (
     create_expense,
     update_expense,
     delete_expense,
-    get_expenses
+    get_expenses,
+    get_stats
 )
 # Schemas
 from app.schemas.create_schema import ExpenseCreateSchema
@@ -82,6 +83,29 @@ async def get_expenses_route(
     return await get_expenses(
         user_id=user_id, 
         filters=filters
+    )
+
+
+
+# Get stats for the current user
+@router.get(
+    "/stats",
+)
+async def get_stats_route(
+    credentials: HTTPAuthorizationCredentials = Depends(security),
+):
+    """
+    Get stats for the current user.
+
+    - Requires authentication
+    - Validates user via access token
+    - Uses `get_stats` service
+    """
+    access_token = credentials.credentials
+    user_id = await check_access_token(access_token)
+
+    return await get_stats(
+        user_id=user_id
     )
 
 

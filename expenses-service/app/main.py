@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from app.dependencies.database import init_db
 
-from app.routes import expense_routes
+from app.routes import expense_routes, budget_routes
 
 # =========================
 # Application lifespan
@@ -27,3 +27,4 @@ app = FastAPI(lifespan=lifespan)
 # =========================
 # Each router adds its own endpoints to the app
 app.include_router(expense_routes.router)
+app.include_router(budget_routes.router)

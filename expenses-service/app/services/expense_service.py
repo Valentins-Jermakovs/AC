@@ -97,3 +97,20 @@ async def update_expense(expense_id: str, data: ExpenseUpdateSchema):
 async def delete_expense(expense_id: str):
     expense = await Expense.get(expense_id)
     await expense.delete()
+
+
+# ========================
+# GET stats
+# ========================
+async def get_stats(user_id: str):
+    pipeline = [
+        {"$match": {"user_id": user_id}},
+        {
+            "$group": {
+                "_id": "$category",
+                "total": {"$sum": "$amount"}
+            }
+        }
+    ]
+
+    return await Expense.aggregate(pipeline).to_list()

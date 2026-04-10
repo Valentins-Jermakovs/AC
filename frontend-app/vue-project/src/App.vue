@@ -9,8 +9,8 @@
 <script>
 import EyeRestReminder from './components/common/EyeRestReminder.vue'
 import { useDocumentTitle } from './utils/useDocumentTitle'
-import { useVisitsStore } from './stores/visits';
-import { useAuthStore } from './stores/auth';
+import { useVisitsStore } from './stores/visits'
+import { useAuthStore } from './stores/auth'
 
 export default {
   name: 'App', // Component name

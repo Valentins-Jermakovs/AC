@@ -7,8 +7,12 @@
       </span>
     </label>
 
-    <input v-model="form.title" type="text" :placeholder="$t('news.editor.title_placeholder')"
-      class="input input-bordered w-full" />
+    <input
+      v-model="form.title"
+      type="text"
+      :placeholder="$t('news.editor.title_placeholder')"
+      class="input input-bordered w-full"
+    />
 
     <!-- Cover Image -->
     <label class="label">
@@ -17,8 +21,12 @@
       </span>
     </label>
 
-    <input v-model="form.coverImage" type="text" :placeholder="$t('news.editor.image_placeholder')"
-      class="input input-bordered w-full" />
+    <input
+      v-model="form.coverImage"
+      type="text"
+      :placeholder="$t('news.editor.image_placeholder')"
+      class="input input-bordered w-full"
+    />
 
     <!-- Tags -->
     <label class="label">
@@ -27,13 +35,21 @@
       </span>
     </label>
 
-    <input v-model="tagsInput" @keyup.enter="applyTags" type="text" :placeholder="$t('news.editor.tags_placeholder')"
-      class="input input-bordered w-full" />
+    <input
+      v-model="tagsInput"
+      @keyup.enter="applyTags"
+      type="text"
+      :placeholder="$t('news.editor.tags_placeholder')"
+      class="input input-bordered w-full"
+    />
 
     <!-- Tags list -->
     <div class="flex gap-2 flex-wrap py-2">
-      <div v-for="(tag, idx) in form.tags" :key="idx"
-        class="bg-base-100 border border-base-300 flex items-center rounded px-2 py-1 gap-2">
+      <div
+        v-for="(tag, idx) in form.tags"
+        :key="idx"
+        class="bg-base-100 border border-base-300 flex items-center rounded px-2 py-1 gap-2"
+      >
         <p class="truncate max-w-30 sm:max-w-none">
           {{ tag }}
         </p>
@@ -100,12 +116,18 @@
     </label>
 
     <!-- Editor -->
-    <EditorContent :editor="editor"
-      class="prose prose-sm sm:prose-base max-w-none prose-a:text-blue-600 hover:prose-a:underline border border-base-300 bg-base-100 p-2 sm:p-4 rounded overflow-auto" />
+    <EditorContent
+      :editor="editor"
+      class="prose prose-sm sm:prose-base max-w-none prose-a:text-blue-600 hover:prose-a:underline border border-base-300 bg-base-100 p-2 sm:p-4 rounded overflow-auto"
+    />
 
     <!-- Action buttons -->
     <div class="flex flex-col sm:flex-row gap-2">
-      <button class="btn btn-primary w-full sm:w-auto" @click="saveNews" :disabled="newsStore.loading">
+      <button
+        class="btn btn-primary w-full sm:w-auto"
+        @click="saveNews"
+        :disabled="newsStore.loading"
+      >
         {{ form.id ? $t('common.edit') : $t('common.create') }}
       </button>
 

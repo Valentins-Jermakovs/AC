@@ -33,7 +33,7 @@ import LoadingScreen from '@/components/common/LoadingScreen.vue'
 import NewsCard from './NewsCard.vue'
 
 import { useNewsStore } from '@/stores/news'
-import NewsFooter from './NewsFooter.vue';
+import NewsFooter from './NewsFooter.vue'
 
 export default {
   name: 'NewsList',
@@ -41,7 +41,7 @@ export default {
   components: {
     NewsCard,
     LoadingScreen,
-    NewsFooter
+    NewsFooter,
   },
 
   data() {

@@ -53,9 +53,11 @@
     <div class="w-full h-56 bg-base-10000 relative">
       <div v-if="!loaded" class="skeleton absolute inset-0"></div>
 
-      <img src="@/assets/images/jeremy-bishop-GoEWA8YCQJ0-unsplash.jpg"
+      <img
+        src="@/assets/images/jeremy-bishop-GoEWA8YCQJ0-unsplash.jpg"
         class="w-full h-full object-cover transition-opacity duration-700"
-        :class="loaded ? 'opacity-100' : 'opacity-0'" />
+        :class="loaded ? 'opacity-100' : 'opacity-0'"
+      />
 
       <div class="absolute inset-0 bg-black/50 flex flex-col justify-end p-5 gap-5">
         <div class="flex items-center justify-between gap-3">
@@ -172,8 +174,10 @@
       </div>
 
       <!-- EXTRA -->
-      <div class="flex gap-3 bg-base-100 border border-base-300 p-4"
-        v-if="closestEvent.startTime || closestEvent.endTime">
+      <div
+        class="flex gap-3 bg-base-100 border border-base-300 p-4"
+        v-if="closestEvent.startTime || closestEvent.endTime"
+      >
         <font-awesome-icon icon="fa-solid fa-clock" class="text-warning text-xl" />
 
         <div class="flex flex-col">
@@ -190,9 +194,14 @@
   </div>
 
   <!-- NO EVENTS IN MONTH -->
-  <div v-else
-    class="w-full bg-base-200 border border-base-300 p-10 flex flex-col items-center justify-center gap-4 text-center">
-    <font-awesome-icon icon="fa-solid fa-calendar-xmark" class="text-5xl text-base-content/40 animate-bounce" />
+  <div
+    v-else
+    class="w-full bg-base-200 border border-base-300 p-10 flex flex-col items-center justify-center gap-4 text-center"
+  >
+    <font-awesome-icon
+      icon="fa-solid fa-calendar-xmark"
+      class="text-5xl text-base-content/40 animate-bounce"
+    />
     <progress class="progress w-1/3 progress-neutral" max="100"></progress>
     <div class="flex flex-col gap-1">
       <h2 class="text-xl font-semibold">

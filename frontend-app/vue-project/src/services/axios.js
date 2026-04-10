@@ -124,7 +124,6 @@ api.interceptors.response.use(
         userStore.$reset()
         adminStore.$reset()
 
-
         isRefreshing = false
 
         window.location.replace('/login') // Redirect to login

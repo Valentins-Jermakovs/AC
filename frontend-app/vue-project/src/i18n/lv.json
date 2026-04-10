@@ -39,6 +39,7 @@
     }
   },
   "common": {
+    "loading": "Ielāde...",
     "actions": "Darbības",
     "content": "Saturs",
     "created_at": "Izveidots",
@@ -253,7 +254,8 @@
   "errors": {
     "404": "Šī vieta eksistē tikai tavos sapņos… vai arī mēs to vienkārši pazaudējām (404)",
     "tasks_not_found": "Neviens uzdevums nav izvēlēts",
-    "news_not_found": "Ziņas nav atrastas"
+    "news_not_found": "Ziņas nav atrastas",
+    "no_data": "Nav datu"
   },
   "work": {
     "title": "Projekti, uzdevumi...",
@@ -692,6 +694,8 @@
     "total_visits": "Maksimāls apmeklējumu daudzums",
     "total_time": "Maksimāls apmeklājuma laiks",
     "average_time_per_visit": "Vidējs apmeklējuma laiks (min)",
-    "total_time_per_day": "Maksimāls apmeklājuma laiks dienā (min)"
+    "total_time_per_day": "Maksimāls apmeklājuma laiks dienā (min)",
+    "no_activity": "Aktivitātes dati nav pieejami",
+    "start_use_app": "Izmantojiet programmu"
   }
 }

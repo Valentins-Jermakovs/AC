@@ -39,6 +39,7 @@
     }
   },
   "common": {
+    "loading": "Loading...",
     "actions": "Actions",
     "content": "Content",
     "title": "Title",
@@ -258,7 +259,8 @@
   "errors": {
     "404": "This place exists only in your imagination... or maybe we will forget about it. (404)",
     "tasks_not_found": "No task selected",
-    "news_not_found": "News not found"
+    "news_not_found": "News not found",
+    "no_data": "No data"
   },
   "work": {
     "title": "Projects, tasks...",
@@ -697,6 +699,8 @@
     "total_visits": "Total visits",
     "total_time": "Total visit time",
     "average_time_per_visit": "Average visit time (min)",
-    "total_time_per_day": "Total visit time per day (min)"
+    "total_time_per_day": "Total visit time per day (min)",
+    "no_activity": "Your activity charts will appear here",
+    "start_use_app": "Start using the app to generate stats"
   }
 }

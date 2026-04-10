@@ -16,11 +16,11 @@
                     class="text-3xl text-base-content/40 animate-bounce" />
 
                 <span class="text-sm text-base-content/60 font-medium">
-                    No visit data yet
+                    {{ $t('errors.no_data') }}
                 </span>
 
                 <span class="text-xs text-base-content/40">
-                    Your activity charts will appear here
+                    {{ $t('visits.no_activity') }}
                 </span>
             </div>
 
@@ -43,11 +43,11 @@
                 <font-awesome-icon icon="fa-solid fa-chart-line" class="text-3xl text-base-content/40 animate-pulse" />
 
                 <span class="text-sm text-base-content/60 font-medium">
-                    No time statistics yet
+                    {{ $t('errors.no_data') }}
                 </span>
 
                 <span class="text-xs text-base-content/40">
-                    Start using the app to generate stats
+                    {{ $t('visits.start_use_app') }}
                 </span>
             </div>
 

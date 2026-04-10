@@ -4,13 +4,13 @@
     <!-- Active Days Card -->
     <div class="card bg-base-200 border border-base-300 rounded-none p-4 flex flex-col items-center justify-center">
       <div class="text-sm">{{ $t('visits.active_days') }}</div>
-      <div class="text-2xl font-bold mt-2">
+      <div class="">
         <template v-if="visitsStore.visits && visitsStore.visits.active_days !== undefined">
           {{ visitsStore.visits.active_days }}
         </template>
         <template v-else>
-          <i class="fas fa-spinner animate-spin mr-1"></i>
-          Loading...
+          <font-awesome-icon icon="fa-solid fa-circle-notch" class="animate-spin"></font-awesome-icon>
+          {{ $t('common.loading') }}
         </template>
       </div>
     </div>
@@ -18,13 +18,13 @@
     <!-- Total Visits Card -->
     <div class="card bg-base-200 border border-base-300 rounded-none p-4 flex flex-col items-center justify-center">
       <div class="text-sm">{{ $t('visits.total_visits') }}</div>
-      <div class="text-2xl font-bold mt-2">
+      <div class="">
         <template v-if="visitsStore.visits && visitsStore.visits.total_visits !== undefined">
           {{ visitsStore.visits.total_visits }}
         </template>
         <template v-else>
-          <i class="fas fa-circle-notch animate-spin mr-1"></i>
-          Loading...
+          <font-awesome-icon icon="fa-solid fa-circle-notch" class="animate-spin"></font-awesome-icon>
+          {{ $t('common.loading') }}
         </template>
       </div>
     </div>
@@ -32,13 +32,13 @@
     <!-- Total Time Card -->
     <div class="card bg-base-200 border border-base-300 rounded-none p-4 flex flex-col items-center justify-center">
       <div class="text-sm">{{ $t('visits.total_time') }}</div>
-      <div class="text-2xl font-bold mt-2">
+      <div class="">
         <template v-if="visitsStore.visits && visitsStore.visits.total_time !== undefined">
           {{ formatTime(visitsStore.visits.total_time) }}
         </template>
         <template v-else>
-          <i class="fas fa-clock animate-ping mr-1 text-gray-400"></i>
-          Loading...
+          <font-awesome-icon icon="fa-solid fa-circle-notch" class="animate-spin"></font-awesome-icon>
+          {{ $t('common.loading') }}
         </template>
       </div>
     </div>

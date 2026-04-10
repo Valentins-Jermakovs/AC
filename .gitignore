@@ -4,6 +4,7 @@
 /events-service/events-venv
 /news-service/news-venv
 /visit-service/visit-venv
+/expenses-service/expenses-venv
 
 # Python cache
 __pycache__/

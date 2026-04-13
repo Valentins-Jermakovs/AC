@@ -21,3 +21,10 @@ class RecurringPaymentResponse(BaseModel):
             ]
         }
     }
+
+class PaginatedResponse(BaseModel):
+    items: list[RecurringPaymentResponse]
+    total_items: int
+    limit: int
+    page: int
+    total_pages: int

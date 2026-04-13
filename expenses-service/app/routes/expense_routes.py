@@ -1,8 +1,7 @@
 # =========================
 # IMPORTS
 # =========================
-from fastapi import APIRouter, HTTPException, status, Depends
-from typing import Optional
+from fastapi import APIRouter, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 # Utilities
 from app.utils.check_access_token import check_access_token
@@ -17,7 +16,7 @@ from app.services.expense_service import (
 # Schemas
 from app.schemas.expenses.create_expense_schema import ExpenseCreateSchema
 from app.schemas.expenses.update_expense_schema import ExpenseUpdateSchema
-from app.schemas.expenses.response_expense_schema import ExpenseResponse
+from app.schemas.expenses.response_expense_schema import ExpenseResponse, PaginatedResponse
 from app.schemas.expenses.expense_filters_schema import ExpenseFilter
 
 # =========================
@@ -64,11 +63,13 @@ async def create_expense_route(
 # Get expenses for the current user
 @router.get(
     "/get",
-    response_model=list[ExpenseResponse],
+    response_model=PaginatedResponse,
 )
 async def get_expenses_route(
     credentials: HTTPAuthorizationCredentials = Depends(security),
-    filters: ExpenseFilter = Depends()
+    filters: ExpenseFilter = Depends(),
+    page: int = 1,
+    limit: int = 10
 ):
     """
     Get expenses for the current user.
@@ -82,7 +83,9 @@ async def get_expenses_route(
 
     return await get_expenses(
         user_id=user_id, 
-        filters=filters
+        filters=filters,
+        page=page,
+        limit=limit
     )
 
 

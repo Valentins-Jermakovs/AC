@@ -15,7 +15,7 @@ from app.services.payments_service import (
 # Schemas
 from app.schemas.payment.create_payment_schema import RecurringPaymentCreateSchema
 from app.schemas.payment.update_payment_schema import RecurringPaymentUpdateSchema
-from app.schemas.payment.payment_response_schema import RecurringPaymentResponse
+from app.schemas.payment.payment_response_schema import RecurringPaymentResponse, PaginatedResponse
 from app.schemas.payment.message_response import MessageResponse
 
 
@@ -61,9 +61,11 @@ async def create_recurring_route(
 # Get all recurring payments
 @router.get(
     "/get",
-    response_model=list[RecurringPaymentResponse]
+    response_model=PaginatedResponse
 )
 async def get_recurring_route(
+    page: int = 1,
+    limit: int = 10,
     credentials: HTTPAuthorizationCredentials = Depends(security),
 ):
     """
@@ -77,7 +79,9 @@ async def get_recurring_route(
     user_id = await check_access_token(access_token)
 
     return await get_recurring(
-        user_id=user_id
+        user_id=user_id,
+        page=page,
+        limit=limit
     )
 
 

@@ -2,9 +2,10 @@ from app.models.payment_model import RecurringPayment
 from fastapi import HTTPException
 from app.schemas.payment.create_payment_schema import RecurringPaymentCreateSchema
 from app.schemas.payment.update_payment_schema import RecurringPaymentUpdateSchema
-from app.schemas.payment.payment_response_schema import RecurringPaymentResponse
+from app.schemas.payment.payment_response_schema import RecurringPaymentResponse, PaginatedResponse
 from app.schemas.payment.message_response import MessageResponse
 from bson import ObjectId
+import math
 
 # Convert recurring payment to response
 def to_response(
@@ -41,17 +42,41 @@ async def create_recurring(
 
 # Get all recurring payments
 async def get_recurring(
-    user_id: str
-) -> list[RecurringPaymentResponse]:
+    user_id: str,
+    page: int = 1,
+    limit: int = 10
+) -> PaginatedResponse:
+
+    if page < 1:
+        page = 1
 
     if not user_id:
         raise HTTPException(status_code=400, detail="User ID is required")
 
+    skip = (page - 1) * limit
+
     payments = await RecurringPayment.find({
         "user_id": user_id
-    }).to_list()
+    })\
+    .skip(skip)\
+    .limit(limit)\
+    .to_list()
 
-    return [to_response(p) for p in payments]
+    items = [to_response(p) for p in payments]
+
+    total_items = await RecurringPayment.find({
+        "user_id": user_id
+    }).count()
+
+    total_pages = math.ceil(total_items / limit) if limit > 0 else 0
+
+    return PaginatedResponse(
+        items=items,
+        total_items=total_items,
+        limit=limit,
+        page=page,
+        total_pages=total_pages
+    )
 
 
 # Delete a recurring payment

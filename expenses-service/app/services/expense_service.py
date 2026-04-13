@@ -4,9 +4,10 @@ from app.models.expense_model import Expense
 from app.schemas.expenses.create_expense_schema import ExpenseCreateSchema
 from app.schemas.expenses.update_expense_schema import ExpenseUpdateSchema
 from app.schemas.expenses.expense_filters_schema import ExpenseFilter
-from app.schemas.expenses.response_expense_schema import ExpenseResponse
+from app.schemas.expenses.response_expense_schema import ExpenseResponse, PaginatedResponse
 from app.schemas.expenses.expense_stats_schema import ExpenseStatsResponse
 from bson import ObjectId
+import math
 
 # ========================
 # CREATE
@@ -44,13 +45,17 @@ async def create_expense(
 # ========================
 async def get_expenses(
     user_id: str,
-    filters: ExpenseFilter
-) -> list[ExpenseResponse]:
+    filters: ExpenseFilter,
+    page: int = 1,
+    limit: int = 10
+) -> PaginatedResponse:
+
+    if page < 1:
+        page = 1
 
     if not user_id:
         raise HTTPException(status_code=400, detail="User ID is required")
 
-    # business validation
     if filters.from_date and filters.to_date:
         if filters.from_date > filters.to_date:
             raise HTTPException(
@@ -70,9 +75,15 @@ async def get_expenses(
     if filters.category:
         query["category"] = filters.category
 
-    expenses = await Expense.find(query).sort("-date").to_list()
+    skip = (page - 1) * limit
 
-    return [
+    expenses = await Expense.find(query)\
+        .sort("-date")\
+        .skip(skip)\
+        .limit(limit)\
+        .to_list()
+
+    items = [
         ExpenseResponse(
             id=str(expense.id),
             amount=expense.amount,
@@ -82,6 +93,17 @@ async def get_expenses(
         )
         for expense in expenses
     ]
+
+    total_items = await Expense.find(query).count()
+    total_pages = math.ceil(total_items / limit) if limit > 0 else 0
+
+    return PaginatedResponse(
+        items=items,
+        total_items=total_items,
+        limit=limit,
+        page=page,
+        total_pages=total_pages
+    )
 
 
 # ========================

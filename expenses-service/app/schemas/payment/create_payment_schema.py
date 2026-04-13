@@ -10,7 +10,7 @@ class Interval(str, Enum):
 
 
 class RecurringPaymentCreateSchema(BaseModel):
-    amount: float = Field(..., gt=0)
-    category: str
+    amount: float = Field(gt=0)
+    category: str = Field(min_length=3, max_length=100)
     start_date: date
     interval: Interval

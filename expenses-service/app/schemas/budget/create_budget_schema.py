@@ -1,11 +1,11 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from datetime import date
 
 
 class BudgetCreateSchema(BaseModel):
     month: str
-    category: str
-    planned_amount: float
+    category: str = Field(min_length=3, max_length=100)
+    planned_amount: float = Field(gt=0)
 
     model_config = {
         "json_schema_extra": {

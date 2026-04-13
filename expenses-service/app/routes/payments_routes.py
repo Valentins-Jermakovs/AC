@@ -85,11 +85,22 @@ async def get_recurring_route(
 async def update_recurring_route(
     payment_id: str,
     payment: RecurringPaymentUpdateSchema,
+    credentials: HTTPAuthorizationCredentials = Depends(security),
 ):
+    """
+    Update a recurring payment for the current user.
+
+    - Requires authentication
+    - Validates user via access token
+    - Uses `update_recurring` service
+    """
+    access_token = credentials.credentials
+    user_id = await check_access_token(access_token)
 
     return await update_recurring(
         payment_id=payment_id,
-        data=payment
+        data=payment,
+        user_id=user_id
     )
 
 # delete a recurring payment
@@ -98,8 +109,19 @@ async def update_recurring_route(
 )
 async def delete_recurring_route(
     payment_id: str,
+    credentials: HTTPAuthorizationCredentials = Depends(security),
 ):
+    """
+    Delete a recurring payment for the current user.
+
+    - Requires authentication
+    - Validates user via access token
+    - Uses `delete_recurring` service
+    """
+    access_token = credentials.credentials
+    user_id = await check_access_token(access_token)
 
     return await delete_recurring(
-        payment_id=payment_id
+        payment_id=payment_id,
+        user_id=user_id
     )

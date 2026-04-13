@@ -14,8 +14,8 @@ from app.services.payments_service import (
     get_recurring,
 )
 # Schemas
-from app.schemas.create_payment_schema import RecurringPaymentCreateSchema
-from app.schemas.update_payment_schema import RecurringPaymentUpdateSchema
+from app.schemas.payment.create_payment_schema import RecurringPaymentCreateSchema
+from app.schemas.payment.update_payment_schema import RecurringPaymentUpdateSchema
 
 
 # =========================

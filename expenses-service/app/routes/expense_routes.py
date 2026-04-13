@@ -15,10 +15,10 @@ from app.services.expense_service import (
     get_stats
 )
 # Schemas
-from app.schemas.create_schema import ExpenseCreateSchema
-from app.schemas.update_schema import ExpenseUpdateSchema
-from app.schemas.response_schema import ExpenseResponse
-from app.schemas.filters_schema import ExpenseFilter
+from app.schemas.expenses.create_expense_schema import ExpenseCreateSchema
+from app.schemas.expenses.update_expense_schema import ExpenseUpdateSchema
+from app.schemas.expenses.response_expense_schema import ExpenseResponse
+from app.schemas.expenses.expense_filters_schema import ExpenseFilter
 
 # =========================
 # ROUTER SETUP
@@ -117,6 +117,7 @@ async def get_stats_route(
 async def update_expense_route(
     expense_id: str,
     expense: ExpenseUpdateSchema,
+    credentials: HTTPAuthorizationCredentials = Depends(security),
 ):
     """
     Update an expense for the current user.
@@ -125,10 +126,13 @@ async def update_expense_route(
     - Validates user via access token
     - Uses `update_expense` service
     """
+    access_token = credentials.credentials
+    user_id = await check_access_token(access_token)
 
     return await update_expense(
         expense_id=expense_id,
-        data=expense
+        data=expense,
+        user_id=user_id
     )
 
 
@@ -139,6 +143,7 @@ async def update_expense_route(
 )
 async def delete_expense_route(
     expense_id: str,
+    credentials: HTTPAuthorizationCredentials = Depends(security),
 ):
     """
     Delete an expense for the current user.
@@ -147,7 +152,10 @@ async def delete_expense_route(
     - Validates user via access token
     - Uses `delete_expense` service
     """
+    access_token = credentials.credentials
+    user_id = await check_access_token(access_token)
 
     return await delete_expense(
-        expense_id=expense_id
+        expense_id=expense_id,
+        user_id=user_id
     )

@@ -14,8 +14,8 @@ from app.services.budget_service import (
     get_budgets
 )
 # Schemas
-from app.schemas.create_budget_schema import BudgetCreateSchema
-from app.schemas.update_budget_schema import BudgetUpdateSchema
+from app.schemas.budget.create_budget_schema import BudgetCreateSchema
+from app.schemas.budget.update_budget_schema import BudgetUpdateSchema
 
 # =========================
 # ROUTER SETUP

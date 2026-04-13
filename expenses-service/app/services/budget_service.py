@@ -1,8 +1,10 @@
 from app.models.budget_model import Budget
 
-
 # Create a new budget
-async def create_budget(user_id: str, data):
+async def create_budget(
+    user_id: str, 
+    data
+):
     budget = Budget(
         user_id=user_id,
         month=data.month,
@@ -14,7 +16,10 @@ async def create_budget(user_id: str, data):
     return budget
 
 # Get all budgets
-async def get_budgets(user_id: str, month: str):
+async def get_budgets(
+    user_id: str, 
+    month: str
+):
     return await Budget.find({
         "user_id": user_id,
         "month": month
@@ -22,7 +27,10 @@ async def get_budgets(user_id: str, month: str):
 
 
 # Update a budget
-async def update_budget(budget_id: str, data):
+async def update_budget(
+    budget_id: str, 
+    data
+):
     budget = await Budget.get(budget_id)
 
     if not budget:
@@ -38,7 +46,9 @@ async def update_budget(budget_id: str, data):
     return budget
 
 # Delete budget
-async def delete_budget(budget_id: str):
+async def delete_budget(
+    budget_id: str
+):
     budget = await Budget.get(budget_id)
     if budget:
         await budget.delete()

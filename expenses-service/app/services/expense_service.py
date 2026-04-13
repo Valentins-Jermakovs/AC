@@ -1,10 +1,11 @@
 from datetime import datetime
-
+from fastapi import HTTPException
 from app.models.expense_model import Expense
-from app.schemas.create_schema import ExpenseCreateSchema
-from app.schemas.update_schema import ExpenseUpdateSchema
-from app.schemas.filters_schema import ExpenseFilter
-from app.schemas.response_schema import ExpenseResponse
+from app.schemas.expenses.create_expense_schema import ExpenseCreateSchema
+from app.schemas.expenses.update_expense_schema import ExpenseUpdateSchema
+from app.schemas.expenses.expense_filters_schema import ExpenseFilter
+from app.schemas.expenses.response_expense_schema import ExpenseResponse
+from app.schemas.expenses.expense_stats_schema import ExpenseStatsResponse
 
 # ========================
 # CREATE
@@ -12,8 +13,13 @@ from app.schemas.response_schema import ExpenseResponse
 async def create_expense(
     data: ExpenseCreateSchema, 
     user_id: str
-) -> Expense:
+) -> ExpenseResponse:
     
+    # Validation
+    if not user_id:
+        raise HTTPException(status_code=400, detail="User ID is required")
+
+
     expense = Expense(
         user_id=user_id,
         amount=data.amount,
@@ -38,11 +44,20 @@ async def create_expense(
 async def get_expenses(
     user_id: str,
     filters: ExpenseFilter
-) -> list[Expense]:
-    
-    query = {
-        "user_id": user_id
-    }
+) -> list[ExpenseResponse]:
+
+    if not user_id:
+        raise HTTPException(status_code=400, detail="User ID is required")
+
+    # business validation
+    if filters.from_date and filters.to_date:
+        if filters.from_date > filters.to_date:
+            raise HTTPException(
+                status_code=400,
+                detail="from_date cannot be greater than to_date"
+            )
+
+    query = {"user_id": user_id}
 
     if filters.from_date:
         query["date"] = {"$gte": filters.from_date}
@@ -71,11 +86,20 @@ async def get_expenses(
 # ========================
 # UPDATE
 # ========================
-async def update_expense(expense_id: str, data: ExpenseUpdateSchema):
+async def update_expense(
+    expense_id: str, 
+    data: ExpenseUpdateSchema,
+    user_id: str
+) -> ExpenseResponse:
+    
     expense = await Expense.get(expense_id)
 
-    if not expense:
-        return None
+    # validation
+    if not user_id:
+        raise HTTPException(status_code=400, detail="User ID is required")
+    if not expense or expense.user_id != user_id:
+        raise HTTPException(status_code=404, detail="Expense not found")
+    
 
     update_data = data.model_dump(exclude_unset=True)
 
@@ -94,15 +118,36 @@ async def update_expense(expense_id: str, data: ExpenseUpdateSchema):
 # ========================
 # DELETE
 # ========================
-async def delete_expense(expense_id: str):
+async def delete_expense(
+    expense_id: str,
+    user_id: str
+):
+
+    if not user_id:
+        raise HTTPException(status_code=400, detail="User ID is required")
+
     expense = await Expense.get(expense_id)
+
+    if not expense or expense.user_id != user_id:
+        raise HTTPException(status_code=404, detail="Expense not found")
+
     await expense.delete()
+
+    return {
+        "message": "Expense deleted successfully"
+    }
 
 
 # ========================
 # GET stats
 # ========================
-async def get_stats(user_id: str):
+async def get_stats(
+    user_id: str
+) -> list[ExpenseStatsResponse]:
+    
+    if not user_id:
+        raise HTTPException(status_code=400, detail="User ID is required")
+
     pipeline = [
         {"$match": {"user_id": user_id}},
         {
@@ -110,7 +155,16 @@ async def get_stats(user_id: str):
                 "_id": "$category",
                 "total": {"$sum": "$amount"}
             }
+        },
+        {
+            "$project": {
+                "category": "$_id",
+                "total": 1,
+                "_id": 0
+            }
         }
     ]
 
-    return await Expense.aggregate(pipeline).to_list()
+    stats = await Expense.aggregate(pipeline).to_list()
+
+    return [ExpenseStatsResponse(**item) for item in stats]

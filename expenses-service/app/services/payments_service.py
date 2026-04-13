@@ -1,11 +1,10 @@
 from app.models.payment_model import RecurringPayment
-from datetime import datetime
-from app.models.expense_model import Expense
-from typing import Optional
-from datetime import date
 
 # Create a new recurring payment
-async def create_recurring(user_id: str, data):
+async def create_recurring(
+    user_id: str, 
+    data
+):
     payment = RecurringPayment(
         user_id=user_id,
         amount=data.amount,
@@ -19,21 +18,28 @@ async def create_recurring(user_id: str, data):
 
 
 # Get all recurring payments
-async def get_recurring(user_id: str):
+async def get_recurring(
+    user_id: str
+):
     return await RecurringPayment.find({
         "user_id": user_id
     }).to_list()
 
 
 # Delete a recurring payment
-async def delete_recurring(payment_id: str):
+async def delete_recurring(
+    payment_id: str
+):
     payment = await RecurringPayment.get(payment_id)
     if payment:
         await payment.delete()
 
 
 # Update a recurring payment
-async def update_recurring(payment_id: str, data):
+async def update_recurring(
+    payment_id: str, 
+    data
+):
     payment = await RecurringPayment.get(payment_id)
 
     if not payment:

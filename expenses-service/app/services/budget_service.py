@@ -1,20 +1,29 @@
+# Imports
 from app.models.budget_model import Budget
 from fastapi import HTTPException
+from app.schemas.budget.create_budget_schema import BudgetCreateSchema
+from app.schemas.budget.update_budget_schema import BudgetUpdateSchema
+from app.schemas.budget.budget_response_schema import BudgetResponse
+from app.schemas.budget.message_response_schema import MessageResponse
+from bson import ObjectId
 
 # helper function
-def to_response(budget: Budget):
-    return {
-        "id": str(budget.id),
-        "month": budget.month,
-        "category": budget.category,
-        "planned_amount": budget.planned_amount
-    }
 
-# Create a new budget
+def to_response(budget: Budget) -> BudgetResponse:
+    return BudgetResponse(
+        id=str(budget.id),
+        month=budget.month,
+        category=budget.category,
+        planned_amount=budget.planned_amount
+    )
+
+# ========================
+# CREATE
+# ========================
 async def create_budget(
     user_id: str, 
-    data
-) -> dict:
+    data: BudgetCreateSchema
+) -> BudgetResponse:
 
     if not user_id:
         raise HTTPException(status_code=400, detail="User ID is required")
@@ -41,11 +50,13 @@ async def create_budget(
     await budget.save()
     return to_response(budget)
 
-# Get all budgets
+# ========================
+# GET
+# ========================
 async def get_budgets(
     user_id: str, 
     month: str
-) -> list[dict]:
+) -> list[BudgetResponse]:
 
     if not user_id:
         raise HTTPException(status_code=400, detail="User ID is required")
@@ -58,12 +69,21 @@ async def get_budgets(
     return [to_response(b) for b in budgets]
 
 
-# Update a budget
+# ========================
+# UPDATE
+# ========================
 async def update_budget(
     budget_id: str,
     user_id: str,
-    data
-):
+    data: BudgetUpdateSchema
+) -> BudgetResponse:
+    
+    if ObjectId.is_valid(budget_id) is False:
+        raise HTTPException(status_code=400, detail="Invalid budget ID")
+    
+    if not user_id:
+        raise HTTPException(status_code=400, detail="User ID is required")
+
     budget = await Budget.get(budget_id)
 
     if not budget or budget.user_id != user_id:
@@ -77,11 +97,21 @@ async def update_budget(
 
     return to_response(budget)
 
-# Delete budget
+
+# ========================
+# DELETE
+# ========================
 async def delete_budget(
     budget_id: str,
     user_id: str
-):
+) -> MessageResponse:
+    
+    if ObjectId.is_valid(budget_id) is False:
+        raise HTTPException(status_code=400, detail="Invalid budget ID")
+
+    if not user_id:
+        raise HTTPException(status_code=400, detail="User ID is required")
+
     budget = await Budget.get(budget_id)
 
     if not budget or budget.user_id != user_id:
@@ -89,4 +119,4 @@ async def delete_budget(
 
     await budget.delete()
 
-    return {"message": "Budget deleted successfully"}
+    return MessageResponse(message="Budget deleted successfully")

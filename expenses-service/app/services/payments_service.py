@@ -1,20 +1,28 @@
 from app.models.payment_model import RecurringPayment
-from app.models.expense_model import Expense
-from datetime import datetime, timedelta, timezone
 from fastapi import HTTPException
+from app.schemas.payment.create_payment_schema import RecurringPaymentCreateSchema
+from app.schemas.payment.update_payment_schema import RecurringPaymentUpdateSchema
+from app.schemas.payment.payment_response_schema import RecurringPaymentResponse
+from app.schemas.payment.message_response import MessageResponse
+from bson import ObjectId
 
 # Convert recurring payment to response
-def to_response(payment: RecurringPayment):
-    return {
-        "id": str(payment.id),
-        "amount": payment.amount,
-        "category": payment.category,
-        "start_date": payment.start_date,
-        "interval": payment.interval
-    }
+def to_response(
+    payment: RecurringPayment
+) -> RecurringPaymentResponse:
+    return RecurringPaymentResponse(
+        id=str(payment.id),
+        amount=payment.amount,
+        category=payment.category,
+        start_date=payment.start_date,
+        interval=payment.interval
+    )
 
 # Create a new recurring payment
-async def create_recurring(user_id: str, data):
+async def create_recurring(
+    user_id: str, 
+    data: RecurringPaymentCreateSchema
+) -> RecurringPaymentResponse:
 
     if not user_id:
         raise HTTPException(status_code=400, detail="User ID is required")
@@ -32,7 +40,9 @@ async def create_recurring(user_id: str, data):
 
 
 # Get all recurring payments
-async def get_recurring(user_id: str):
+async def get_recurring(
+    user_id: str
+) -> list[RecurringPaymentResponse]:
 
     if not user_id:
         raise HTTPException(status_code=400, detail="User ID is required")
@@ -48,7 +58,11 @@ async def get_recurring(user_id: str):
 async def delete_recurring(
     payment_id: str,
     user_id: str
-):
+) -> MessageResponse:
+    
+    if ObjectId.is_valid(payment_id) is False:
+        raise HTTPException(status_code=400, detail="Invalid payment ID")
+
     payment = await RecurringPayment.get(payment_id)
 
     if not payment or payment.user_id != user_id:
@@ -63,8 +77,12 @@ async def delete_recurring(
 async def update_recurring(
     payment_id: str,
     user_id: str,
-    data
-):
+    data: RecurringPaymentUpdateSchema
+) -> RecurringPaymentResponse:
+    
+    if ObjectId.is_valid(payment_id) is False:
+        raise HTTPException(status_code=400, detail="Invalid payment ID")
+    
     payment = await RecurringPayment.get(payment_id)
 
     if not payment or payment.user_id != user_id:

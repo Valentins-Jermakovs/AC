@@ -6,6 +6,7 @@ from app.schemas.expenses.update_expense_schema import ExpenseUpdateSchema
 from app.schemas.expenses.expense_filters_schema import ExpenseFilter
 from app.schemas.expenses.response_expense_schema import ExpenseResponse
 from app.schemas.expenses.expense_stats_schema import ExpenseStatsResponse
+from bson import ObjectId
 
 # ========================
 # CREATE
@@ -92,6 +93,9 @@ async def update_expense(
     user_id: str
 ) -> ExpenseResponse:
     
+    if ObjectId.is_valid(expense_id) is False:
+        raise HTTPException(status_code=400, detail="Invalid expense ID")
+    
     expense = await Expense.get(expense_id)
 
     # validation
@@ -125,6 +129,9 @@ async def delete_expense(
 
     if not user_id:
         raise HTTPException(status_code=400, detail="User ID is required")
+    
+    if ObjectId.is_valid(expense_id) is False:
+        raise HTTPException(status_code=400, detail="Invalid expense ID")
 
     expense = await Expense.get(expense_id)
 

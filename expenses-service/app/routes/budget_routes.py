@@ -15,6 +15,8 @@ from app.services.budget_service import (
 # Schemas
 from app.schemas.budget.create_budget_schema import BudgetCreateSchema
 from app.schemas.budget.update_budget_schema import BudgetUpdateSchema
+from app.schemas.budget.message_response_schema import MessageResponse
+from app.schemas.budget.budget_response_schema import BudgetResponse
 
 # =========================
 # ROUTER SETUP
@@ -35,6 +37,7 @@ security = HTTPBearer()
 # Create a budget
 @router.post(
     "/create",
+    response_model=BudgetResponse
 )
 async def create_budget_route(
     budget: BudgetCreateSchema,
@@ -59,6 +62,7 @@ async def create_budget_route(
 # Get a budget
 @router.get(
     "/get",
+    response_model=list[BudgetResponse]
 )
 async def get_budgets_route(
     month: str,
@@ -83,6 +87,7 @@ async def get_budgets_route(
 # Update a budget
 @router.put(
     "/update",
+    response_model=BudgetResponse
 )
 async def update_budget_route(
     budget: BudgetUpdateSchema,
@@ -109,6 +114,7 @@ async def update_budget_route(
 # Delete budget
 @router.delete(
     "/delete",
+    response_model=MessageResponse
 )
 async def delete_budget_route(
     budget_id: str,

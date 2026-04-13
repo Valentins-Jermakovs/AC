@@ -1,8 +1,7 @@
 # =========================
 # IMPORTS
 # =========================
-from fastapi import APIRouter, HTTPException, status, Depends
-from typing import Optional
+from fastapi import APIRouter, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 # Utilities
 from app.utils.check_access_token import check_access_token
@@ -16,6 +15,8 @@ from app.services.payments_service import (
 # Schemas
 from app.schemas.payment.create_payment_schema import RecurringPaymentCreateSchema
 from app.schemas.payment.update_payment_schema import RecurringPaymentUpdateSchema
+from app.schemas.payment.payment_response_schema import RecurringPaymentResponse
+from app.schemas.payment.message_response import MessageResponse
 
 
 # =========================
@@ -36,6 +37,7 @@ security = HTTPBearer()
 # Create a recurring payment
 @router.post(
     "/create",
+    response_model=RecurringPaymentResponse
 )
 async def create_recurring_route(
     payment: RecurringPaymentCreateSchema,
@@ -59,6 +61,7 @@ async def create_recurring_route(
 # Get all recurring payments
 @router.get(
     "/get",
+    response_model=list[RecurringPaymentResponse]
 )
 async def get_recurring_route(
     credentials: HTTPAuthorizationCredentials = Depends(security),
@@ -81,6 +84,7 @@ async def get_recurring_route(
 # update a recurring payment
 @router.put(
     "/update/{payment_id}",
+    response_model=RecurringPaymentResponse
 )
 async def update_recurring_route(
     payment_id: str,
@@ -106,6 +110,7 @@ async def update_recurring_route(
 # delete a recurring payment
 @router.delete(
     "/delete/{payment_id}",
+    response_model=MessageResponse
 )
 async def delete_recurring_route(
     payment_id: str,

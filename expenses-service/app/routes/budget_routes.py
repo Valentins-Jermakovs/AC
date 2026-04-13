@@ -1,8 +1,7 @@
 # =========================
 # IMPORTS
 # =========================
-from fastapi import APIRouter, HTTPException, status, Depends
-from typing import Optional
+from fastapi import APIRouter, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 # Utilities
 from app.utils.check_access_token import check_access_token
@@ -88,11 +87,22 @@ async def get_budgets_route(
 async def update_budget_route(
     budget: BudgetUpdateSchema,
     budget_id: str,
+    credentials: HTTPAuthorizationCredentials = Depends(security),
 ):
+    """
+    Update a budget for the current user.
+
+    - Requires authentication
+    - Validates user via access token
+    - Uses `update_budget` service
+    """
+    access_token = credentials.credentials
+    user_id = await check_access_token(access_token)
 
     return await update_budget(
         budget_id=budget_id,
-        data=budget
+        data=budget,
+        user_id=user_id
     )
 
 
@@ -102,8 +112,19 @@ async def update_budget_route(
 )
 async def delete_budget_route(
     budget_id: str,
+    credentials: HTTPAuthorizationCredentials = Depends(security),
 ):
+    """
+    Delete a budget for the current user.
+
+    - Requires authentication
+    - Validates user via access token
+    - Uses `delete_budget` service
+    """
+    access_token = credentials.credentials
+    user_id = await check_access_token(access_token)
 
     return await delete_budget(
-        budget_id=budget_id
+        budget_id=budget_id,
+        user_id=user_id
     )

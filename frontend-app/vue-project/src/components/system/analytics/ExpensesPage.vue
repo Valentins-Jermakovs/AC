@@ -411,7 +411,10 @@ export default {
                     datasets: [
                         {
                             label: 'Daily Spending',
-                            data: this.timelineData.data
+                            data: this.timelineData.data,
+                            borderColor: '#16a34a',
+                            backgroundColor: 'rgba(22,163,74,0.2)',
+                            fill: true
                         }
                     ]
                 },

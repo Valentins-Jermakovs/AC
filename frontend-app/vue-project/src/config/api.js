@@ -225,8 +225,8 @@ export const API_ENDPOINTS = {
   DELETE_BUDGET: '/budget/delete',
 
   // ===== PAYMENT MANAGEMENT =====
-  GET_PAYMENTS: '/payments/get',
-  CREATE_PAYMENT: '/payments/create',
-  UPDATE_PAYMENT: (payment_id) => `/payments/update/${payment_id}`,
-  DELETE_PAYMENT: (payment_id) => `/payments/delete/${payment_id}`,
+  GET_PAYMENTS: '/payment/get',
+  CREATE_PAYMENT: '/payment/create',
+  UPDATE_PAYMENT: (payment_id) => `/payment/update/${payment_id}`,
+  DELETE_PAYMENT: (payment_id) => `/payment/delete/${payment_id}`,
 }

@@ -28,6 +28,7 @@ export const usePaymentStore = defineStore('payment', {
         // Fetch (uses last page/limit)
         // --------------------------
         async fetchPayments() {
+            const authStore = useAuthStore()
             this.loading = true
             this.error = null
 
@@ -38,13 +39,13 @@ export const usePaymentStore = defineStore('payment', {
                         limit: this.meta.limit
                     },
                     headers: {
-                        Authorization: `Bearer ${useAuthStore().token}`
+                        Authorization: `Bearer ${authStore.accessToken}`
                     }
                 })
 
-                this.payments = response.data.payments
-                this.meta.total_items = response.data.meta.total_items
-                this.meta.total_pages = response.data.meta.total_pages
+                this.payments = response.data.items || []
+                this.meta.total_items = response.data.total_items
+                this.meta.total_pages = response.data.total_pages
 
                 // fix if page becomes invalid (after delete)
                 if (this.meta.page > this.meta.total_pages) {
@@ -71,6 +72,7 @@ export const usePaymentStore = defineStore('payment', {
         // CRUD
         // --------------------------
         async createPayment(data) {
+            const authStore = useAuthStore()
             this.loading = true
             this.error = null
 
@@ -81,7 +83,7 @@ export const usePaymentStore = defineStore('payment', {
                         data,
                         {
                             headers: {
-                                Authorization: `Bearer ${useAuthStore().token}`
+                                Authorization: `Bearer ${authStore.accessToken}`
                             }
                         }
                     )
@@ -95,6 +97,7 @@ export const usePaymentStore = defineStore('payment', {
         },
 
         async updatePayment(data, payment_id) {
+            const authStore = useAuthStore()
             this.loading = true
             this.error = null
 
@@ -105,7 +108,7 @@ export const usePaymentStore = defineStore('payment', {
                         data,
                         {
                             headers: {
-                                Authorization: `Bearer ${useAuthStore().token}`
+                                Authorization: `Bearer ${authStore.accessToken}`
                             }
                         }
                     )
@@ -119,6 +122,7 @@ export const usePaymentStore = defineStore('payment', {
         },
 
         async deletePayment(payment_id) {
+            const authStore = useAuthStore()
             this.loading = true
             this.error = null
 
@@ -128,7 +132,7 @@ export const usePaymentStore = defineStore('payment', {
                         API_ENDPOINTS.DELETE_PAYMENT(payment_id),
                         {
                             headers: {
-                                Authorization: `Bearer ${useAuthStore().token}`
+                                Authorization: `Bearer ${authStore.accessToken}`
                             }
                         }
                     )

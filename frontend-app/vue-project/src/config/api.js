@@ -210,4 +210,23 @@ export const API_ENDPOINTS = {
   START_SESSION: '/visit/start',
   END_SESSION: '/visit/end',
   WEEK_STATS: '/visit/stats',
+
+  // ===== EXPENSE MANAGEMENT =====
+  GET_EXPENSES: '/expenses/get',
+  GET_EXPENSES_STATS: '/expenses/stats',
+  CREATE_EXPENSE: '/expenses/create',
+  UPDATE_EXPENSE: (expense_id) => `/expenses/update/${expense_id}`,
+  DELETE_EXPENSE: (expense_id) => `/expenses/delete/${expense_id}`,
+
+  // ===== BUDGET MANAGEMENT =====
+  GET_BUDGETS: '/budgets/get',
+  CREATE_BUDGET: '/budgets/create',
+  UPDATE_BUDGET: '/budgets/update/',
+  DELETE_BUDGET: '/budgets/delete/',
+
+  // ===== PAYMENT MANAGEMENT =====
+  GET_PAYMENTS: '/payments/get',
+  CREATE_PAYMENT: '/payments/create',
+  UPDATE_PAYMENT: (payment_id) => `/payments/update/${payment_id}`,
+  DELETE_PAYMENT: (payment_id) => `/payments/delete/${payment_id}`,
 }

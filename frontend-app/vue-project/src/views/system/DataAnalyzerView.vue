@@ -2,6 +2,7 @@
   <PageHeader :title="title" :imageUrl="image"></PageHeader>
   <NavigationPanel :buttons="navButtons" v-model="activePage"></NavigationPanel>
   <ExpensesPage v-if="activePage === 'expenses'"></ExpensesPage>
+  <BudgetPage v-if="activePage === 'budget'"></BudgetPage>
 </template>
 
 <script>
@@ -9,6 +10,7 @@ import PageHeader from '@/components/ui/PageHeader.vue';
 import headerImage from '@/assets/images/arturo-anez-RxbkUG80Rag-unsplash.jpg'
 import NavigationPanel from '@/components/ui/NavigationPanel.vue';
 import ExpensesPage from '@/components/system/analytics/ExpensesPage.vue';
+import BudgetPage from '@/components/system/analytics/BudgetPage.vue';
 
 
 export default {
@@ -16,7 +18,8 @@ export default {
   components: {
     PageHeader,
     NavigationPanel,
-    ExpensesPage
+    ExpensesPage,
+    BudgetPage
   },
   data() {
     return {

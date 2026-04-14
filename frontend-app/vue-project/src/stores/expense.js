@@ -35,6 +35,7 @@ export const useExpenseStore = defineStore('expense', {
         // Core fetch
         // --------------------------
         async getExpenses() {
+            const authStore = useAuthStore()
             this.loading = true
             this.error = null
 
@@ -48,7 +49,7 @@ export const useExpenseStore = defineStore('expense', {
                         limit: this.meta.limit
                     },
                     headers: {
-                        Authorization: `Bearer ${useAuthStore().token}`
+                        Authorization: `Bearer ${authStore.accessToken}`
                     }
                 })
 
@@ -74,13 +75,14 @@ export const useExpenseStore = defineStore('expense', {
         },
 
         async getStats() {
+            const authStore = useAuthStore()
             this.loading = true
             this.error = null
 
             try {
                 const response = await api.get(API_ENDPOINTS.GET_EXPENSES_STATS, {
                     headers: {
-                        Authorization: `Bearer ${useAuthStore().token}`
+                        Authorization: `Bearer ${authStore.accessToken}`
                     }
                 })
 
@@ -106,6 +108,7 @@ export const useExpenseStore = defineStore('expense', {
         // CRUD
         // --------------------------
         async createExpense(data) {
+            const authStore = useAuthStore()
             this.loading = true
             this.error = null
 
@@ -116,7 +119,7 @@ export const useExpenseStore = defineStore('expense', {
                         data,
                         {
                             headers: {
-                                Authorization: `Bearer ${useAuthStore().token}`
+                                Authorization: `Bearer ${authStore.accessToken}`
                             }
                         }
                     )
@@ -130,6 +133,7 @@ export const useExpenseStore = defineStore('expense', {
         },
 
         async updateExpense(expenseId, data) {
+            const authStore = useAuthStore()
             this.loading = true
             this.error = null
 
@@ -140,7 +144,7 @@ export const useExpenseStore = defineStore('expense', {
                         data,
                         {
                             headers: {
-                                Authorization: `Bearer ${useAuthStore().token}`
+                                Authorization: `Bearer ${authStore.accessToken}`
                             }
                         }
                     )
@@ -154,6 +158,7 @@ export const useExpenseStore = defineStore('expense', {
         },
 
         async deleteExpense(expenseId) {
+            const authStore = useAuthStore()
             this.loading = true
             this.error = null
 
@@ -163,7 +168,7 @@ export const useExpenseStore = defineStore('expense', {
                         API_ENDPOINTS.DELETE_EXPENSE(expenseId),
                         {
                             headers: {
-                                Authorization: `Bearer ${useAuthStore().token}`
+                                Authorization: `Bearer ${authStore.accessToken}`
                             }
                         }
                     )

@@ -1,7 +1,7 @@
 <template>
     <div class="h-full bg-base-100 p-4 flex flex-col gap-4">
 
-        <!-- 🔲 CARDS -->
+        <!-- CARDS -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 
             <div class="card rounded-none border border-base-300 bg-base-200 p-4">
@@ -30,7 +30,7 @@
 
         </div>
 
-        <!-- 📊 CHARTS -->
+        <!-- CHARTS -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1">
 
             <div class="card rounded-none border border-base-300 bg-base-200 p-4 h-80 flex flex-col">
@@ -57,7 +57,7 @@
             </button>
         </div>
 
-        <!-- 📋 EXPENSE LIST -->
+        <!-- EXPENSE LIST -->
         <div class="card rounded-none border border-base-300 bg-base-200 p-4 flex flex-col gap-3">
 
             <div class="flex justify-between items-center">

@@ -219,10 +219,10 @@ export const API_ENDPOINTS = {
   DELETE_EXPENSE: (expense_id) => `/expense/delete/${expense_id}`,
 
   // ===== BUDGET MANAGEMENT =====
-  GET_BUDGETS: '/budgets/get',
-  CREATE_BUDGET: '/budgets/create',
-  UPDATE_BUDGET: '/budgets/update/',
-  DELETE_BUDGET: '/budgets/delete/',
+  GET_BUDGETS: '/budget/get',
+  CREATE_BUDGET: '/budget/create',
+  UPDATE_BUDGET: '/budget/update',
+  DELETE_BUDGET: '/budget/delete',
 
   // ===== PAYMENT MANAGEMENT =====
   GET_PAYMENTS: '/payments/get',

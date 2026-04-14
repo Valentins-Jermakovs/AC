@@ -34,8 +34,7 @@
       <!-- Delete -->
       <button
         :disabled="
-          (kanbanMembersStore.currentUser && kanbanMembersStore.currentUser.role === 'viewer') ||
-          kanbanMembersStore.currentUser.role === 'editor'
+          kanbanMembersStore.currentUser && (kanbanMembersStore.currentUser.role === 'viewer' || kanbanMembersStore.currentUser.role === 'editor')
         "
         class="btn btn-neutral flex-1 sm:flex-none"
         @click="openDeleteModal"
@@ -227,7 +226,7 @@ export default {
       this.leaveModal = true
     },
     async confirmLeaveBoard() {
-      if (!this.kanbanStore.selectedBoard) return
+      if (!this.kanbanStore.selectedBoard || !this.kanbanMembersStore.currentUser) return
       try {
         const payload = {
           boardId: this.kanbanStore.selectedBoard.id,

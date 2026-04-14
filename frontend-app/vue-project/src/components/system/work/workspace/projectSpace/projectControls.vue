@@ -220,6 +220,7 @@ export default {
       }
     },
     async leaveProject() {
+      if (!this.projectMemberStore.currentUser || !this.store.selectedProject) return
       const payload = {
         userId: this.projectMemberStore.currentUser.userId,
         projectId: this.store.selectedProject.id,

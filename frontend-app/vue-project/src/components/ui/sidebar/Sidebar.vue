@@ -49,7 +49,7 @@ export default {
         { titleKey: 'sidebar.work', icon: 'fa-solid fa-check-to-slot', routeName: 'work' },
         {
           titleKey: 'sidebar.analytics',
-          icon: 'fa-solid fa-chart-pie',
+          icon: 'fa-solid fa-euro-sign',
           routeName: 'data-analyzer',
         },
       ],

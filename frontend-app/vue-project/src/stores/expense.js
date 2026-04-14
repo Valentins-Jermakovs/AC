@@ -129,14 +129,14 @@ export const useExpenseStore = defineStore('expense', {
             }
         },
 
-        async updateExpanse(data) {
+        async updateExpense(expenseId, data) {
             this.loading = true
             this.error = null
 
             try {
                 return await this.withRefresh(async () => {
                     const response = await api.put(
-                        API_ENDPOINTS.UPDATE_EXPENSE(this.selectedExpense.expense_id),
+                        API_ENDPOINTS.UPDATE_EXPENSE(expenseId),
                         data,
                         {
                             headers: {

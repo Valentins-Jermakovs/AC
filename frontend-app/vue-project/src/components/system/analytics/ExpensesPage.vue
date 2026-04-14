@@ -51,19 +51,173 @@
 
         </div>
 
+        <div class="flex justify-end">
+            <button class="btn btn-primary btn-sm" @click="openCreate">
+                + New Expense
+            </button>
+        </div>
+
+        <!-- 📋 EXPENSE LIST -->
+        <div class="card rounded-none border border-base-300 bg-base-200 p-4 flex flex-col gap-3">
+
+            <div class="flex justify-between items-center">
+                <div class="font-semibold">Expenses</div>
+
+                <div class="text-sm opacity-70">
+                    Page {{ expenseStore.meta.page }} / {{ expenseStore.meta.total_pages }}
+                </div>
+            </div>
+
+            <!-- TABLE -->
+            <div class="overflow-auto flex-1">
+                <table class="table table-sm w-full">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th class="text-right">Amount</th>
+                            <th class="text-right">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr v-for="e in expenseStore.expenses" :key="e.id">
+                            <td class="whitespace-nowrap">
+                                {{ formatDate(e.date) }}
+                            </td>
+
+                            <td>
+                                <span class="badge badge-outline">
+                                    {{ e.category }}
+                                </span>
+                            </td>
+
+                            <td class="max-w-50 truncate">
+                                {{ e.description }}
+                            </td>
+
+                            <td class="text-right font-semibold">
+                                €{{ e.amount }}
+                            </td>
+
+                            <td class="text-right">
+                                <div class="flex gap-2 justify-end">
+
+                                    <button class="btn btn-xs btn-info" @click="openUpdate(e)">
+                                        Edit
+                                    </button>
+
+                                    <button class="btn btn-xs btn-error" @click="openDelete(e)">
+                                        Delete
+                                    </button>
+
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr v-if="!expenseStore.expenses.length">
+                            <td colspan="5" class="text-center opacity-60 py-6">
+                                No expenses found
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- PAGINATION -->
+            <div class="flex justify-between items-center pt-2">
+
+                <button class="btn btn-sm" :disabled="expenseStore.meta.page <= 1" @click="prevPage">
+                    Prev
+                </button>
+
+                <div class="text-sm opacity-70">
+                    {{ expenseStore.meta.total_expenses }} total
+                </div>
+
+                <button class="btn btn-sm" :disabled="expenseStore.meta.page >= expenseStore.meta.total_pages"
+                    @click="nextPage">
+                    Next
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- Delete Modal -->
+        <BaseDialog v-model="deleteModal" @confirm="deleteExpense" @cancel="closeDelete"
+            :confirmText="$t('common.create')" :cancelText="$t('common.cancel')" title="Delete Expense">
+            <p>Are you sure you want to delete this expense?</p>
+        </BaseDialog>
+        <!-- Update Modal-->
+        <BaseDialog v-model="updateModal" @confirm="updateExpense" @cancel="closeUpdate"
+            :confirmText="$t('common.create')" :cancelText="$t('common.cancel')" title="Update Expense">
+            <!-- Inputs: (amount, category, date, description) -->
+            <div>
+                <label for="amount" class="label">Amount</label>
+                <input type="number" v-model="expense.amount" class="input w-full" placeholder="Amount" required>
+
+                <label for="category" class="label">Category</label>
+                <input type="text" v-model="expense.category" class="input w-full" placeholder="Category" required>
+
+                <label for="date" class="label">Date</label>
+                <input type="date" v-model="expense.date" class="input w-full" placeholder="Date" required>
+
+                <label for="description" class="label">Description</label>
+                <input type="text" v-model="expense.description" class="input w-full" placeholder="Description"
+                    required>
+            </div>
+        </BaseDialog>
+        <!-- Create Modal -->
+        <BaseDialog v-model="createModal" @confirm="createExpense" :confirmText="$t('common.create')"
+            :cancelText="$t('common.cancel')" @cancel="closeCreateModal">
+            <!-- Inputs: (amount, category, date, description) -->
+            <div>
+                <label for="amount" class="label">Amount</label>
+                <input type="number" v-model="expense.amount" class="input w-full" placeholder="Amount" required>
+
+                <label for="category" class="label">Category</label>
+                <input type="text" v-model="expense.category" class="input w-full" placeholder="Category" required>
+
+                <label for="date" class="label">Date</label>
+                <input type="date" v-model="expense.date" class="input w-full" placeholder="Date" required>
+
+                <label for="description" class="label">Description</label>
+                <input type="text" v-model="expense.description" class="input w-full" placeholder="Description"
+                    required>
+            </div>
+        </BaseDialog>
     </div>
 </template>
 
 <script>
+import BaseDialog from '@/components/common/BaseDialog.vue';
 import { useExpenseStore } from '@/stores/expense'
 import { Chart } from 'chart.js/auto'
 
 export default {
+    components: { BaseDialog },
     data() {
         return {
             expenseStore: useExpenseStore(),
             categoryChartInstance: null,
-            timelineChartInstance: null
+            timelineChartInstance: null,
+
+            // modals
+            createModal: false,
+            updateModal: false,
+            deleteModal: false,
+
+            // form object
+            expense: {
+                amount: null,
+                category: '',
+                date: '',
+                description: ''
+            },
+
+            selectedExpense: null
         }
     },
 
@@ -71,10 +225,9 @@ export default {
         await this.expenseStore.getExpenses()
         await this.expenseStore.getStats()
 
-        this.$nextTick(() => {
-            this.renderCategoryChart()
-            this.renderTimelineChart()
-        })
+
+
+        this.updateCharts()
     },
 
     computed: {
@@ -130,6 +283,94 @@ export default {
     },
 
     methods: {
+        openDelete(expense) {
+            this.selectedExpense = expense
+            this.deleteModal = true
+        },
+
+        async deleteExpense() {
+            await this.expenseStore.deleteExpense(this.selectedExpense.id)
+            this.deleteModal = false
+
+            await this.expenseStore.getExpenses()
+            await this.expenseStore.getStats()
+            this.updateCharts()
+        },
+
+        closeDelete() {
+            this.deleteModal = false
+        },
+        openUpdate(expense) {
+            this.selectedExpense = expense
+
+            this.expense = {
+                amount: expense.amount,
+                category: expense.category,
+                date: expense.date.slice(0, 10),
+                description: expense.description
+            }
+
+            this.updateModal = true
+        },
+
+        async updateExpense() {
+            await this.expenseStore.updateExpense(
+                this.selectedExpense.id || this.selectedExpense.expense_id,
+                this.expense
+            )
+            await this.expenseStore.getExpenses()
+            await this.expenseStore.getStats()
+            this.updateCharts()
+
+            this.updateModal = false
+        },
+
+        closeUpdate() {
+            this.updateModal = false
+        },
+        async openCreate() {
+            this.expense = {
+                amount: null,
+                category: '',
+                date: '',
+                description: ''
+            }
+
+            this.createModal = true
+        },
+
+        async createExpense() {
+            await this.expenseStore.createExpense(this.expense)
+            this.createModal = false
+            await this.expenseStore.getExpenses()
+            await this.expenseStore.getStats()
+            this.updateCharts()
+        },
+        formatDate(date) {
+            return new Date(date).toLocaleDateString('lv-LV')
+        },
+        async nextPage() {
+            await this.expenseStore.nextPage()
+            await this.expenseStore.getExpenses()
+            await this.expenseStore.getStats()
+            this.updateCharts()
+        },
+
+        async prevPage() {
+            await this.expenseStore.prevPage()
+            await this.expenseStore.getExpenses()
+            await this.expenseStore.getStats()
+            this.updateCharts()
+        },
+
+        updateCharts() {
+            this.$nextTick(() => {
+                requestAnimationFrame(() => {
+                    this.renderCategoryChart()
+                    this.renderTimelineChart()
+                })
+            })
+        },
 
         renderCategoryChart() {
             if (this.categoryChartInstance) {

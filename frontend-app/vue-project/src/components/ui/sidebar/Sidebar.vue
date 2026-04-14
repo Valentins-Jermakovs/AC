@@ -47,8 +47,6 @@ export default {
         { titleKey: 'sidebar.news', icon: 'fa-solid fa-newspaper', routeName: 'news' },
         { titleKey: 'sidebar.calendar', icon: 'fa-solid fa-calendar', routeName: 'calendar' },
         { titleKey: 'sidebar.work', icon: 'fa-solid fa-check-to-slot', routeName: 'work' },
-        { titleKey: 'sidebar.notifications', icon: 'fa-solid fa-bell', routeName: 'notifications' },
-        { titleKey: 'sidebar.pomodoro', icon: 'fa-solid fa-clock', routeName: 'pomodoro' },
         {
           titleKey: 'sidebar.analytics',
           icon: 'fa-solid fa-chart-pie',

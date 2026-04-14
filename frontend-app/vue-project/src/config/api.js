@@ -212,11 +212,11 @@ export const API_ENDPOINTS = {
   WEEK_STATS: '/visit/stats',
 
   // ===== EXPENSE MANAGEMENT =====
-  GET_EXPENSES: '/expenses/get',
-  GET_EXPENSES_STATS: '/expenses/stats',
-  CREATE_EXPENSE: '/expenses/create',
-  UPDATE_EXPENSE: (expense_id) => `/expenses/update/${expense_id}`,
-  DELETE_EXPENSE: (expense_id) => `/expenses/delete/${expense_id}`,
+  GET_EXPENSES: '/expense/get',
+  GET_EXPENSES_STATS: '/expense/stats',
+  CREATE_EXPENSE: '/expense/create',
+  UPDATE_EXPENSE: (expense_id) => `/expense/update/${expense_id}`,
+  DELETE_EXPENSE: (expense_id) => `/expense/delete/${expense_id}`,
 
   // ===== BUDGET MANAGEMENT =====
   GET_BUDGETS: '/budgets/get',

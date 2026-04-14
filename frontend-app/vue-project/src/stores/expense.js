@@ -52,19 +52,21 @@ export const useExpenseStore = defineStore('expense', {
                     }
                 })
 
-                this.expenses = response.data.expenses
-                this.stats = response.data.stats
+                const data = response.data
 
-                // meta info (if backend provides it)
-                this.meta.total_pages = response.data.meta?.total_pages || 0
-                this.meta.total_expenses = response.data.meta?.total_expenses || 0
+                this.expenses = data?.items || []
+                this.stats = data?.stats || []
 
-                // fix page overflow (after delete for example)
+                this.meta.total_pages = data?.total_pages || 0
+                this.meta.total_expenses = data?.total_items || 0
+
                 if (this.meta.page > this.meta.total_pages) {
                     this.meta.page = this.meta.total_pages || 1
                 }
 
             } catch (error) {
+                this.expenses = []
+                this.stats = []
                 this.error = error.response?.data?.detail || 'Error fetching expenses'
             } finally {
                 this.loading = false

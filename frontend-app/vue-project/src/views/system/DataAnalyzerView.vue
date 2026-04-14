@@ -7,13 +7,12 @@
 </template>
 
 <script>
-import PageHeader from '@/components/ui/PageHeader.vue';
+import PageHeader from '@/components/ui/PageHeader.vue'
 import headerImage from '@/assets/images/arturo-anez-RxbkUG80Rag-unsplash.jpg'
-import NavigationPanel from '@/components/ui/NavigationPanel.vue';
-import ExpensesPage from '@/components/system/analytics/ExpensesPage.vue';
-import BudgetPage from '@/components/system/analytics/BudgetPage.vue';
-import PaymentPage from '@/components/system/analytics/PaymentPage.vue';
-
+import NavigationPanel from '@/components/ui/NavigationPanel.vue'
+import ExpensesPage from '@/components/system/analytics/ExpensesPage.vue'
+import BudgetPage from '@/components/system/analytics/BudgetPage.vue'
+import PaymentPage from '@/components/system/analytics/PaymentPage.vue'
 
 export default {
   name: 'DataAnalyzerView',
@@ -22,7 +21,7 @@ export default {
     NavigationPanel,
     ExpensesPage,
     BudgetPage,
-    PaymentPage
+    PaymentPage,
   },
   data() {
     return {
@@ -30,7 +29,7 @@ export default {
       image: headerImage,
 
       // Currently active page (default is private tasks)
-      activePage: 'expenses'
+      activePage: 'expenses',
     }
   },
   computed: {
@@ -38,23 +37,22 @@ export default {
       let navButtons = [
         {
           key: 'expenses',
-          title: "Expenses",
+          title: 'Expenses',
         },
         {
           key: 'budget',
-          title: "Budget",
+          title: 'Budget',
         },
         {
           key: 'payments',
-          title: "Payments",
+          title: 'Payments',
         },
       ]
 
       return navButtons
-    }
-  }
+    },
+  },
 }
-
 </script>
 
 <style scoped></style>

@@ -63,7 +63,6 @@ import { useAuthStore } from '@/stores/auth'
 import { useVisitsStore } from '@/stores/visits'
 import { useNewsStore } from '@/stores/news'
 
-
 import UsernameModal from './modals/UsernameModal.vue'
 import EmailChangeModal from './modals/EmailChangeModal.vue'
 import PasswordChangeModal from './modals/PasswordChangeModal.vue'

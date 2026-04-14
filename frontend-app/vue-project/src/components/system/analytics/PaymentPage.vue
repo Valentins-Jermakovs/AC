@@ -1,6 +1,5 @@
 <template>
   <div class="h-full bg-base-100 p-4 flex flex-col gap-4">
-
     <!-- CARDS -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       <div class="card rounded-none border border-base-300 bg-base-200 p-4">
@@ -42,9 +41,7 @@
     </div>
 
     <div class="flex justify-end">
-      <button class="btn btn-primary btn-sm" @click="openCreate">
-        + New Payment
-      </button>
+      <button class="btn btn-primary btn-sm" @click="openCreate">+ New Payment</button>
     </div>
 
     <!-- TABLE -->
@@ -90,21 +87,53 @@
       </div>
 
       <div class="flex justify-between items-center pt-2">
-        <button class="btn btn-sm" :disabled="paymentStore.meta.page <= 1" @click="prevPage">Prev</button>
+        <button class="btn btn-sm" :disabled="paymentStore.meta.page <= 1" @click="prevPage">
+          Prev
+        </button>
         <div class="text-sm opacity-70">{{ paymentStore.meta.total_items }} total</div>
-        <button class="btn btn-sm" :disabled="paymentStore.meta.page >= paymentStore.meta.total_pages" @click="nextPage">Next</button>
+        <button
+          class="btn btn-sm"
+          :disabled="paymentStore.meta.page >= paymentStore.meta.total_pages"
+          @click="nextPage"
+        >
+          Next
+        </button>
       </div>
     </div>
 
-    <BaseDialog v-model="deleteModal" title="Delete Payment" :confirmText="$t('common.delete')" :cancelText="$t('common.cancel')" @confirm="deletePayment" @cancel="closeDelete">
+    <BaseDialog
+      v-model="deleteModal"
+      title="Delete Payment"
+      :confirmText="$t('common.delete')"
+      :cancelText="$t('common.cancel')"
+      @confirm="deletePayment"
+      @cancel="closeDelete"
+    >
       <p>Are you sure you want to delete this recurring payment?</p>
     </BaseDialog>
 
-    <BaseDialog v-model="updateModal" title="Update Payment" :confirmText="$t('common.update')" :cancelText="$t('common.cancel')" @confirm="updatePayment" @cancel="closeUpdate">
+    <BaseDialog
+      v-model="updateModal"
+      title="Update Payment"
+      :confirmText="$t('common.update')"
+      :cancelText="$t('common.cancel')"
+      @confirm="updatePayment"
+      @cancel="closeUpdate"
+    >
       <div class="flex flex-col gap-3">
-        <input v-model.number="form.amount" type="number" class="input input-bordered w-full" placeholder="Amount" />
+        <input
+          v-model.number="form.amount"
+          type="number"
+          class="input input-bordered w-full"
+          placeholder="Amount"
+        />
         <input v-model="form.category" class="input input-bordered w-full" placeholder="Category" />
-        <input v-model="form.start_date" type="date" class="input input-bordered w-full" placeholder="Start Date" />
+        <input
+          v-model="form.start_date"
+          type="date"
+          class="input input-bordered w-full"
+          placeholder="Start Date"
+        />
         <select v-model="form.interval" class="select select-bordered w-full">
           <option value="daily">Daily</option>
           <option value="weekly">Weekly</option>
@@ -113,11 +142,28 @@
       </div>
     </BaseDialog>
 
-    <BaseDialog v-model="createModal" title="Create Payment" :confirmText="$t('common.create')" :cancelText="$t('common.cancel')" @confirm="createPayment" @cancel="closeCreate">
+    <BaseDialog
+      v-model="createModal"
+      title="Create Payment"
+      :confirmText="$t('common.create')"
+      :cancelText="$t('common.cancel')"
+      @confirm="createPayment"
+      @cancel="closeCreate"
+    >
       <div class="flex flex-col gap-3">
-        <input v-model.number="form.amount" type="number" class="input input-bordered w-full" placeholder="Amount" />
+        <input
+          v-model.number="form.amount"
+          type="number"
+          class="input input-bordered w-full"
+          placeholder="Amount"
+        />
         <input v-model="form.category" class="input input-bordered w-full" placeholder="Category" />
-        <input v-model="form.start_date" type="date" class="input input-bordered w-full" placeholder="Start Date" />
+        <input
+          v-model="form.start_date"
+          type="date"
+          class="input input-bordered w-full"
+          placeholder="Start Date"
+        />
         <select v-model="form.interval" class="select select-bordered w-full">
           <option value="daily">Daily</option>
           <option value="weekly">Weekly</option>
@@ -149,8 +195,8 @@ export default {
         amount: null,
         category: '',
         start_date: '',
-        interval: 'monthly'
-      }
+        interval: 'monthly',
+      },
     }
   },
   async mounted() {
@@ -173,7 +219,9 @@ export default {
       return [...this.payments].sort((a, b) => new Date(a.start_date) - new Date(b.start_date))[0]
     },
     nextPaymentLabel() {
-      return this.nextPayment ? `${this.formatDate(this.nextPayment.start_date)} (${this.nextPayment.interval})` : '-'
+      return this.nextPayment
+        ? `${this.formatDate(this.nextPayment.start_date)} (${this.nextPayment.interval})`
+        : '-'
     },
     categoryChartData() {
       const grouped = {}
@@ -182,7 +230,7 @@ export default {
       })
       return {
         labels: Object.keys(grouped),
-        data: Object.values(grouped)
+        data: Object.values(grouped),
       }
     },
     timelineChartData() {
@@ -194,9 +242,9 @@ export default {
       const sortedDates = Object.keys(grouped).sort((a, b) => new Date(a) - new Date(b))
       return {
         labels: sortedDates,
-        data: sortedDates.map((date) => grouped[date])
+        data: sortedDates.map((date) => grouped[date]),
       }
-    }
+    },
   },
   methods: {
     openCreate() {
@@ -205,7 +253,7 @@ export default {
         amount: null,
         category: '',
         start_date: '',
-        interval: 'monthly'
+        interval: 'monthly',
       }
       this.createModal = true
     },
@@ -220,7 +268,7 @@ export default {
         amount: payment.amount,
         category: payment.category,
         start_date: payment.start_date,
-        interval: payment.interval
+        interval: payment.interval,
       }
       this.updateModal = true
     },
@@ -278,15 +326,17 @@ export default {
         type: 'bar',
         data: {
           labels: this.categoryChartData.labels,
-          datasets: [{
-            label: 'Category Amount',
-            data: this.categoryChartData.data,
-          }]
+          datasets: [
+            {
+              label: 'Category Amount',
+              data: this.categoryChartData.data,
+            },
+          ],
         },
         options: {
           responsive: true,
-          maintainAspectRatio: false
-        }
+          maintainAspectRatio: false,
+        },
       })
     },
     renderTimelineChart() {
@@ -299,21 +349,23 @@ export default {
         type: 'line',
         data: {
           labels: this.timelineChartData.labels,
-          datasets: [{
-            label: 'Upcoming Amount',
-            data: this.timelineChartData.data,
-            borderColor: '#16a34a',
-            backgroundColor: 'rgba(22,163,74,0.2)',
-            fill: true
-          }]
+          datasets: [
+            {
+              label: 'Upcoming Amount',
+              data: this.timelineChartData.data,
+              borderColor: '#16a34a',
+              backgroundColor: 'rgba(22,163,74,0.2)',
+              fill: true,
+            },
+          ],
         },
         options: {
           responsive: true,
-          maintainAspectRatio: false
-        }
+          maintainAspectRatio: false,
+        },
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

@@ -34,7 +34,9 @@
       <!-- Delete -->
       <button
         :disabled="
-          kanbanMembersStore.currentUser && (kanbanMembersStore.currentUser.role === 'viewer' || kanbanMembersStore.currentUser.role === 'editor')
+          kanbanMembersStore.currentUser &&
+          (kanbanMembersStore.currentUser.role === 'viewer' ||
+            kanbanMembersStore.currentUser.role === 'editor')
         "
         class="btn btn-neutral flex-1 sm:flex-none"
         @click="openDeleteModal"

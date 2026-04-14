@@ -22,7 +22,9 @@
           :class="activeView === 'members' ? 'btn-primary' : 'btn-neutral'"
           @click="activeView = 'members'"
           :disabled="
-            kanbanMembersStore.currentUser && (kanbanMembersStore.currentUser.role === 'viewer' || kanbanMembersStore.currentUser.role === 'editor')
+            kanbanMembersStore.currentUser &&
+            (kanbanMembersStore.currentUser.role === 'viewer' ||
+              kanbanMembersStore.currentUser.role === 'editor')
           "
         >
           <font-awesome-icon icon="fa-solid fa-users" />

@@ -157,17 +157,20 @@
         </select>
       </div>
     </BaseDialog>
+
+    <LoadingScreen v-if="paymentStore.loading"></LoadingScreen>
   </div>
 </template>
 
 <script>
 import BaseDialog from '@/components/common/BaseDialog.vue'
+import LoadingScreen from '@/components/common/LoadingScreen.vue';
 import { usePaymentStore } from '@/stores/payment'
 import { Chart } from 'chart.js/auto'
 
 export default {
   name: 'PaymentPage',
-  components: { BaseDialog },
+  components: { BaseDialog, LoadingScreen },
   data() {
     return {
       paymentStore: usePaymentStore(),

@@ -122,6 +122,8 @@
     >
       <p>{{ $t('finances.budgets.modals.delete_budget.content') }}</p>
     </BaseDialog>
+
+    <LoadingScreen v-if="budgetStore.loading"></LoadingScreen>
   </div>
 </template>
 
@@ -129,9 +131,10 @@
 import { useBudgetStore } from '@/stores/budget'
 import { Chart } from 'chart.js/auto'
 import BaseDialog from '@/components/common/BaseDialog.vue'
+import LoadingScreen from '@/components/common/LoadingScreen.vue';
 
 export default {
-  components: { BaseDialog },
+  components: { BaseDialog, LoadingScreen },
 
   data() {
     return {

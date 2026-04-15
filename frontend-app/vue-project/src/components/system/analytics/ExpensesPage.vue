@@ -237,6 +237,8 @@
         />
       </div>
     </BaseDialog>
+
+    <LoadingScreen v-if="expenseStore.loading"></LoadingScreen>
   </div>
 </template>
 
@@ -244,9 +246,10 @@
 import BaseDialog from '@/components/common/BaseDialog.vue'
 import { useExpenseStore } from '@/stores/expense'
 import { Chart } from 'chart.js/auto'
+import LoadingScreen from '@/components/common/LoadingScreen.vue';
 
 export default {
-  components: { BaseDialog },
+  components: { BaseDialog, LoadingScreen },
   data() {
     return {
       expenseStore: useExpenseStore(),

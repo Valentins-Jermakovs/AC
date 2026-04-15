@@ -217,6 +217,6 @@ export const useExpenseStore = defineStore('expense', {
     },
     async clearError() {
       this.error = null
-    }
+    },
   },
 })

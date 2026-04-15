@@ -757,7 +757,7 @@
         }
       }
     },
-    "budgets" : {
+    "budgets": {
       "no_budgets": "Nav finanšu datu",
       "title": "Budžets",
       "total_budgets": "Kopējs budžetu skaits",

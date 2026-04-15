@@ -4,8 +4,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
       <div class="card rounded-none border border-base-300 bg-base-200 p-2 sm:p-3 md:p-4">
         <div class="text-xs sm:text-sm opacity-70">{{ $t('finances.expenses.total_spent') }}</div>
-        <div v-if="total !== 0" class="text-xl sm:text-2xl font-bold">€{{ total }}
-        </div>
+        <div v-if="total !== 0" class="text-xl sm:text-2xl font-bold">€{{ total }}</div>
         <!-- spinner -->
         <div v-else class="flex items-center gap-2 mt-1 text-base-content/70">
           <font-awesome-icon icon="fa-solid fa-spinner" class="text-2xl animate-spin" />
@@ -36,7 +35,9 @@
 
       <div class="card rounded-none border border-base-300 bg-base-200 p-2 sm:p-3 md:p-4">
         <div class="text-xs sm:text-sm opacity-70">{{ $t('finances.expenses.today_spent') }}</div>
-        <div class="text-xl sm:text-2xl font-bold" v-if="todayTotal !== null">€{{ todayTotal }}</div>
+        <div class="text-xl sm:text-2xl font-bold" v-if="todayTotal !== null">
+          €{{ todayTotal }}
+        </div>
         <!-- spinner -->
         <div v-else class="flex items-center gap-2 mt-1 text-base-content/70">
           <font-awesome-icon icon="fa-solid fa-spinner" class="text-2xl animate-spin" />
@@ -46,8 +47,12 @@
 
     <!-- CHARTS -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 flex-1">
-      <div class="card rounded-none border border-base-300 bg-base-200 p-3 sm:p-4 sm:h-60 md:h-80 flex flex-col">
-        <div class="font-semibold text-sm sm:text-base mb-2">{{ $t('finances.expenses.category_charts') }}</div>
+      <div
+        class="card rounded-none border border-base-300 bg-base-200 p-3 sm:p-4 sm:h-60 md:h-80 flex flex-col"
+      >
+        <div class="font-semibold text-sm sm:text-base mb-2">
+          {{ $t('finances.expenses.category_charts') }}
+        </div>
 
         <div class="flex-1 relative" v-if="expenseStore.stats.length > 0">
           <canvas ref="categoryChart"></canvas>
@@ -61,8 +66,12 @@
         </div>
       </div>
 
-      <div class="card rounded-none border border-base-300 bg-base-200 p-3 sm:p-4 sm:h-60 md:h-80 flex flex-col">
-        <div class="font-semibold text-sm sm:text-base mb-2">{{ $t('finances.expenses.timeline') }}</div>
+      <div
+        class="card rounded-none border border-base-300 bg-base-200 p-3 sm:p-4 sm:h-60 md:h-80 flex flex-col"
+      >
+        <div class="font-semibold text-sm sm:text-base mb-2">
+          {{ $t('finances.expenses.timeline') }}
+        </div>
 
         <div class="flex-1 relative" v-if="expenseStore.expenses.length > 0">
           <canvas ref="timelineChart"></canvas>
@@ -85,20 +94,28 @@
     </div>
 
     <!-- EXPENSE LIST -->
-    <div class="card rounded-none border border-base-300 bg-base-200 p-3 sm:p-4 flex flex-col gap-3">
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-4">
+    <div
+      class="card rounded-none border border-base-300 bg-base-200 p-3 sm:p-4 flex flex-col gap-3"
+    >
+      <div
+        class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-4"
+      >
         <div class="font-semibold text-sm sm:text-base">{{ $t('finances.expenses.expenses') }}</div>
 
         <div class="text-xs sm:text-sm opacity-70">
-          {{ $t('finances.expenses.page') }} {{ expenseStore.meta.page }} / {{ expenseStore.meta.total_pages }}
+          {{ $t('finances.expenses.page') }} {{ expenseStore.meta.page }} /
+          {{ expenseStore.meta.total_pages }}
         </div>
       </div>
 
       <!-- TABLE -->
       <!-- MOBILE LIST -->
       <div class="flex flex-col gap-2 sm:gap-3 md:hidden">
-        <div v-for="e in expenseStore.expenses" :key="e.id"
-          class="card bg-base-100 rounded-none border border-base-300 p-2 sm:p-3\">
+        <div
+          v-for="e in expenseStore.expenses"
+          :key="e.id"
+          class="card bg-base-100 rounded-none border border-base-300 p-2 sm:p-3\"
+        >
           <!-- TOP ROW -->
           <div class="flex justify-between items-center gap-2">
             <span class="text-xs sm:text-sm opacity-70\">
@@ -111,14 +128,13 @@
           </div>
 
           <!-- DESCRIPTION -->
-          <div class="mt-2 text-xs sm:text-sm\">\
+          <div class="mt-2 text-xs sm:text-sm\">
+            \
             {{ e.description || '-' }}
           </div>
 
           <!-- AMOUNT -->
-          <div class="mt-2 font-semibold text-right text-sm sm:text-base\">
-            €{{ e.amount }}
-          </div>
+          <div class="mt-2 font-semibold text-right text-sm sm:text-base\">€{{ e.amount }}</div>
 
           <!-- ACTIONS -->
           <div class="flex gap-2 mt-3">
@@ -134,7 +150,10 @@
 
         <!-- EMPTY STATE -->
         <div v-if="!expenseStore.expenses.length" class="text-center py-6">
-          <font-awesome-icon icon="fa-solid fa-wallet" class="text-2xl animate-bounce"></font-awesome-icon>
+          <font-awesome-icon
+            icon="fa-solid fa-wallet"
+            class="text-2xl animate-bounce"
+          ></font-awesome-icon>
           <p class="text-sm text-error">{{ $t('finances.expenses.no_expenses') }}</p>
         </div>
       </div>
@@ -184,7 +203,10 @@
 
             <tr v-if="!expenseStore.expenses.length">
               <td colspan="5" class="text-center py-6">
-                <font-awesome-icon icon="fa-solid fa-wallet" class="text-3xl text-base-content/40 animate-bounce" />
+                <font-awesome-icon
+                  icon="fa-solid fa-wallet"
+                  class="text-3xl text-base-content/40 animate-bounce"
+                />
                 <p class="text-error">{{ $t('finances.expenses.no_expenses') }}</p>
               </td>
             </tr>
@@ -193,8 +215,14 @@
       </div>
 
       <!-- PAGINATION -->
-      <div class="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-4 pt-2 md:pt-4">
-        <button class="btn btn-sm btn-neutral text-xs sm:text-sm w-full sm:w-auto" :disabled="expenseStore.meta.page <= 1" @click="prevPage">
+      <div
+        class="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-4 pt-2 md:pt-4"
+      >
+        <button
+          class="btn btn-sm btn-neutral text-xs sm:text-sm w-full sm:w-auto"
+          :disabled="expenseStore.meta.page <= 1"
+          @click="prevPage"
+        >
           {{ $t('finances.expenses.prev') }}
         </button>
 
@@ -202,21 +230,36 @@
           {{ $t('finances.expenses.total') }} {{ expenseStore.meta.total_expenses }}
         </div>
 
-        <button class="btn btn-sm btn-neutral text-xs sm:text-sm w-full sm:w-auto" :disabled="expenseStore.meta.page >= expenseStore.meta.total_pages"
-          @click="nextPage">
+        <button
+          class="btn btn-sm btn-neutral text-xs sm:text-sm w-full sm:w-auto"
+          :disabled="expenseStore.meta.page >= expenseStore.meta.total_pages"
+          @click="nextPage"
+        >
           {{ $t('finances.expenses.next') }}
         </button>
       </div>
     </div>
 
     <!-- Delete Modal -->
-    <BaseDialog v-model="deleteModal" @confirm="deleteExpense" @cancel="closeDelete" :confirmText="$t('common.create')"
-      :cancelText="$t('common.cancel')" :title="$t('finances.expenses.modals.delete_expense.title')">
+    <BaseDialog
+      v-model="deleteModal"
+      @confirm="deleteExpense"
+      @cancel="closeDelete"
+      :confirmText="$t('common.delete')"
+      :cancelText="$t('common.cancel')"
+      :title="$t('finances.expenses.modals.delete_expense.title')"
+    >
       <p>{{ $t('finances.expenses.modals.delete_expense.content') }}</p>
     </BaseDialog>
     <!-- Update Modal-->
-    <BaseDialog v-model="updateModal" @confirm="updateExpense" @cancel="closeUpdate" :confirmText="$t('common.confirm')"
-      :cancelText="$t('common.cancel')" :title="$t('finances.expenses.modals.edit_expense.title')">
+    <BaseDialog
+      v-model="updateModal"
+      @confirm="updateExpense"
+      @cancel="closeUpdate"
+      :confirmText="$t('common.confirm')"
+      :cancelText="$t('common.cancel')"
+      :title="$t('finances.expenses.modals.edit_expense.title')"
+    >
       <!-- Inputs: (amount, category, date, description) -->
       <div class="flex flex-col gap-2 w-full">
         <Transition name="error-slide">
@@ -226,27 +269,60 @@
             </div>
           </div>
         </Transition>
-        <label for="amount" class="label">{{ $t('finances.expenses.modals.edit_expense.amount') }}</label>
-        <input type="number" v-model="expense.amount" class="input w-full"
-          :placeholder="$t('finances.expenses.modals.edit_expense.amount_placeholder')" required />
+        <label for="amount" class="label">{{
+          $t('finances.expenses.modals.edit_expense.amount')
+        }}</label>
+        <input
+          type="number"
+          v-model="expense.amount"
+          class="input w-full"
+          :placeholder="$t('finances.expenses.modals.edit_expense.amount_placeholder')"
+          required
+        />
 
-        <label for="category" class="label">{{ $t('finances.expenses.modals.edit_expense.category') }}</label>
-        <input type="text" v-model="expense.category" class="input w-full"
-          :placeholder="$t('finances.expenses.modals.edit_expense.category_placeholder')" required />
+        <label for="category" class="label">{{
+          $t('finances.expenses.modals.edit_expense.category')
+        }}</label>
+        <input
+          type="text"
+          v-model="expense.category"
+          class="input w-full"
+          :placeholder="$t('finances.expenses.modals.edit_expense.category_placeholder')"
+          required
+        />
 
-        <label for="date" class="label">{{ $t('finances.expenses.modals.edit_expense.date') }}</label>
-        <input type="date" v-model="expense.date" class="input w-full"
-          :placeholder="$t('finances.expenses.modals.edit_expense.date_placeholder')" required />
+        <label for="date" class="label">{{
+          $t('finances.expenses.modals.edit_expense.date')
+        }}</label>
+        <input
+          type="date"
+          v-model="expense.date"
+          class="input w-full"
+          :placeholder="$t('finances.expenses.modals.edit_expense.date_placeholder')"
+          required
+        />
 
-        <label for="description" class="label">{{ $t('finances.expenses.modals.edit_expense.description') }}</label>
-        <input type="text" v-model="expense.description" class="input w-full"
-          :placeholder="$t('finances.expenses.modals.edit_expense.description_placeholder')" required />
+        <label for="description" class="label">{{
+          $t('finances.expenses.modals.edit_expense.description')
+        }}</label>
+        <input
+          type="text"
+          v-model="expense.description"
+          class="input w-full"
+          :placeholder="$t('finances.expenses.modals.edit_expense.description_placeholder')"
+          required
+        />
       </div>
     </BaseDialog>
     <!-- Create Modal -->
-    <BaseDialog v-model="createModal" @confirm="createExpense"
-      :title="$t('finances.expenses.modals.create_expense.title')" :confirmText="$t('common.create')"
-      :cancelText="$t('common.cancel')" @cancel="closeCreateModal">
+    <BaseDialog
+      v-model="createModal"
+      @confirm="createExpense"
+      :title="$t('finances.expenses.modals.create_expense.title')"
+      :confirmText="$t('common.create')"
+      :cancelText="$t('common.cancel')"
+      @cancel="closeCreateModal"
+    >
       <!-- Inputs: (amount, category, date, description) -->
       <div class="flex flex-col gap-2 w-full">
         <Transition name="error-slide">
@@ -256,21 +332,49 @@
             </div>
           </div>
         </Transition>
-        <label for="amount" class="label">{{ $t('finances.expenses.modals.create_expense.amount') }}</label>
-        <input type="number" v-model="expense.amount" class="input w-full"
-          :placeholder="$t('finances.expenses.modals.create_expense.amount_placeholder')" required />
+        <label for="amount" class="label">{{
+          $t('finances.expenses.modals.create_expense.amount')
+        }}</label>
+        <input
+          type="number"
+          v-model="expense.amount"
+          class="input w-full"
+          :placeholder="$t('finances.expenses.modals.create_expense.amount_placeholder')"
+          required
+        />
 
-        <label for="category" class="label">{{ $t('finances.expenses.modals.create_expense.category') }}</label>
-        <input type="text" v-model="expense.category" class="input w-full"
-          :placeholder="$t('finances.expenses.modals.create_expense.category_placeholder')" required />
+        <label for="category" class="label">{{
+          $t('finances.expenses.modals.create_expense.category')
+        }}</label>
+        <input
+          type="text"
+          v-model="expense.category"
+          class="input w-full"
+          :placeholder="$t('finances.expenses.modals.create_expense.category_placeholder')"
+          required
+        />
 
-        <label for="date" class="label">{{ $t('finances.expenses.modals.create_expense.date') }}</label>
-        <input type="date" v-model="expense.date" class="input w-full"
-          :placeholder="$t('finances.expenses.modals.create_expense.date_placeholder')" required />
+        <label for="date" class="label">{{
+          $t('finances.expenses.modals.create_expense.date')
+        }}</label>
+        <input
+          type="date"
+          v-model="expense.date"
+          class="input w-full"
+          :placeholder="$t('finances.expenses.modals.create_expense.date_placeholder')"
+          required
+        />
 
-        <label for="description" class="label">{{ $t('finances.expenses.modals.create_expense.description') }}</label>
-        <input type="text" v-model="expense.description" class="input w-full"
-          :placeholder="$t('finances.expenses.modals.create_expense.description_placeholder')" required />
+        <label for="description" class="label">{{
+          $t('finances.expenses.modals.create_expense.description')
+        }}</label>
+        <input
+          type="text"
+          v-model="expense.description"
+          class="input w-full"
+          :placeholder="$t('finances.expenses.modals.create_expense.description_placeholder')"
+          required
+        />
       </div>
     </BaseDialog>
 
@@ -282,7 +386,7 @@
 import BaseDialog from '@/components/common/BaseDialog.vue'
 import { useExpenseStore } from '@/stores/expense'
 import { Chart } from 'chart.js/auto'
-import LoadingScreen from '@/components/common/LoadingScreen.vue';
+import LoadingScreen from '@/components/common/LoadingScreen.vue'
 
 export default {
   components: { BaseDialog, LoadingScreen },
@@ -485,8 +589,8 @@ export default {
           animations: {
             numbers: {
               duration: 2000,
-              easing: 'easeInOutCubic'
-            }
+              easing: 'easeInOutCubic',
+            },
           },
           plugins: {
             tooltip: {
@@ -496,7 +600,7 @@ export default {
               boxPadding: 10,
               cornerRadius: 0,
               titleFont: { size: 14, weight: '600' },
-              bodyFont: { size: 16 }
+              bodyFont: { size: 16 },
             },
           },
         },
@@ -531,8 +635,8 @@ export default {
           animations: {
             numbers: {
               duration: 2000,
-              easing: 'easeInOutCubic'
-            }
+              easing: 'easeInOutCubic',
+            },
           },
           plugins: {
             tooltip: {
@@ -542,7 +646,7 @@ export default {
               boxPadding: 10,
               cornerRadius: 0,
               titleFont: { size: 14, weight: '600' },
-              bodyFont: { size: 16 }
+              bodyFont: { size: 16 },
             },
           },
         },

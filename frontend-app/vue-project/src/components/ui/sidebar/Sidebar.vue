@@ -47,7 +47,11 @@ export default {
         { titleKey: 'sidebar.news', icon: 'fa-solid fa-newspaper', routeName: 'news' },
         { titleKey: 'sidebar.calendar', icon: 'fa-solid fa-calendar', routeName: 'calendar' },
         { titleKey: 'sidebar.work', icon: 'fa-solid fa-check-to-slot', routeName: 'work' },
-        { titleKey: 'sidebar.finance_analytics', icon: 'fa-solid fa-euro-sign', routeName: 'data-analyzer'},
+        {
+          titleKey: 'sidebar.finance_analytics',
+          icon: 'fa-solid fa-euro-sign',
+          routeName: 'data-analyzer',
+        },
       ],
     }
   },

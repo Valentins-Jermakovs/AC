@@ -39,54 +39,57 @@
       <div class="flex-1" v-if="budgets.length > 0">
         <canvas ref="budgetChart"></canvas>
       </div>
-      <div v-else class="flex flex-col items-center justify-center gap-2 h-full text-base-content/70">
+      <div
+        v-else
+        class="flex flex-col items-center justify-center gap-2 h-full text-base-content/70"
+      >
         <font-awesome-icon icon="fa-solid fa-chart-bar" class="text-4xl animate-bounce" />
         <p class="text-lg">{{ $t('finances.budgets.no_budgets') }}</p>
       </div>
     </div>
 
-      <!-- MOBILE CARDS -->
-  <div class="flex flex-col gap-3 md:hidden">
-    <div
-      v-for="b in budgets"
-      :key="b.id"
-      class="card bg-base-200 rounded-none border border-base-300 p-3"
-    >
-      <!-- TOP -->
-      <div class="flex justify-between items-center">
-        <span class="badge badge-neutral">
-          {{ b.category }}
-        </span>
+    <!-- MOBILE CARDS -->
+    <div class="flex flex-col gap-3 md:hidden">
+      <div
+        v-for="b in budgets"
+        :key="b.id"
+        class="card bg-base-200 rounded-none border border-base-300 p-3"
+      >
+        <!-- TOP -->
+        <div class="flex justify-between items-center">
+          <span class="badge badge-neutral">
+            {{ b.category }}
+          </span>
 
-        <span class="text-sm opacity-70">
-          {{ b.month }}
-        </span>
+          <span class="text-sm opacity-70">
+            {{ b.month }}
+          </span>
+        </div>
+
+        <!-- LIMIT -->
+        <div class="mt-2 font-semibold text-right text-lg">€{{ b.planned_amount }}</div>
+
+        <!-- ACTIONS -->
+        <div class="flex gap-2 mt-3">
+          <button class="btn btn-xs btn-info flex-1" @click="openUpdate(b)">
+            {{ $t('finances.budgets.actions.edit') }}
+          </button>
+
+          <button class="btn btn-xs btn-error flex-1" @click="openDelete(b)">
+            {{ $t('finances.budgets.actions.delete') }}
+          </button>
+        </div>
       </div>
 
-      <!-- LIMIT -->
-      <div class="mt-2 font-semibold text-right text-lg">
-        €{{ b.planned_amount }}
-      </div>
-
-      <!-- ACTIONS -->
-      <div class="flex gap-2 mt-3">
-        <button class="btn btn-xs btn-info flex-1" @click="openUpdate(b)">
-          {{ $t('finances.budgets.actions.edit') }}
-        </button>
-
-        <button class="btn btn-xs btn-error flex-1" @click="openDelete(b)">
-          {{ $t('finances.budgets.actions.delete') }}
-        </button>
+      <!-- EMPTY -->
+      <div
+        v-if="!budgets.length"
+        class="text-center opacity-60 py-6 flex items-center justify-center"
+      >
+        <font-awesome-icon icon="fa-solid fa-wallet" class="text-3xl animate-bounce" />
+        <p class="text-error animate-bounce">{{ $t('finances.budgets.no_budgets') }}</p>
       </div>
     </div>
-
-    <!-- EMPTY -->
-    <div v-if="!budgets.length" class="text-center opacity-60 py-6 flex items-center justify-center">
-      <font-awesome-icon icon="fa-solid fa-wallet" class="text-3xl animate-bounce" />
-      <p class="text-error animate-bounce">{{ $t('finances.budgets.no_budgets') }}</p>
-    </div>
-  </div>
-
 
     <!-- TABLE -->
     <div class="card hidden md:block rounded-none bg-base-200 border border-base-300 p-4">
@@ -119,10 +122,12 @@
 
               <td class="text-right">
                 <div class="flex justify-end gap-2">
-                  <button class="btn btn-xs btn-info" @click="openUpdate(b)">{{ $t('finances.budgets.actions.edit')
-                    }}</button>
-                  <button class="btn btn-xs btn-error" @click="openDelete(b)">{{ $t('finances.budgets.actions.delete')
-                    }}</button>
+                  <button class="btn btn-xs btn-info" @click="openUpdate(b)">
+                    {{ $t('finances.budgets.actions.edit') }}
+                  </button>
+                  <button class="btn btn-xs btn-error" @click="openDelete(b)">
+                    {{ $t('finances.budgets.actions.delete') }}
+                  </button>
                 </div>
               </td>
             </tr>
@@ -138,13 +143,19 @@
       </div>
     </div>
 
-
-
     <!-- CREATE / UPDATE MODAL -->
-    <BaseDialog v-model="modal"
-      :title="editing ? $t('finances.budgets.modals.edit_budget.title') : $t('finances.budgets.modals.create_budget.title')"
-      :confirmText="editing ? $t('common.confirm') : $t('common.create')" :cancelText="$t('common.cancel')"
-      @confirm="saveBudget" @cancel="closeModal">
+    <BaseDialog
+      v-model="modal"
+      :title="
+        editing
+          ? $t('finances.budgets.modals.edit_budget.title')
+          : $t('finances.budgets.modals.create_budget.title')
+      "
+      :confirmText="editing ? $t('common.confirm') : $t('common.create')"
+      :cancelText="$t('common.cancel')"
+      @confirm="saveBudget"
+      @cancel="closeModal"
+    >
       <div class="flex flex-col gap-2 w-full">
         <Transition name="error-slide">
           <div v-if="error" class="mb-4">
@@ -153,21 +164,39 @@
             </div>
           </div>
         </Transition>
-        <label for="category" class="label">{{ $t('finances.budgets.modals.edit_budget.category') }}</label>
-        <input v-model="form.category" class="input input-bordered w-full"
-          :placeholder="$t('finances.budgets.modals.edit_budget.category_placeholder')" />
-        <label for="planned_amount" class="label">{{ $t('finances.budgets.modals.edit_budget.limit') }}</label>
-        <input v-model.number="form.planned_amount" type="number" class="input input-bordered w-full"
-          :placeholder="$t('finances.budgets.modals.edit_budget.limit_placeholder')" />
-        <label for="month" class="label">{{ $t('finances.budgets.modals.edit_budget.month') }}</label>
+        <label for="category" class="label">{{
+          $t('finances.budgets.modals.edit_budget.category')
+        }}</label>
+        <input
+          v-model="form.category"
+          class="input input-bordered w-full"
+          :placeholder="$t('finances.budgets.modals.edit_budget.category_placeholder')"
+        />
+        <label for="planned_amount" class="label">{{
+          $t('finances.budgets.modals.edit_budget.limit')
+        }}</label>
+        <input
+          v-model.number="form.planned_amount"
+          type="number"
+          class="input input-bordered w-full"
+          :placeholder="$t('finances.budgets.modals.edit_budget.limit_placeholder')"
+        />
+        <label for="month" class="label">{{
+          $t('finances.budgets.modals.edit_budget.month')
+        }}</label>
         <input v-model="form.month" class="input input-bordered w-full" placeholder="YYYY-MM" />
       </div>
     </BaseDialog>
 
     <!-- DELETE -->
-    <BaseDialog v-model="deleteModal" :title="$t('finances.budgets.modals.delete_budget.title')"
-      :confirmText="$t('common.delete')" :cancelText="$t('common.cancel')" @confirm="deleteBudget"
-      @cancel="closeDeleteModal">
+    <BaseDialog
+      v-model="deleteModal"
+      :title="$t('finances.budgets.modals.delete_budget.title')"
+      :confirmText="$t('common.delete')"
+      :cancelText="$t('common.cancel')"
+      @confirm="deleteBudget"
+      @cancel="closeDeleteModal"
+    >
       <Transition name="error-slide">
         <div v-if="error" class="mb-4">
           <div class="alert alert-error">
@@ -186,7 +215,7 @@
 import { useBudgetStore } from '@/stores/budget'
 import { Chart } from 'chart.js/auto'
 import BaseDialog from '@/components/common/BaseDialog.vue'
-import LoadingScreen from '@/components/common/LoadingScreen.vue';
+import LoadingScreen from '@/components/common/LoadingScreen.vue'
 
 export default {
   components: { BaseDialog, LoadingScreen },
@@ -338,8 +367,8 @@ export default {
           animations: {
             numbers: {
               duration: 2000,
-              easing: 'easeInOutCubic'
-            }
+              easing: 'easeInOutCubic',
+            },
           },
           plugins: {
             tooltip: {
@@ -349,7 +378,7 @@ export default {
               boxPadding: 10,
               cornerRadius: 0,
               titleFont: { size: 14, weight: '600' },
-              bodyFont: { size: 16 }
+              bodyFont: { size: 16 },
             },
           },
         },

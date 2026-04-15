@@ -147,8 +147,8 @@ export default {
           animations: {
             numbers: {
               duration: 2000,
-              easing: 'easeInOutCubic'
-            }
+              easing: 'easeInOutCubic',
+            },
           },
           plugins: {
             legend: { display: false },
@@ -213,8 +213,8 @@ export default {
           animations: {
             numbers: {
               duration: 2000,
-              easing: 'easeInOutCubic'
-            }
+              easing: 'easeInOutCubic',
+            },
           },
           plugins: {
             legend: { display: false },

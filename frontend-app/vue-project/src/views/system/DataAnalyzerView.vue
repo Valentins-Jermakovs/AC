@@ -14,7 +14,6 @@ import ExpensesPage from '@/components/system/analytics/ExpensesPage.vue'
 import BudgetPage from '@/components/system/analytics/BudgetPage.vue'
 import PaymentPage from '@/components/system/analytics/PaymentPage.vue'
 
-
 export default {
   name: 'DataAnalyzerView',
   components: {

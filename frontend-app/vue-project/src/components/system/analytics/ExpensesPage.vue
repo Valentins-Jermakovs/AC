@@ -1,10 +1,10 @@
 <template>
-  <div class="h-full bg-base-100 p-4 flex flex-col gap-4">
+  <div class="h-full bg-base-100 p-3 sm:p-4 md:p-6 flex flex-col gap-3 sm:gap-4 md:gap-6">
     <!-- CARDS -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-      <div class="card rounded-none border border-base-300 bg-base-200 p-4">
-        <div class="text-sm opacity-70">{{ $t('finances.expenses.total_spent') }}</div>
-        <div v-if="total !== 0" class="text-2xl font-bold">€{{ total }}
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+      <div class="card rounded-none border border-base-300 bg-base-200 p-2 sm:p-3 md:p-4">
+        <div class="text-xs sm:text-sm opacity-70">{{ $t('finances.expenses.total_spent') }}</div>
+        <div v-if="total !== 0" class="text-xl sm:text-2xl font-bold">€{{ total }}
         </div>
         <!-- spinner -->
         <div v-else class="flex items-center gap-2 mt-1 text-base-content/70">
@@ -12,9 +12,9 @@
         </div>
       </div>
 
-      <div class="card rounded-none border border-base-300 bg-base-200 p-4">
-        <div class="text-sm opacity-70">{{ $t('finances.expenses.transactions') }}</div>
-        <div class="text-2xl font-bold" v-if="expenseStore.meta.total_expenses > 0">
+      <div class="card rounded-none border border-base-300 bg-base-200 p-2 sm:p-3 md:p-4">
+        <div class="text-xs sm:text-sm opacity-70">{{ $t('finances.expenses.transactions') }}</div>
+        <div class="text-xl sm:text-2xl font-bold" v-if="expenseStore.meta.total_expenses > 0">
           {{ expenseStore.meta.total_expenses }}
         </div>
         <!-- spinner -->
@@ -23,9 +23,9 @@
         </div>
       </div>
 
-      <div class="card rounded-none border border-base-300 bg-base-200 p-4">
-        <div class="text-sm opacity-70">{{ $t('finances.expenses.top_category') }}</div>
-        <div class="text-2xl font-bold" v-if="topCategory !== null">
+      <div class="card rounded-none border border-base-300 bg-base-200 p-2 sm:p-3 md:p-4">
+        <div class="text-xs sm:text-sm opacity-70">{{ $t('finances.expenses.top_category') }}</div>
+        <div class="text-xl sm:text-2xl font-bold" v-if="topCategory !== null">
           {{ topCategory?.category || '-' }}
         </div>
         <!-- spinner -->
@@ -34,9 +34,9 @@
         </div>
       </div>
 
-      <div class="card rounded-none border border-base-300 bg-base-200 p-4">
-        <div class="text-sm opacity-70">{{ $t('finances.expenses.today_spent') }}</div>
-        <div class="text-2xl font-bold" v-if="todayTotal !== null">€{{ todayTotal }}</div>
+      <div class="card rounded-none border border-base-300 bg-base-200 p-2 sm:p-3 md:p-4">
+        <div class="text-xs sm:text-sm opacity-70">{{ $t('finances.expenses.today_spent') }}</div>
+        <div class="text-xl sm:text-2xl font-bold" v-if="todayTotal !== null">€{{ todayTotal }}</div>
         <!-- spinner -->
         <div v-else class="flex items-center gap-2 mt-1 text-base-content/70">
           <font-awesome-icon icon="fa-solid fa-spinner" class="text-2xl animate-spin" />
@@ -45,9 +45,9 @@
     </div>
 
     <!-- CHARTS -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1">
-      <div class="card rounded-none border border-base-300 bg-base-200 p-4 h-80 flex flex-col">
-        <div class="font-semibold mb-2">{{ $t('finances.expenses.category_charts') }}</div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 flex-1">
+      <div class="card rounded-none border border-base-300 bg-base-200 p-3 sm:p-4 sm:h-60 md:h-80 flex flex-col">
+        <div class="font-semibold text-sm sm:text-base mb-2">{{ $t('finances.expenses.category_charts') }}</div>
 
         <div class="flex-1 relative" v-if="expenseStore.stats.length > 0">
           <canvas ref="categoryChart"></canvas>
@@ -61,8 +61,8 @@
         </div>
       </div>
 
-      <div class="card rounded-none border border-base-300 bg-base-200 p-4 h-80 flex flex-col">
-        <div class="font-semibold mb-2">{{ $t('finances.expenses.timeline') }}</div>
+      <div class="card rounded-none border border-base-300 bg-base-200 p-3 sm:p-4 sm:h-60 md:h-80 flex flex-col">
+        <div class="font-semibold text-sm sm:text-base mb-2">{{ $t('finances.expenses.timeline') }}</div>
 
         <div class="flex-1 relative" v-if="expenseStore.expenses.length > 0">
           <canvas ref="timelineChart"></canvas>
@@ -78,45 +78,45 @@
     </div>
 
     <div class="flex justify-end">
-      <button class="btn btn-primary btn-sm" @click="openCreate">
+      <button class="btn btn-primary btn-sm text-xs sm:text-sm" @click="openCreate">
         <font-awesome-icon icon="fa-solid fa-pencil"></font-awesome-icon>
         {{ $t('finances.expenses.new_expense') }}
       </button>
     </div>
 
     <!-- EXPENSE LIST -->
-    <div class="card rounded-none border border-base-300 bg-base-200 p-4 flex flex-col gap-3">
-      <div class="flex justify-between items-center">
-        <div class="font-semibold">{{ $t('finances.expenses.expenses') }}</div>
+    <div class="card rounded-none border border-base-300 bg-base-200 p-3 sm:p-4 flex flex-col gap-3">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-4">
+        <div class="font-semibold text-sm sm:text-base">{{ $t('finances.expenses.expenses') }}</div>
 
-        <div class="text-sm opacity-70">
+        <div class="text-xs sm:text-sm opacity-70">
           {{ $t('finances.expenses.page') }} {{ expenseStore.meta.page }} / {{ expenseStore.meta.total_pages }}
         </div>
       </div>
 
       <!-- TABLE -->
       <!-- MOBILE LIST -->
-      <div class="flex flex-col gap-3 md:hidden">
+      <div class="flex flex-col gap-2 sm:gap-3 md:hidden">
         <div v-for="e in expenseStore.expenses" :key="e.id"
-          class="card bg-base-100 rounded-none border border-base-300 p-3">
+          class="card bg-base-100 rounded-none border border-base-300 p-2 sm:p-3\">
           <!-- TOP ROW -->
-          <div class="flex justify-between items-center">
-            <span class="text-sm opacity-70">
+          <div class="flex justify-between items-center gap-2">
+            <span class="text-xs sm:text-sm opacity-70\">
               {{ formatDate(e.date) }}
             </span>
 
-            <span class="badge badge-neutral">
+            <span class="badge badge-neutral text-xs sm:text-sm\">
               {{ e.category }}
             </span>
           </div>
 
           <!-- DESCRIPTION -->
-          <div class="mt-2 text-sm">
+          <div class="mt-2 text-xs sm:text-sm\">\
             {{ e.description || '-' }}
           </div>
 
           <!-- AMOUNT -->
-          <div class="mt-2 font-semibold text-right">
+          <div class="mt-2 font-semibold text-right text-sm sm:text-base\">
             €{{ e.amount }}
           </div>
 
@@ -193,16 +193,16 @@
       </div>
 
       <!-- PAGINATION -->
-      <div class="flex justify-between items-center pt-2">
-        <button class="btn btn-sm btn-neutral" :disabled="expenseStore.meta.page <= 1" @click="prevPage">
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-4 pt-2 md:pt-4">
+        <button class="btn btn-sm btn-neutral text-xs sm:text-sm w-full sm:w-auto" :disabled="expenseStore.meta.page <= 1" @click="prevPage">
           {{ $t('finances.expenses.prev') }}
         </button>
 
-        <div class="text-sm opacity-70">
+        <div class="text-xs sm:text-sm opacity-70 order-first">
           {{ $t('finances.expenses.total') }} {{ expenseStore.meta.total_expenses }}
         </div>
 
-        <button class="btn btn-sm btn-neutral" :disabled="expenseStore.meta.page >= expenseStore.meta.total_pages"
+        <button class="btn btn-sm btn-neutral text-xs sm:text-sm w-full sm:w-auto" :disabled="expenseStore.meta.page >= expenseStore.meta.total_pages"
           @click="nextPage">
           {{ $t('finances.expenses.next') }}
         </button>

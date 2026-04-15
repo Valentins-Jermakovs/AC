@@ -16,6 +16,10 @@ import { useWorkspaceProjectsTasksStore } from '@/stores/workspace/projectsTasks
 import { useSelectedProjectStore } from '@/stores/selectedProject'
 import { useAuthStore } from '@/stores/auth'
 import { useNewsStore } from '@/stores/news'
+import { useVisitsStore } from '@/stores/visits'
+import { useExpenseStore } from '@/stores/expense'
+import { useBudgetStore } from '@/stores/budget'
+import { usePaymentStore } from '@/stores/payment'
 
 // Create an Axios instance with base URL and credentials
 export const api = axios.create({
@@ -62,6 +66,10 @@ api.interceptors.response.use(
     const workspaceProjectsTasksStore = useWorkspaceProjectsTasksStore()
     const selectedProjectStore = useSelectedProjectStore()
     const newsStore = useNewsStore()
+    const visitsStore = useVisitsStore()
+    const expenseStore = useExpenseStore()
+    const budgetStore = useBudgetStore()
+    const paymentStore = usePaymentStore()
 
     if (!error.response) {
       return Promise.reject(error) // Network error
@@ -123,6 +131,10 @@ api.interceptors.response.use(
         newsStore.$reset()
         userStore.$reset()
         adminStore.$reset()
+        expenseStore.$reset()
+        budgetStore.$reset()
+        paymentStore.$reset()
+        visitsStore.$reset()
 
         isRefreshing = false
 

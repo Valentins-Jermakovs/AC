@@ -1,10 +1,10 @@
 {
-  "appTitle": "Darba Analītikas Centrs",
+  "appTitle": "Integrāls",
   "landingPage": {
-    "hero_title": "Darba Analītikas Centrs",
+    "hero_title": "Integrāls",
     "hero_subtitle": "Personīgās produktivitātes un analītikas platforma",
-    "about_title": "Par Darba Analītikas Centru",
-    "about_content": "Darba Analītikas Centrs ir personīgā produktivitātes platforma, kas izstrādāta, lai palīdzētu jums uzraudzīt un uzlabot ikdienas aktivitātes. Izveidota kā akadēmisks projekts, lai izpētītu datu analīzi, uzdevumu pārvaldību un produktivitātes optimizāciju.",
+    "about_title": "Par projektu",
+    "about_content": "Integrāls ir personīgā produktivitātes platforma, kas izstrādāta, lai palīdzētu jums uzraudzīt un uzlabot ikdienas aktivitātes. Izveidota kā akadēmisks projekts, lai izpētītu datu analīzi, uzdevumu pārvaldību un produktivitātes optimizāciju.",
     "features": {
       "title": "Galvenās funkcijas",
       "tasks": "Uzdevumu pārvaldība",
@@ -96,7 +96,7 @@
     "close": "Labi"
   },
   "topbar": {
-    "title": "DAC"
+    "title": "Integrāls"
   },
   "modals": {
     "logout": {

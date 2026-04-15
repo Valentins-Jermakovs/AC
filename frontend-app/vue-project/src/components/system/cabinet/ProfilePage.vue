@@ -62,6 +62,9 @@ import { useSelectedProjectStore } from '@/stores/selectedProject'
 import { useAuthStore } from '@/stores/auth'
 import { useVisitsStore } from '@/stores/visits'
 import { useNewsStore } from '@/stores/news'
+import { useExpenseStore } from '@/stores/expense'
+import { useBudgetStore } from '@/stores/budget'
+import { usePaymentStore } from '@/stores/payment'
 
 import UsernameModal from './modals/UsernameModal.vue'
 import EmailChangeModal from './modals/EmailChangeModal.vue'
@@ -277,6 +280,9 @@ export default {
         this.userStore.$reset()
         this.newsStore.$reset()
         this.visitsStore.$reset()
+        this.expenseStore.$reset()
+        this.budgetStore.$reset()
+        this.paymentStore.$reset()
 
         this.$router.push({ name: 'logout' })
       } catch (err) {

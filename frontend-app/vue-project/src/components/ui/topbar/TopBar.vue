@@ -66,6 +66,9 @@ import { useSelectedProjectStore } from '@/stores/selectedProject'
 import { useAuthStore } from '@/stores/auth'
 import { useNewsStore } from '@/stores/news'
 import { useVisitsStore } from '@/stores/visits'
+import { useExpenseStore } from '@/stores/expense'
+import { useBudgetStore } from '@/stores/budget'
+import { usePaymentStore } from '@/stores/payment'
 
 // Import components
 import BurgerButton from './BurgerButton.vue'
@@ -150,6 +153,9 @@ export default {
         const selectedProjectStore = useSelectedProjectStore()
         const newsStore = useNewsStore()
         const visitsStore = useVisitsStore()
+        const expenseStore = useExpenseStore()
+        const budgetStore = useBudgetStore()
+        const paymentStore = usePaymentStore()
 
         // Reset all stores
         privateTasksStore.$reset()
@@ -166,6 +172,9 @@ export default {
         selectedProjectStore.$reset()
         newsStore.$reset()
         visitsStore.$reset()
+        expenseStore.$reset()
+        budgetStore.$reset()
+        paymentStore.$reset()
 
         // Reset all stores
         userStore.$reset()

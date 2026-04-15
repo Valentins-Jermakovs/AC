@@ -706,6 +706,7 @@
       "budget": "Budžets"
     },
     "expenses": {
+      "no_expenses": "Nav finanšu datu",
       "total_spent": "Kopā iztērēts",
       "transactions": "Transakcijas",
       "top_category": "Populārākā kategorija",
@@ -757,6 +758,7 @@
       }
     },
     "budgets" : {
+      "no_budgets": "Nav finanšu datu",
       "title": "Budžets",
       "total_budgets": "Kopējs budžetu skaits",
       "total_limit": "Kopējais budžeta limits",
@@ -796,6 +798,7 @@
       }
     },
     "payments": {
+      "no_payments": "Nav finanšu datu",
       "total_amount": "Kopējā summa",
       "recurring_payments": "Atkārtoti maksājumi",
       "next_payment": "Nākamais maksājums",

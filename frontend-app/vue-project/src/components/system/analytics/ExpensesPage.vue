@@ -4,26 +4,48 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       <div class="card rounded-none border border-base-300 bg-base-200 p-4">
         <div class="text-sm opacity-70">{{ $t('finances.expenses.total_spent') }}</div>
-        <div class="text-2xl font-bold">€{{ total }}</div>
+        <div v-if ="total !== 0"
+        class="text-2xl font-bold">€{{ total }}
+        </div>
+        <!-- spinner -->
+        <div v-else class="flex items-center gap-2 mt-1 text-base-content/70">
+          <font-awesome-icon icon="fa-solid fa-spinner" class="text-2xl animate-spin" />
+        </div>
       </div>
 
       <div class="card rounded-none border border-base-300 bg-base-200 p-4">
         <div class="text-sm opacity-70">{{ $t('finances.expenses.transactions') }}</div>
-        <div class="text-2xl font-bold">
+        <div class="text-2xl font-bold"
+        v-if="expenseStore.meta.total_expenses > 0"
+        >
           {{ expenseStore.meta.total_expenses }}
+        </div>
+        <!-- spinner -->
+        <div v-else class="flex items-center gap-2 mt-1 text-base-content/70">
+          <font-awesome-icon icon="fa-solid fa-spinner" class="text-2xl animate-spin" />
         </div>
       </div>
 
       <div class="card rounded-none border border-base-300 bg-base-200 p-4">
         <div class="text-sm opacity-70">{{ $t('finances.expenses.top_category') }}</div>
-        <div class="text-2xl font-bold">
+        <div class="text-2xl font-bold"
+        v-if="topCategory !== null">
           {{ topCategory?.category || '-' }}
+        </div>
+        <!-- spinner -->
+        <div v-else class="flex items-center gap-2 mt-1 text-base-content/70">
+          <font-awesome-icon icon="fa-solid fa-spinner" class="text-2xl animate-spin" />
         </div>
       </div>
 
       <div class="card rounded-none border border-base-300 bg-base-200 p-4">
         <div class="text-sm opacity-70">{{ $t('finances.expenses.today_spent') }}</div>
-        <div class="text-2xl font-bold">€{{ todayTotal }}</div>
+        <div class="text-2xl font-bold"
+        v-if="todayTotal !== null">€{{ todayTotal }}</div>
+        <!-- spinner -->
+        <div v-else class="flex items-center gap-2 mt-1 text-base-content/70">
+          <font-awesome-icon icon="fa-solid fa-spinner" class="text-2xl animate-spin" />
+        </div>
       </div>
     </div>
 
@@ -32,16 +54,30 @@
       <div class="card rounded-none border border-base-300 bg-base-200 p-4 h-80 flex flex-col">
         <div class="font-semibold mb-2">{{ $t('finances.expenses.category_charts') }}</div>
 
-        <div class="flex-1 relative">
+        <div class="flex-1 relative" v-if="expenseStore.stats.length > 0">
           <canvas ref="categoryChart"></canvas>
+        </div>
+
+        <div v-else class="flex-1 flex items-center justify-center">
+          <span class="text-sm opacity-70 flex gap-2">
+            <font-awesome-icon icon="fa-solid fa-chart-line" class="text-2xl animate-bounce" />
+            <p class="animate-bounce">{{ $t('finances.expenses.no_expenses') }}</p>
+          </span>
         </div>
       </div>
 
       <div class="card rounded-none border border-base-300 bg-base-200 p-4 h-80 flex flex-col">
         <div class="font-semibold mb-2">{{ $t('finances.expenses.timeline') }}</div>
 
-        <div class="flex-1 relative">
+        <div class="flex-1 relative" v-if="expenseStore.expenses.length > 0">
           <canvas ref="timelineChart"></canvas>
+        </div>
+
+        <div v-else class="flex-1 flex items-center justify-center">
+          <span class="text-sm opacity-70 flex gap-2">
+            <font-awesome-icon icon="fa-solid fa-chart-line" class="text-2xl animate-bounce" />
+            <p class="animate-bounce">{{ $t('finances.expenses.no_expenses') }}</p>
+          </span>
         </div>
       </div>
     </div>
@@ -101,8 +137,9 @@
         </div>
 
         <!-- EMPTY STATE -->
-        <div v-if="!expenseStore.expenses.length" class="text-center opacity-60 py-6">
-          No expenses found
+        <div v-if="!expenseStore.expenses.length" class="text-center py-6">
+          <font-awesome-icon icon="fa-solid fa-wallet" class="text-2xl animate-bounce"></font-awesome-icon>
+          <p class="text-sm text-error">{{ $t('finances.expenses.no_expenses') }}</p>
         </div>
       </div>
       <!-- TABLE (desktop only) -->
@@ -150,8 +187,9 @@
             </tr>
 
             <tr v-if="!expenseStore.expenses.length">
-              <td colspan="5" class="text-center opacity-60 py-6">
-                No expenses found
+              <td colspan="5" class="text-center py-6">
+                <font-awesome-icon icon="fa-solid fa-wallet" class="text-3xl text-base-content/40 animate-bounce" />
+                <p class="text-error">{{ $t('finances.expenses.no_expenses') }}</p>
               </td>
             </tr>
           </tbody>

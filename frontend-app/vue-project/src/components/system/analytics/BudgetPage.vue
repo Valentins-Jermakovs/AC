@@ -36,8 +36,12 @@
     <!-- CHART -->
     <div class="card rounded-none bg-base-200 border border-base-300 p-4 h-80 flex flex-col">
       <div class="font-semibold mb-2">{{ $t('finances.budgets.budget_limits') }}</div>
-      <div class="flex-1">
+      <div class="flex-1" v-if="budgets.length > 0">
         <canvas ref="budgetChart"></canvas>
+      </div>
+      <div v-else class="flex flex-col items-center justify-center gap-2 h-full text-base-content/70">
+        <font-awesome-icon icon="fa-solid fa-chart-bar" class="text-4xl animate-bounce" />
+        <p class="text-lg">{{ $t('finances.budgets.no_budgets') }}</p>
       </div>
     </div>
 
@@ -77,8 +81,9 @@
     </div>
 
     <!-- EMPTY -->
-    <div v-if="!budgets.length" class="text-center opacity-60 py-6">
-      No budgets found
+    <div v-if="!budgets.length" class="text-center opacity-60 py-6 flex items-center justify-center">
+      <font-awesome-icon icon="fa-solid fa-wallet" class="text-3xl animate-bounce" />
+      <p class="text-error animate-bounce">{{ $t('finances.budgets.no_budgets') }}</p>
     </div>
   </div>
 
@@ -123,7 +128,10 @@
             </tr>
 
             <tr v-if="!budgets.length">
-              <td colspan="4" class="text-center opacity-60 py-6">No budgets found</td>
+              <td colspan="4" class="text-center opacity-60 py-6">
+                <font-awesome-icon icon="fa-solid fa-wallet" class="text-3xl animate-bounce" />
+                <p class="text-error animate-bounce">{{ $t('finances.budgets.no_budgets') }}</p>
+              </td>
             </tr>
           </tbody>
         </table>

@@ -711,6 +711,7 @@
       "budget": "Бюджет"
     },
     "expenses": {
+      "no_expenses": "Нет данных о расходах",
       "total_spent": "Всего потрачено",
       "transactions": "Транзакции",
       "top_category": "Популярная категория",
@@ -762,6 +763,7 @@
       }
     },
     "budgets": {
+      "no_budgets": "Нет данных о бюджетах",
       "title": "Бюджет",
       "total_budgets": "Всего бюджетов",
       "total_limit": "Общий лимит бюджета",
@@ -801,6 +803,7 @@
       }
     },
     "payments": {
+      "no_payments": "Нет данных о платежах",
       "total_amount": "Общая сумма",
       "recurring_payments": "Регулярные платежи",
       "next_payment": "Следующий платеж",

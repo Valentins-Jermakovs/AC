@@ -14,7 +14,10 @@
 
       <div class="card rounded-none border border-base-300 bg-base-200 p-4">
         <div class="text-sm opacity-70">{{ $t('finances.payments.next_payment') }}</div>
-        <div class="text-2xl font-bold">{{ nextPaymentLabel }}</div>
+        <div class="text-2xl font-bold" v-if="nextPaymentLabel !== '-'">{{ nextPaymentLabel }}</div>
+        <div class="text-2xl font-bold text-base-content/70" v-else>
+          <font-awesome-icon icon="fa-solid fa-spinner" class="text-2xl animate-spin" />
+        </div>
       </div>
 
       <div class="card rounded-none border border-base-300 bg-base-200 p-4">
@@ -27,15 +30,23 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1">
       <div class="card rounded-none border border-base-300 bg-base-200 p-4 h-80 flex flex-col">
         <div class="font-semibold mb-2">{{ $t('finances.payments.amount_by_category') }}</div>
-        <div class="flex-1 relative">
+        <div class="flex-1 relative" v-if="paymentStore.payments.length > 0">
           <canvas ref="categoryChart"></canvas>
+        </div>
+        <div v-else class="flex flex-col items-center justify-center gap-2 h-full text-base-content/70">
+          <font-awesome-icon icon="fa-solid fa-chart-line" class="text-4xl animate-bounce" />
+          <p class="text-lg">{{ $t('finances.payments.no_payments') }}</p>
         </div>
       </div>
 
       <div class="card rounded-none border border-base-300 bg-base-200 p-4 h-80 flex flex-col">
         <div class="font-semibold mb-2">{{ $t('finances.payments.upcoming_schedule') }}</div>
-        <div class="flex-1 relative">
+        <div class="flex-1 relative" v-if="paymentStore.payments.length > 0">
           <canvas ref="timelineChart"></canvas>
+        </div>
+        <div v-else class="flex flex-col items-center justify-center gap-2 h-full text-base-content/70">
+          <font-awesome-icon icon="fa-solid fa-chart-line" class="text-4xl animate-bounce" />
+          <p class="text-lg">{{ $t('finances.payments.no_payments') }}</p>
         </div>
       </div>
     </div>
@@ -89,7 +100,10 @@
               </td>
             </tr>
             <tr v-if="!payments.length">
-              <td colspan="5" class="text-center opacity-60 py-6">No payments found</td>
+              <td colspan="5" class="text-center opacity-60 py-6">
+                <font-awesome-icon icon="fa-solid fa-wallet" class="text-2xl animate-bounce" />
+                <p class="text-error animate-bounce">{{ $t('finances.payments.no_payments') }}</p>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -168,7 +182,8 @@
 
         <!-- EMPTY -->
         <div v-if="!payments.length" class="text-center opacity-60 py-6">
-          No payments found
+          <font-awesome-icon icon="fa-solid fa-wallet" class="text-2xl animate-bounce" />
+          <p class="text-error animate-bounce">{{ $t('finances.payments.no_payments') }}</p>
         </div>
       </div>
 

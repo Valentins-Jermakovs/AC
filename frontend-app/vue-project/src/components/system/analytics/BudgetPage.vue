@@ -3,36 +3,39 @@
     <!-- HEADER -->
     <div class="flex items-center justify-between">
       <div>
-        <h1 class="text-xl font-bold">Budgets</h1>
+        <h1 class="text-xl font-bold">{{ $t('finances.budgets.title') }}</h1>
         <p class="text-sm opacity-60">
           {{ budgetStore.yearAndMonth }}
         </p>
       </div>
 
-      <button class="btn btn-primary btn-sm" @click="openCreate">+ New Budget</button>
+      <button class="btn btn-primary btn-sm" @click="openCreate">
+        <font-awesome-icon icon="fa-solid fa-pencil"></font-awesome-icon>
+        {{ $t('finances.budgets.new_budget') }}
+      </button>
     </div>
 
     <!-- STATS -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <div class="card rounded-none bg-base-200 border border-base-300 p-4">
-        <div class="text-sm opacity-60">Total Budgets</div>
+        <div class="text-sm opacity-60">{{ $t('finances.budgets.total_budgets') }}</div>
         <div class="text-2xl font-bold">{{ budgets.length }}</div>
       </div>
 
       <div class="card rounded-none bg-base-200 border border-base-300 p-4">
-        <div class="text-sm opacity-60">Total Limit</div>
+        <div class="text-sm opacity-60">{{ $t('finances.budgets.total_limit') }}</div>
         <div class="text-2xl font-bold">€{{ totalLimit }}</div>
       </div>
 
       <div class="card rounded-none bg-base-200 border border-base-300 p-4">
-        <div class="text-sm opacity-60">Month</div>
+        <div class="text-sm opacity-60">{{ $t('finances.budgets.month') }}</div>
         <div class="text-2xl font-bold">{{ budgetStore.yearAndMonth }}</div>
       </div>
     </div>
 
     <!-- CHART -->
     <div class="card rounded-none bg-base-200 border border-base-300 p-4 h-80 flex flex-col">
-      <div class="font-semibold mb-2">Budget Limits</div>
+      <div class="font-semibold mb-2">{{ $t('finances.budgets.budget_limits') }}</div>
       <div class="flex-1">
         <canvas ref="budgetChart"></canvas>
       </div>
@@ -40,16 +43,16 @@
 
     <!-- TABLE -->
     <div class="card rounded-none bg-base-200 border border-base-300 p-4">
-      <div class="font-semibold mb-3">Budgets</div>
+      <div class="font-semibold mb-3">{{ $t('finances.budgets.budgets') }}</div>
 
       <div class="overflow-x-auto">
         <table class="table table-sm w-full">
           <thead>
             <tr class="opacity-70">
-              <th>Category</th>
-              <th>Limit</th>
-              <th>Month</th>
-              <th class="text-right">Actions</th>
+              <th>{{ $t('finances.budgets.category') }}</th>
+              <th>{{ $t('finances.budgets.limit') }}</th>
+              <th>{{ $t('finances.budgets.month') }}</th>
+              <th class="text-right">{{ $t('finances.budgets.table_actions') }}</th>
             </tr>
           </thead>
 
@@ -69,8 +72,8 @@
 
               <td class="text-right">
                 <div class="flex justify-end gap-2">
-                  <button class="btn btn-xs btn-info" @click="openUpdate(b)">Edit</button>
-                  <button class="btn btn-xs btn-error" @click="openDelete(b)">Delete</button>
+                  <button class="btn btn-xs btn-info" @click="openUpdate(b)">{{ $t('finances.budgets.actions.edit') }}</button>
+                  <button class="btn btn-xs btn-error" @click="openDelete(b)">{{ $t('finances.budgets.actions.delete') }}</button>
                 </div>
               </td>
             </tr>
@@ -86,22 +89,24 @@
     <!-- CREATE / UPDATE MODAL -->
     <BaseDialog
       v-model="modal"
-      :title="editing ? 'Update Budget' : 'Create Budget'"
-      :confirmText="editing ? 'Update' : 'Create'"
+      :title="editing ? $t('finances.budgets.modals.edit_budget.title') : $t('finances.budgets.modals.create_budget.title')"
+      :confirmText="editing ? $t('common.update') : $t('common.create')"
       :cancelText="$t('common.cancel')"
       @confirm="saveBudget"
       @cancel="modal = false"
     >
-      <div class="flex flex-col gap-3">
-        <input v-model="form.category" class="input input-bordered w-full" placeholder="Category" />
-
+      <div class="flex flex-col gap-2 w-full">
+        <label for="category" class="label">{{ $t('finances.budgets.modals.edit_budget.category') }}</label>
+        <input v-model="form.category" class="input input-bordered w-full" 
+        :placeholder="$t('finances.budgets.modals.edit_budget.category_placeholder')" />
+        <label for="planned_amount" class="label">{{ $t('finances.budgets.modals.edit_budget.limit') }}</label>
         <input
           v-model.number="form.planned_amount"
           type="number"
           class="input input-bordered w-full"
-          placeholder="Limit"
+          :placeholder="$t('finances.budgets.modals.edit_budget.limit_placeholder')"
         />
-
+        <label for="month" class="label">{{ $t('finances.budgets.modals.edit_budget.month') }}</label>
         <input v-model="form.month" class="input input-bordered w-full" placeholder="YYYY-MM" />
       </div>
     </BaseDialog>
@@ -109,13 +114,13 @@
     <!-- DELETE -->
     <BaseDialog
       v-model="deleteModal"
-      title="Delete Budget"
+      :title="$t('finances.budgets.modals.delete_budget.title')"
       :confirmText="$t('common.delete')"
       :cancelText="$t('common.cancel')"
       @confirm="deleteBudget"
       @cancel="deleteModal = false"
     >
-      <p>Are you sure?</p>
+      <p>{{ $t('finances.budgets.modals.delete_budget.content') }}</p>
     </BaseDialog>
   </div>
 </template>
@@ -224,7 +229,7 @@ export default {
           labels: this.budgets.map((b) => b.category),
           datasets: [
             {
-              label: 'Limit',
+              label: this.$t('finances.budgets.limit'),
               data: this.budgets.map((b) => b.planned_amount),
             },
           ],

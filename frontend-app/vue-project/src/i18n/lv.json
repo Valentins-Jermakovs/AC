@@ -755,7 +755,97 @@
           "date": "Datums"
         }
       }
-
+    },
+    "budgets" : {
+      "title": "Budžets",
+      "total_budgets": "Kopējs budžetu skaits",
+      "total_limit": "Kopējais budžeta limits",
+      "month": "Mēnesis",
+      "budget_limits": "Budžeta limiti",
+      "limits": "Limiti",
+      "budgets": "Budžeti",
+      "category": "Kategorija",
+      "limit": "Limits",
+      "table_actions": "Darbības",
+      "new_budget": "Jauns budžets",
+      "actions": {
+        "edit": "Rediģēt",
+        "delete": "Dzēst"
+      },
+      "modals": {
+        "create_budget": {
+          "title": "Budžeta forma",
+          "category": "Kategorija",
+          "category_placeholder": "Ievadiet kategoriju...",
+          "limit": "Limits",
+          "limit_placeholder": "Ievadiet limita summu...",
+          "month": "Mēnesis"
+        },
+        "delete_budget": {
+          "title": "Dzēst budžetu",
+          "content": "Vai tiešām vēlaties dzēst budžetu?"
+        },
+        "edit_budget": {
+          "title": "Rediģēt budžetu",
+          "category": "Kategorija",
+          "category_placeholder": "Ievadiet kategoriju...",
+          "limit": "Limits",
+          "limit_placeholder": "Ievadiet limita summu...",
+          "month": "Mēnesis"
+        }
+      }
+    },
+    "payments": {
+      "total_amount": "Kopējā summa",
+      "recurring_payments": "Atkārtoti maksājumi",
+      "next_payment": "Nākamais maksājums",
+      "daily_payments": "Dienas maksājumi",
+      "weekly_payments": "Nedēļas maksājumi",
+      "monthly_payments": "Mēneša maksājumi",
+      "average_payment": "Vidējais maksājums",
+      "amount_by_category": "Maksājumi pēc kategorijām",
+      "category_amount": "Kategorija - summa",
+      "upcoming_schedule": "Nākamie maksājumi",
+      "upcoming_amount": "Summa",
+      "new_payment": "Jauns maksājums",
+      "table": {
+        "recurring_payments": "Atkārtoti maksājumi",
+        "category": "Kategorija",
+        "amount": "Summa",
+        "start_date": "Sākuma datums",
+        "interval": "Intervāls",
+        "actions": "Darbības",
+        "edit": "Rediģēt",
+        "delete": "Dzēst",
+        "page": "Lapa",
+        "total": "Ierakstu skaits:",
+        "prev": "Iepriekšēja",
+        "next": "Nākamā"
+      },
+      "modals": {
+        "create_payment": {
+          "title": "Maksājuma forma",
+          "amount": "Summa",
+          "amount_placeholder": "Ievadiet summu...",
+          "category": "Kategorija",
+          "category_placeholder": "Ievadiet kategoriju...",
+          "start_date": "Sākuma datums",
+          "interval": "Intervāls"
+        },
+        "delete_payment": {
+          "title": "Dzēst maksājumu",
+          "content": "Vai tiešām vēlaties dzēst maksājumu?"
+        },
+        "edit_payment": {
+          "title": "Rediģēt maksājumu",
+          "amount": "Summa",
+          "amount_placeholder": "Ievadiet summu...",
+          "category": "Kategorija",
+          "category_placeholder": "Ievadiet kategoriju...",
+          "start_date": "Sākuma datums",
+          "interval": "Intervāls"
+        }
+      }
     }
   }
 }

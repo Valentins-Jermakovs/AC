@@ -14,6 +14,7 @@ import ExpensesPage from '@/components/system/analytics/ExpensesPage.vue'
 import BudgetPage from '@/components/system/analytics/BudgetPage.vue'
 import PaymentPage from '@/components/system/analytics/PaymentPage.vue'
 
+
 export default {
   name: 'DataAnalyzerView',
   components: {
@@ -25,7 +26,6 @@ export default {
   },
   data() {
     return {
-      title: 'Data Analyzer',
       image: headerImage,
 
       // Currently active page (default is private tasks)
@@ -37,19 +37,22 @@ export default {
       let navButtons = [
         {
           key: 'expenses',
-          title: 'Expenses',
+          title: this.$t('finances.titles.expenses'),
         },
         {
           key: 'budget',
-          title: 'Budget',
+          title: this.$t('finances.titles.budget'),
         },
         {
           key: 'payments',
-          title: 'Payments',
+          title: this.$t('finances.titles.payments'),
         },
       ]
 
       return navButtons
+    },
+    title() {
+      return this.$t('finances.title')
     },
   },
 }

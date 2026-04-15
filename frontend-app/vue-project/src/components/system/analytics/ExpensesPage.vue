@@ -3,26 +3,26 @@
     <!-- CARDS -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       <div class="card rounded-none border border-base-300 bg-base-200 p-4">
-        <div class="text-sm opacity-70">Total Spent</div>
+        <div class="text-sm opacity-70">{{ $t('finances.expenses.total_spent') }}</div>
         <div class="text-2xl font-bold">€{{ total }}</div>
       </div>
 
       <div class="card rounded-none border border-base-300 bg-base-200 p-4">
-        <div class="text-sm opacity-70">Transactions</div>
+        <div class="text-sm opacity-70">{{ $t('finances.expenses.transactions') }}</div>
         <div class="text-2xl font-bold">
           {{ expenseStore.meta.total_expenses }}
         </div>
       </div>
 
       <div class="card rounded-none border border-base-300 bg-base-200 p-4">
-        <div class="text-sm opacity-70">Top Category</div>
+        <div class="text-sm opacity-70">{{ $t('finances.expenses.top_category') }}</div>
         <div class="text-2xl font-bold">
           {{ topCategory?.category || '-' }}
         </div>
       </div>
 
       <div class="card rounded-none border border-base-300 bg-base-200 p-4">
-        <div class="text-sm opacity-70">Today</div>
+        <div class="text-sm opacity-70">{{ $t('finances.expenses.today_spent') }}</div>
         <div class="text-2xl font-bold">€{{ todayTotal }}</div>
       </div>
     </div>
@@ -30,7 +30,7 @@
     <!-- CHARTS -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1">
       <div class="card rounded-none border border-base-300 bg-base-200 p-4 h-80 flex flex-col">
-        <div class="font-semibold mb-2">Category Chart</div>
+        <div class="font-semibold mb-2">{{ $t('finances.expenses.category_charts') }}</div>
 
         <div class="flex-1 relative">
           <canvas ref="categoryChart"></canvas>
@@ -38,7 +38,7 @@
       </div>
 
       <div class="card rounded-none border border-base-300 bg-base-200 p-4 h-80 flex flex-col">
-        <div class="font-semibold mb-2">Timeline</div>
+        <div class="font-semibold mb-2">{{ $t('finances.expenses.timeline') }}</div>
 
         <div class="flex-1 relative">
           <canvas ref="timelineChart"></canvas>
@@ -47,16 +47,19 @@
     </div>
 
     <div class="flex justify-end">
-      <button class="btn btn-primary btn-sm" @click="openCreate">+ New Expense</button>
+      <button class="btn btn-primary btn-sm" @click="openCreate">
+        <font-awesome-icon icon="fa-solid fa-pencil"></font-awesome-icon>
+        {{ $t('finances.expenses.new_expense') }}
+      </button>
     </div>
 
     <!-- EXPENSE LIST -->
     <div class="card rounded-none border border-base-300 bg-base-200 p-4 flex flex-col gap-3">
       <div class="flex justify-between items-center">
-        <div class="font-semibold">Expenses</div>
+        <div class="font-semibold">{{ $t('finances.expenses.expenses') }}</div>
 
         <div class="text-sm opacity-70">
-          Page {{ expenseStore.meta.page }} / {{ expenseStore.meta.total_pages }}
+          {{ $t('finances.expenses.page') }} {{ expenseStore.meta.page }} / {{ expenseStore.meta.total_pages }}
         </div>
       </div>
 
@@ -65,11 +68,11 @@
         <table class="table table-sm w-full">
           <thead>
             <tr>
-              <th>Date</th>
-              <th>Category</th>
-              <th>Description</th>
-              <th class="text-right">Amount</th>
-              <th class="text-right">Actions</th>
+              <th>{{ $t('finances.expenses.date') }}</th>
+              <th>{{ $t('finances.expenses.category') }}</th>
+              <th>{{ $t('finances.expenses.description') }}</th>
+              <th class="text-right">{{ $t('finances.expenses.amount') }}</th>
+              <th class="text-right">{{ $t('finances.expenses.table_actions') }}</th>
             </tr>
           </thead>
 
@@ -93,9 +96,9 @@
 
               <td class="text-right">
                 <div class="flex gap-2 justify-end">
-                  <button class="btn btn-xs btn-info" @click="openUpdate(e)">Edit</button>
+                  <button class="btn btn-xs btn-info" @click="openUpdate(e)">{{ $t('finances.expenses.actions.edit') }}</button>
 
-                  <button class="btn btn-xs btn-error" @click="openDelete(e)">Delete</button>
+                  <button class="btn btn-xs btn-error" @click="openDelete(e)">{{ $t('finances.expenses.actions.delete') }}</button>
                 </div>
               </td>
             </tr>
@@ -110,17 +113,19 @@
       <!-- PAGINATION -->
       <div class="flex justify-between items-center pt-2">
         <button class="btn btn-sm" :disabled="expenseStore.meta.page <= 1" @click="prevPage">
-          Prev
+          {{ $t('finances.expenses.prev') }}
         </button>
 
-        <div class="text-sm opacity-70">{{ expenseStore.meta.total_expenses }} total</div>
+        <div class="text-sm opacity-70">
+          {{ $t('finances.expenses.total') }} {{ expenseStore.meta.total_expenses }}
+        </div>
 
         <button
           class="btn btn-sm"
           :disabled="expenseStore.meta.page >= expenseStore.meta.total_pages"
           @click="nextPage"
         >
-          Next
+          {{ $t('finances.expenses.next') }}
         </button>
       </div>
     </div>
@@ -132,9 +137,9 @@
       @cancel="closeDelete"
       :confirmText="$t('common.create')"
       :cancelText="$t('common.cancel')"
-      title="Delete Expense"
+      :title="$t('finances.expenses.modals.delete_expense.title')"
     >
-      <p>Are you sure you want to delete this expense?</p>
+      <p>{{ $t('finances.expenses.modals.delete_expense.content') }}</p>
     </BaseDialog>
     <!-- Update Modal-->
     <BaseDialog
@@ -143,43 +148,43 @@
       @cancel="closeUpdate"
       :confirmText="$t('common.create')"
       :cancelText="$t('common.cancel')"
-      title="Update Expense"
+      :title="$t('finances.expenses.modals.edit_expense.title')"
     >
       <!-- Inputs: (amount, category, date, description) -->
-      <div>
-        <label for="amount" class="label">Amount</label>
+      <div class="flex flex-col gap-2 w-full">
+        <label for="amount" class="label">{{ $t('finances.expenses.modals.edit_expense.amount') }}</label>
         <input
           type="number"
           v-model="expense.amount"
           class="input w-full"
-          placeholder="Amount"
+          :placeholder="$t('finances.expenses.modals.edit_expense.amount_placeholder')"
           required
         />
 
-        <label for="category" class="label">Category</label>
+        <label for="category" class="label">{{ $t('finances.expenses.modals.edit_expense.category') }}</label>
         <input
           type="text"
           v-model="expense.category"
           class="input w-full"
-          placeholder="Category"
+          :placeholder="$t('finances.expenses.modals.edit_expense.category_placeholder')"
           required
         />
 
-        <label for="date" class="label">Date</label>
+        <label for="date" class="label">{{ $t('finances.expenses.modals.edit_expense.date') }}</label>
         <input
           type="date"
           v-model="expense.date"
           class="input w-full"
-          placeholder="Date"
+          :placeholder="$t('finances.expenses.modals.edit_expense.date_placeholder')"
           required
         />
 
-        <label for="description" class="label">Description</label>
+        <label for="description" class="label">{{ $t('finances.expenses.modals.edit_expense.description') }}</label>
         <input
           type="text"
           v-model="expense.description"
           class="input w-full"
-          placeholder="Description"
+          :placeholder="$t('finances.expenses.modals.edit_expense.description_placeholder')"
           required
         />
       </div>
@@ -188,45 +193,46 @@
     <BaseDialog
       v-model="createModal"
       @confirm="createExpense"
+      :title="$t('finances.expenses.modals.create_expense.title')"
       :confirmText="$t('common.create')"
       :cancelText="$t('common.cancel')"
       @cancel="closeCreateModal"
     >
       <!-- Inputs: (amount, category, date, description) -->
-      <div>
-        <label for="amount" class="label">Amount</label>
+      <div class="flex flex-col gap-2 w-full">
+        <label for="amount" class="label">{{ $t('finances.expenses.modals.create_expense.amount') }}</label>
         <input
           type="number"
           v-model="expense.amount"
           class="input w-full"
-          placeholder="Amount"
+          :placeholder="$t('finances.expenses.modals.create_expense.amount_placeholder')"
           required
         />
 
-        <label for="category" class="label">Category</label>
+        <label for="category" class="label">{{ $t('finances.expenses.modals.create_expense.category') }}</label>
         <input
           type="text"
           v-model="expense.category"
           class="input w-full"
-          placeholder="Category"
+          :placeholder="$t('finances.expenses.modals.create_expense.category_placeholder')"
           required
         />
 
-        <label for="date" class="label">Date</label>
+        <label for="date" class="label">{{ $t('finances.expenses.modals.create_expense.date') }}</label>
         <input
           type="date"
           v-model="expense.date"
           class="input w-full"
-          placeholder="Date"
+          :placeholder="$t('finances.expenses.modals.create_expense.date_placeholder')"
           required
         />
 
-        <label for="description" class="label">Description</label>
+        <label for="description" class="label">{{ $t('finances.expenses.modals.create_expense.description') }}</label>
         <input
           type="text"
           v-model="expense.description"
           class="input w-full"
-          placeholder="Description"
+          :placeholder="$t('finances.expenses.modals.create_expense.description_placeholder')"
           required
         />
       </div>
@@ -420,7 +426,7 @@ export default {
           labels: this.chartData.labels,
           datasets: [
             {
-              label: 'Expenses by Category',
+              label: this.$t('finances.expenses.category_charts'),
               data: this.chartData.data,
             },
           ],
@@ -445,7 +451,7 @@ export default {
           labels: this.timelineData.labels,
           datasets: [
             {
-              label: 'Daily Spending',
+              label: this.$t('finances.expenses.daily_spending'),
               data: this.timelineData.data,
               borderColor: '#16a34a',
               backgroundColor: 'rgba(22,163,74,0.2)',

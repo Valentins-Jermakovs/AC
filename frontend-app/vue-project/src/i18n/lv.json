@@ -152,7 +152,7 @@
     "cabinet": "Kabinets",
     "calendar": "Kalendārs",
     "news": "Ziņas",
-    "analytics": "Datu analītika",
+    "finance_analytics": "Finanšu analītika",
     "work": "Projekti, uzdevumi...",
     "notifications": "Atgādinājumi",
     "pomodoro": "Pomodoro"
@@ -697,5 +697,65 @@
     "total_time_per_day": "Maksimāls apmeklājuma laiks dienā (min)",
     "no_activity": "Aktivitātes dati nav pieejami",
     "start_use_app": "Izmantojiet programmu"
+  },
+  "finances": {
+    "title": "Finanses",
+    "titles": {
+      "expenses": "Izdevumi",
+      "payments": "Maksājumi",
+      "budget": "Budžets"
+    },
+    "expenses": {
+      "total_spent": "Kopā iztērēts",
+      "transactions": "Transakcijas",
+      "top_category": "Populārākā kategorija",
+      "today_spent": "Šodien iztērēts",
+      "category_charts": "Izdevumi pēc kategorijām",
+      "timeline": "Izdevumi laika gaitā",
+      "expenses_by_category": "Izdevumi pēc kategorijām",
+      "daily_spending": "Dienas izdevumi",
+      "expenses": "Izdevumi",
+      "date": "Datums",
+      "category": "Kategorija",
+      "amount": "Summa",
+      "description": "Apraksts",
+      "new_expense": "Jauns izdevums",
+      "table_actions": "Darbības",
+      "actions": {
+        "edit": "Rediģēt",
+        "delete": "Dzēst"
+      },
+      "page": "Lapa",
+      "total": "Ierakstu skaits:",
+      "prev": "Iepriekšēja",
+      "next": "Nākamā",
+      "modals": {
+        "create_expense": {
+          "title": "Izdevuma forma",
+          "amount": "Summa",
+          "amount_placeholder": "Ievadiet summu...",
+          "category": "Kategorija",
+          "category_placeholder": "Ievadiet kategoriju...",
+          "description": "Apraksts",
+          "description_placeholder": "Ievadiet aprakstu...",
+          "date": "Datums"
+        },
+        "delete_expense": {
+          "title": "Dzēst izdevumu",
+          "content": "Vai tiešām vēlaties dzēst izdevumu?"
+        },
+        "edit_expense": {
+          "title": "Rediģēt izdevumu",
+          "amount": "Summa",
+          "amount_placeholder": "Ievadiet summu...",
+          "category": "Kategorija",
+          "category_placeholder": "Ievadiet kategoriju...",
+          "description": "Apraksts",
+          "description_placeholder": "Ievadiet aprakstu...",
+          "date": "Datums"
+        }
+      }
+
+    }
   }
 }

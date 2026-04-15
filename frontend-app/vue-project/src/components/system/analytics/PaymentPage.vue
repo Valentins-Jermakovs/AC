@@ -70,7 +70,7 @@
           <tbody>
             <tr v-for="payment in payments" :key="payment.id">
               <td>
-                <span class="badge badge-outline">{{ payment.category }}</span>
+                <span class="badge badge-neutral">{{ payment.category }}</span>
               </td>
               <td class="font-medium">€{{ payment.amount }}</td>
               <td>{{ formatDate(payment.start_date) }}</td>
@@ -96,12 +96,12 @@
       </div>
 
       <div class="flex justify-between items-center pt-2">
-        <button class="btn btn-sm" :disabled="paymentStore.meta.page <= 1" @click="prevPage">
+        <button class="btn btn-sm btn-neutral" :disabled="paymentStore.meta.page <= 1" @click="prevPage">
           {{ $t('finances.payments.table.prev') }}
         </button>
         <div class="text-sm opacity-70">{{ $t('finances.payments.table.total') }} {{ paymentStore.meta.total_items }}
         </div>
-        <button class="btn btn-sm" :disabled="paymentStore.meta.page >= paymentStore.meta.total_pages"
+        <button class="btn btn-sm btn-neutral" :disabled="paymentStore.meta.page >= paymentStore.meta.total_pages"
           @click="nextPage">
           {{ $t('finances.payments.table.next') }}
         </button>
@@ -333,6 +333,19 @@ export default {
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          plugins: {
+            tooltip: {
+              backgroundColor: 'rgba(0, 0, 0, 0.95)',
+              titleColor: '#ffffff',
+              bodyColor: '#ffffff',
+              padding: 12,
+              displayColors: false,
+              font: {
+                size: 13,
+                weight: '500',
+              },
+            },
+          },
         },
       })
     },
@@ -359,6 +372,19 @@ export default {
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          plugins: {
+            tooltip: {
+              backgroundColor: 'rgba(0, 0, 0, 0.95)',
+              titleColor: '#ffffff',
+              bodyColor: '#ffffff',
+              padding: 12,
+              displayColors: false,
+              font: {
+                size: 13,
+                weight: '500',
+              },
+            },
+          },
         },
       })
     },

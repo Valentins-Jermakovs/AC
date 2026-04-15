@@ -59,7 +59,7 @@
           <tbody>
             <tr v-for="b in budgets" :key="b.id">
               <td>
-                <span class="badge badge-outline">
+                <span class="badge badge-neutral">
                   {{ b.category }}
                 </span>
               </td>
@@ -240,6 +240,19 @@ export default {
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          plugins: {
+            tooltip: {
+              backgroundColor: 'rgba(0, 0, 0, 0.95)',
+              titleColor: '#ffffff',
+              bodyColor: '#ffffff',
+              padding: 12,
+              displayColors: false,
+              font: {
+                size: 13,
+                weight: '500',
+              },
+            },
+          },
         },
       })
     },

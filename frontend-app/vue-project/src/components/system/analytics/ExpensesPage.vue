@@ -83,7 +83,7 @@
               </td>
 
               <td>
-                <span class="badge badge-outline">
+                <span class="badge badge-neutral">
                   {{ e.category }}
                 </span>
               </td>
@@ -112,7 +112,7 @@
 
       <!-- PAGINATION -->
       <div class="flex justify-between items-center pt-2">
-        <button class="btn btn-sm" :disabled="expenseStore.meta.page <= 1" @click="prevPage">
+        <button class="btn btn-sm btn-neutral" :disabled="expenseStore.meta.page <= 1" @click="prevPage">
           {{ $t('finances.expenses.prev') }}
         </button>
 
@@ -121,7 +121,7 @@
         </div>
 
         <button
-          class="btn btn-sm"
+          class="btn btn-sm btn-neutral"
           :disabled="expenseStore.meta.page >= expenseStore.meta.total_pages"
           @click="nextPage"
         >
@@ -437,6 +437,19 @@ export default {
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          plugins: {
+            tooltip: {
+              backgroundColor: 'rgba(0, 0, 0, 0.95)',
+              titleColor: '#ffffff',
+              bodyColor: '#ffffff',
+              padding: 12,
+              displayColors: false,
+              font: {
+                size: 13,
+                weight: '500',
+              },
+            },
+          },
         },
       })
     },
@@ -465,6 +478,19 @@ export default {
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          plugins: {
+            tooltip: {
+              backgroundColor: 'rgba(0, 0, 0, 0.95)',
+              titleColor: '#ffffff',
+              bodyColor: '#ffffff',
+              padding: 12,
+              displayColors: false,
+              font: {
+                size: 13,
+                weight: '500',
+              },
+            },
+          },
         },
       })
     },

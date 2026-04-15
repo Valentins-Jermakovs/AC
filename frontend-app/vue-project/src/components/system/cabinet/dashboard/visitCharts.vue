@@ -147,6 +147,15 @@ export default {
           plugins: {
             legend: { display: false },
             tooltip: {
+              backgroundColor: 'rgba(0, 0, 0, 0.95)',
+              titleColor: '#ffffff',
+              bodyColor: '#ffffff',
+              padding: 12,
+              displayColors: false,
+              font: {
+                size: 13,
+                weight: '500',
+              },
               callbacks: {
                 label: (ctx) => {
                   const day = this.visitsStore.visits.daily_breakdown[ctx.dataIndex]
@@ -200,6 +209,15 @@ export default {
           plugins: {
             legend: { display: false },
             tooltip: {
+              backgroundColor: 'rgba(0, 0, 0, 0.95)',
+              titleColor: '#ffffff',
+              bodyColor: '#ffffff',
+              padding: 12,
+              displayColors: false,
+              font: {
+                size: 13,
+                weight: '500',
+              },
               callbacks: {
                 label: (ctx) => {
                   const seconds = this.visitsStore.visits.daily_breakdown[ctx.dataIndex].seconds

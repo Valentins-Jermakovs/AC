@@ -64,8 +64,50 @@
       </div>
 
       <!-- TABLE -->
-      <div class="overflow-auto flex-1">
-        <table class="table table-sm w-full">
+      <!-- MOBILE LIST -->
+      <div class="flex flex-col gap-3 md:hidden">
+        <div v-for="e in expenseStore.expenses" :key="e.id" class="card bg-base-100 rounded-none border border-base-300 p-3">
+          <!-- TOP ROW -->
+          <div class="flex justify-between items-center">
+            <span class="text-sm opacity-70">
+              {{ formatDate(e.date) }}
+            </span>
+
+            <span class="badge badge-neutral">
+              {{ e.category }}
+            </span>
+          </div>
+
+          <!-- DESCRIPTION -->
+          <div class="mt-2 text-sm">
+            {{ e.description || '-' }}
+          </div>
+
+          <!-- AMOUNT -->
+          <div class="mt-2 font-semibold text-right">
+            €{{ e.amount }}
+          </div>
+
+          <!-- ACTIONS -->
+          <div class="flex gap-2 mt-3">
+            <button class="btn btn-xs btn-info flex-1" @click="openUpdate(e)">
+              {{ $t('finances.expenses.actions.edit') }}
+            </button>
+
+            <button class="btn btn-xs btn-error flex-1" @click="openDelete(e)">
+              {{ $t('finances.expenses.actions.delete') }}
+            </button>
+          </div>
+        </div>
+
+        <!-- EMPTY STATE -->
+        <div v-if="!expenseStore.expenses.length" class="text-center opacity-60 py-6">
+          No expenses found
+        </div>
+      </div>
+      <!-- TABLE (desktop only) -->
+      <div class="overflow-auto flex-1 hidden md:block">
+        <table class="table table-sm w-full hidden md:table">
           <thead>
             <tr>
               <th>{{ $t('finances.expenses.date') }}</th>
@@ -76,7 +118,7 @@
             </tr>
           </thead>
 
-          <tbody>
+          <tbody class="bg-base-100 border border-base-300">
             <tr v-for="e in expenseStore.expenses" :key="e.id">
               <td class="whitespace-nowrap">
                 {{ formatDate(e.date) }}
@@ -96,15 +138,21 @@
 
               <td class="text-right">
                 <div class="flex gap-2 justify-end">
-                  <button class="btn btn-xs btn-info" @click="openUpdate(e)">{{ $t('finances.expenses.actions.edit') }}</button>
+                  <button class="btn btn-xs btn-info" @click="openUpdate(e)">
+                    {{ $t('finances.expenses.actions.edit') }}
+                  </button>
 
-                  <button class="btn btn-xs btn-error" @click="openDelete(e)">{{ $t('finances.expenses.actions.delete') }}</button>
+                  <button class="btn btn-xs btn-error" @click="openDelete(e)">
+                    {{ $t('finances.expenses.actions.delete') }}
+                  </button>
                 </div>
               </td>
             </tr>
 
             <tr v-if="!expenseStore.expenses.length">
-              <td colspan="5" class="text-center opacity-60 py-6">No expenses found</td>
+              <td colspan="5" class="text-center opacity-60 py-6">
+                No expenses found
+              </td>
             </tr>
           </tbody>
         </table>
@@ -120,121 +168,61 @@
           {{ $t('finances.expenses.total') }} {{ expenseStore.meta.total_expenses }}
         </div>
 
-        <button
-          class="btn btn-sm btn-neutral"
-          :disabled="expenseStore.meta.page >= expenseStore.meta.total_pages"
-          @click="nextPage"
-        >
+        <button class="btn btn-sm btn-neutral" :disabled="expenseStore.meta.page >= expenseStore.meta.total_pages"
+          @click="nextPage">
           {{ $t('finances.expenses.next') }}
         </button>
       </div>
     </div>
 
     <!-- Delete Modal -->
-    <BaseDialog
-      v-model="deleteModal"
-      @confirm="deleteExpense"
-      @cancel="closeDelete"
-      :confirmText="$t('common.create')"
-      :cancelText="$t('common.cancel')"
-      :title="$t('finances.expenses.modals.delete_expense.title')"
-    >
+    <BaseDialog v-model="deleteModal" @confirm="deleteExpense" @cancel="closeDelete" :confirmText="$t('common.create')"
+      :cancelText="$t('common.cancel')" :title="$t('finances.expenses.modals.delete_expense.title')">
       <p>{{ $t('finances.expenses.modals.delete_expense.content') }}</p>
     </BaseDialog>
     <!-- Update Modal-->
-    <BaseDialog
-      v-model="updateModal"
-      @confirm="updateExpense"
-      @cancel="closeUpdate"
-      :confirmText="$t('common.create')"
-      :cancelText="$t('common.cancel')"
-      :title="$t('finances.expenses.modals.edit_expense.title')"
-    >
+    <BaseDialog v-model="updateModal" @confirm="updateExpense" @cancel="closeUpdate" :confirmText="$t('common.create')"
+      :cancelText="$t('common.cancel')" :title="$t('finances.expenses.modals.edit_expense.title')">
       <!-- Inputs: (amount, category, date, description) -->
       <div class="flex flex-col gap-2 w-full">
         <label for="amount" class="label">{{ $t('finances.expenses.modals.edit_expense.amount') }}</label>
-        <input
-          type="number"
-          v-model="expense.amount"
-          class="input w-full"
-          :placeholder="$t('finances.expenses.modals.edit_expense.amount_placeholder')"
-          required
-        />
+        <input type="number" v-model="expense.amount" class="input w-full"
+          :placeholder="$t('finances.expenses.modals.edit_expense.amount_placeholder')" required />
 
         <label for="category" class="label">{{ $t('finances.expenses.modals.edit_expense.category') }}</label>
-        <input
-          type="text"
-          v-model="expense.category"
-          class="input w-full"
-          :placeholder="$t('finances.expenses.modals.edit_expense.category_placeholder')"
-          required
-        />
+        <input type="text" v-model="expense.category" class="input w-full"
+          :placeholder="$t('finances.expenses.modals.edit_expense.category_placeholder')" required />
 
         <label for="date" class="label">{{ $t('finances.expenses.modals.edit_expense.date') }}</label>
-        <input
-          type="date"
-          v-model="expense.date"
-          class="input w-full"
-          :placeholder="$t('finances.expenses.modals.edit_expense.date_placeholder')"
-          required
-        />
+        <input type="date" v-model="expense.date" class="input w-full"
+          :placeholder="$t('finances.expenses.modals.edit_expense.date_placeholder')" required />
 
         <label for="description" class="label">{{ $t('finances.expenses.modals.edit_expense.description') }}</label>
-        <input
-          type="text"
-          v-model="expense.description"
-          class="input w-full"
-          :placeholder="$t('finances.expenses.modals.edit_expense.description_placeholder')"
-          required
-        />
+        <input type="text" v-model="expense.description" class="input w-full"
+          :placeholder="$t('finances.expenses.modals.edit_expense.description_placeholder')" required />
       </div>
     </BaseDialog>
     <!-- Create Modal -->
-    <BaseDialog
-      v-model="createModal"
-      @confirm="createExpense"
-      :title="$t('finances.expenses.modals.create_expense.title')"
-      :confirmText="$t('common.create')"
-      :cancelText="$t('common.cancel')"
-      @cancel="closeCreateModal"
-    >
+    <BaseDialog v-model="createModal" @confirm="createExpense"
+      :title="$t('finances.expenses.modals.create_expense.title')" :confirmText="$t('common.create')"
+      :cancelText="$t('common.cancel')" @cancel="closeCreateModal">
       <!-- Inputs: (amount, category, date, description) -->
       <div class="flex flex-col gap-2 w-full">
         <label for="amount" class="label">{{ $t('finances.expenses.modals.create_expense.amount') }}</label>
-        <input
-          type="number"
-          v-model="expense.amount"
-          class="input w-full"
-          :placeholder="$t('finances.expenses.modals.create_expense.amount_placeholder')"
-          required
-        />
+        <input type="number" v-model="expense.amount" class="input w-full"
+          :placeholder="$t('finances.expenses.modals.create_expense.amount_placeholder')" required />
 
         <label for="category" class="label">{{ $t('finances.expenses.modals.create_expense.category') }}</label>
-        <input
-          type="text"
-          v-model="expense.category"
-          class="input w-full"
-          :placeholder="$t('finances.expenses.modals.create_expense.category_placeholder')"
-          required
-        />
+        <input type="text" v-model="expense.category" class="input w-full"
+          :placeholder="$t('finances.expenses.modals.create_expense.category_placeholder')" required />
 
         <label for="date" class="label">{{ $t('finances.expenses.modals.create_expense.date') }}</label>
-        <input
-          type="date"
-          v-model="expense.date"
-          class="input w-full"
-          :placeholder="$t('finances.expenses.modals.create_expense.date_placeholder')"
-          required
-        />
+        <input type="date" v-model="expense.date" class="input w-full"
+          :placeholder="$t('finances.expenses.modals.create_expense.date_placeholder')" required />
 
         <label for="description" class="label">{{ $t('finances.expenses.modals.create_expense.description') }}</label>
-        <input
-          type="text"
-          v-model="expense.description"
-          class="input w-full"
-          :placeholder="$t('finances.expenses.modals.create_expense.description_placeholder')"
-          required
-        />
+        <input type="text" v-model="expense.description" class="input w-full"
+          :placeholder="$t('finances.expenses.modals.create_expense.description_placeholder')" required />
       </div>
     </BaseDialog>
 

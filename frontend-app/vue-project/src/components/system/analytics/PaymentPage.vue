@@ -48,7 +48,7 @@
     </div>
 
     <!-- TABLE -->
-    <div class="card rounded-none border border-base-300 bg-base-200 p-4 flex flex-col gap-3">
+    <div class="card rounded-none hidden md:flex border border-base-300 bg-base-200 p-4 flex-col gap-3">
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div class="font-semibold">{{ $t('finances.payments.recurring_payments') }}</div>
         <div class="text-sm opacity-70">
@@ -67,7 +67,7 @@
               <th class="text-right">{{ $t('finances.payments.table.actions') }}</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="bg-base-100">
             <tr v-for="payment in payments" :key="payment.id">
               <td>
                 <span class="badge badge-neutral">{{ payment.category }}</span>
@@ -82,7 +82,7 @@
               <td class="text-right">
                 <div class="flex justify-end gap-2">
                   <button class="btn btn-xs btn-info" @click="openUpdate(payment)">{{ $t('finances.payments.table.edit')
-                    }}</button>
+                  }}</button>
                   <button class="btn btn-xs btn-error" @click="openDelete(payment)">{{
                     $t('finances.payments.table.delete') }}</button>
                 </div>
@@ -101,6 +101,88 @@
         </button>
         <div class="text-sm opacity-70">{{ $t('finances.payments.table.total') }} {{ paymentStore.meta.total_items }}
         </div>
+        <button class="btn btn-sm btn-neutral" :disabled="paymentStore.meta.page >= paymentStore.meta.total_pages"
+          @click="nextPage">
+          {{ $t('finances.payments.table.next') }}
+        </button>
+      </div>
+    </div>
+
+    <!-- MOBILE -->
+    <div class="card rounded-none md:hidden border border-base-300 bg-base-200 p-4 flex flex-col gap-3">
+
+      <!-- HEADER -->
+      <div class="flex justify-between items-center">
+        <div class="font-semibold">
+          {{ $t('finances.payments.recurring_payments') }}
+        </div>
+
+        <div class="text-xs opacity-70 text-right">
+          {{ paymentStore.meta.page }} / {{ paymentStore.meta.total_pages }}
+        </div>
+      </div>
+
+      <!-- LIST -->
+      <div class="flex flex-col gap-3">
+
+        <div v-for="payment in payments" :key="payment.id" class="card rounded-none bg-base-100 border border-base-300 p-3">
+          <!-- TOP -->
+          <div class="flex justify-between items-center">
+            <span class="badge badge-neutral">
+              {{ payment.category }}
+            </span>
+
+            <span class="font-semibold">
+              €{{ payment.amount }}
+            </span>
+          </div>
+
+          <!-- INFO -->
+          <div class="mt-2 text-sm opacity-70 flex justify-between">
+            <span>{{ formatDate(payment.start_date) }}</span>
+
+            <span>
+              <span v-if="payment.interval === 'daily'">
+                {{ $t('finances.payments.daily_payments') }}
+              </span>
+              <span v-if="payment.interval === 'weekly'">
+                {{ $t('finances.payments.weekly_payments') }}
+              </span>
+              <span v-if="payment.interval === 'monthly'">
+                {{ $t('finances.payments.monthly_payments') }}
+              </span>
+            </span>
+          </div>
+
+          <!-- ACTIONS -->
+          <div class="flex gap-2 mt-3">
+            <button class="btn btn-xs btn-info flex-1" @click="openUpdate(payment)">
+              {{ $t('finances.payments.table.edit') }}
+            </button>
+
+            <button class="btn btn-xs btn-error flex-1" @click="openDelete(payment)">
+              {{ $t('finances.payments.table.delete') }}
+            </button>
+          </div>
+        </div>
+
+        <!-- EMPTY -->
+        <div v-if="!payments.length" class="text-center opacity-60 py-6">
+          No payments found
+        </div>
+      </div>
+
+      <!-- PAGINATION -->
+      <div class="flex justify-between items-center pt-2">
+        <button class="btn btn-sm btn-neutral" :disabled="paymentStore.meta.page <= 1" @click="prevPage">
+          {{ $t('finances.payments.table.prev') }}
+        </button>
+
+        <div class="text-sm opacity-70 text-center">
+          {{ $t('finances.payments.table.total') }}
+          {{ paymentStore.meta.total_items }}
+        </div>
+
         <button class="btn btn-sm btn-neutral" :disabled="paymentStore.meta.page >= paymentStore.meta.total_pages"
           @click="nextPage">
           {{ $t('finances.payments.table.next') }}

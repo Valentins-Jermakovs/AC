@@ -41,8 +41,50 @@
       </div>
     </div>
 
+      <!-- MOBILE CARDS -->
+  <div class="flex flex-col gap-3 md:hidden">
+    <div
+      v-for="b in budgets"
+      :key="b.id"
+      class="card bg-base-200 rounded-none border border-base-300 p-3"
+    >
+      <!-- TOP -->
+      <div class="flex justify-between items-center">
+        <span class="badge badge-neutral">
+          {{ b.category }}
+        </span>
+
+        <span class="text-sm opacity-70">
+          {{ b.month }}
+        </span>
+      </div>
+
+      <!-- LIMIT -->
+      <div class="mt-2 font-semibold text-right text-lg">
+        €{{ b.planned_amount }}
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="flex gap-2 mt-3">
+        <button class="btn btn-xs btn-info flex-1" @click="openUpdate(b)">
+          {{ $t('finances.budgets.actions.edit') }}
+        </button>
+
+        <button class="btn btn-xs btn-error flex-1" @click="openDelete(b)">
+          {{ $t('finances.budgets.actions.delete') }}
+        </button>
+      </div>
+    </div>
+
+    <!-- EMPTY -->
+    <div v-if="!budgets.length" class="text-center opacity-60 py-6">
+      No budgets found
+    </div>
+  </div>
+
+
     <!-- TABLE -->
-    <div class="card rounded-none bg-base-200 border border-base-300 p-4">
+    <div class="card hidden md:block rounded-none bg-base-200 border border-base-300 p-4">
       <div class="font-semibold mb-3">{{ $t('finances.budgets.budgets') }}</div>
 
       <div class="overflow-x-auto">
@@ -56,7 +98,7 @@
             </tr>
           </thead>
 
-          <tbody>
+          <tbody class="bg-base-100">
             <tr v-for="b in budgets" :key="b.id">
               <td>
                 <span class="badge badge-neutral">
@@ -72,8 +114,10 @@
 
               <td class="text-right">
                 <div class="flex justify-end gap-2">
-                  <button class="btn btn-xs btn-info" @click="openUpdate(b)">{{ $t('finances.budgets.actions.edit') }}</button>
-                  <button class="btn btn-xs btn-error" @click="openDelete(b)">{{ $t('finances.budgets.actions.delete') }}</button>
+                  <button class="btn btn-xs btn-info" @click="openUpdate(b)">{{ $t('finances.budgets.actions.edit')
+                    }}</button>
+                  <button class="btn btn-xs btn-error" @click="openDelete(b)">{{ $t('finances.budgets.actions.delete')
+                    }}</button>
                 </div>
               </td>
             </tr>
@@ -86,40 +130,29 @@
       </div>
     </div>
 
+
+
     <!-- CREATE / UPDATE MODAL -->
-    <BaseDialog
-      v-model="modal"
+    <BaseDialog v-model="modal"
       :title="editing ? $t('finances.budgets.modals.edit_budget.title') : $t('finances.budgets.modals.create_budget.title')"
-      :confirmText="editing ? $t('common.update') : $t('common.create')"
-      :cancelText="$t('common.cancel')"
-      @confirm="saveBudget"
-      @cancel="modal = false"
-    >
+      :confirmText="editing ? $t('common.update') : $t('common.create')" :cancelText="$t('common.cancel')"
+      @confirm="saveBudget" @cancel="modal = false">
       <div class="flex flex-col gap-2 w-full">
         <label for="category" class="label">{{ $t('finances.budgets.modals.edit_budget.category') }}</label>
-        <input v-model="form.category" class="input input-bordered w-full" 
-        :placeholder="$t('finances.budgets.modals.edit_budget.category_placeholder')" />
+        <input v-model="form.category" class="input input-bordered w-full"
+          :placeholder="$t('finances.budgets.modals.edit_budget.category_placeholder')" />
         <label for="planned_amount" class="label">{{ $t('finances.budgets.modals.edit_budget.limit') }}</label>
-        <input
-          v-model.number="form.planned_amount"
-          type="number"
-          class="input input-bordered w-full"
-          :placeholder="$t('finances.budgets.modals.edit_budget.limit_placeholder')"
-        />
+        <input v-model.number="form.planned_amount" type="number" class="input input-bordered w-full"
+          :placeholder="$t('finances.budgets.modals.edit_budget.limit_placeholder')" />
         <label for="month" class="label">{{ $t('finances.budgets.modals.edit_budget.month') }}</label>
         <input v-model="form.month" class="input input-bordered w-full" placeholder="YYYY-MM" />
       </div>
     </BaseDialog>
 
     <!-- DELETE -->
-    <BaseDialog
-      v-model="deleteModal"
-      :title="$t('finances.budgets.modals.delete_budget.title')"
-      :confirmText="$t('common.delete')"
-      :cancelText="$t('common.cancel')"
-      @confirm="deleteBudget"
-      @cancel="deleteModal = false"
-    >
+    <BaseDialog v-model="deleteModal" :title="$t('finances.budgets.modals.delete_budget.title')"
+      :confirmText="$t('common.delete')" :cancelText="$t('common.cancel')" @confirm="deleteBudget"
+      @cancel="deleteModal = false">
       <p>{{ $t('finances.budgets.modals.delete_budget.content') }}</p>
     </BaseDialog>
 

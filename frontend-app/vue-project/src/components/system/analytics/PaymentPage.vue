@@ -193,13 +193,28 @@
     <BaseDialog v-model="deleteModal" :title="$t('finances.payments.modals.delete_payment.title')"
       :confirmText="$t('common.delete')" :cancelText="$t('common.cancel')" @confirm="deletePayment"
       @cancel="closeDelete">
+      <Transition name="error-slide">
+        <div v-if="error" class="mb-4">
+          <div class="alert alert-error">
+            <span>{{ error }}</span>
+          </div>
+        </div>
+      </Transition>
       <p>{{ $t('finances.payments.modals.delete_payment.content') }}</p>
     </BaseDialog>
 
     <BaseDialog v-model="updateModal" :title="$t('finances.payments.modals.edit_payment.title')"
       :confirmText="$t('common.confirm')" :cancelText="$t('common.cancel')" @confirm="updatePayment"
       @cancel="closeUpdate">
+      
       <div class="flex flex-col gap-2 w-full">
+        <Transition name="error-slide">
+        <div v-if="error" class="mb-4">
+          <div class="alert alert-error">
+            <span>{{ error }}</span>
+          </div>
+        </div>
+      </Transition>
         <label for="amount" class="label">{{ $t('finances.payments.modals.edit_payment.amount') }}</label>
         <input v-model.number="form.amount" type="number" class="input input-bordered w-full"
           :placeholder="$t('finances.payments.modals.edit_payment.amount_placeholder')" />
@@ -221,7 +236,15 @@
     <BaseDialog v-model="createModal" :title="$t('finances.payments.modals.create_payment.title')"
       :confirmText="$t('common.create')" :cancelText="$t('common.cancel')" @confirm="createPayment"
       @cancel="closeCreate">
+      
       <div class="flex flex-col gap-2 w-full">
+        <Transition name="error-slide">
+        <div v-if="error" class="mb-4">
+          <div class="alert alert-error">
+            <span>{{ error }}</span>
+          </div>
+        </div>
+      </Transition>
         <label for="amount" class="label">{{ $t('finances.payments.modals.create_payment.amount') }}</label>
         <input v-model.number="form.amount" type="number" class="input input-bordered w-full"
           :placeholder="$t('finances.payments.modals.create_payment.amount_placeholder')" />
@@ -262,6 +285,7 @@ export default {
       updateModal: false,
       deleteModal: false,
       selectedPayment: null,
+      error: null,
       form: {
         amount: null,
         category: '',
@@ -328,6 +352,7 @@ export default {
   methods: {
     openCreate() {
       this.selectedPayment = null
+      this.error = null
       this.form = {
         amount: null,
         category: '',
@@ -336,13 +361,33 @@ export default {
       }
       this.createModal = true
     },
+
     async createPayment() {
-      await this.paymentStore.createPayment(this.form)
-      this.createModal = false
-      this.updateCharts()
+      try {
+        this.error = null
+        await this.paymentStore.createPayment(this.form)
+
+        if (this.paymentStore.error) {
+          this.error = this.paymentStore.error
+          return
+        }
+
+        this.createModal = false
+        this.updateCharts()
+      } catch (err) {
+        this.error = this.paymentStore.error || err.message || 'Failed to create payment'
+        console.error('Error creating payment:', err)
+      }
     },
+
+    closeCreate() {
+      this.createModal = false
+      this.error = null
+    },
+
     openUpdate(payment) {
       this.selectedPayment = payment
+      this.error = null
       this.form = {
         amount: payment.amount,
         category: payment.category,
@@ -351,30 +396,59 @@ export default {
       }
       this.updateModal = true
     },
+
     async updatePayment() {
-      if (!this.selectedPayment) return
-      await this.paymentStore.updatePayment(this.form, this.selectedPayment.id)
-      this.updateModal = false
-      this.updateCharts()
+      try {
+        this.error = null
+        if (!this.selectedPayment) return
+        await this.paymentStore.updatePayment(this.form, this.selectedPayment.id)
+
+        if (this.paymentStore.error) {
+          this.error = this.paymentStore.error
+          return
+        }
+
+        this.updateModal = false
+        this.updateCharts()
+      } catch (err) {
+        this.error = this.paymentStore.error || err.message || 'Failed to update payment'
+        console.error('Error updating payment:', err)
+      }
     },
-    openDelete(payment) {
-      this.selectedPayment = payment
-      this.deleteModal = true
-    },
-    async deletePayment() {
-      if (!this.selectedPayment) return
-      await this.paymentStore.deletePayment(this.selectedPayment.id)
-      this.deleteModal = false
-      this.updateCharts()
-    },
-    closeCreate() {
-      this.createModal = false
-    },
+
     closeUpdate() {
       this.updateModal = false
+      this.error = null
     },
+
+    openDelete(payment) {
+      this.selectedPayment = payment
+      this.error = null
+      this.deleteModal = true
+    },
+
+    async deletePayment() {
+      try {
+        this.error = null
+        if (!this.selectedPayment) return
+        await this.paymentStore.deletePayment(this.selectedPayment.id)
+
+        if (this.paymentStore.error) {
+          this.error = this.paymentStore.error
+          return
+        }
+
+        this.deleteModal = false
+        this.updateCharts()
+      } catch (err) {
+        this.error = this.paymentStore.error || err.message || 'Failed to delete payment'
+        console.error('Error deleting payment:', err)
+      }
+    },
+
     closeDelete() {
       this.deleteModal = false
+      this.error = null
     },
     async nextPage() {
       await this.paymentStore.nextPage()

@@ -121,6 +121,7 @@ export const useExpenseStore = defineStore('expense', {
         })
       } catch (error) {
         this.error = error.response?.data?.detail || 'Error creating expense'
+        throw error
       } finally {
         this.loading = false
       }

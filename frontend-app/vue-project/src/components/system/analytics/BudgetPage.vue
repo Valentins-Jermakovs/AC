@@ -135,9 +135,16 @@
     <!-- CREATE / UPDATE MODAL -->
     <BaseDialog v-model="modal"
       :title="editing ? $t('finances.budgets.modals.edit_budget.title') : $t('finances.budgets.modals.create_budget.title')"
-      :confirmText="editing ? $t('common.update') : $t('common.create')" :cancelText="$t('common.cancel')"
-      @confirm="saveBudget" @cancel="modal = false">
+      :confirmText="editing ? $t('common.confirm') : $t('common.create')" :cancelText="$t('common.cancel')"
+      @confirm="saveBudget" @cancel="closeModal">
       <div class="flex flex-col gap-2 w-full">
+        <Transition name="error-slide">
+          <div v-if="error" class="mb-4">
+            <div class="alert alert-error">
+              <span>{{ error }}</span>
+            </div>
+          </div>
+        </Transition>
         <label for="category" class="label">{{ $t('finances.budgets.modals.edit_budget.category') }}</label>
         <input v-model="form.category" class="input input-bordered w-full"
           :placeholder="$t('finances.budgets.modals.edit_budget.category_placeholder')" />
@@ -152,7 +159,14 @@
     <!-- DELETE -->
     <BaseDialog v-model="deleteModal" :title="$t('finances.budgets.modals.delete_budget.title')"
       :confirmText="$t('common.delete')" :cancelText="$t('common.cancel')" @confirm="deleteBudget"
-      @cancel="deleteModal = false">
+      @cancel="closeDeleteModal">
+      <Transition name="error-slide">
+        <div v-if="error" class="mb-4">
+          <div class="alert alert-error">
+            <span>{{ error }}</span>
+          </div>
+        </div>
+      </Transition>
       <p>{{ $t('finances.budgets.modals.delete_budget.content') }}</p>
     </BaseDialog>
 
@@ -177,6 +191,7 @@ export default {
       deleteModal: false,
       editing: false,
       selected: null,
+      error: null,
 
       form: {
         category: '',
@@ -212,6 +227,7 @@ export default {
     openCreate() {
       this.editing = false
       this.form = { category: '', planned_amount: 0, month: '' }
+      this.error = null
       this.modal = true
     },
 
@@ -223,35 +239,70 @@ export default {
         planned_amount: b.planned_amount,
         month: b.month,
       }
+      this.error = null
       this.modal = true
     },
 
     async saveBudget() {
-      const payload = {
-        category: this.form.category,
-        month: this.form.month,
-        planned_amount: this.form.planned_amount,
-      }
+      try {
+        this.error = null
+        const payload = {
+          category: this.form.category,
+          month: this.form.month,
+          planned_amount: this.form.planned_amount,
+        }
 
-      if (this.editing) {
-        await this.budgetStore.updateBudget(this.selected.id, payload)
-      } else {
-        await this.budgetStore.createBudget(payload)
-      }
+        if (this.editing) {
+          await this.budgetStore.updateBudget(this.selected.id, payload)
+        } else {
+          await this.budgetStore.createBudget(payload)
+        }
 
+        if (this.budgetStore.error) {
+          this.error = this.budgetStore.error
+          return
+        }
+
+        this.modal = false
+        await this.refresh()
+      } catch (err) {
+        this.error = this.budgetStore.error || err.message || 'Failed to save budget'
+        console.error('Error saving budget:', err)
+      }
+    },
+
+    closeModal() {
       this.modal = false
-      await this.refresh()
+      this.error = null
     },
 
     openDelete(b) {
       this.selected = b
+      this.error = null
       this.deleteModal = true
     },
 
     async deleteBudget() {
-      await this.budgetStore.deleteBudget(this.selected.id)
+      try {
+        this.error = null
+        await this.budgetStore.deleteBudget(this.selected.id)
+
+        if (this.budgetStore.error) {
+          this.error = this.budgetStore.error
+          return
+        }
+
+        this.deleteModal = false
+        await this.refresh()
+      } catch (err) {
+        this.error = this.budgetStore.error || err.message || 'Failed to delete budget'
+        console.error('Error deleting budget:', err)
+      }
+    },
+
+    closeDeleteModal() {
       this.deleteModal = false
-      await this.refresh()
+      this.error = null
     },
 
     renderChart() {

@@ -181,10 +181,17 @@
       <p>{{ $t('finances.expenses.modals.delete_expense.content') }}</p>
     </BaseDialog>
     <!-- Update Modal-->
-    <BaseDialog v-model="updateModal" @confirm="updateExpense" @cancel="closeUpdate" :confirmText="$t('common.create')"
+    <BaseDialog v-model="updateModal" @confirm="updateExpense" @cancel="closeUpdate" :confirmText="$t('common.confirm')"
       :cancelText="$t('common.cancel')" :title="$t('finances.expenses.modals.edit_expense.title')">
       <!-- Inputs: (amount, category, date, description) -->
       <div class="flex flex-col gap-2 w-full">
+        <Transition name="error-slide">
+          <div v-if="error" class="mb-4">
+            <div class="alert alert-error">
+              <span>{{ error }}</span>
+            </div>
+          </div>
+        </Transition>
         <label for="amount" class="label">{{ $t('finances.expenses.modals.edit_expense.amount') }}</label>
         <input type="number" v-model="expense.amount" class="input w-full"
           :placeholder="$t('finances.expenses.modals.edit_expense.amount_placeholder')" required />
@@ -208,6 +215,13 @@
       :cancelText="$t('common.cancel')" @cancel="closeCreateModal">
       <!-- Inputs: (amount, category, date, description) -->
       <div class="flex flex-col gap-2 w-full">
+        <Transition name="error-slide">
+          <div v-if="error" class="mb-4">
+            <div class="alert alert-error">
+              <span>{{ error }}</span>
+            </div>
+          </div>
+        </Transition>
         <label for="amount" class="label">{{ $t('finances.expenses.modals.create_expense.amount') }}</label>
         <input type="number" v-model="expense.amount" class="input w-full"
           :placeholder="$t('finances.expenses.modals.create_expense.amount_placeholder')" required />
@@ -269,6 +283,9 @@ export default {
   },
 
   computed: {
+    error() {
+      return this.expenseStore.error
+    },
     total() {
       return this.expenseStore.expenses.reduce((sum, e) => sum + e.amount, 0)
     },

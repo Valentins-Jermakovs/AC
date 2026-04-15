@@ -222,12 +222,21 @@
         },
         "card_two": {
           "title": "Available modes:",
-          "content": ["select/search users", "modify user roles", "change activity status"]
+          "content": [
+            "select/search users",
+            "modify user roles",
+            "change activity status"
+          ]
         }
       },
       "admin_top": {
         "search": "Search data...",
-        "filters": ["All users", "By ID", "By username/email", "By role"]
+        "filters": [
+          "All users",
+          "By ID",
+          "By username/email",
+          "By role"
+        ]
       },
       "table_top": {
         "username": "Username",
@@ -693,5 +702,155 @@
     "total_time_per_day": "Total visit time per day (min)",
     "no_activity": "Your activity charts will appear here",
     "start_use_app": "Start using the app to generate stats"
+  },
+  "finances": {
+    "title": "Finances",
+    "titles": {
+      "expenses": "Expenses",
+      "payments": "Payments",
+      "budget": "Budget"
+    },
+    "expenses": {
+      "total_spent": "Total spent",
+      "transactions": "Transactions",
+      "top_category": "Top category",
+      "today_spent": "Spent today",
+      "category_charts": "Expenses by category",
+      "timeline": "Spending over time",
+      "expenses_by_category": "Expenses by category",
+      "daily_spending": "Daily spending",
+      "expenses": "Expenses",
+      "date": "Date",
+      "category": "Category",
+      "amount": "Amount",
+      "description": "Description",
+      "new_expense": "New expense",
+      "table_actions": "Actions",
+      "actions": {
+        "edit": "Edit",
+        "delete": "Delete"
+      },
+      "page": "Page",
+      "total": "Total records:",
+      "prev": "Previous",
+      "next": "Next",
+      "modals": {
+        "create_expense": {
+          "title": "Expense form",
+          "amount": "Amount",
+          "amount_placeholder": "Enter amount...",
+          "category": "Category",
+          "category_placeholder": "Enter category...",
+          "description": "Description",
+          "description_placeholder": "Enter description...",
+          "date": "Date"
+        },
+        "delete_expense": {
+          "title": "Delete expense",
+          "content": "Are you sure you want to delete this expense?"
+        },
+        "edit_expense": {
+          "title": "Edit expense",
+          "amount": "Amount",
+          "amount_placeholder": "Enter amount...",
+          "category": "Category",
+          "category_placeholder": "Enter category...",
+          "description": "Description",
+          "description_placeholder": "Enter description...",
+          "date": "Date"
+        }
+      }
+    },
+    "budgets": {
+      "title": "Budget",
+      "total_budgets": "Total budgets",
+      "total_limit": "Total budget limit",
+      "month": "Month",
+      "budget_limits": "Budget limits",
+      "limits": "Limits",
+      "budgets": "Budgets",
+      "category": "Category",
+      "limit": "Limit",
+      "table_actions": "Actions",
+      "new_budget": "New budget",
+      "actions": {
+        "edit": "Edit",
+        "delete": "Delete"
+      },
+      "modals": {
+        "create_budget": {
+          "title": "Budget form",
+          "category": "Category",
+          "category_placeholder": "Enter category...",
+          "limit": "Limit",
+          "limit_placeholder": "Enter limit...",
+          "month": "Month"
+        },
+        "delete_budget": {
+          "title": "Delete budget",
+          "content": "Are you sure you want to delete this budget?"
+        },
+        "edit_budget": {
+          "title": "Edit budget",
+          "category": "Category",
+          "category_placeholder": "Enter category...",
+          "limit": "Limit",
+          "limit_placeholder": "Enter limit...",
+          "month": "Month"
+        }
+      }
+    },
+    "payments": {
+      "total_amount": "Total amount",
+      "recurring_payments": "Recurring payments",
+      "next_payment": "Next payment",
+      "daily_payments": "Daily payments",
+      "weekly_payments": "Weekly payments",
+      "monthly_payments": "Monthly payments",
+      "average_payment": "Average payment",
+      "amount_by_category": "Payments by category",
+      "category_amount": "Category - amount",
+      "upcoming_schedule": "Upcoming payments",
+      "upcoming_amount": "Amount",
+      "new_payment": "New payment",
+      "table": {
+        "recurring_payments": "Recurring payments",
+        "category": "Category",
+        "amount": "Amount",
+        "start_date": "Start date",
+        "interval": "Interval",
+        "actions": "Actions",
+        "edit": "Edit",
+        "delete": "Delete",
+        "page": "Page",
+        "total": "Total records:",
+        "prev": "Previous",
+        "next": "Next"
+      },
+      "modals": {
+        "create_payment": {
+          "title": "Payment form",
+          "amount": "Amount",
+          "amount_placeholder": "Enter amount...",
+          "category": "Category",
+          "category_placeholder": "Enter category...",
+          "start_date": "Start date",
+          "interval": "Interval"
+        },
+        "delete_payment": {
+          "title": "Delete payment",
+          "content": "Are you sure you want to delete this payment?"
+        },
+        "edit_payment": {
+          "title": "Edit payment",
+          "amount": "Amount",
+          "amount_placeholder": "Enter amount...",
+          "category": "Category",
+          "category_placeholder": "Enter category...",
+          "start_date": "Start date",
+          "interval": "Interval"
+        }
+      }
+    }
   }
 }

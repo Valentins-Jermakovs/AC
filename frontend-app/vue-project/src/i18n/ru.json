@@ -231,7 +231,12 @@
       },
       "admin_top": {
         "search": "Ищем данные...",
-        "filters": ["Все пользователи", "По ID", "По имени пользователя/эл. почте", "По роли"]
+        "filters": [
+          "Все пользователи",
+          "По ID",
+          "По имени пользователя/эл. почте",
+          "По роли"
+        ]
       },
       "table_top": {
         "username": "Имя пользователя",
@@ -697,5 +702,155 @@
     "total_time_per_day": "Общее время посещений за день (мин)",
     "no_activity": "Нет активности",
     "start_use_app": "Начните использовать приложение"
+  },
+  "finances": {
+    "title": "Финансы",
+    "titles": {
+      "expenses": "Расходы",
+      "payments": "Платежи",
+      "budget": "Бюджет"
+    },
+    "expenses": {
+      "total_spent": "Всего потрачено",
+      "transactions": "Транзакции",
+      "top_category": "Популярная категория",
+      "today_spent": "Потрачено сегодня",
+      "category_charts": "Расходы по категориям",
+      "timeline": "Динамика расходов",
+      "expenses_by_category": "Расходы по категориям",
+      "daily_spending": "Ежедневные расходы",
+      "expenses": "Расходы",
+      "date": "Дата",
+      "category": "Категория",
+      "amount": "Сумма",
+      "description": "Описание",
+      "new_expense": "Новый расход",
+      "table_actions": "Действия",
+      "actions": {
+        "edit": "Редактировать",
+        "delete": "Удалить"
+      },
+      "page": "Страница",
+      "total": "Всего записей:",
+      "prev": "Предыдущая",
+      "next": "Следующая",
+      "modals": {
+        "create_expense": {
+          "title": "Форма расхода",
+          "amount": "Сумма",
+          "amount_placeholder": "Введите сумму...",
+          "category": "Категория",
+          "category_placeholder": "Введите категорию...",
+          "description": "Описание",
+          "description_placeholder": "Введите описание...",
+          "date": "Дата"
+        },
+        "delete_expense": {
+          "title": "Удалить расход",
+          "content": "Вы уверены, что хотите удалить этот расход?"
+        },
+        "edit_expense": {
+          "title": "Редактировать расход",
+          "amount": "Сумма",
+          "amount_placeholder": "Введите сумму...",
+          "category": "Категория",
+          "category_placeholder": "Введите категорию...",
+          "description": "Описание",
+          "description_placeholder": "Введите описание...",
+          "date": "Дата"
+        }
+      }
+    },
+    "budgets": {
+      "title": "Бюджет",
+      "total_budgets": "Всего бюджетов",
+      "total_limit": "Общий лимит бюджета",
+      "month": "Месяц",
+      "budget_limits": "Лимиты бюджета",
+      "limits": "Лимиты",
+      "budgets": "Бюджеты",
+      "category": "Категория",
+      "limit": "Лимит",
+      "table_actions": "Действия",
+      "new_budget": "Новый бюджет",
+      "actions": {
+        "edit": "Редактировать",
+        "delete": "Удалить"
+      },
+      "modals": {
+        "create_budget": {
+          "title": "Форма бюджета",
+          "category": "Категория",
+          "category_placeholder": "Введите категорию...",
+          "limit": "Лимит",
+          "limit_placeholder": "Введите лимит...",
+          "month": "Месяц"
+        },
+        "delete_budget": {
+          "title": "Удалить бюджет",
+          "content": "Вы уверены, что хотите удалить этот бюджет?"
+        },
+        "edit_budget": {
+          "title": "Редактировать бюджет",
+          "category": "Категория",
+          "category_placeholder": "Введите категорию...",
+          "limit": "Лимит",
+          "limit_placeholder": "Введите лимит...",
+          "month": "Месяц"
+        }
+      }
+    },
+    "payments": {
+      "total_amount": "Общая сумма",
+      "recurring_payments": "Регулярные платежи",
+      "next_payment": "Следующий платеж",
+      "daily_payments": "Ежедневные платежи",
+      "weekly_payments": "Еженедельные платежи",
+      "monthly_payments": "Ежемесячные платежи",
+      "average_payment": "Средний платеж",
+      "amount_by_category": "Платежи по категориям",
+      "category_amount": "Категория - сумма",
+      "upcoming_schedule": "Предстоящие платежи",
+      "upcoming_amount": "Сумма",
+      "new_payment": "Новый платеж",
+      "table": {
+        "recurring_payments": "Регулярные платежи",
+        "category": "Категория",
+        "amount": "Сумма",
+        "start_date": "Дата начала",
+        "interval": "Интервал",
+        "actions": "Действия",
+        "edit": "Редактировать",
+        "delete": "Удалить",
+        "page": "Страница",
+        "total": "Всего записей:",
+        "prev": "Предыдущая",
+        "next": "Следующая"
+      },
+      "modals": {
+        "create_payment": {
+          "title": "Форма платежа",
+          "amount": "Сумма",
+          "amount_placeholder": "Введите сумму...",
+          "category": "Категория",
+          "category_placeholder": "Введите категорию...",
+          "start_date": "Дата начала",
+          "interval": "Интервал"
+        },
+        "delete_payment": {
+          "title": "Удалить платеж",
+          "content": "Вы уверены, что хотите удалить этот платеж?"
+        },
+        "edit_payment": {
+          "title": "Редактировать платеж",
+          "amount": "Сумма",
+          "amount_placeholder": "Введите сумму...",
+          "category": "Категория",
+          "category_placeholder": "Введите категорию...",
+          "start_date": "Дата начала",
+          "interval": "Интервал"
+        }
+      }
+    }
   }
 }

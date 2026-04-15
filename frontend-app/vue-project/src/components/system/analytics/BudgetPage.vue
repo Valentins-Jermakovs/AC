@@ -213,7 +213,7 @@ export default {
 
   async mounted() {
     await this.budgetStore.fetchBudgets()
-    this.renderChart()
+    this.updateCharts()
   },
 
   computed: {
@@ -229,7 +229,7 @@ export default {
   methods: {
     async refresh() {
       await this.budgetStore.fetchBudgets()
-      this.updateChart()
+      this.updateCharts()
     },
 
     openCreate() {
@@ -316,6 +316,9 @@ export default {
     renderChart() {
       if (this.chartInstance) this.chartInstance.destroy()
 
+      // Guard: ensure the canvas ref exists
+      if (!this.$refs.budgetChart) return
+
       const ctx = this.$refs.budgetChart.getContext('2d')
 
       this.chartInstance = new Chart(ctx, {
@@ -332,25 +335,33 @@ export default {
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          animations: {
+            numbers: {
+              duration: 2000,
+              easing: 'easeInOutCubic'
+            }
+          },
           plugins: {
             tooltip: {
-              backgroundColor: 'rgba(0, 0, 0, 0.95)',
-              titleColor: '#ffffff',
-              bodyColor: '#ffffff',
-              padding: 12,
-              displayColors: false,
-              font: {
-                size: 13,
-                weight: '500',
-              },
+              enabled: true,
+              backgroundColor: 'rgba(0, 0, 0, 1)',
+              padding: 20,
+              boxPadding: 10,
+              cornerRadius: 0,
+              titleFont: { size: 14, weight: '600' },
+              bodyFont: { size: 16 }
             },
           },
         },
       })
     },
 
-    updateChart() {
-      this.$nextTick(() => this.renderChart())
+    updateCharts() {
+      this.$nextTick(() => {
+        requestAnimationFrame(() => {
+          this.renderChart()
+        })
+      })
     },
   },
 }

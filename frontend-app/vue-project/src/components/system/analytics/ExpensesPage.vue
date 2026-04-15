@@ -4,8 +4,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       <div class="card rounded-none border border-base-300 bg-base-200 p-4">
         <div class="text-sm opacity-70">{{ $t('finances.expenses.total_spent') }}</div>
-        <div v-if ="total !== 0"
-        class="text-2xl font-bold">€{{ total }}
+        <div v-if="total !== 0" class="text-2xl font-bold">€{{ total }}
         </div>
         <!-- spinner -->
         <div v-else class="flex items-center gap-2 mt-1 text-base-content/70">
@@ -15,9 +14,7 @@
 
       <div class="card rounded-none border border-base-300 bg-base-200 p-4">
         <div class="text-sm opacity-70">{{ $t('finances.expenses.transactions') }}</div>
-        <div class="text-2xl font-bold"
-        v-if="expenseStore.meta.total_expenses > 0"
-        >
+        <div class="text-2xl font-bold" v-if="expenseStore.meta.total_expenses > 0">
           {{ expenseStore.meta.total_expenses }}
         </div>
         <!-- spinner -->
@@ -28,8 +25,7 @@
 
       <div class="card rounded-none border border-base-300 bg-base-200 p-4">
         <div class="text-sm opacity-70">{{ $t('finances.expenses.top_category') }}</div>
-        <div class="text-2xl font-bold"
-        v-if="topCategory !== null">
+        <div class="text-2xl font-bold" v-if="topCategory !== null">
           {{ topCategory?.category || '-' }}
         </div>
         <!-- spinner -->
@@ -40,8 +36,7 @@
 
       <div class="card rounded-none border border-base-300 bg-base-200 p-4">
         <div class="text-sm opacity-70">{{ $t('finances.expenses.today_spent') }}</div>
-        <div class="text-2xl font-bold"
-        v-if="todayTotal !== null">€{{ todayTotal }}</div>
+        <div class="text-2xl font-bold" v-if="todayTotal !== null">€{{ todayTotal }}</div>
         <!-- spinner -->
         <div v-else class="flex items-center gap-2 mt-1 text-base-content/70">
           <font-awesome-icon icon="fa-solid fa-spinner" class="text-2xl animate-spin" />
@@ -102,7 +97,8 @@
       <!-- TABLE -->
       <!-- MOBILE LIST -->
       <div class="flex flex-col gap-3 md:hidden">
-        <div v-for="e in expenseStore.expenses" :key="e.id" class="card bg-base-100 rounded-none border border-base-300 p-3">
+        <div v-for="e in expenseStore.expenses" :key="e.id"
+          class="card bg-base-100 rounded-none border border-base-300 p-3">
           <!-- TOP ROW -->
           <div class="flex justify-between items-center">
             <span class="text-sm opacity-70">
@@ -470,6 +466,7 @@ export default {
       }
 
       const ctx = this.$refs.categoryChart
+      if (!ctx) return
 
       this.categoryChartInstance = new Chart(ctx, {
         type: 'bar',
@@ -485,17 +482,21 @@ export default {
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          animations: {
+            numbers: {
+              duration: 2000,
+              easing: 'easeInOutCubic'
+            }
+          },
           plugins: {
             tooltip: {
-              backgroundColor: 'rgba(0, 0, 0, 0.95)',
-              titleColor: '#ffffff',
-              bodyColor: '#ffffff',
-              padding: 12,
-              displayColors: false,
-              font: {
-                size: 13,
-                weight: '500',
-              },
+              enabled: true,
+              backgroundColor: 'rgba(0, 0, 0, 1)',
+              padding: 20,
+              boxPadding: 10,
+              cornerRadius: 0,
+              titleFont: { size: 14, weight: '600' },
+              bodyFont: { size: 16 }
             },
           },
         },
@@ -508,6 +509,7 @@ export default {
       }
 
       const ctx = this.$refs.timelineChart
+      if (!ctx) return
 
       this.timelineChartInstance = new Chart(ctx, {
         type: 'line',
@@ -526,17 +528,21 @@ export default {
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          animations: {
+            numbers: {
+              duration: 2000,
+              easing: 'easeInOutCubic'
+            }
+          },
           plugins: {
             tooltip: {
-              backgroundColor: 'rgba(0, 0, 0, 0.95)',
-              titleColor: '#ffffff',
-              bodyColor: '#ffffff',
-              padding: 12,
-              displayColors: false,
-              font: {
-                size: 13,
-                weight: '500',
-              },
+              enabled: true,
+              backgroundColor: 'rgba(0, 0, 0, 1)',
+              padding: 20,
+              boxPadding: 10,
+              cornerRadius: 0,
+              titleFont: { size: 14, weight: '600' },
+              bodyFont: { size: 16 }
             },
           },
         },

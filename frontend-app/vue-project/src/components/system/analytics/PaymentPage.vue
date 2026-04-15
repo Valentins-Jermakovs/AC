@@ -93,7 +93,7 @@
               <td class="text-right">
                 <div class="flex justify-end gap-2">
                   <button class="btn btn-xs btn-info" @click="openUpdate(payment)">{{ $t('finances.payments.table.edit')
-                  }}</button>
+                    }}</button>
                   <button class="btn btn-xs btn-error" @click="openDelete(payment)">{{
                     $t('finances.payments.table.delete') }}</button>
                 </div>
@@ -139,7 +139,8 @@
       <!-- LIST -->
       <div class="flex flex-col gap-3">
 
-        <div v-for="payment in payments" :key="payment.id" class="card rounded-none bg-base-100 border border-base-300 p-3">
+        <div v-for="payment in payments" :key="payment.id"
+          class="card rounded-none bg-base-100 border border-base-300 p-3">
           <!-- TOP -->
           <div class="flex justify-between items-center">
             <span class="badge badge-neutral">
@@ -221,15 +222,15 @@
     <BaseDialog v-model="updateModal" :title="$t('finances.payments.modals.edit_payment.title')"
       :confirmText="$t('common.confirm')" :cancelText="$t('common.cancel')" @confirm="updatePayment"
       @cancel="closeUpdate">
-      
+
       <div class="flex flex-col gap-2 w-full">
         <Transition name="error-slide">
-        <div v-if="error" class="mb-4">
-          <div class="text-error">
-            <span>{{ error }}</span>
+          <div v-if="error" class="mb-4">
+            <div class="text-error">
+              <span>{{ error }}</span>
+            </div>
           </div>
-        </div>
-      </Transition>
+        </Transition>
         <label for="amount" class="label">{{ $t('finances.payments.modals.edit_payment.amount') }}</label>
         <input v-model.number="form.amount" type="number" class="input input-bordered w-full"
           :placeholder="$t('finances.payments.modals.edit_payment.amount_placeholder')" />
@@ -251,15 +252,15 @@
     <BaseDialog v-model="createModal" :title="$t('finances.payments.modals.create_payment.title')"
       :confirmText="$t('common.create')" :cancelText="$t('common.cancel')" @confirm="createPayment"
       @cancel="closeCreate">
-      
+
       <div class="flex flex-col gap-2 w-full">
         <Transition name="error-slide">
-        <div v-if="error" class="mb-4">
-          <div class="text-error">
-            <span>{{ error }}</span>
+          <div v-if="error" class="mb-4">
+            <div class="text-error">
+              <span>{{ error }}</span>
+            </div>
           </div>
-        </div>
-      </Transition>
+        </Transition>
         <label for="amount" class="label">{{ $t('finances.payments.modals.create_payment.amount') }}</label>
         <input v-model.number="form.amount" type="number" class="input input-bordered w-full"
           :placeholder="$t('finances.payments.modals.create_payment.amount_placeholder')" />
@@ -504,18 +505,22 @@ export default {
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          animations: {
+            numbers: {
+              duration: 2000,
+              easing: 'easeInOutCubic'
+            }
+          },
           plugins: {
             tooltip: {
-              backgroundColor: 'rgba(0, 0, 0, 0.95)',
-              titleColor: '#ffffff',
-              bodyColor: '#ffffff',
-              padding: 12,
-              displayColors: false,
-              font: {
-                size: 13,
-                weight: '500',
-              },
-            },
+              enabled: true,
+              backgroundColor: 'rgba(0, 0, 0, 1)',
+              padding: 20,
+              boxPadding: 10,
+              cornerRadius: 0,
+              titleFont: { size: 14, weight: '600' },
+              bodyFont: { size: 16 }
+            }
           },
         },
       })
@@ -543,18 +548,22 @@ export default {
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          animations: {
+            numbers: {
+              duration: 2000,
+              easing: 'easeInOutCubic'
+            }
+          },
           plugins: {
             tooltip: {
-              backgroundColor: 'rgba(0, 0, 0, 0.95)',
-              titleColor: '#ffffff',
-              bodyColor: '#ffffff',
-              padding: 12,
-              displayColors: false,
-              font: {
-                size: 13,
-                weight: '500',
-              },
-            },
+              enabled: true,
+              backgroundColor: 'rgba(0, 0, 0, 1)',
+              padding: 20,
+              boxPadding: 10,
+              cornerRadius: 0,
+              titleFont: { size: 14, weight: '600' },
+              bodyFont: { size: 16 }
+            }
           },
         },
       })

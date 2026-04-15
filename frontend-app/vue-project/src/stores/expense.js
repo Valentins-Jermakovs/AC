@@ -143,6 +143,7 @@ export const useExpenseStore = defineStore('expense', {
         })
       } catch (error) {
         this.error = error.response?.data?.detail || 'Error updating expense'
+        throw error
       } finally {
         this.loading = false
       }
@@ -214,5 +215,8 @@ export const useExpenseStore = defineStore('expense', {
     async repeatLastRequest() {
       await this.getExpenses()
     },
+    async clearError() {
+      this.error = null
+    }
   },
 })

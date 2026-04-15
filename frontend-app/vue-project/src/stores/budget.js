@@ -113,5 +113,8 @@ export const useBudgetStore = defineStore('budget', {
         this.loading = false
       }
     },
+    async clearError() {
+      this.error = null
+    },
   },
 })

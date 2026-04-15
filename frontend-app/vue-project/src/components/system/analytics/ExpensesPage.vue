@@ -187,7 +187,7 @@
       <div class="flex flex-col gap-2 w-full">
         <Transition name="error-slide">
           <div v-if="error" class="mb-4">
-            <div class="alert alert-error">
+            <div class="text-error">
               <span>{{ error }}</span>
             </div>
           </div>
@@ -217,7 +217,7 @@
       <div class="flex flex-col gap-2 w-full">
         <Transition name="error-slide">
           <div v-if="error" class="mb-4">
-            <div class="alert alert-error">
+            <div class="text-error">
               <span>{{ error }}</span>
             </div>
           </div>
@@ -332,6 +332,10 @@ export default {
   },
 
   methods: {
+    closeCreateModal() {
+      this.createModal = false
+      this.expenseStore.clearError()
+    },
     openDelete(expense) {
       this.selectedExpense = expense
       this.deleteModal = true
@@ -376,6 +380,7 @@ export default {
 
     closeUpdate() {
       this.updateModal = false
+      this.expenseStore.clearError()
     },
     async openCreate() {
       this.expense = {

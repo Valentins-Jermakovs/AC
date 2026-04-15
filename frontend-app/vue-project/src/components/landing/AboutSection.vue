@@ -8,7 +8,7 @@
 
         <!-- Actual image -->
         <img
-          src="@/assets/images/luca-bravo-9l_326FISzk-unsplash.jpg"
+          src="@/assets/images/matt-str-dV0NHSEqgsU-unsplash.jpg"
           alt="About"
           class="rounded-box transition-opacity duration-1000 w-full h-full object-cover"
           :class="{ 'opacity-0': !loaded, 'opacity-100': loaded }"

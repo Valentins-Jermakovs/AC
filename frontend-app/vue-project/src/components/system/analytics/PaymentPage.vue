@@ -489,9 +489,11 @@ export default {
       if (this.categoryChartInstance) {
         this.categoryChartInstance.destroy()
       }
-      const ctx = this.$refs.categoryChart
+      const canvas = this.$refs.categoryChart
+      if (!canvas) return
+      const ctx = canvas.getContext('2d')
       if (!ctx) return
-      this.categoryChartInstance = new Chart(ctx, {
+      this.categoryChartInstance = new Chart(canvas, {
         type: 'bar',
         data: {
           labels: this.categoryChartData.labels,
@@ -529,9 +531,11 @@ export default {
       if (this.timelineChartInstance) {
         this.timelineChartInstance.destroy()
       }
-      const ctx = this.$refs.timelineChart
+      const canvas = this.$refs.timelineChart
+      if (!canvas) return
+      const ctx = canvas.getContext('2d')
       if (!ctx) return
-      this.timelineChartInstance = new Chart(ctx, {
+      this.timelineChartInstance = new Chart(canvas, {
         type: 'line',
         data: {
           labels: this.timelineChartData.labels,

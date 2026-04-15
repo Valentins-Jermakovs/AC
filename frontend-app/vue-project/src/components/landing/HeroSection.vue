@@ -6,7 +6,7 @@
     - Contains main title, subtitle, and login/register buttons
   -->
   <section
-    class="h-screen flex flex-col justify-center items-center bg-[url('@/assets/images/mate-szalontay-nzUh6sEtTsU-unsplash.jpg')] bg-cover bg-center"
+    class="h-screen flex flex-col justify-center items-center bg-[url('@/assets/images/veli-batuhan-aytac-VAkmbHvhBhI-unsplash.jpg')] bg-cover bg-center"
   >
     <!-- Wrapper for centering content -->
     <div class="flex flex-col gap-4 items-center justify-center w-full">

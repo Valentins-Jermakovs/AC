@@ -1,87 +1,156 @@
 # Analytics Center
 
-Analytics Center is a web application focused on productivity analytics and user data management. The project is designed to visualize, structure, and manage information through a clean and modular user interface.
+<p align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=Inter&weight=600&size=26&pause=1000&color=4F8CFF&center=true&vCenter=true&width=600&lines=Analytics+Center;Productivity+Dashboard+System;Data+Visualization+%26+Task+Management;Minimal+MVP+Built+with+Vue" />
+</p>
 
-It is developed as an academic and portfolio project with a strong front-end foundation and planned back-end integration.
+<p align="center">
+  A modern productivity analytics platform for tasks, events, finances and visual insights.
+</p>
 
----
-
-## Project Goals
-
-* Build a centralized productivity analytics platform
-* Provide a clear and intuitive user experience
-* Design a scalable and maintainable architecture
-* Enable data visualization and future API integrations
-
----
-
-## Core Features
-
-* Task and event management
-* Reminders and timers
-* Productivity and activity analytics
-* Data visualization using charts and indicators
-* Modular, component-based structure
-
-The functionality is under active development and will be extended over time.
+<p align="center">
+  <img src="./dashboard.png" width="90%" />
+</p>
 
 ---
 
-## Technologies Used
+## Badges
 
-### Front-end
-
-* Vue.js – main front-end framework
-* Tailwind CSS – utility-first styling
-* DaisyUI – UI component library
-* Vuex 4 and Vue Composables – state management and business logic
-* Axios – API communication
-* Chart.js – data visualization
-
-### Back-end
-
-* FastAPI
-* NGINX
-* REST API
-* PostgreSQL
-* MongoDB
+<p align="center">
+  <img src="https://img.shields.io/badge/Vue-3.x-42b883?style=for-the-badge&logo=vue.js" />
+  <img src="https://img.shields.io/badge/Tailwind-CSS-38bdf8?style=for-the-badge&logo=tailwindcss" />
+  <img src="https://img.shields.io/badge/DaisyUI-UI%20Library-7c3aed?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Chart.js-Visualization-f472b6?style=for-the-badge&logo=chartdotjs" />
+  <img src="https://img.shields.io/badge/FastAPI-Backend-009688?style=for-the-badge&logo=fastapi" />
+</p>
 
 ---
 
-## Architecture
+## Overview
 
-The project follows modern architectural principles:
+Analytics Center is a modular web application designed to visualize productivity data and manage personal workflows.
 
-* Separation of concerns between logic and presentation
-* Reusable and isolated components
-* Low coupling between application modules
-
-The front-end is designed with future server-side integration in mind.
-
----
-
-## Project Status
-
-In development.
-
-This project is intended as:
-
-* An academic project
-* A portfolio demonstration
-* A foundation for future expansion
+It focuses on:
+- clean UI
+- fast navigation
+- structured analytics
+- future-ready backend integration
 
 ---
 
-## License
+## ✨ Key Features
 
-This project is licensed under the MIT License.
+- Task and event tracking system
+- Calendar-based planning
+- Finance overview module
+- Project management workspace
+- Analytics dashboard with charts
+- Authentication flow (login system)
+- Modular architecture for future scaling
 
 ---
 
-## Author
+## 🖼️ Screenshots
 
-Valentins Jermakovs
+### Landing
+<p align="center">
+  <img src="./landing.png" width="80%" />
+</p>
+
+### Dashboard
+<p align="center">
+  <img src="./dashboard.png" width="80%" />
+</p>
+
+### Login
+<p align="center">
+  <img src="./login.png" width="80%" />
+</p>
+
+### Calendar
+<p align="center">
+  <img src="./calendar.png" width="80%" />
+</p>
+
+### Finances
+<p align="center">
+  <img src="./finances.png" width="80%" />
+</p>
+
+### Projects
+<p align="center">
+  <img src="./projects.png" width="80%" />
+</p>
 
 ---
 
-Feedback, ideas, and suggestions are welcome.
+## 🧠 Tech Stack
+
+### Frontend
+- Vue 3 (Composition API)
+- Pinia / Vue state management
+- Tailwind CSS
+- DaisyUI
+- Axios
+- Chart.js
+
+### Backend (planned)
+- FastAPI
+- PostgreSQL
+- MongoDB
+- REST API architecture
+- NGINX
+
+---
+
+## 🏗 Architecture
+
+- Component-based structure
+- Separation of UI and logic
+- Reusable composables
+- Scalable module system
+- API-first design approach
+
+---
+
+## 🎯 Project Status
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Status-MVP%20In%20Progress-yellow?style=for-the-badge" />
+</p>
+
+Current stage: **Minimum Viable Product (MVP)**
+
+Planned improvements:
+- real backend integration
+- live analytics updates
+- role-based access system
+- performance optimization
+- advanced filtering system
+
+---
+
+## 🚀 Vision
+
+Analytics Center is meant to evolve into a full productivity ecosystem:
+- personal dashboard system
+- team productivity tool
+- scalable SaaS architecture foundation
+
+---
+
+## 📄 License
+
+MIT License
+
+---
+
+## 👤 Author
+
+**Valentins Jermakovs**
+
+---
+
+<p align="center">
+  Built with focus on clarity, structure, and future scalability.
+</p>

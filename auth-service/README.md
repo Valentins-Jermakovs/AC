@@ -1,12 +1,12 @@
-Authentication Service - Deployment Guide
+# Authentication Service - Deployment Guide
 
-Requirements
+## Requirements
 
 -   Docker installed
 -   PostgreSQL
 -   Google OAuth credentials
 
-Environment Variables (.env)
+## Environment Variables (.env)
 
 Create a .env file in the project root:
 
@@ -16,7 +16,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES=10 GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
 GOOGLE_REDIRECT_URI=http://localhost:8000/auth/google/callback
 
-Description
+## Description
 
 DATABASE_URL -> Async PostgreSQL connection string
 SECRET_KEY -> Used for JWT signing
@@ -55,3 +55,18 @@ Google OAuth
 Add authorized redirect URI in Google Cloud Console:
 
 http://localhost:8000/auth/google/callback
+
+## RUNNING THE AUTH SERVICE IN DOCKER
+
+```
+docker build -t auth-fastapi .
+```
+
+```
+docker run -d \
+  --name auth-fastapi-container \
+  --network analytics-network \
+  --env-file .env \
+  -p 8000:80 \
+  auth-fastapi
+```

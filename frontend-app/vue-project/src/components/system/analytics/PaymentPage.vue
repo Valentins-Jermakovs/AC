@@ -30,13 +30,11 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1">
       <div class="card rounded-none border border-base-300 bg-base-200 p-4 h-80 flex flex-col">
         <div class="font-semibold mb-2">{{ $t('finances.payments.amount_by_category') }}</div>
-        <div class="flex-1 relative" v-if="paymentStore.payments.length > 0">
+        <div class="flex-1 relative" v-show="paymentStore.payments.length > 0">
           <canvas ref="categoryChart"></canvas>
         </div>
-        <div
-          v-else
-          class="flex flex-col items-center justify-center gap-2 h-full text-base-content/70"
-        >
+        <div v-if="paymentStore.payments.length < 1"
+          class="flex flex-col items-center justify-center gap-2 h-full text-base-content/70">
           <font-awesome-icon icon="fa-solid fa-chart-line" class="text-4xl animate-bounce" />
           <p class="text-lg">{{ $t('finances.payments.no_payments') }}</p>
         </div>
@@ -44,13 +42,11 @@
 
       <div class="card rounded-none border border-base-300 bg-base-200 p-4 h-80 flex flex-col">
         <div class="font-semibold mb-2">{{ $t('finances.payments.upcoming_schedule') }}</div>
-        <div class="flex-1 relative" v-if="paymentStore.payments.length > 0">
+        <div class="flex-1 relative" v-show="paymentStore.payments.length > 0">
           <canvas ref="timelineChart"></canvas>
         </div>
-        <div
-          v-else
-          class="flex flex-col items-center justify-center gap-2 h-full text-base-content/70"
-        >
+        <div v-if="paymentStore.payments.length < 1"
+          class="flex flex-col items-center justify-center gap-2 h-full text-base-content/70">
           <font-awesome-icon icon="fa-solid fa-chart-line" class="text-4xl animate-bounce" />
           <p class="text-lg">{{ $t('finances.payments.no_payments') }}</p>
         </div>
@@ -65,9 +61,7 @@
     </div>
 
     <!-- TABLE -->
-    <div
-      class="card rounded-none hidden md:flex border border-base-300 bg-base-200 p-4 flex-col gap-3"
-    >
+    <div class="card rounded-none hidden md:flex border border-base-300 bg-base-200 p-4 flex-col gap-3">
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div class="font-semibold">{{ $t('finances.payments.recurring_payments') }}</div>
         <div class="text-sm opacity-70">
@@ -127,30 +121,21 @@
       </div>
 
       <div class="flex justify-between items-center pt-2">
-        <button
-          class="btn btn-sm btn-neutral"
-          :disabled="paymentStore.meta.page <= 1"
-          @click="prevPage"
-        >
+        <button class="btn btn-sm btn-neutral" :disabled="paymentStore.meta.page <= 1" @click="prevPage">
           {{ $t('finances.payments.table.prev') }}
         </button>
         <div class="text-sm opacity-70">
           {{ $t('finances.payments.table.total') }} {{ paymentStore.meta.total_items }}
         </div>
-        <button
-          class="btn btn-sm btn-neutral"
-          :disabled="paymentStore.meta.page >= paymentStore.meta.total_pages"
-          @click="nextPage"
-        >
+        <button class="btn btn-sm btn-neutral" :disabled="paymentStore.meta.page >= paymentStore.meta.total_pages"
+          @click="nextPage">
           {{ $t('finances.payments.table.next') }}
         </button>
       </div>
     </div>
 
     <!-- MOBILE -->
-    <div
-      class="card rounded-none md:hidden border border-base-300 bg-base-200 p-4 flex flex-col gap-3"
-    >
+    <div class="card rounded-none md:hidden border border-base-300 bg-base-200 p-4 flex flex-col gap-3">
       <!-- HEADER -->
       <div class="flex justify-between items-center">
         <div class="font-semibold">
@@ -164,11 +149,8 @@
 
       <!-- LIST -->
       <div class="flex flex-col gap-3">
-        <div
-          v-for="payment in payments"
-          :key="payment.id"
-          class="card rounded-none bg-base-100 border border-base-300 p-3"
-        >
+        <div v-for="payment in payments" :key="payment.id"
+          class="card rounded-none bg-base-100 border border-base-300 p-3">
           <!-- TOP -->
           <div class="flex justify-between items-center">
             <span class="badge badge-neutral">
@@ -216,11 +198,7 @@
 
       <!-- PAGINATION -->
       <div class="flex justify-between items-center pt-2">
-        <button
-          class="btn btn-sm btn-neutral"
-          :disabled="paymentStore.meta.page <= 1"
-          @click="prevPage"
-        >
+        <button class="btn btn-sm btn-neutral" :disabled="paymentStore.meta.page <= 1" @click="prevPage">
           {{ $t('finances.payments.table.prev') }}
         </button>
 
@@ -229,24 +207,16 @@
           {{ paymentStore.meta.total_items }}
         </div>
 
-        <button
-          class="btn btn-sm btn-neutral"
-          :disabled="paymentStore.meta.page >= paymentStore.meta.total_pages"
-          @click="nextPage"
-        >
+        <button class="btn btn-sm btn-neutral" :disabled="paymentStore.meta.page >= paymentStore.meta.total_pages"
+          @click="nextPage">
           {{ $t('finances.payments.table.next') }}
         </button>
       </div>
     </div>
 
-    <BaseDialog
-      v-model="deleteModal"
-      :title="$t('finances.payments.modals.delete_payment.title')"
-      :confirmText="$t('common.delete')"
-      :cancelText="$t('common.cancel')"
-      @confirm="deletePayment"
-      @cancel="closeDelete"
-    >
+    <BaseDialog v-model="deleteModal" :title="$t('finances.payments.modals.delete_payment.title')"
+      :confirmText="$t('common.delete')" :cancelText="$t('common.cancel')" @confirm="deletePayment"
+      @cancel="closeDelete">
       <Transition name="error-slide">
         <div v-if="error" class="mb-4">
           <div class="alert alert-error">
@@ -257,14 +227,9 @@
       <p>{{ $t('finances.payments.modals.delete_payment.content') }}</p>
     </BaseDialog>
 
-    <BaseDialog
-      v-model="updateModal"
-      :title="$t('finances.payments.modals.edit_payment.title')"
-      :confirmText="$t('common.confirm')"
-      :cancelText="$t('common.cancel')"
-      @confirm="updatePayment"
-      @cancel="closeUpdate"
-    >
+    <BaseDialog v-model="updateModal" :title="$t('finances.payments.modals.edit_payment.title')"
+      :confirmText="$t('common.confirm')" :cancelText="$t('common.cancel')" @confirm="updatePayment"
+      @cancel="closeUpdate">
       <div class="flex flex-col gap-2 w-full">
         <Transition name="error-slide">
           <div v-if="error" class="mb-4">
@@ -275,33 +240,22 @@
         </Transition>
         <label for="amount" class="label">{{
           $t('finances.payments.modals.edit_payment.amount')
-        }}</label>
-        <input
-          v-model.number="form.amount"
-          type="number"
-          class="input input-bordered w-full"
-          :placeholder="$t('finances.payments.modals.edit_payment.amount_placeholder')"
-        />
+          }}</label>
+        <input v-model.number="form.amount" type="number" class="input input-bordered w-full"
+          :placeholder="$t('finances.payments.modals.edit_payment.amount_placeholder')" />
         <label for="category" class="label">{{
           $t('finances.payments.modals.edit_payment.category')
-        }}</label>
-        <input
-          v-model="form.category"
-          class="input input-bordered w-full"
-          :placeholder="$t('finances.payments.modals.edit_payment.category_placeholder')"
-        />
+          }}</label>
+        <input v-model="form.category" class="input input-bordered w-full"
+          :placeholder="$t('finances.payments.modals.edit_payment.category_placeholder')" />
         <label for="start_date" class="label">{{
           $t('finances.payments.modals.edit_payment.start_date')
-        }}</label>
-        <input
-          v-model="form.start_date"
-          type="date"
-          class="input input-bordered w-full"
-          :placeholder="$t('finances.payments.modals.edit_payment.start_date_placeholder')"
-        />
+          }}</label>
+        <input v-model="form.start_date" type="date" class="input input-bordered w-full"
+          :placeholder="$t('finances.payments.modals.edit_payment.start_date_placeholder')" />
         <label for="interval" class="label">{{
           $t('finances.payments.modals.edit_payment.interval')
-        }}</label>
+          }}</label>
         <select v-model="form.interval" class="select select-bordered w-full">
           <option value="daily">{{ $t('finances.payments.daily_payments') }}</option>
           <option value="weekly">{{ $t('finances.payments.weekly_payments') }}</option>
@@ -310,14 +264,9 @@
       </div>
     </BaseDialog>
 
-    <BaseDialog
-      v-model="createModal"
-      :title="$t('finances.payments.modals.create_payment.title')"
-      :confirmText="$t('common.create')"
-      :cancelText="$t('common.cancel')"
-      @confirm="createPayment"
-      @cancel="closeCreate"
-    >
+    <BaseDialog v-model="createModal" :title="$t('finances.payments.modals.create_payment.title')"
+      :confirmText="$t('common.create')" :cancelText="$t('common.cancel')" @confirm="createPayment"
+      @cancel="closeCreate">
       <div class="flex flex-col gap-2 w-full">
         <Transition name="error-slide">
           <div v-if="error" class="mb-4">
@@ -328,33 +277,22 @@
         </Transition>
         <label for="amount" class="label">{{
           $t('finances.payments.modals.create_payment.amount')
-        }}</label>
-        <input
-          v-model.number="form.amount"
-          type="number"
-          class="input input-bordered w-full"
-          :placeholder="$t('finances.payments.modals.create_payment.amount_placeholder')"
-        />
+          }}</label>
+        <input v-model.number="form.amount" type="number" class="input input-bordered w-full"
+          :placeholder="$t('finances.payments.modals.create_payment.amount_placeholder')" />
         <label for="category" class="label">{{
           $t('finances.payments.modals.create_payment.category')
-        }}</label>
-        <input
-          v-model="form.category"
-          class="input input-bordered w-full"
-          :placeholder="$t('finances.payments.modals.create_payment.category_placeholder')"
-        />
+          }}</label>
+        <input v-model="form.category" class="input input-bordered w-full"
+          :placeholder="$t('finances.payments.modals.create_payment.category_placeholder')" />
         <label for="start_date" class="label">{{
           $t('finances.payments.modals.create_payment.start_date')
-        }}</label>
-        <input
-          v-model="form.start_date"
-          type="date"
-          class="input input-bordered w-full"
-          :placeholder="$t('finances.payments.modals.create_payment.start_date_placeholder')"
-        />
+          }}</label>
+        <input v-model="form.start_date" type="date" class="input input-bordered w-full"
+          :placeholder="$t('finances.payments.modals.create_payment.start_date_placeholder')" />
         <label for="interval" class="label">{{
           $t('finances.payments.modals.create_payment.interval')
-        }}</label>
+          }}</label>
         <select v-model="form.interval" class="select select-bordered w-full">
           <option value="daily">{{ $t('finances.payments.daily_payments') }}</option>
           <option value="weekly">{{ $t('finances.payments.weekly_payments') }}</option>
@@ -392,6 +330,7 @@ export default {
         start_date: '',
         interval: 'monthly',
       },
+      isRenderingCharts: false,
     }
   },
   async mounted() {
@@ -552,32 +491,57 @@ export default {
     },
     async nextPage() {
       await this.paymentStore.nextPage()
-      this.updateCharts()
+      await this.loadData()
     },
     async prevPage() {
       await this.paymentStore.prevPage()
-      this.updateCharts()
+      await this.loadData()
     },
     formatDate(date) {
       return new Date(date).toLocaleDateString('lv-LV')
     },
     updateCharts() {
+      if (this.isRenderingCharts) return
+      this.isRenderingCharts = true
+
       this.$nextTick(() => {
         requestAnimationFrame(() => {
+          this.destroyCharts()
           this.renderCategoryChart()
           this.renderTimelineChart()
+          this.isRenderingCharts = false
         })
       })
     },
-    renderCategoryChart() {
+    destroyCharts() {
       if (this.categoryChartInstance) {
         this.categoryChartInstance.destroy()
+        this.categoryChartInstance = null
       }
+
+      if (this.timelineChartInstance) {
+        this.timelineChartInstance.destroy()
+        this.timelineChartInstance = null
+      }
+    },
+    async loadData() {
+      await this.paymentStore.fetchPayments()
+      this.updateCharts()
+    },
+    renderCategoryChart() {
       const canvas = this.$refs.categoryChart
-      if (!canvas) return
+
+      if (!canvas || !canvas.isConnected) return
+
       const ctx = canvas.getContext('2d')
       if (!ctx) return
-      this.categoryChartInstance = new Chart(canvas, {
+
+      if (this.categoryChartInstance) {
+        this.categoryChartInstance.destroy()
+        this.categoryChartInstance = null
+      }
+
+      this.categoryChartInstance = new Chart(ctx, {
         type: 'bar',
         data: {
           labels: this.categoryChartData.labels,
@@ -591,35 +555,23 @@ export default {
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          animations: {
-            numbers: {
-              duration: 2000,
-              easing: 'easeInOutCubic',
-            },
-          },
-          plugins: {
-            tooltip: {
-              enabled: true,
-              backgroundColor: 'rgba(0, 0, 0, 1)',
-              padding: 20,
-              boxPadding: 10,
-              cornerRadius: 0,
-              titleFont: { size: 14, weight: '600' },
-              bodyFont: { size: 16 },
-            },
-          },
         },
       })
     },
     renderTimelineChart() {
-      if (this.timelineChartInstance) {
-        this.timelineChartInstance.destroy()
-      }
       const canvas = this.$refs.timelineChart
-      if (!canvas) return
+
+      if (!canvas || !canvas.isConnected) return
+
       const ctx = canvas.getContext('2d')
       if (!ctx) return
-      this.timelineChartInstance = new Chart(canvas, {
+
+      if (this.timelineChartInstance) {
+        this.timelineChartInstance.destroy()
+        this.timelineChartInstance = null
+      }
+
+      this.timelineChartInstance = new Chart(ctx, {
         type: 'line',
         data: {
           labels: this.timelineChartData.labels,
@@ -636,26 +588,12 @@ export default {
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          animations: {
-            numbers: {
-              duration: 2000,
-              easing: 'easeInOutCubic',
-            },
-          },
-          plugins: {
-            tooltip: {
-              enabled: true,
-              backgroundColor: 'rgba(0, 0, 0, 1)',
-              padding: 20,
-              boxPadding: 10,
-              cornerRadius: 0,
-              titleFont: { size: 14, weight: '600' },
-              bodyFont: { size: 16 },
-            },
-          },
         },
       })
     },
+  },
+  async mounted() {
+    await this.loadData()
   },
 }
 </script>

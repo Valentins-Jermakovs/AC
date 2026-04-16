@@ -16,12 +16,14 @@ nginx.conf file configured with service routing rules
 
 Run the Nginx container using the following command:
 
-docker run -d
---name gateway-nginx
---network analytics-network
--p 8080:80
--v $(pwd)/nginx.conf:/etc/nginx/nginx.conf:ro
-nginx:latest
+```
+    docker run -d
+    --name gateway-nginx
+    --network analytics-network
+    -p 8080:80
+    -v $(pwd)/nginx.conf:/etc/nginx/nginx.conf:ro
+    nginx:latest
+```
 
 ## EXPLANATION
 
@@ -33,6 +35,6 @@ nginx:latest
 
 ## NOTES
 
-Ensure all microservices are reachable inside analytics-network
-nginx.conf must define upstream services and routing rules
-Gateway acts as single entry point for all API requests
+- Ensure all microservices are reachable inside analytics-network
+- nginx.conf must define upstream services and routing rules
+- Gateway acts as single entry point for all API requests

@@ -56,6 +56,20 @@ venv\Scripts\activate
 Service URL: http://localhost:8000
 API docs: http://localhost:8000/docs
 
+## RUNNING THE EVENTS SERVICE IN DOCKER
+
+```
+docker build -t events-fastapi .
+```
+
+```
+docker run -d \
+  --name events-fastapi-container \
+  --network analytics-network \
+  --env-file .env \
+  -p 8003:80 \
+  events-fastapi
+```
 
 ## NOTES
 

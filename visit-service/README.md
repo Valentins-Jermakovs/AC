@@ -55,6 +55,21 @@ venv\Scripts\activate
 Service URL: http://localhost:8000
 API docs: http://localhost:8000/docs
 
+## RUNNING THE VISIT SERVICE IN DOCKER
+
+```
+docker build -t visit-fastapi .
+```
+
+```
+docker run -d \
+  --name visit-fastapi-container \
+  --network analytics-network \
+  --env-file .env \
+  -p 8005:80 \
+  visit-fastapi
+```
+
 ## NOTES
 
 - MongoDB must be running before starting the service

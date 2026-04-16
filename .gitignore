@@ -16,3 +16,6 @@ __pycache__/
 # IDE
 .vscode/
 .idea/
+
+# Logs
+/node_modules

@@ -33,8 +33,10 @@
         <div class="flex-1 relative" v-show="paymentStore.payments.length > 0">
           <canvas ref="categoryChart"></canvas>
         </div>
-        <div v-if="paymentStore.payments.length < 1"
-          class="flex flex-col items-center justify-center gap-2 h-full text-base-content/70">
+        <div
+          v-if="paymentStore.payments.length < 1"
+          class="flex flex-col items-center justify-center gap-2 h-full text-base-content/70"
+        >
           <font-awesome-icon icon="fa-solid fa-chart-line" class="text-4xl animate-bounce" />
           <p class="text-lg">{{ $t('finances.payments.no_payments') }}</p>
         </div>
@@ -45,8 +47,10 @@
         <div class="flex-1 relative" v-show="paymentStore.payments.length > 0">
           <canvas ref="timelineChart"></canvas>
         </div>
-        <div v-if="paymentStore.payments.length < 1"
-          class="flex flex-col items-center justify-center gap-2 h-full text-base-content/70">
+        <div
+          v-if="paymentStore.payments.length < 1"
+          class="flex flex-col items-center justify-center gap-2 h-full text-base-content/70"
+        >
           <font-awesome-icon icon="fa-solid fa-chart-line" class="text-4xl animate-bounce" />
           <p class="text-lg">{{ $t('finances.payments.no_payments') }}</p>
         </div>
@@ -61,7 +65,9 @@
     </div>
 
     <!-- TABLE -->
-    <div class="card rounded-none hidden md:flex border border-base-300 bg-base-200 p-4 flex-col gap-3">
+    <div
+      class="card rounded-none hidden md:flex border border-base-300 bg-base-200 p-4 flex-col gap-3"
+    >
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div class="font-semibold">{{ $t('finances.payments.recurring_payments') }}</div>
         <div class="text-sm opacity-70">
@@ -121,21 +127,30 @@
       </div>
 
       <div class="flex justify-between items-center pt-2">
-        <button class="btn btn-sm btn-neutral" :disabled="paymentStore.meta.page <= 1" @click="prevPage">
+        <button
+          class="btn btn-sm btn-neutral"
+          :disabled="paymentStore.meta.page <= 1"
+          @click="prevPage"
+        >
           {{ $t('finances.payments.table.prev') }}
         </button>
         <div class="text-sm opacity-70">
           {{ $t('finances.payments.table.total') }} {{ paymentStore.meta.total_items }}
         </div>
-        <button class="btn btn-sm btn-neutral" :disabled="paymentStore.meta.page >= paymentStore.meta.total_pages"
-          @click="nextPage">
+        <button
+          class="btn btn-sm btn-neutral"
+          :disabled="paymentStore.meta.page >= paymentStore.meta.total_pages"
+          @click="nextPage"
+        >
           {{ $t('finances.payments.table.next') }}
         </button>
       </div>
     </div>
 
     <!-- MOBILE -->
-    <div class="card rounded-none md:hidden border border-base-300 bg-base-200 p-4 flex flex-col gap-3">
+    <div
+      class="card rounded-none md:hidden border border-base-300 bg-base-200 p-4 flex flex-col gap-3"
+    >
       <!-- HEADER -->
       <div class="flex justify-between items-center">
         <div class="font-semibold">
@@ -149,8 +164,11 @@
 
       <!-- LIST -->
       <div class="flex flex-col gap-3">
-        <div v-for="payment in payments" :key="payment.id"
-          class="card rounded-none bg-base-100 border border-base-300 p-3">
+        <div
+          v-for="payment in payments"
+          :key="payment.id"
+          class="card rounded-none bg-base-100 border border-base-300 p-3"
+        >
           <!-- TOP -->
           <div class="flex justify-between items-center">
             <span class="badge badge-neutral">
@@ -198,7 +216,11 @@
 
       <!-- PAGINATION -->
       <div class="flex justify-between items-center pt-2">
-        <button class="btn btn-sm btn-neutral" :disabled="paymentStore.meta.page <= 1" @click="prevPage">
+        <button
+          class="btn btn-sm btn-neutral"
+          :disabled="paymentStore.meta.page <= 1"
+          @click="prevPage"
+        >
           {{ $t('finances.payments.table.prev') }}
         </button>
 
@@ -207,16 +229,24 @@
           {{ paymentStore.meta.total_items }}
         </div>
 
-        <button class="btn btn-sm btn-neutral" :disabled="paymentStore.meta.page >= paymentStore.meta.total_pages"
-          @click="nextPage">
+        <button
+          class="btn btn-sm btn-neutral"
+          :disabled="paymentStore.meta.page >= paymentStore.meta.total_pages"
+          @click="nextPage"
+        >
           {{ $t('finances.payments.table.next') }}
         </button>
       </div>
     </div>
 
-    <BaseDialog v-model="deleteModal" :title="$t('finances.payments.modals.delete_payment.title')"
-      :confirmText="$t('common.delete')" :cancelText="$t('common.cancel')" @confirm="deletePayment"
-      @cancel="closeDelete">
+    <BaseDialog
+      v-model="deleteModal"
+      :title="$t('finances.payments.modals.delete_payment.title')"
+      :confirmText="$t('common.delete')"
+      :cancelText="$t('common.cancel')"
+      @confirm="deletePayment"
+      @cancel="closeDelete"
+    >
       <Transition name="error-slide">
         <div v-if="error" class="mb-4">
           <div class="alert alert-error">
@@ -227,9 +257,14 @@
       <p>{{ $t('finances.payments.modals.delete_payment.content') }}</p>
     </BaseDialog>
 
-    <BaseDialog v-model="updateModal" :title="$t('finances.payments.modals.edit_payment.title')"
-      :confirmText="$t('common.confirm')" :cancelText="$t('common.cancel')" @confirm="updatePayment"
-      @cancel="closeUpdate">
+    <BaseDialog
+      v-model="updateModal"
+      :title="$t('finances.payments.modals.edit_payment.title')"
+      :confirmText="$t('common.confirm')"
+      :cancelText="$t('common.cancel')"
+      @confirm="updatePayment"
+      @cancel="closeUpdate"
+    >
       <div class="flex flex-col gap-2 w-full">
         <Transition name="error-slide">
           <div v-if="error" class="mb-4">
@@ -241,18 +276,29 @@
         <label for="amount" class="label">{{
           $t('finances.payments.modals.edit_payment.amount')
         }}</label>
-        <input v-model.number="form.amount" type="number" class="input input-bordered w-full"
-          :placeholder="$t('finances.payments.modals.edit_payment.amount_placeholder')" />
+        <input
+          v-model.number="form.amount"
+          type="number"
+          class="input input-bordered w-full"
+          :placeholder="$t('finances.payments.modals.edit_payment.amount_placeholder')"
+        />
         <label for="category" class="label">{{
           $t('finances.payments.modals.edit_payment.category')
         }}</label>
-        <input v-model="form.category" class="input input-bordered w-full"
-          :placeholder="$t('finances.payments.modals.edit_payment.category_placeholder')" />
+        <input
+          v-model="form.category"
+          class="input input-bordered w-full"
+          :placeholder="$t('finances.payments.modals.edit_payment.category_placeholder')"
+        />
         <label for="start_date" class="label">{{
           $t('finances.payments.modals.edit_payment.start_date')
         }}</label>
-        <input v-model="form.start_date" type="date" class="input input-bordered w-full"
-          :placeholder="$t('finances.payments.modals.edit_payment.start_date_placeholder')" />
+        <input
+          v-model="form.start_date"
+          type="date"
+          class="input input-bordered w-full"
+          :placeholder="$t('finances.payments.modals.edit_payment.start_date_placeholder')"
+        />
         <label for="interval" class="label">{{
           $t('finances.payments.modals.edit_payment.interval')
         }}</label>
@@ -264,9 +310,14 @@
       </div>
     </BaseDialog>
 
-    <BaseDialog v-model="createModal" :title="$t('finances.payments.modals.create_payment.title')"
-      :confirmText="$t('common.create')" :cancelText="$t('common.cancel')" @confirm="createPayment"
-      @cancel="closeCreate">
+    <BaseDialog
+      v-model="createModal"
+      :title="$t('finances.payments.modals.create_payment.title')"
+      :confirmText="$t('common.create')"
+      :cancelText="$t('common.cancel')"
+      @confirm="createPayment"
+      @cancel="closeCreate"
+    >
       <div class="flex flex-col gap-2 w-full">
         <Transition name="error-slide">
           <div v-if="error" class="mb-4">
@@ -278,18 +329,29 @@
         <label for="amount" class="label">{{
           $t('finances.payments.modals.create_payment.amount')
         }}</label>
-        <input v-model.number="form.amount" type="number" class="input input-bordered w-full"
-          :placeholder="$t('finances.payments.modals.create_payment.amount_placeholder')" />
+        <input
+          v-model.number="form.amount"
+          type="number"
+          class="input input-bordered w-full"
+          :placeholder="$t('finances.payments.modals.create_payment.amount_placeholder')"
+        />
         <label for="category" class="label">{{
           $t('finances.payments.modals.create_payment.category')
         }}</label>
-        <input v-model="form.category" class="input input-bordered w-full"
-          :placeholder="$t('finances.payments.modals.create_payment.category_placeholder')" />
+        <input
+          v-model="form.category"
+          class="input input-bordered w-full"
+          :placeholder="$t('finances.payments.modals.create_payment.category_placeholder')"
+        />
         <label for="start_date" class="label">{{
           $t('finances.payments.modals.create_payment.start_date')
         }}</label>
-        <input v-model="form.start_date" type="date" class="input input-bordered w-full"
-          :placeholder="$t('finances.payments.modals.create_payment.start_date_placeholder')" />
+        <input
+          v-model="form.start_date"
+          type="date"
+          class="input input-bordered w-full"
+          :placeholder="$t('finances.payments.modals.create_payment.start_date_placeholder')"
+        />
         <label for="interval" class="label">{{
           $t('finances.payments.modals.create_payment.interval')
         }}</label>
@@ -482,12 +544,10 @@ export default {
 
         await this.loadData()
 
-        // 🔥 JA page > total_pages → labojam
         if (this.paymentStore.meta.page > this.paymentStore.meta.total_pages) {
           await this.paymentStore.prevPage()
           await this.loadData()
         }
-
       } catch (err) {
         this.error = this.paymentStore.error || err.message || 'Failed to delete payment'
         console.error('Error deleting payment:', err)

@@ -56,6 +56,21 @@ venv\Scripts\activate
 Service URL: http://localhost:8000
 API docs: http://localhost:8000/docs
 
+## RUNNING THE NEWS SERVICE IN DOCKER
+
+```
+docker build -t news-fastapi .
+```
+
+```
+docker run -d \
+  --name news-fastapi-container \
+  --network analytics-network \
+  --env-file .env \
+  -p 8004:80 \
+  news-fastapi
+```
+
 ## NOTES
 
 - MongoDB must be running before starting the service

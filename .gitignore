@@ -19,3 +19,4 @@ __pycache__/
 
 # Logs
 /node_modules
+/frontend/vue-project/node_modules

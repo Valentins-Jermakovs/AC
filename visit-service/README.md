@@ -72,14 +72,3 @@ API docs: http://localhost:8000/docs
 - Local uses localhost
 
 ---
-
-### PROJECT STRUCTURE
-.
-├── app/
-├── main.py
-├── requirements.txt
-├── .env
-├── Dockerfile
-└── README.txt
-
----

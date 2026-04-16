@@ -1,38 +1,88 @@
-# vue-project
+# VUE FRONTEND APPLICATION
 
-This template should help get you started developing with Vue 3 in Vite.
+## DESCRIPTION
+This is a Vue 3 frontend application built with Vite.
 
-## Recommended IDE Setup
+The project provides a user interface for a microservices-based system and communicates with backend services through an Nginx API Gateway.
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+Main features:
 
-## Recommended Browser Setup
+- Multi-language support (3 languages)
+- Tailwind CSS styling
+- DaisyUI component system
+- Communication with backend via Nginx reverse proxy
+- Integration with multiple microservices (users, projects, news, expenses, events, visits)
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+## TECH STACK
 
-## Customize configuration
+- Vue 3
+- Vite
+- Tailwind CSS
+- DaisyUI
+- Vue I18n
+- Axios (via API Gateway)
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+RECOMMENDED SETUP
 
-## Project Setup
+IDE
+VS Code with:
 
-```sh
-npm install
-```
+- Vue (Official) extension (Volar)
+- Disable Vetur if installed
 
-### Compile and Hot-Reload for Development
+Browser
+Chromium-based browsers (Chrome, Edge, Brave):
 
-```sh
-npm run dev
-```
+- Vue Devtools extension
+- Enable Custom Object Formatter in DevTools
 
-### Compile and Minify for Production
+Firefox:
 
-```sh
-npm run build
-```
+- Vue Devtools extension
+- Enable Custom Object Formatter
+
+## PROJECT SETUP
+
+Install dependencies:
+```npm install```
+
+## DEVELOPMENT SERVER
+
+Run local development server:
+```npm run dev```
+
+Application will be available at:
+http://localhost:5173
+
+## PRODUCTION BUILD
+
+Create optimized build:
+```npm run build```
+
+Preview production build:
+```npm run preview```
+
+## ARCHITECTURE NOTES
+
+- Frontend does NOT communicate directly with microservices
+- All API requests go through Nginx API Gateway
+- Gateway handles routing to backend services
+- Authentication and data access are handled via backend services
+- Frontend only consumes REST API responses
+
+## MICROSERVICES INTEGRATION
+
+This frontend connects to the following services via API Gateway:
+
+- Users service
+- Projects service (Kanban and tasks)
+- News service (articles and feeds)
+- Expenses service (financial tracking)
+- Events service (calendar and scheduling)
+- Visits metrics service (analytics and tracking)
+
+## NOTES
+
+- Ensure API Gateway (Nginx) is running before frontend requests backend data
+- Environment variables should point to gateway URL (not individual services)
+- Supports multi-language UI out of the box (3 languages configured)

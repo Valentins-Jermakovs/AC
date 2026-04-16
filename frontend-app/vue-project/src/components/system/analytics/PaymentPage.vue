@@ -240,22 +240,22 @@
         </Transition>
         <label for="amount" class="label">{{
           $t('finances.payments.modals.edit_payment.amount')
-          }}</label>
+        }}</label>
         <input v-model.number="form.amount" type="number" class="input input-bordered w-full"
           :placeholder="$t('finances.payments.modals.edit_payment.amount_placeholder')" />
         <label for="category" class="label">{{
           $t('finances.payments.modals.edit_payment.category')
-          }}</label>
+        }}</label>
         <input v-model="form.category" class="input input-bordered w-full"
           :placeholder="$t('finances.payments.modals.edit_payment.category_placeholder')" />
         <label for="start_date" class="label">{{
           $t('finances.payments.modals.edit_payment.start_date')
-          }}</label>
+        }}</label>
         <input v-model="form.start_date" type="date" class="input input-bordered w-full"
           :placeholder="$t('finances.payments.modals.edit_payment.start_date_placeholder')" />
         <label for="interval" class="label">{{
           $t('finances.payments.modals.edit_payment.interval')
-          }}</label>
+        }}</label>
         <select v-model="form.interval" class="select select-bordered w-full">
           <option value="daily">{{ $t('finances.payments.daily_payments') }}</option>
           <option value="weekly">{{ $t('finances.payments.weekly_payments') }}</option>
@@ -277,22 +277,22 @@
         </Transition>
         <label for="amount" class="label">{{
           $t('finances.payments.modals.create_payment.amount')
-          }}</label>
+        }}</label>
         <input v-model.number="form.amount" type="number" class="input input-bordered w-full"
           :placeholder="$t('finances.payments.modals.create_payment.amount_placeholder')" />
         <label for="category" class="label">{{
           $t('finances.payments.modals.create_payment.category')
-          }}</label>
+        }}</label>
         <input v-model="form.category" class="input input-bordered w-full"
           :placeholder="$t('finances.payments.modals.create_payment.category_placeholder')" />
         <label for="start_date" class="label">{{
           $t('finances.payments.modals.create_payment.start_date')
-          }}</label>
+        }}</label>
         <input v-model="form.start_date" type="date" class="input input-bordered w-full"
           :placeholder="$t('finances.payments.modals.create_payment.start_date_placeholder')" />
         <label for="interval" class="label">{{
           $t('finances.payments.modals.create_payment.interval')
-          }}</label>
+        }}</label>
         <select v-model="form.interval" class="select select-bordered w-full">
           <option value="daily">{{ $t('finances.payments.daily_payments') }}</option>
           <option value="weekly">{{ $t('finances.payments.weekly_payments') }}</option>
@@ -470,6 +470,7 @@ export default {
       try {
         this.error = null
         if (!this.selectedPayment) return
+
         await this.paymentStore.deletePayment(this.selectedPayment.id)
 
         if (this.paymentStore.error) {
@@ -478,7 +479,15 @@ export default {
         }
 
         this.deleteModal = false
-        this.updateCharts()
+
+        await this.loadData()
+
+        // 🔥 JA page > total_pages → labojam
+        if (this.paymentStore.meta.page > this.paymentStore.meta.total_pages) {
+          await this.paymentStore.prevPage()
+          await this.loadData()
+        }
+
       } catch (err) {
         this.error = this.paymentStore.error || err.message || 'Failed to delete payment'
         console.error('Error deleting payment:', err)

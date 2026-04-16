@@ -56,6 +56,21 @@ venv\Scripts\activate
 Service URL: http://localhost:8000
 API docs: http://localhost:8000/docs
 
+## RUNNING THE PROJECTS SERVICE IN DOCKER
+
+```
+docker build -t projects-fastapi .
+```
+
+```
+docker run -d \
+  --name projects-fastapi-container \
+  --network analytics-network \
+  --env-file .env \
+  -p 8002:80 \
+  projects-fastapi
+```
+
 ## NOTES
 
 - MongoDB must be running before starting the service

@@ -56,6 +56,21 @@ venv\Scripts\activate
 Service URL: http://localhost:8000
 API docs: http://localhost:8000/docs
 
+## RUNNING THE EXPENSES SERVICE IN DOCKER
+
+```
+docker build -t expenses-fastapi .
+```
+
+```
+docker run -d \
+  --name expenses-fastapi-container \
+  --network analytics-network \
+  --env-file .env \
+  -p 8001:80 \
+  expenses-fastapi
+```
+
 ## NOTES
 
 - MongoDB must be running before starting the service

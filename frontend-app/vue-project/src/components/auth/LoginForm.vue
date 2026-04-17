@@ -58,6 +58,7 @@
 
 <script>
 import { useAuthStore } from '@/stores/auth'
+import { useVisitsStore } from '@/stores/visits';
 import { API_ENDPOINTS } from '@/config/api'
 import { api } from '@/services/axios'
 
@@ -67,11 +68,12 @@ export default {
       username: '', // Username input
       password: '', // Password input
       error: '', // Error message to show
-      authStore: null, // Store instance for auth
+      authStore: null, // Store instance for auth,
+      visitsStore: useVisitsStore(), // Store instance for visits
     }
   },
 
-  mounted() {
+  async mounted() {
     // Initialize authStore
     this.authStore = useAuthStore()
 
@@ -83,6 +85,8 @@ export default {
       // Set tokens and navigate to system page
       this.authStore.setAuthData(access, refresh)
       this.$router.replace('/system')
+      await this.visitsStore.registerVisit()
+      await this.visitsStore.startSession()
     }
   },
 

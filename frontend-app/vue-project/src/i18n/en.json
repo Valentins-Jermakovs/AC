@@ -424,7 +424,7 @@
       "errors": {
         "projects_not_found": "You don't have any projects",
         "project_not_selected": "You don't have selected any project",
-        "no_dates": "No data",
+        "no_data": "No data",
         "no_data_for_project": "No project data",
         "no_sprints": "This project has no sprints",
         "no_user_stories": "This sprint has no user stories"

@@ -25,7 +25,7 @@
 <script>
 // Import UI components
 import PageHeader from '@/components/ui/PageHeader.vue'
-import headerImage from '@/assets/images/suleman-serwar-dBMgANedFno-unsplash.jpg'
+import headerImage from '@/assets/images/am-ZOgVHY0zl9o-unsplash.jpg'
 import NavigationPanel from '@/components/ui/NavigationPanel.vue'
 
 // Import pages

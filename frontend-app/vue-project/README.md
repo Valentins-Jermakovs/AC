@@ -1,5 +1,12 @@
 # VUE FRONTEND APPLICATION
 
+1. Create an .env in root and add this: 
+`VITE_API_BASE_URL=http://localhost:8080`
+2. To lunch the front-end in docker use this commands:
+`docker build -t vue-app .`
+`docker run -d --name vue-app -p 5173:5173 vue-app`
+
+
 ## DESCRIPTION
 This is a Vue 3 frontend application built with Vite.
 
